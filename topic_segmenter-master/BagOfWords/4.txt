@@ -1,0 +1,1 @@
+[['hmm', 1], ['are', 1], ['you', 1], ['run', 1], ['insid', 1], ['of', 1], ['a', 2], ['gopath', 1], ['the', 3], ['directori', 1], ['is', 1], ['there', 1], ['simpl', 1], ['way', 1], ['to', 2], ['modifi', 2], ['api', 1], ['server', 1], ['config', 1], ['or', 1], ['do', 1], ['i', 1], ['have', 1], ['code', 1], ['here', 1], ['https', 1], ['and', 1], ['rebuild', 1]]

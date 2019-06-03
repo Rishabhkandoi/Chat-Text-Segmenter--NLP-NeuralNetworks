@@ -1,0 +1,1 @@
+[['i', 1], ['learn', 1], ['that', 1], ['is', 1], ['the', 2], ['answer', 1], ['for', 1], ['a', 2], ['lot', 1], ['of', 1], ['k8s', 1], ['stuff', 1], ['has', 1], ['anyon', 1], ['manag', 1], ['to', 1], ['run', 1], ['minikub', 1], ['from', 1], ['within', 1], ['docker', 1], ['contain', 1], ['get', 1], ['vm', 1], ['depend', 1], ['instal', 1], ['seem', 1], ['tricki', 1]]

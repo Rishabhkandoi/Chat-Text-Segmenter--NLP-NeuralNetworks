@@ -1,0 +1,1 @@
+[['hey', 1], ['you', 1], ['need', 1], ['to', 1], ['set', 1], ['those', 1], ['env', 1], ['variabl', 1], ['insid', 1], ['the', 2], ['vm', 1], ['for', 1], ['docker', 1], ['daemon', 1], ['yes', 1]]

@@ -1,0 +1,1 @@
+[['im', 1], ['run', 1], ['docker', 2], ['through', 1], ['minikub', 2], ['right', 1], ['now', 1], ['which', 1], ['i', 2], ['guess', 1], ['mean', 1], ['no', 1], ['it', 2], ['not', 1], ['machin', 1], ['whatev', 1], ['happen', 1], ['if', 1], ['spin', 1], ['up', 1], ['with', 1], ['xhyve', 1]]

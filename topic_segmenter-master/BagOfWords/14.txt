@@ -1,0 +1,1 @@
+[['minikub', 2], ['delet', 2], ['should', 1], ['work', 1], ['figur', 1], ['it', 1], ['out', 1], ['pr', 1], ['on', 1], ['the', 2], ['way', 1], ['thank', 2], ['start', 1], ['fix', 1], ['all', 1], ['thing', 1]]

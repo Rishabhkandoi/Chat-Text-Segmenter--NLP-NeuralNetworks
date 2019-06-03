@@ -1,0 +1,1 @@
+[['how', 1], ['are', 1], ['you', 1], ['run', 1], ['docker', 2], ['it', 1], ['look', 1], ['like', 1], ['your', 1], ['directori', 1], ['is', 1], ['get', 1], ['mount', 1], ['into', 1], ['the', 1], ['contain', 1], ['correct', 1]]
