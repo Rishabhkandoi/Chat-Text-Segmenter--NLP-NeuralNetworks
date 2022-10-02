@@ -1,0 +1,80 @@
+==========
+U0ALRFJH0 says -=*[1479412058.001144]-=*::: <@U0PPMUTGR> <@U0PT5KRHR> <@U0JFJ4KHS> are there any updates or will we skip the meeting?
+U0PT5KRHR says -=*[1479412149.001145]-=*::: no updates on my end
+U0JFJ4KHS says -=*[1479412896.001146]-=*::: I am Ok with skipping today. Michael and I are on a call which is running late 
+U0ALRFJH0 says -=*[1479413403.001147]-=*::: :+1: keep me posted on the networking experimentations, <@U0JFJ4KHS>
+U0ALRFJH0 says -=*[1479413411.001148]-=*::: ill take care of the pause image tomorrow
+U0PPMUTGR says -=*[1479413535.001149]-=*::: Sorry all, our current call is running late. Can we do a 1-liner update from everyone?
+==========
+U0PPMUTGR says -=*[1479413573.001150]-=*::: Pires i would love to hear progress on the DNS server. Are you using an OSS solution for this for windows
+U0ALRFJH0 says -=*[1479413860.001151]-=*::: <@U0PPMUTGR> its Go code that will be OSSed as soon as we prove it to work
+==========
+U0JFJ4KHS says -=*[1479413940.001152]-=*::: On my end, finished up initial draft for getting-started-guide for Windows, looking at winNAT for infra container now
+U0ALRFJH0 says -=*[1479414155.001153]-=*::: <@U0JFJ4KHS> keep me posted, im eager to learn how it goes.
+==========
+U0PPMUTGR says -=*[1479414866.001154]-=*::: cool <@U0ALRFJH0> . Ike mentioned that some solutions might already exist on DNS, but I also remember you mentioned you had written some similar code on this in the past. Either way, it looks like you have your own code for this and the community will benefit from it
+==========
+U0PT5KRHR says -=*[1479414896.001155]-=*::: <@U0ALRFJH0> why do you think we'll need specific windows messages in the container runtime interface?
+U0PT5KRHR says -=*[1479414963.001157]-=*::: Oh I guess there are Linux-specific structs in there, so having windows-specific ones shouldn't be an issue
+U0PT5KRHR says -=*[1479414969.001158]-=*::: hadn't noticed that before
+==========
+U0ALRFJH0 says -=*[1479416224.001159]-=*::: <@U0PPMUTGR> its just a dns forwarder. there are DNS server implementations, but forwarder that enforces TCP, no.
+==========
+U0ALRFJH0 says -=*[1479416252.001160]-=*::: <@U0PT5KRHR> yep, and im sure well have Windows specifics sooner than later, if theyre not already present.
+U0PPMUTGR says -=*[1479416414.001161]-=*::: thanks Pires
+U0HSNPGLC says -=*[1479433500.001162]-=*::: wiIf you want to know about CRI I can help, I've made an api implementation
+U0HSNPGLC says -=*[1479433639.001163]-=*::: in terms of linuxcontainerconfig I think the info there should be really abstracted away and not be linux specific.
+==========
+U33J59LL8 says -=*[1479450650.001165]-=*::: Hi Guys, my question might be too basic. Can someone help me with the information, is Kubernet is ready with support of windows version of  container ?
+U0DRV5E1Z says -=*[1479454849.001166]-=*::: <@U33J59LL8> you might want to take a look at this: <https://github.com/apprenda/kubernetes/tree/windows_docs/docs/getting-started-guides/windows>
+U0DRV5E1Z says -=*[1479454903.001168]-=*::: kubelet and kube-proxy can run on windows (with some limitations) while the k8s control plane still runs on linux
+U33J59LL8 says -=*[1479461085.001169]-=*::: <@U0DRV5E1Z> Thanks
+==========
+U0ALRFJH0 says -=*[1479470333.001170]-=*::: <@U0HSNPGLC> it was just an example of something we may have specifically for Windows containers.
+U0ALRFJH0 says -=*[1479471100.001171]-=*::: but your help is most welcome! this is an effort open to anyone willing to contribute.
+==========
+U0PPMUTGR says -=*[1479500981.001172]-=*::: have a great weekend everyone! Pires, enjoy your birthday weekend :slightly_smiling_face:
+==========
+U0JFJ4KHS says -=*[1479501945.001173]-=*::: <@U0ALRFJH0>, I have been trying to create a new nat on both container host and within containers but so far have not been successful
+U0JFJ4KHS says -=*[1479501995.001174]-=*::: I can use docker create network to create nat as shown here <https://msdn.microsoft.com/en-us/virtualization/windowscontainers/management/container_networking#multiple-nat-networks>
+U0JFJ4KHS says -=*[1479502006.001176]-=*::: but that doesn't show up within the containers
+U0JFJ4KHS says -=*[1479502656.001177]-=*::: <@U0PPMUTGR> did you get a chance to review the documentation
+==========
+U0ALRFJH0 says -=*[1479502774.001178]-=*::: Thanks <@U0PPMUTGR>!
+==========
+U0ALRFJH0 says -=*[1479502790.001179]-=*::: <@U0JFJ4KHS> only one container should have it. Let's sync on Monday. Enjoy your weekend, guys
+U0JFJ4KHS says -=*[1479502798.001180]-=*::: sure
+==========
+U0PPMUTGR says -=*[1479505254.001181]-=*::: <@U0JFJ4KHS>  this one? <https://github.com/apprenda/kubernetes/tree/windows_docs/docs/getting-started-guides/windows>
+U0JFJ4KHS says -=*[1479505265.001183]-=*::: yes
+U0PPMUTGR says -=*[1479523784.001184]-=*::: i will review your document
+U0PPMUTGR says -=*[1479523805.001185]-=*::: meanwhile, here's the process document. i took care of everything except the PR that <@U0JFJ4KHS>  will take care of for the docs
+U0PPMUTGR says -=*[1479523807.001186]-=*::: <https://groups.google.com/forum/?utm_source=digest&amp;utm_medium=email#!topic/kubernetes-pm/sLvIkGzdwsA>
+==========
+U0ALRFJH0 says -=*[1479739859.001187]-=*::: hi guys!
+U0JFJ4KHS says -=*[1479739902.001188]-=*::: Hi <@U0ALRFJH0>
+U0PT5KRHR says -=*[1479739908.001189]-=*::: :wave:
+U0ALRFJH0 says -=*[1479740294.001190]-=*::: <@U0JFJ4KHS> my idea is to have container 1 with NAT interface (192.168.1.1/24) and a non-NAT interface (10.10.1.1/24).
+U0ALRFJH0 says -=*[1479740312.001191]-=*::: container 2 has only one non-NAT interface (10.10.1.2/24)
+U0ALRFJH0 says -=*[1479740337.001194]-=*::: container 2 default gw should be 10.10.1.1
+U0ALRFJH0 says -=*[1479740354.001195]-=*::: does this look like what you were trying to build?
+U0JFJ4KHS says -=*[1479740679.001196]-=*::: do we need to have a different NAT interface for each POD. I assume each infra container will use an IP from `192.168.1.1/24`
+U0ALRFJH0 says -=*[1479741239.001197]-=*::: <@U0JFJ4KHS> we need one ip per pod, yes.
+U0ALRFJH0 says -=*[1479741281.001198]-=*::: thing is, if container 2 uses container 1 as default gw, how does packets originating in container 2 (10.10.1.2) will be sent as 192.168.1.1?
+U0ALRFJH0 says -=*[1479741334.001199]-=*::: one thing is routing, another one is masquerading. we need to masquerade said traffic as being originated in 192.168.1.1.
+U0JFJ4KHS says -=*[1479742045.001200]-=*::: I was trying to create a new NAT for each POD, and now I don't think we need to do that..we could just use the NAT interface created when docker is setup
+U0JFJ4KHS says -=*[1479742064.001201]-=*::: give me few minutes I will try to create a setup as above and see if it works
+U0ALRFJH0 says -=*[1479742222.001202]-=*::: <@U0JFJ4KHS> iirc, we were not sure if we could have multiple addresses (1 per pod) in the NAT interface. if we can, we should need one interface alone and make sure each pod sets/uses the correct address.
+U0JFJ4KHS says -=*[1479742315.001203]-=*::: let me test this
+U0JFJ4KHS says -=*[1479743125.001204]-=*::: I am able to attach two adapters to a container
+U0JFJ4KHS says -=*[1479743132.001205]-=*::: <@U0JFJ4KHS|jbhurat> uploaded a file: <https://kubernetes.slack.com/files/jbhurat/F35BSKF1B/-.txt|Untitled>
+U0JFJ4KHS says -=*[1479743160.001206]-=*::: the first is the default NAT interface created by docker and the second one is the transparent network
+U0ALRFJH0 says -=*[1479743461.001207]-=*::: <@U0JFJ4KHS> can we follow the addressing i mentioned above? its not just easier to follow but also its important we can get private networking like that working.
+U0JFJ4KHS says -=*[1479743505.001208]-=*::: yep, looking at that
+U0ALRFJH0 says -=*[1479743537.001209]-=*::: afaik, `172.22.31.217` is a public ip address. <https://en.wikipedia.org/wiki/Private_network#Private_IPv4_address_spaces>
+U0JFJ4KHS says -=*[1479743637.001212]-=*::: I see it as a Private IPv4 address in the above link
+U0JFJ4KHS says -=*[1479743733.001213]-=*::: it is in the `20-bit block` under `RFC1918 name` column
+U0ALRFJH0 says -=*[1479744192.001214]-=*::: hmmm ah you are right
+U0ALRFJH0 says -=*[1479744206.001215]-=*::: its a /12
+U0ALRFJH0 says -=*[1479744224.001216]-=*::: thanks <@U0JFJ4KHS>!
+==========

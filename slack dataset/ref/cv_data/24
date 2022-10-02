@@ -1,0 +1,79 @@
+==========
+U2HCMR7AA says -=*[1475982012.000156]-=*::: hi all, i'm a k8s user on windows, and i followed this <https://docs.google.com/document/d/1IjwqpwuRdwcuWXuPSxP-uIz0eoJNfAJ9MWwfY20uH3Q/edit#> to compile kublet and kube-proxy, however, when creating a pod, kubelet will always pull a image even docker has it in local registry.
+U0PPMUTGR says -=*[1476029337.000157]-=*::: hi <@U2HCMR7AA>. <@U0JFJ4KHS>  or <@U0PT5KRHR>  can likely help you on that on tuesday
+U0PPMUTGR says -=*[1476029359.000158]-=*::: fyi folks, here's a paper on multi-platform kubernetes, relevant to our work here. <https://github.com/kubernetes/kubernetes/blob/master/docs/proposals/multi-platform.md>
+U2HCMR7AA says -=*[1476070921.000160]-=*::: <@U0PPMUTGR>  thks, i have solved this problem by updating the windows server 2016 to 14393, i could use kubelet to create pods now, but kube-proxy service can not start and kubelet service also report many error when it starts. Could i report these errors to github?
+U0JFJ4KHS says -=*[1476192728.000161]-=*::: Hi <@U2HCMR7AA>, I am not sure if creating github issue is the right way to go, as the Kubelet and Kube-Proxy changes haven't been merged upstream yet. You can write the issue that you are seeing here
+==========
+U0PPMUTGR says -=*[1476206152.000162]-=*::: hey folks, the organizers of Kubecon have created a spreadsheet tracking SIGs that are planning to meet face-to-face during kubecon. is there enough interest from this SIG to plan a face-to-face? <https://docs.google.com/spreadsheets/d/1B856NU1Ie0Pid4xGV2D9QZUJhUD24QzYsJYqH0yJU8A/edit#gid=0>
+==========
+U0K61JBKJ says -=*[1476208583.000164]-=*::: <@U0JFJ4KHS> I think creating the issues on github is probably our best bet as otherwise it will become very hard for us to track all the work. Is there a project home at this point where we are tracking the rest of the issues as well?
+U0K61JBKJ says -=*[1476208621.000165]-=*::: Perhaps by using github labels it could be a way to track them
+U0PT5KRHR says -=*[1476208927.000166]-=*::: Github issues would definitely be better - but I wonder if it's too early to open bugs against K8s if we haven't merged any of the windows stuff yet
+U0K61JBKJ says -=*[1476211517.000168]-=*::: yeah, I'm guessing that rather than directly against the k8s repo it could be against the same place we are logging the issues to track our work?
+U0JFJ4KHS says -=*[1476211588.000169]-=*::: We have created a few issues/feature request tickets against Kubernetes Issue lists, we have not been tracking at any other place
+U0PPMUTGR says -=*[1476213490.000170]-=*::: there is a formal place that has not been created yet. i asked Sarah to create sig-windows here so that we can file tickets/issues under there...still waiting <https://github.com/orgs/kubernetes/teams>
+U0JFJ4KHS says -=*[1476213535.000172]-=*::: this would be great
+U0K61JBKJ says -=*[1476222789.000174]-=*::: <@U0PPMUTGR> please follow up with <@U0AGW7007> so she can help us with that
+==========
+U2HCMR7AA says -=*[1476234961.000175]-=*::: hi forums, i using this guide <https://docs.google.com/document/d/1IjwqpwuRdwcuWXuPSxP-uIz0eoJNfAJ9MWwfY20uH3Q/edit#heading=h.c15wonvangdk> to compile kube-proxy, but it failed to start with messages "kube-proxy.exe flag redefined:log_dir", does anybody knows , thks in advence.
+U2HCMR7AA says -=*[1476235983.000176]-=*::: it seems when running command " go  install" in cmd/kube-proxy directory, we need run "go get client-go", so this error come out.
+U2HCMR7AA says -=*[1476241819.000177]-=*::: hi forums, sorry to bother you, i solved this problem using godep commands.
+==========
+U0PPMUTGR says -=*[1476244770.000178]-=*::: <@U0JFJ4KHS> the team for sig-windows is created <https://github.com/orgs/kubernetes/teams/sig-windows>
+==========
+U0JFJ4KHS says -=*[1476277621.000180]-=*::: <@U2HCMR7AA> glad your issues got resolved
+==========
+U0PT5KRHR says -=*[1476278728.000181]-=*::: <@U0JFJ4KHS> when setting up the HNS transparent network in netsh
+U0PT5KRHR says -=*[1476278743.000182]-=*::: the gateway should show be e.g. 192.168.1.1
+U0PT5KRHR says -=*[1476278744.000183]-=*::: right?
+U0JFJ4KHS says -=*[1476278760.000184]-=*::: right
+U0PT5KRHR says -=*[1476278761.000185]-=*::: it's showing `0.0.0.0`
+U0PT5KRHR says -=*[1476278763.000186]-=*::: not sure why
+U0JFJ4KHS says -=*[1476278772.000187]-=*::: where do you see that
+U0PT5KRHR says -=*[1476278802.000188]-=*::: in netsh's output
+U0JFJ4KHS says -=*[1476278806.000189]-=*::: `docker inspect` ?
+U0JFJ4KHS says -=*[1476278812.000190]-=*::: let me check in my setup
+U0JFJ4KHS says -=*[1476278937.000191]-=*::: For HNS Transparent network gateway is not configured..IP should be set as `192.168.1.1`
+U0JFJ4KHS says -=*[1476278975.000192]-=*::: <@U0JFJ4KHS|jbhurat> uploaded a file: <https://kubernetes.slack.com/files/jbhurat/F2NAT2A03/netsh_int_ip_show_address.txt|netsh int ip show address>
+U0PT5KRHR says -=*[1476279177.000193]-=*::: ah ok
+U0PT5KRHR says -=*[1476279181.000194]-=*::: I think I'm good then
+U0JFJ4KHS says -=*[1476279195.000195]-=*::: :+1:
+==========
+U0JFJ4KHS says -=*[1476305001.000196]-=*::: Need some advise on DNS. Proxy uses `netsh portproxy` to redirect traffic from ServiceIP:ServicePort to LocalIP:LocalPort and for DNS it adds an entry as well. `netsh portproxy` only support `TCP` protocol, and DNS uses `UDP` for requests less than 512 bytes which is for most use cases
+U0JFJ4KHS says -=*[1476305042.000197]-=*::: Does anyone know if we could force DNS queries to use TCP for all requests
+U0PT5KRHR says -=*[1476305169.000198]-=*::: oh man :disappointed:
+U0PT5KRHR says -=*[1476305179.000199]-=*::: portproxy is TCP only?
+U0JFJ4KHS says -=*[1476305184.000200]-=*::: yes
+U0PT5KRHR says -=*[1476305208.000201]-=*::: so we are accessing the DNS server via the service name?
+U0JFJ4KHS says -=*[1476305218.000202]-=*::: <@U0JFJ4KHS|jbhurat> uploaded a file: <https://kubernetes.slack.com/files/jbhurat/F2NKAQC93/-.txt|Untitled>
+U0PT5KRHR says -=*[1476305246.000203]-=*::: if we access via IP directly, can't we avoid using netsh?
+U0JFJ4KHS says -=*[1476305247.000204]-=*::: service ip
+U0PT5KRHR says -=*[1476305299.000205]-=*::: ah right
+U0JFJ4KHS says -=*[1476305302.000206]-=*::: you mean the service ip
+U0JFJ4KHS says -=*[1476305311.000207]-=*::: or the endpoint
+U0PT5KRHR says -=*[1476305328.000208]-=*::: hitting the endpoint would probably work?
+U0JFJ4KHS says -=*[1476305355.000209]-=*::: haven't tested it, but going through service ip is preferred
+U0PT5KRHR says -=*[1476305359.000210]-=*::: yeah
+U0PT5KRHR says -=*[1476305360.000211]-=*::: I agree
+U0PT5KRHR says -=*[1476305378.000212]-=*::: I am not sure what the implications would be if we hit the endpoint IP directly
+U0JFJ4KHS says -=*[1476305429.000213]-=*::: one I think of is endpoint ip is transient and may change if the pod restarts for whatever reason
+U0PT5KRHR says -=*[1476305455.000214]-=*::: right
+U0JFJ4KHS says -=*[1476305456.000215]-=*::: if that happens all the containers which are configured with that ip as dns server are toasted
+U0PT5KRHR says -=*[1476305456.000216]-=*::: yeah
+U0PT5KRHR says -=*[1476306052.000217]-=*::: I don't think there's a way to force DNS over TCP
+U0JFJ4KHS says -=*[1476306473.000218]-=*::: ok, just confirmed that making the endpoint as dns server works fine
+U0JFJ4KHS says -=*[1476306483.000219]-=*::: now to think of a way to use it with service ip instead
+==========
+U2HCMR7AA says -=*[1476755476.000227]-=*::: hi forums, the kubelet for windows is compatible with linux or not , could it run under linux.
+U0PT5KRHR says -=*[1476796677.000228]-=*::: hey <@U2HCMR7AA> - the kubelet can be compiled for both windows and Linux, yes
+==========
+U2R044QJY says -=*[1476817490.000232]-=*::: Hi, what's the status of Windows support Kubernetes? Is the POC mentioned in <http://blog.kubernetes.io/2016/07/update-on-kubernetes-for-windows-server-containers.html> done yet?
+U0PT5KRHR says -=*[1476817997.000234]-=*::: hey <@U2R044QJY> - we continue to work on bringing K8s to windows
+U0PT5KRHR says -=*[1476818020.000235]-=*::: as of now, it's possible to run a kubelet on windows, and schedule pods to it
+U0PT5KRHR says -=*[1476818039.000236]-=*::: we can also run kube-proxy, which means that pods on windows can access K8s services
+U2R044QJY says -=*[1476819183.000237]-=*::: Thanks <@U0PT5KRHR> Do you have any rough timelines on when would this be GA?
+U0PPMUTGR says -=*[1476826396.000238]-=*::: we are hoping to ship this support in beta with v1.5 of k8s
+U2R044QJY says -=*[1476834297.000239]-=*::: Thanks <@U0PPMUTGR>
+U2HCMR7AA says -=*[1476839065.000240]-=*::: <@U0PT5KRHR> thks.
+==========

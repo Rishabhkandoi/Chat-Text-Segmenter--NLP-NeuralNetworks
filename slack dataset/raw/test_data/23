@@ -1,0 +1,50 @@
+U074Q9Q3D says -=*[1480446755.001221]-=*::: Came across this gem from <@U099X8H27> :slightly_smiling_face: <http://markwilcox.com/articles/01/>
+U0723KV7E says -=*[1480446908.001222]-=*::: will read this later tonight.. :slightly_smiling_face:
+U0722SJ4A says -=*[1480460615.001225]-=*::: <@U0722SJ4A|ryanshea> uploaded a file: <https://blockstack.slack.com/files/ryanshea/F38J8D7FW/a-riddle-wrapped-in-an-enigma-quantum-cryptography-nsa-release.pdf|a-riddle-wrapped-in-an-enigma-quantum-cryptography-nsa-release.pdf>
+U0722SJ4A says -=*[1480460619.001226]-=*::: <@U074Q9Q3D> here's the paper again
+U074Q9Q3D says -=*[1480460959.001227]-=*::: <https://en.wikipedia.org/wiki/Shor's_algorithm>
+U0722SJ4A says -=*[1480461519.001229]-=*::: <@U0722SJ4A|ryanshea> uploaded a file: <https://blockstack.slack.com/files/ryanshea/F37RQ1T7T/screen_shot_2016-11-29_at_6.18.20_pm.png|Screen Shot 2016-11-29 at 6.18.20 PM.png>
+U0722SJ4A says -=*[1480461528.001230]-=*::: from here: <https://en.wikipedia.org/wiki/Post-quantum_cryptography#Comparison>
+U36KK4Z09 says -=*[1480486491.001233]-=*::: Quantum computers don't exist. Quantum Mechanics is fantasy.
+U36KK4Z09 says -=*[1480486520.001234]-=*::: An exponential problem can't be solved in polynomial time
+U36KK4Z09 says -=*[1480486526.001235]-=*::: It is logically impossible
+U36KK4Z09 says -=*[1480486579.001236]-=*::: And QM is a fantasy, because an entity can't be in two places at once. Its absurd.
+U0722SJ4A says -=*[1480487717.001237]-=*::: Ha that's what Einstein said
+U36KK4Z09 says -=*[1480490583.001238]-=*::: :slightly_smiling_face: Yes, but relativity has its own problems.
+U36KK4Z09 says -=*[1480490617.001239]-=*::: Anyway, I wouldn't worry about breaking encryption that way
+U36KK4Z09 says -=*[1480490641.001240]-=*::: the only way would be if a mathematician discovers some formula
+U36KK4Z09 says -=*[1480490698.001241]-=*::: I read you response to my forum post, and the other post. Thanks, I'm still processing it...
+U099X8H27 says -=*[1480509084.001242]-=*::: Indeed, GPU cracking is a much more realistic concern for crypto atm
+U099X8H27 says -=*[1480509156.001243]-=*::: <@U074Q9Q3D> thanks for posting :smile: let me know what you think. I'm not tooo happy with how it turned out.. still figuring out how to get thoughts down onto paper but I didn't want to sit on it forever
+U099X8H27 says -=*[1480509165.001244]-=*::: I posted one about proof of stake as well.
+U0722SJ4A says -=*[1480551813.001248]-=*::: <https://github.com/desantis/rebooting-the-web-of-trust-fall2016/blob/master/topics-and-advance-readings/blockchain-technologies-feature-analysis.md>
+U36KK4Z09 says -=*[1480908063.000016]-=*::: <https://eprint.iacr.org/2007/399.pdf> -- a 2007 article describing behaviour of people when part of a security protocol.  It defines a formal way to discuss peolpe, called "ceremony". I wonder would would be a ceremony model for Blockstack, registering an id for someone named Bob.
+U36KK4Z09 says -=*[1480953704.000023]-=*::: <@U36KK4Z09|boris25> shared a file: <https://blockstack.slack.com/files/boris25/F3A229T4H/A_global_ID_doesn_t_make_sense_for_authentication|A global ID doesn't make sense for authentication>
+U36KK4Z09 says -=*[1480953913.000025]-=*::: In his "ceremony" paper he makes this definition of a meaningful ID: "A _meaningful ID_ for use by some human being is an identifier that calls to that human users mind the correct identified entity"
+U0722SJ4A says -=*[1480954313.000026]-=*::: <@U36KK4Z09> yeah the way we look at it is users should be able to authenticate into applications anonymously and authenticate with as much information as they'd like
+U0722SJ4A says -=*[1480954333.000027]-=*::: if they present information, by default they will use an app-specific ID (not known by other applications)
+U0722SJ4A says -=*[1480954360.000028]-=*::: and if they want to bring certain verified identity and reputation components, they can present their globally unique username
+U0722SJ4A says -=*[1480954445.000029]-=*::: Example that fits the last one: you have a public account with twitter and want to sign up for a decentralized twitter and bring your tweet history with proof
+U0722SJ4A says -=*[1480971301.000035]-=*::: This is going on today in NYC <https://www.eventbrite.com/e/smart-contracts-symposium-tickets-28820373513?aff=eac2>
+U3BLL6WM7 says -=*[1481213784.000075]-=*::: Hello guys, we would like to introduce our platform, please let us know what do you think and join us if you like !  <http://www.newsbtc.com/2016/12/05/veritas-announces-decentralised-censor-free-platform-journalists/>  <http://www.livebitcoinnews.com/veritas-announces-ico-create-decentralised-journalism-platform-goes-live-dec-6/>
+U0723KV7E says -=*[1481231566.000079]-=*::: <https://bitcoinmagazine.com/articles/segregated-witness-officially-introduced-with-release-of-bitcoin-core-1477611260>
+U1S8A9V9B says -=*[1481317807.000093]-=*::: <@U1S8A9V9B|cryptocracy> shared a file: <https://blockstack.slack.com/files/cryptocracy/F3D185B5Y/account-config-gif.gif|Cryptocracy Mobile GIF> and commented: check out the progress so far :smile:
+U1S8A9V9B says -=*[1481341671.000098]-=*::: if time is space  and space is ti
+U0722SJ4A says -=*[1481557819.000108]-=*::: <https://www.reddit.com/r/Bitcoin/comments/5ger5j/blockstack_browser_decentralized_dns_using_the/>
+U0722SJ4A says -=*[1481557834.000110]-=*::: This did pretty well the other day ^
+U0722SJ4A says -=*[1481558015.000111]-=*::: Also look at this... someone quoted the video we put up of Muneeb explaining how Blockstack is going to work on multiple blockchains: <https://www.reddit.com/r/Bitcoin/comments/5ger5j/blockstack_browser_decentralized_dns_using_the/dat4dco/>
+U0722SJ4A says -=*[1481671779.000124]-=*::: suggestion to rename this channel to #news
+U071X9XPC says -=*[1481674775.000125]-=*::: works for me
+U0722SJ4A says -=*[1481732931.000129]-=*::: <@U0722SJ4A|ryanshea> has renamed the channel from "articles" to "news"
+U071X9XPC says -=*[1481754246.000133]-=*::: <https://twitter.com/CNBCnow/status/809154700188778497>
+U07C0TB6H says -=*[1481964902.000136]-=*::: <https://twitter.com/pag_crypto/status/809818523241508864>
+U0722SJ4A says -=*[1481990231.000138]-=*::: Awesome, thanks for sharing <@U07C0TB6H>
+U071X9XPC says -=*[1482180907.000144]-=*::: <https://twitter.com/rhhackett/status/810950862688423937>
+U0722SJ4A says -=*[1482181004.000146]-=*::: oh snap
+U0722SJ4A says -=*[1482181022.000147]-=*::: we gotta make sure that doesn't happen to ours
+U071X9XPC says -=*[1482182389.000148]-=*::: ah yeah
+U07C0TB6H says -=*[1482252780.000152]-=*::: oh the irony...
+U343LKDDG says -=*[1482808552.000168]-=*::: absolutely
+U0722SJ4A says -=*[1482813462.000169]-=*::: <@U343LKDDG> Absolutely what?
+U099X8H27 says -=*[1482814251.000170]-=*::: referring to this probably? <https://blockstack.slack.com/archives/news/p1482181022000147>
+U0722SJ4A says -=*[1482816834.000172]-=*::: <@U099X8H27>: yes absolutely;)

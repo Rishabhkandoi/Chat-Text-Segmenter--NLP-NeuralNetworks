@@ -1,0 +1,301 @@
+U071X9XPC says -=*[1464808590.000663]-=*::: I love how most projects/people we talk about are already in this Slack
+U071X9XPC says -=*[1464808591.000664]-=*::: :slightly_smiling_face:
+U0X9PT7DG says -=*[1464808744.000665]-=*::: Oh yeah actually he was interested in working together so had invited him here few months back..
+U0X9PT7DG says -=*[1464808844.000666]-=*::: Ryan had a talk with him I guess, It should be somewhere in here
+U0X9PT7DG says -=*[1464809731.000667]-=*::: There's a16z too! Congrats MediaChain :rocket: 
+U0X9PT7DG says -=*[1464810449.000668]-=*::: <http://bitcoinx.io/news/articles/safello-is-crowdfunding-293k-to-bring-identity-to-the-blockchain/>
+U0X9PT7DG says -=*[1464810463.000670]-=*::: What are they trying? I don't get it
+U076LGFE0 says -=*[1464833395.000672]-=*::: <https://blockstack.slack.com/archives/articles/p1464807428000623>
+U076LGFE0 says -=*[1464833445.000674]-=*::: Lol!! I read all of the announcement blogs but didn't understand the "partnership" until I read <@U074Q9Q3D> 's post 
+U076LGFE0 says -=*[1464833457.000675]-=*::: This is very exciting!
+U099X8H27 says -=*[1464836665.000676]-=*::: Vitaliks Ethereum roadmap document from R3 today is good validation of the Blockstack architecture <https://www.scribd.com/doc/314477721/Ethereum-Platform-Review-Opportunities-and-Challenges-for-Private-and-Consortium-Blockchains>
+U08GHKR1R says -=*[1464850544.000680]-=*::: Just wanna add my congrats to <@U07D44N65> and <@U079L559C> - big news and well-deserved guys. Also, thanks for eli5 on the partnership there jude, I'm with larry - didn't fully grok it till that post.
+U08GHKR1R says -=*[1464850571.000681]-=*::: very exciting times for self-sovereign id in general!
+U0ZAT6T8F says -=*[1464872331.000686]-=*::: <@U0X9PT7DG> We chatted about submitting a joint proposal to IETF for new DNS RRs suitable for representing blockchain entities.
+U0ZAT6T8F says -=*[1464872349.000687]-=*::: It's all very well to say that blockstack is more mature, but that's not very useful if ethereum DApps can't use it. :slightly_smiling_face:
+U0ZAT6T8F says -=*[1464872442.000688]-=*::: Personally, I don't mind what solution ends up winning; ENS was my attempt to define a protocol for resolving names on Ethereum that played well with DNS and addressed the shortcomings of existing systems
+U0ZAT6T8F says -=*[1464872509.000689]-=*::: RE the discussion above, if different TLDs 'live' on different blockchains, how will resolvers be expected to resolve 'foreign' names? That seems like it'd be problematic, creating a situation where certain TLDs only resolve on certain systems. Historically, it'd be like having a TLD that only works for FTP, and another one that only works for HTTP.
+U071X9XPC says -=*[1464875990.000690]-=*::: <@U0ZAT6T8F>: Resolvers (which really are Blockstack servers) will have drivers for all supported blockchains. Right now there is only 1 supported blockchain (Bitcoin) and Ethereum is in the pipeline. We dont expect this number to be extremely large.
+U071X9XPC says -=*[1464876067.000691]-=*::: Can you elaborate more on the FTP and HTTP example because they both use DNS and therefore share domains/TLDs i.e., I can go to <http://blockstack.com> or ssh into <http://blockstack.com|blockstack.com> (the server) or make a FTP connection to <http://blockstack.com|blockstack.com>. At the DNS level its the same thing.
+U0X9PT7DG says -=*[1464877686.000693]-=*::: Yes Nick, that's why I had said that consensys != Ethereum Foundation. What happens at the protocol level and with the dApps; you get to decide..:smile: 
+U0ZAT6T8F says -=*[1464877806.000694]-=*::: <@U071X9XPC>: What I'm asking is, how would an Ethereum DApp perform resolution for a TLD 'hosted' on Bitcoin?
+U071X9XPC says -=*[1464877864.000695]-=*::: For the DApp, its just a resolver that it is talking to. Which blockchain is used is a low-level detail.
+U071X9XPC says -=*[1464877897.000696]-=*::: Can DApps talk to normal websites? Yes. Then they can talk to ICANN DNS resolvers.
+U071X9XPC says -=*[1464877930.000697]-=*::: Talking to Blockstack is no different from talking to DNS resolvers. In fact, we even have support for patching unbound DNS software with Blockstack support in the pipeline.
+U0ZAT6T8F says -=*[1464878109.000698]-=*::: Doesn't that require trusting whatever gateways you've built between the blockchain store and DNS?
+U0ZAT6T8F says -=*[1464878126.000699]-=*::: And what about smart contracts, which don't have any way of directly contacting the outside world?
+U071X9XPC says -=*[1464878259.000700]-=*::: In all applications of Blockstack, youre either (a) running your own node, or (b) trusting the remote node that you are using, or (c) using the SNV protocol (similar to SPV) for querying a remote node without trusting it fully.
+U071X9XPC says -=*[1464878325.000701]-=*::: I thought smart contracts do get outside information from oracles? Also, can you walk me through an example where a smart contract both needs DNS resolution and doesnt need to talk to the outside world?
+U071X9XPC says -=*[1464878371.000702]-=*::: Trying to understand the use case better
+U0ZAT6T8F says -=*[1464879343.000703]-=*::: Okay. It sounds like at least some of ENS's goals are orthogonal to blockstack.
+U0ZAT6T8F says -=*[1464879387.000704]-=*::: The use-case is mostly to handle contract upgrade and replacement. Instead of providing users - be they other contracts, or DApps - with a contract address, you provide them with a name, which they can resolve to an Ethereum address.
+U071X9XPC says -=*[1464879474.000705]-=*::: Are you going to W3C blockchain workshop at MIT?
+U071X9XPC says -=*[1464879641.000706]-=*::: For this use-case you can use your TLD directly (without going through the global root). You can think of the global root as pointing to say .eth TLD which is implemented on the Ethereum blockchain. All the global root is doing is sending you to the Ethereum blockchain. Of course, youll need the Blockstack software to process the logic but its light weight.
+U071X9XPC says -=*[1464879684.000707]-=*::: Another way to think about this is that you cache the global root pointed for .eth and as long as you trust that cache you dont need to talk to any other blockchain other than Ethereum.
+U0ZAT6T8F says -=*[1464879691.000708]-=*::: I can't make it, unfortunately.
+U071X9XPC says -=*[1464879717.000709]-=*::: Im just thinking from the top of my head right now and we can dive into this issue deeper and come up with a better solution.
+U0ZAT6T8F says -=*[1464879727.000710]-=*::: Okay, but that implies that contracts will only be able to resolve names under certain TLDs
+U071X9XPC says -=*[1464879742.000711]-=*::: yeah also I dont like the trusting the cache part
+U0ZAT6T8F says -=*[1464879746.000712]-=*::: Won't the blockstack server have to be at least a light client on every network that hosts a TLD?
+U071X9XPC says -=*[1464879770.000713]-=*::: <@U074Q9Q3D>: can SNV save us here?
+U074Q9Q3D says -=*[1464879813.000714]-=*::: yes--if you know the latest consensus hash, you can back-track
+U071X9XPC says -=*[1464879830.000715]-=*::: he doesnt want to trust anything outside of the Ethereum blockchain
+U071X9XPC says -=*[1464879843.000716]-=*::: OK, so if you embed a consensus hash into the smart contract itself
+U074Q9Q3D says -=*[1464879860.000717]-=*::: yes--the way SNV will work across blockchains is that the blockstack server will maintain a per-chain consensus hash
+U071X9XPC says -=*[1464879863.000718]-=*::: then it can trust all name mapping earlier in time (but not later in time)
+U0ZAT6T8F says -=*[1464879872.000719]-=*::: It's not a matter of wanting, it's that an Ethereum smart contract _can't_ access anything outside the blockchain except by use of oracles, which are asynchronous.
+U074Q9Q3D says -=*[1464879935.000721]-=*::: the Ethereum driver for Blockstack will encompass a smart contract that keeps the history of consensus hashes.  Other smart contracts will be able to query it to find the "latest"
+U074Q9Q3D says -=*[1464879986.000722]-=*::: in particular, the Ethereum driver in virtualchain will rely on a smart contract to record the history of virtualchain transactions, which embed the consensus hash at the time of broadcast
+U0ZAT6T8F says -=*[1464880011.000723]-=*::: I'm not familiar enough with blockstack for that to answer my question. :slightly_smiling_face:
+U074Q9Q3D says -=*[1464880032.000724]-=*::: (was explaining mostly for Muneeb's benefit :slightly_smiling_face: )
+U074Q9Q3D says -=*[1464880040.000725]-=*::: popping up a level...
+U074Q9Q3D says -=*[1464880108.000726]-=*::: what this means is that the blockstack server is outside the trusted computing base--as long as you get a trusted, known-good consensus hash from a trusted blockstack server, you can turn around and use it to query previous transactions (doesn't matter which blockchain) from an untrusted blockstack server
+U0ZAT6T8F says -=*[1464880156.000728]-=*::: That still seems to assume that the thing doing the resolving can reach a blockstack server, which won't be the case for other Ethereum contracts
+U0ZAT6T8F says -=*[1464880170.000729]-=*::: Like I said, it seems like at least some of ENS's goals are nongoals for blockstack
+U071X9XPC says -=*[1464880220.000730]-=*::: Im trying to think of this as LAN vs. WAN
+U071X9XPC says -=*[1464880245.000731]-=*::: Ethereum should be able to use local naming (which is also accessible via the global network)
+U071X9XPC says -=*[1464880271.000732]-=*::: even if we cant guarantee that its the same state as the global view
+U071X9XPC says -=*[1464880288.000733]-=*::: youre trusting the LAN (local blockchain)
+U074Q9Q3D says -=*[1464880331.000734]-=*::: hmmm...we could have Blockstack offload some state to Ethereum so that other smart contracts can access it
+U074Q9Q3D says -=*[1464880356.000735]-=*::: trying to figure out what exactly would be required
+U0ZAT6T8F says -=*[1464880359.000736]-=*::: Yes, it'd only be possible if all names were stored on the Ethereum blockchain, however.
+U074Q9Q3D says -=*[1464880542.000737]-=*::: in the limit, we could have blockstack mirror its entire name database to Ethereum...not sure that's the best idea, since the db would be pretty big
+U074Q9Q3D says -=*[1464880567.000738]-=*::: how would ENS address the storage problem?
+U071X9XPC says -=*[1464880597.000739]-=*::: <@U074Q9Q3D>: Can we store state in Ethereum transactions using the driver, then write logic in Blockstack Server to process that state *and* write a separate Ethereum smart contract that can also process the state (without talking to Blockstack)
+U071X9XPC says -=*[1464880630.000740]-=*::: so that Ethereum smart contract is the LAN driver
+U071X9XPC says -=*[1464880649.000741]-=*::: but state is only stored in Ethereum transactions (like Bitcoin transactions)
+U074Q9Q3D says -=*[1464880692.000742]-=*::: we could do that...the tricky part is to ensure that the processing algorithms in Blockstack and the Blockstack smart contract are equivalent
+U071X9XPC says -=*[1464880705.000743]-=*::: what if we give no guarantee on that
+U074Q9Q3D says -=*[1464880708.000744]-=*::: that's why I proposed simply mirroring the DB
+U071X9XPC says -=*[1464880711.000745]-=*::: your LAN view can diverge from the global view
+U071X9XPC says -=*[1464880719.000746]-=*::: we only care about the global view i.e., Blockstack
+U074Q9Q3D says -=*[1464880765.000747]-=*::: sure, that's possible, but then what's the point of the LAN view if it's invisible to all clients outside of Ethereum?
+U071X9XPC says -=*[1464880788.000748]-=*::: if they can agree on using the same format to store state in Ethereum transactions
+U071X9XPC says -=*[1464880805.000749]-=*::: then it can help converging towards a common standard
+U071X9XPC says -=*[1464880829.000750]-=*::: Im thinking of the analogy as running a local DNS service which may or may not be consistent with the global DNS
+U071X9XPC says -=*[1464880840.000751]-=*::: but at least it uses the same format etc and a good chance that its consistent
+U074Q9Q3D says -=*[1464880847.000752]-=*::: yeah--Blockstack could delegate some responsibility to the ENS smart contract
+U071X9XPC says -=*[1464880850.000753]-=*::: the software is the same, just that Im on a disconnected network
+U074Q9Q3D says -=*[1464880900.000754]-=*::: wait, what?
+U074Q9Q3D says -=*[1464880931.000756]-=*::: are ENS and Blockstack going to interact?
+U071X9XPC says -=*[1464880953.000757]-=*::: lets forget about ENS for a while
+U071X9XPC says -=*[1464880977.000758]-=*::: lets say there is a local-blockstack contract in Ethereum
+U071X9XPC says -=*[1464880992.000759]-=*::: it processes Ethereum transactions and constructs a view for the .eth namespace
+U071X9XPC says -=*[1464881009.000760]-=*::: Blockstack servers also process Ethereum transactions and construct a view for the .eth namespace
+U071X9XPC says -=*[1464881074.000761]-=*::: the local-blockstack contract might diverge (if for some reason the rules or implementation is different) but were not giving any guarantee on it  itll still give you a single view that Ethereum smart contracts can use locally for Ethereum
+U071X9XPC says -=*[1464881104.000762]-=*::: Blockstack on the other hand doesnt care about the local-blockstack contract at all
+U071X9XPC says -=*[1464881112.000763]-=*::: it just looks at the Ethereum transactions directly
+U071X9XPC says -=*[1464881118.000764]-=*::: and constructs the view
+U071X9XPC says -=*[1464881139.000765]-=*::: but now were sharing the state written to Ethereum and a there is a good chance that both views can be the same
+U0ZAT6T8F says -=*[1464881259.000767]-=*::: I'm not sure I follow why you'd do that.
+U074Q9Q3D says -=*[1464881279.000768]-=*::: if ensuring that "local-blockstack" provides the same view of Ethereum as "global-blockstack" is a desirable property, then I suggest we instead simply have "global-blockstack" mirror its db to a very simple ethereum smart contract that only stores what a particular Blockstack node gives it and provides a simple query interface (basically, a "global-blockstack mirror contract" that gets paired with a blockstack server).  This would not only ensure that the views never diverge, but also would avoid the need to effectively re-implement Blockstack as a smart contract (which is what I think "local-blockstack" will entail)
+U0ZAT6T8F says -=*[1464881280.000769]-=*::: If your Ethereum contract is processing transactions and building a name database, why wouldn't your blockstack server query that, rather than reconstructing its own view?
+U0ZAT6T8F says -=*[1464881312.000770]-=*::: Storing data in ethereum transactions is possible, but it's not how the network's designed to work; light clients will throw away old transactions, but always retain the complete state.
+U071X9XPC says -=*[1464881372.000771]-=*::: Jude: that can totally work, but now a particular Blockstack node is an oracle for that contract correct?
+U074Q9Q3D says -=*[1464881389.000772]-=*::: yes, but that's no worse than the fact that there can be multiple DNS roots
+U071X9XPC says -=*[1464881397.000773]-=*::: Ethereums view depends completely on that Blockstack node
+U074Q9Q3D says -=*[1464881415.000774]-=*::: yes.  I would imagine that the Ethereum Foundation would run the Ethereum-Blockstack node
+U074Q9Q3D says -=*[1464881420.000775]-=*::: since they're already trusted anyway
+U074Q9Q3D says -=*[1464881428.000776]-=*::: (i.e. to provide a correct Ethereum implementation)
+U071X9XPC says -=*[1464881482.000777]-=*::: <https://blockstack.slack.com/archives/articles/p1464881280000769>
+U071X9XPC says -=*[1464881500.000779]-=*::: Because we dont want to trust any implementation other than a single blockstack implementation
+U071X9XPC says -=*[1464881510.000780]-=*::: The design is that state is written to blockchains (any blockchain)
+U071X9XPC says -=*[1464881526.000781]-=*::: And the virtualchain in Blockstack is the only place that can process the state to construct a view
+U07HTRSQN says -=*[1464881538.000782]-=*::: <@U0ZAT6T8F>:  so you're saying content written into the `data` property of an Ethereum contract is not usually retained by the system?
+U071X9XPC says -=*[1464881538.000783]-=*::: logic/computing lives in virtualchain
+U071X9XPC says -=*[1464881543.000784]-=*::: blockchains are just data stores
+U0ZAT6T8F says -=*[1464881558.000785]-=*::: <@U074Q9Q3D>: They're not really trusted in that sense; the implementations are open source, and there are now third party implementations that would detect any inconsistency in consensus.
+U07HTRSQN says -=*[1464881570.000786]-=*::: and ethereum transaction*
+U07HTRSQN says -=*[1464881578.000787]-=*::: an ethereum transaction*
+U0ZAT6T8F says -=*[1464881594.000788]-=*::: <@U071X9XPC>: Then it sounds like hosting an Ethereum-based chain won't actually accrue any benefits to contracts, since they won't be able to access the data.
+U0ZAT6T8F says -=*[1464881609.000789]-=*::: <@U07HTRSQN>: In future, only archival nodes will retain historical transactions.
+U071X9XPC says -=*[1464881628.000790]-=*::: Ummm so if Im a new node
+U071X9XPC says -=*[1464881645.000791]-=*::: how do I boot up? Im asking about Ethereums design with archival nodes
+U0ZAT6T8F says -=*[1464881652.000792]-=*::: The foundational idea is that transactions are transformation functions on the global state, and that for 'normal' operation, nodes need only retain the current state and some number of recent blocks.
+U071X9XPC says -=*[1464881661.000793]-=*::: How do I independently verify that Im on the correct view?
+U0ZAT6T8F says -=*[1464881668.000794]-=*::: So, you can do a complete sync, and then discard the old transactions
+U07HTRSQN says -=*[1464881668.000795]-=*::: that would have to be a rather well recognized and secure group of archival nodes
+U0ZAT6T8F says -=*[1464881687.000796]-=*::: Or, you can download just the headers, get the state root from the latest header, and download the state entries from that.
+U0ZAT6T8F says -=*[1464881690.000797]-=*::: <@U07HTRSQN> Why?
+U071X9XPC says -=*[1464881703.000798]-=*::: because replicating that state is a *hard hard* problem
+U071X9XPC says -=*[1464881709.000799]-=*::: if that archival state disappears
+U071X9XPC says -=*[1464881711.000800]-=*::: Ethereum is done
+U074Q9Q3D says -=*[1464881721.000801]-=*::: <@U0ZAT6T8F>: nevertheless, as I understand it, the question of "which Blockstack mirror do I trust for naming?" is equivalent to "which ENS smart contract instance do I trust for naming?".  This means that from a trust standpoint, it doesn't really matter where Blockstack runs (either as a smart contract or externally).  If you don't trust an externally-hosted Blockstack server, you can run your own and audit the state of the "blockstack-mirror" smart contract to ensure that it changes state consistently with your Blockstack node (which will see the same state as the Foundation-hosted Blockstack node)
+U07HTRSQN says -=*[1464881727.000802]-=*::: well, if I start a node, I assume it is baked into the sys that it finds and verifies the archival nodes?
+U071X9XPC says -=*[1464881736.000803]-=*::: what incentive do people have to store that state?
+U0ZAT6T8F says -=*[1464881747.000804]-=*::: So, the archival transactions aren't essential to the integrity of the network - they're only useful for people that want to do archival operations.
+U0ZAT6T8F says -=*[1464881763.000805]-=*::: If all copies of a block from a year ago were lost, it would not be the end of the world.
+U071X9XPC says -=*[1464881771.000806]-=*::: how?
+U071X9XPC says -=*[1464881778.000807]-=*::: I think if you explained the bootstrapping process
+U0ZAT6T8F says -=*[1464881780.000808]-=*::: <@U07HTRSQN> No, your node asks its peers for the blocks it wants.
+U071X9XPC says -=*[1464881781.000809]-=*::: thatd make things clearer for me
+U0ZAT6T8F says -=*[1464881785.000810]-=*::: <@U071X9XPC>: I did, above.
+U071X9XPC says -=*[1464881787.000811]-=*::: how do new nodes bootup in this situation?
+U07HTRSQN says -=*[1464881792.000812]-=*::: <@U0ZAT6T8F>:  "not essential to the network" is a highly use-case dependent statement, imo
+U0ZAT6T8F says -=*[1464881802.000813]-=*::: The node downloads all the headers, but not the bodies of the blocks. With that, it can verify the integrity of the chain.
+U071X9XPC says -=*[1464881811.000814]-=*::: &gt; you can download just the headers, get the state root from the latest header, and download the state entries from that.
+U07HTRSQN says -=*[1464881817.000815]-=*::: integrity != usability
+U071X9XPC says -=*[1464881818.000816]-=*::: OK, so you need to know about archival nodes
+U071X9XPC says -=*[1464881825.000817]-=*::: and if they no longer exist
+U071X9XPC says -=*[1464881828.000818]-=*::: what do I do to bootup?
+U0ZAT6T8F says -=*[1464881838.000819]-=*::: No, any node can retain headers, not just archival ones.
+U071X9XPC says -=*[1464881845.000820]-=*::: headers are fine
+U0ZAT6T8F says -=*[1464881847.000821]-=*::: They're much lighter than the blocks themselves.
+U071X9XPC says -=*[1464881861.000822]-=*::: but Im getting full state from archival nodes correct?
+U0ZAT6T8F says -=*[1464881870.000823]-=*::: <@U07HTRSQN> Which is my point; "normal" apps should not depend on being able to fetch old transactions; that's a design principle of Ethereum.
+U071X9XPC says -=*[1464881873.000824]-=*::: headers are only useful if I can verify them against something
+U071X9XPC says -=*[1464881879.000825]-=*::: what is that something and from where am I getting it
+U0ZAT6T8F says -=*[1464881879.000826]-=*::: <@U071X9XPC>: No, the full state is held by all nodes.
+U071X9XPC says -=*[1464881884.000827]-=*::: Im confused now
+U07HTRSQN says -=*[1464881891.000828]-=*::: full state == roots?
+U0ZAT6T8F says -=*[1464881907.000829]-=*::: No, full state is all the current account balances, all the code of all live contracts, and all the contracts' storage values.
+U071X9XPC says -=*[1464881909.000830]-=*::: how does a new node that is booting up
+U07HTRSQN says -=*[1464881911.000831]-=*::: as in hashed proofs of state without source data (archived data)?
+U071X9XPC says -=*[1464881912.000832]-=*::: get the full state?
+U0ZAT6T8F says -=*[1464881950.000833]-=*::: muneeb_blockstack: It downloads the headers, verifying each one is a valid successor to the previous one. When it gets to the last header, it downloads the state whose hash is in the last header.
+U071X9XPC says -=*[1464881953.000834]-=*::: OK, so what theyre calling full-state is the active state i.e., UTXO set in Bitcoin
+U0ZAT6T8F says -=*[1464881989.000835]-=*::: That's right.
+U0ZAT6T8F says -=*[1464882003.000836]-=*::: And contracts can't access other transactions directly; only the effects that they had on the sate.
+U0ZAT6T8F says -=*[1464882005.000837]-=*::: er, state
+U071X9XPC says -=*[1464882007.000838]-=*::: So if I cant derive the active state myself
+U071X9XPC says -=*[1464882019.000839]-=*::: then how can I trust it?
+U0ZAT6T8F says -=*[1464882040.000840]-=*::: That's a good question, and goes beyond my knowledge of the 'fast sync' protocol. You'd have to ask one of the core team.
+U0ZAT6T8F says -=*[1464882047.000841]-=*::: In my defense I've only been working on this a month :wink:
+U071X9XPC says -=*[1464882062.000842]-=*::: Ive looked at fast sync and dont trust it :slightly_smiling_face:
+U071X9XPC says -=*[1464882080.000843]-=*::: it was just syncing my local copy with a remote node without even processing the computations
+U0ZAT6T8F says -=*[1464882099.000844]-=*::: I believe the answer is that the node can verify valid proofs of work on the headers it downloads, and it selects the chain with the largest total work; feeding the client a fake chain would require synthesizing a more difficult chain of headers.
+U0ZAT6T8F says -=*[1464882108.000845]-=*::: So it's the same 51% attack as any other
+U074Q9Q3D says -=*[1464882161.000846]-=*::: sounds like fast sync is the equivalent of downloading the Bitcoin blockchain and using SPV block headers to verify it
+U0ZAT6T8F says -=*[1464882191.000847]-=*::: As I understand it, yes, pretty much.
+U0ZAT6T8F says -=*[1464882251.000848]-=*::: You know the header chain is the longest because you can verify the proofs of work and it's the longest you can see. You know that the state root is accurate because as long as nodes have followed the protocol up to now, they would not have built on a block that had an invalid state hash.
+U07HTRSQN says -=*[1464882278.000849]-=*::: I would really hope we can use the raw Ethereum transactions as the basis for scanning/indexing of names
+U0ZAT6T8F says -=*[1464882284.000850]-=*::: And an attacker can't synthesize one because that would require more total work than the rest of the network has exerted so far
+U07HTRSQN says -=*[1464882286.000851]-=*::: I came in halfway through
+U07HTRSQN says -=*[1464882295.000852]-=*::: so I am not sure why anything else needs to be involved
+U071X9XPC says -=*[1464882307.000853]-=*::: &gt;  longest because you can verify the proofs of work
+U071X9XPC says -=*[1464882313.000854]-=*::: not when you switch to proof of stake :slightly_smiling_face:
+U0ZAT6T8F says -=*[1464882316.000855]-=*::: <@U07HTRSQN> You can certainly do that if you run an archival node as the input to your system. But regular nodes won't be able to do this, and you should expect non-archival nodes to be the norm in future.
+U0ZAT6T8F says -=*[1464882325.000856]-=*::: Sure, then the metric is a different one. :slightly_smiling_face:
+U07HTRSQN says -=*[1464882356.000857]-=*::: I don't have a problem with things coming from archives, as long as they're provably secure
+U07HTRSQN says -=*[1464882365.000858]-=*::: Hell, we'll run it on Azure for everyone
+U071X9XPC says -=*[1464882370.000859]-=*::: So interesting that Ethereum is not only throwing away storage state that contracts need but also transactions
+U071X9XPC says -=*[1464882374.000860]-=*::: and only retaining the active state"
+U07HTRSQN says -=*[1464882375.000861]-=*::: I am sure I can convince other corps to do so as well
+U0ZAT6T8F says -=*[1464882412.000862]-=*::: <@U07HTRSQN> You're still using the system in a manner that's contrary to its design principles, though. Why can't you store the state of the names in, well, the state?
+U0ZAT6T8F says -=*[1464882424.000863]-=*::: <@U071X9XPC>: I'm not sure what you mean by "storage state that contracts need"?
+U0ZAT6T8F says -=*[1464882429.000864]-=*::: Nodes never throw away live state.
+U071X9XPC says -=*[1464882439.000865]-=*::: contracts get local storage space, correct?
+U0ZAT6T8F says -=*[1464882459.000866]-=*::: <@U07HTRSQN> It's a little like saying you're going to use this cool new filesystem and store all your data in the filenames. Kind of horrifying, actually. :stuck_out_tongue:
+U0ZAT6T8F says -=*[1464882478.000867]-=*::: Or more accurately, that you're going to journal every write to the FS and store _that_ instead of the filesystem itself.
+U0ZAT6T8F says -=*[1464882481.000868]-=*::: <@U071X9XPC>: right
+U071X9XPC says -=*[1464882490.000869]-=*::: that state gets thrown away as well, after a time period
+U07HTRSQN says -=*[1464882498.000870]-=*::: Windows just removed the file name char limit - so we're all good!
+U0ZAT6T8F says -=*[1464882536.000871]-=*::: <@U071X9XPC>: No, it doesn't.
+U0ZAT6T8F says -=*[1464882560.000872]-=*::: The state - all live contracts' storage, all the contracts' code, and all account balances - is what every node retains.
+U071X9XPC says -=*[1464882569.000873]-=*::: key word here is live"
+U0ZAT6T8F says -=*[1464882586.000874]-=*::: By 'live' I mean that the contract has not executed the 'SELFDESTRUCT' opcode
+U0ZAT6T8F says -=*[1464882606.000875]-=*::: Erased data and contracts that selfdestruct gets dropped, but those are the only events that remove data from the state.
+U071X9XPC says -=*[1464882622.000876]-=*::: but theyre still in the blockchain history
+U0ZAT6T8F says -=*[1464882626.000877]-=*::: If a contract doesn't selfdestruct, and doesn't erase a value from storage, it persists indefinitely.
+U0ZAT6T8F says -=*[1464882628.000878]-=*::: Yes, they are
+U071X9XPC says -=*[1464882631.000879]-=*::: and I need to walk the history to be sure Im on the correct blockchain
+U0ZAT6T8F says -=*[1464882644.000880]-=*::: But the protocol doesn't require a node to know the history in order to execute transactions.
+U0ZAT6T8F says -=*[1464882657.000881]-=*::: You only need to walk the headers, not the full blocks.
+U071X9XPC says -=*[1464882685.000882]-=*::: Id even go as far as saying that if you cant independently re-construct the state from the genesis block, its not really a blockchain
+U071X9XPC says -=*[1464882687.000883]-=*::: its something else
+U071X9XPC says -=*[1464882697.000884]-=*::: that something else might be very useful for certain applications
+U071X9XPC says -=*[1464882704.000885]-=*::: but its not really a blockchain
+U0ZAT6T8F says -=*[1464882713.000886]-=*::: You can do that, as long as all blocks remain fetchable. In practice, I expect there to be enough archival nodes that's not going to be an issue.
+U0ZAT6T8F says -=*[1464882726.000887]-=*::: But most nodes won't want to do that, because it will grow increasingly expensive over time
+U071X9XPC says -=*[1464882729.000888]-=*::: There are a couple of issues:
+U0ZAT6T8F says -=*[1464882735.000889]-=*::: (So will downloading the whole state, but it's necessary, and it grows slower)
+U071X9XPC says -=*[1464882742.000890]-=*::: a) incentive structure for archival nodes (why would people want to store that data?)
+U071X9XPC says -=*[1464882766.000891]-=*::: b) Time it takes to independently verify (if it takes a couple of months or years then I it doesnt really work)
+U074Q9Q3D says -=*[1464882771.000892]-=*::: &gt; But the protocol doesn't require a node to know the history in order to execute transactions. Ah, I think I understand.  The only thing contracts need in order to execute are (1) the current patricia tree and (2) the current account balances.  As long as you have trusted copies of (1) and (2), you can proceed to execute
+U071X9XPC says -=*[1464882782.000893]-=*::: so the rate at which time to boot grows is very important
+U0ZAT6T8F says -=*[1464882786.000894]-=*::: <@U074Q9Q3D>: Right.
+U074Q9Q3D says -=*[1464882800.000895]-=*::: what <@U071X9XPC> wants to know is how do you come to trust (1) and (2)?
+U0ZAT6T8F says -=*[1464882801.000896]-=*::: <@U071X9XPC>: That's an issue for all blockchains, but less so with the fast sync protocol
+U0ZAT6T8F says -=*[1464882819.000897]-=*::: <@U074Q9Q3D>: Like I said, you do so because you downloaded and verified the block headers.
+U071X9XPC says -=*[1464882829.000898]-=*::: yes, to me Ethereum in practice sounds like you get a blockchain between two check points
+U071X9XPC says -=*[1464882835.000899]-=*::: you really need to trust the last check point
+U0ZAT6T8F says -=*[1464882843.000900]-=*::: You can't verify that all the intermediate states are correct without verifying the full blocks, but you know that in order for those blocks to have been built upon, they had to have valid state tries.
+U071X9XPC says -=*[1464882847.000901]-=*::: and then a new check point will be created
+U071X9XPC says -=*[1464882852.000902]-=*::: and you can forget about everything that happened earlier
+U0ZAT6T8F says -=*[1464882854.000903]-=*::: <@U071X9XPC>: No, you don't, and there are no checkpoints.
+U071X9XPC says -=*[1464882859.000904]-=*::: there will be
+U0ZAT6T8F says -=*[1464882864.000905]-=*::: There aren't.
+U074Q9Q3D says -=*[1464882877.000906]-=*::: isn't that what a "hard fork" is?  i.e. the one that went from frontier to homestead?
+U0ZAT6T8F says -=*[1464882882.000907]-=*::: You can verify that the header chain is correct from the genesis block, and then verify that the state trie root hash matches the one in the latest header.
+U074Q9Q3D says -=*[1464882891.000908]-=*::: drop the chain state, and migrate the patricia tree and the account balances?
+U0ZAT6T8F says -=*[1464882912.000909]-=*::: <@U074Q9Q3D>: A hard fork occurs when all nodes need to agree on a new set of consensus rules; any nodes that continue on the old ones create a fork.
+U074Q9Q3D says -=*[1464882944.000910]-=*::: no, I mean, in this particular implementation of the hard fork, the old chain state effectively disappears, right?
+U0ZAT6T8F says -=*[1464882949.000911]-=*::: No, the chain is unbroken; nodes have rules in a few places that alter their behaviour depending on if they're processing a block before or after the fork point.
+U0ZAT6T8F says -=*[1464882975.000912]-=*::: A mainnet node processing a block with height less than the homestead transition applies the old rules, and applies the new rules afterwards.
+U074Q9Q3D says -=*[1464883061.000913]-=*::: I think this will answer <@U071X9XPC>'s question--if I start geth without fast sync, geth will fetch the chain state for frontier, re-play all the computations, and then when the frontier --&gt; homestead transition takes place, the geth node simply switches the rules and continues processing, right?  As in, there is no "break" in the chain; the genesis block is still the first frontier block.
+U071X9XPC says -=*[1464883096.000914]-=*::: Thats pretty much what we had in mind for blockstack hard forks as well
+U071X9XPC says -=*[1464883106.000915]-=*::: rule set changes after a hard fork
+U0ZAT6T8F says -=*[1464883106.000916]-=*::: It'll fetch the chain state starting right at block 0, yes
+U0ZAT6T8F says -=*[1464883121.000917]-=*::: And block 0 is the same block before and after the fork
+U0ZAT6T8F says -=*[1464883135.000918]-=*::: So, short answer, yes :stuck_out_tongue:
+U074Q9Q3D says -=*[1464883199.000919]-=*::: I personally had been confused about this as well.  I had heard conflicting signals from various Ethereum developers that the blockchain effectively restarts at each hard fork
+U071X9XPC says -=*[1464883322.000920]-=*::: same here
+U0ZAT6T8F says -=*[1464883358.000921]-=*::: If you see anyone saying that in future, feel free to tell them they're wrong. :wink:
+U0ZAT6T8F says -=*[1464883527.000922]-=*::: At any rate, if you can find a way to store the authoritative data for blockstack in the state instead of the chain, that would be very much preferable for any on-chain consumers, and for most apps that use Ethereum.
+U0ZAT6T8F says -=*[1464883549.000923]-=*::: Even if that's just writing an append-only journal to the state, but having it reflect the current state of the system would be much better.
+U074Q9Q3D says -=*[1464883558.000924]-=*::: &gt; At any rate, if you can find a way to store the authoritative data for blockstack in the state instead of the chain, that's my goal
+U074Q9Q3D says -=*[1464883573.000925]-=*::: &gt; Even if that's just writing an append-only journal to the state That's probably how I'd implement it
+U0ZAT6T8F says -=*[1464883601.000926]-=*::: That would be easy to accomplish; just have a contract with a storage array, and an 'append' function that adds entries to the array.
+U0ZAT6T8F says -=*[1464883619.000927]-=*::: I assume that would require any consumers to replay all the entries, however, which doesn't seem ideal.
+U074Q9Q3D says -=*[1464883639.000928]-=*::: we could offer both--a smart contract that stores the journal, and a separate one that only stores the current state
+U074Q9Q3D says -=*[1464883650.000929]-=*::: the latter would be much cheaper, but obviously less trustworthy
+U074Q9Q3D says -=*[1464883670.000930]-=*::: on second thought...I'm not sure that it'd be cheaper
+U074Q9Q3D says -=*[1464883698.000931]-=*::: since the size of the current state would still be big (within the same order of magnitude as the journal)
+U0ZAT6T8F says -=*[1464883703.000932]-=*::: Why would it be less trustworthy?
+U074Q9Q3D says -=*[1464883721.000933]-=*::: the journal entries would be cryptographically linked by construction
+U074Q9Q3D says -=*[1464883740.000934]-=*::: in particular, you could verify that your (or anyone's) history of appends are present, and in the same relative order
+U0ZAT6T8F says -=*[1464883755.000935]-=*::: Right. But the contract's immutable, and you can implement it to verify entries before updating the state with them.
+U0ZAT6T8F says -=*[1464883782.000936]-=*::: I assume the journal forms a blockchain, in which case you can verify that last by comparing the root hash at some height with someone else's view?
+U074Q9Q3D says -=*[1464883790.000937]-=*::: ah, but there's the rub--doing the verification step is tantamount to re-implementing blockstack itself as a smart contract
+U0ZAT6T8F says -=*[1464883800.000938]-=*::: That doesn't sound like a bad thing to me. :stuck_out_tongue:
+U0ZAT6T8F says -=*[1464883829.000939]-=*::: Or to put it another way, I think that's the Right Way to handle it on Ethereum. Doing it any other way is just treating it like another storage backend, in which case I don't fully understand why you're using Ethereum in the first place.
+U074Q9Q3D says -=*[1464883858.000940]-=*::: &gt; in which case you can verify that last by comparing the root hash at some height with someone else's view? but where does the root hash from someone else's view come from?  another smart contract?
+U074Q9Q3D says -=*[1464883892.000941]-=*::: &gt; Or to put it another way, I think that's the Right Way to handle it on Ethereum. Doing it any other way is just treating it like another storage backend, in which case I don't fully understand why you're using Ethereum in the first place. We'll just have to agree to disagree here.  In the time we've been running Blockstack, we've already had to survive the failure of one blockchain (Namecoin)
+U074Q9Q3D says -=*[1464883902.000942]-=*::: we don't want the system to share fate with the underlying blockchains
+U074Q9Q3D says -=*[1464883910.000943]-=*::: not that I think Ethereum is going anywhere anytime soon, of course :slightly_smiling_face:
+U0ZAT6T8F says -=*[1464883925.000944]-=*::: Okay, fair enough - but producing an implementation as a smart contract wouldn't preclude producing an implementation elsewhere.
+U0ZAT6T8F says -=*[1464883942.000945]-=*::: Your Ethereum branch would depend on Ethereum, but that's going to be the case no matter how you implement it.
+U074Q9Q3D says -=*[1464883962.000946]-=*::: this is true--the Ethereum-hosted names would share fate with Ethereum
+U074Q9Q3D says -=*[1464883970.000947]-=*::: but non-Ethereum-hosted names would survive a total Ethereum failure
+U0ZAT6T8F says -=*[1464884023.000948]-=*::: I think this is the point where my lack of understanding of blockstack impedes my ability to give coherent input. :wink:
+U0ZAT6T8F says -=*[1464884047.000949]-=*::: Let me ask this - what's the motivation behind providing an Ethereum-backed blockstack datastore?
+U074Q9Q3D says -=*[1464884054.000950]-=*::: haha no worries!  this has been a great conversation :smile:
+U074Q9Q3D says -=*[1464884087.000951]-=*::: &gt; Let me ask this - what's the motivation behind providing an Ethereum-backed blockstack datastore? maybe "datastore" is not the right word...we're using Ethereum to provide a total ordering of state transitions on names
+U074Q9Q3D says -=*[1464884107.000952]-=*::: but, that's how we would use any blockchain--to provide a global, total ordering of state transitions
+U0ZAT6T8F says -=*[1464884147.000953]-=*::: I see. So your own system enforces the integrity of the transitions, but not the ordering, and you use another blockchain to enforce ordering and prevent a proliferation of forks, basically?
+U0ZAT6T8F says -=*[1464884164.000954]-=*::: So, in that case, why Ethereum? Can't you just checkpoint the head of the chain to Bitcoin and be done?
+U074Q9Q3D says -=*[1464884209.000955]-=*::: not quite...we use blockchain to enforce ordering, but we use Blockstack to enforce operational integrity and implement the naming protocol
+U0ZAT6T8F says -=*[1464884225.000956]-=*::: I thought that was what I said :slightly_smiling_face:
+U074Q9Q3D says -=*[1464884233.000957]-=*::: ah, misread
+U074Q9Q3D says -=*[1464884264.000958]-=*::: yes--what you said was correct
+U074Q9Q3D says -=*[1464884293.000959]-=*::: &gt; So, in that case, why Ethereum? Can't you just checkpoint the head of the chain to Bitcoin and be done? we want to give namespace creators the option of using blockchains with different performance characteristics
+U0ZAT6T8F says -=*[1464884353.000960]-=*::: I see. So the point of Ethereum integration isn't so much providing Ethereum-focused apps with a way to do name resolution, as it is a way for arbitrary systems to do name resolution that's secured by the Ethereum blockchain
+U074Q9Q3D says -=*[1464884432.000962]-=*::: yes, I'd say that's the primary goal.  however, we'd like the "arbitrary systems" to include ethereum-focused apps if at all possible :slightly_smiling_face:
+U0ZAT6T8F says -=*[1464884454.000963]-=*::: Gotcha.
+U07HTRSQN says -=*[1464884461.000964]-=*::: This is correct - blockchains, in this sense, are basically commodities, and we're allowing you to connect to all, without being married to one. As soon as one is no longer of use, can be rolled off.
+U0ZAT6T8F says -=*[1464884482.000965]-=*::: If you're able to implement verification in a smart contract, that would definitely be the approach with the most utility for Ethereum-based applications.
+U0ZAT6T8F says -=*[1464884530.000966]-=*::: The Ethereum system would guarantee to any readers that the state they read from the contract is an accurate replay of the blockstack state transitions it's seen, and you can write it to accept any valid transition and reject all others. The same contract can retain the transitions themselves if they're necessary to some users.
+U0ZAT6T8F says -=*[1464884576.000967]-=*::: One common incentivization approach is to require users to pay a small fee to use it, and reward that fee to anyone who publishes updates to the contract. That's not really practical when your users are all doing read-only operations, however.
+U074Q9Q3D says -=*[1464884645.000968]-=*::: &gt; If you're able to implement verification in a smart contract, that would definitely be the approach with the most utility for Ethereum-based applications. This is what's been confusing me--I was under the impression that dapps run outside of Ethereum, and can pretty much do whatever they want insofar as the things they query?
+U074Q9Q3D says -=*[1464884654.000969]-=*::: the only point of contention is smart contracts, which can only query chain state
+U0ZAT6T8F says -=*[1464884668.000970]-=*::: So, DApps typically consist of two parts
+U0ZAT6T8F says -=*[1464884693.000971]-=*::: One or more smart contracts, which store any data and enforce any state-transition rules that need to be verifiably fair
+U0ZAT6T8F says -=*[1464884710.000972]-=*::: And HTML and JS that uses APIs to call those smart contracts for read or write operations.
+U0ZAT6T8F says -=*[1464884735.000973]-=*::: Read operations are free - they consist of executing a function on a contract, then discarding any state changes it makes - while write operations require pushing a transaction to the blockchain.
+U0ZAT6T8F says -=*[1464884797.000974]-=*::: So, for example, a futures contract DApp would have a smart contract that handles the task of accepting and disbursing payments according to the rules baked into it, while the UI would provide an easy way to take out a new futures contract, or redeem an existing one, via the browser.
+U074Q9Q3D says -=*[1464884804.000975]-=*::: so it sounds like a dapp would have no trouble using Blockstack for name lookups
+U0ZAT6T8F says -=*[1464884838.000976]-=*::: As long as it has access to a blockstack resolver, yes. But if the blockstack resolver was implemented as a smart contract, that dependency goes away, with no compromise in trust.
+U0ZAT6T8F says -=*[1464884864.000977]-=*::: Also, if name resolution is sufficiently cheap and general, it's useful for one contract to be able to do name resolution to find the address of another contract.
+U0ZAT6T8F says -=*[1464884868.000978]-=*::: Which is only possible if that's done on-chain
+U0ZAT6T8F says -=*[1464885166.000979]-=*::: I have to head home; I'll be back on in an hour if you still want to discuss. :slightly_smiling_face:
+U074Q9Q3D says -=*[1464885215.000980]-=*::: &gt; But if the blockstack resolver was implemented as a smart contract, that dependency goes away, with no compromise in trust. Right.  This is what I was getting at before.  Instead of having to implement Blockstack as a smart contract, we can instead implement a much simpler smart contract that stores a small amount of cryptographic metadata called a "consensus hash" from a trusted Blockstack server (like one run by the Ethereum Foundation).  Once you have a trusted consensus hash, you can query an untrusted Blockstack server for any prior name transactions in a logarithmic amount of time and space.  I argue that this is actually just as secure as implementing a Blockstack smart contract because (1) regardless of how Blockstack is implemented, you still need to decide which *instance* you trust (e.g. suppose there are two Blockstack smart contract instances--which one is the "real" one?); (2) unless you're writing an Ethereum client from scratch, you're already trusting the Ethereum Foundation (or some other client vendor) to provide you with a correct node implementation; and (3) if you do not want to trust anyone else's Blockstack node, you can always run your own, and it will give you the same state as everyone else's (and, you can have *your* node give *your* smart contract the consensus hash)

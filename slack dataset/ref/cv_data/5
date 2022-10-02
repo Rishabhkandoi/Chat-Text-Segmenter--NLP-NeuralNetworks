@@ -1,0 +1,74 @@
+==========
+U1TDHJ03U says -=*[1469267718.000160]-=*::: Guys
+U1TDHJ03U says -=*[1469267732.000161]-=*::: Im getting this when trying to run minikube dashboard
+U1TDHJ03U says -=*[1469267734.000162]-=*::: dashboard.go:45] Error accessing the kubernetes dashboard (is minikube running?): Error:  Error getting kubernetes-dashboard service: Get <https://192.168.99.100:8443/api/v1/namespaces/kube-system/services/kubernetes-dashboard>: unexpected EOF
+U10AE1F99 says -=*[1469476567.000170]-=*::: <@U1TDHJ03U>: do you see the dashboard pod if you run "kubectl get pods --namespace=kube-system"?
+U0ACRBLSV says -=*[1469479361.000171]-=*::: And does that IP address match what  minikube ip returns?
+U1TDHJ03U says -=*[1469518777.000173]-=*::: how can i specify memory and cpu for minikubeVM ?
+U1TDHJ03U says -=*[1469518856.000174]-=*::: I am getting insufficient memory and cpu issues in dashboard
+U0DSK18AG says -=*[1469538822.000176]-=*::: <@U1TDHJ03U>: <https://kubernetes.slack.com/archives/kubernetes-novice/p1469106119000321>
+==========
+U0K61JBKJ says -=*[1469546055.000178]-=*::: Guys, is there anyone in particular working on the windows support for minikube?
+U0PT5KRHR says -=*[1469547106.000179]-=*::: the PR was just closed
+U0PT5KRHR says -=*[1469547115.000181]-=*::: <https://github.com/kubernetes/minikube/issues/28>
+U0PT5KRHR says -=*[1469547140.000183]-=*::: although I just cloned and can't seem to build with GOOS=windows
+U0PT5KRHR says -=*[1469547187.000184]-=*::: I must have cloned before it got merged in
+U0PT5KRHR says -=*[1469548408.000185]-=*::: hmm, I had to make a tweak to the Makefile, but I am still getting a build error with `GOOS=windows`: ``` gopath/src/k8s.io/minikube/vendor/github.com/coreos/go-systemd/activation/files.go:47: cannot use fd (type int) as type syscall.Handle in argument to syscall.CloseOnExec ``` Any ideas? Looks like a dependency isn't windows friendly maybe?
+U0ALE41D3 says -=*[1469572907.000187]-=*::: maybe I'm crazy but `curl -Lo minikube <https://storage.googleapis.com/minikube/releases/v0.7.0/minikube-linux-amd64> &amp;&amp; chmod +x minikube &amp;&amp; ./minikube version` says minikube version: v0.6.0
+U0ALE41D3 says -=*[1469572916.000188]-=*::: pretty sure that release url should be v0.6.0
+U0ALE41D3 says -=*[1469573579.000189]-=*::: I don't see an issue open for that yet. Maybe I'll open one
+U0ACRBLSV says -=*[1469580130.000190]-=*::: Mac link worked OK <https://storage.googleapis.com/minikube/releases/v0.7.0/minikube-darwin-amd64>
+U0ACRBLSV says -=*[1469580141.000191]-=*::: So it must be the linux version
+U10AE1F99 says -=*[1469583472.000192]-=*::: <@U0PT5KRHR>
+U10AE1F99 says -=*[1469583476.000193]-=*::: can you run make cross
+U0PT5KRHR says -=*[1469583535.000194]-=*::: Hey <@U10AE1F99>, will try `make cross` and report back
+U10AE1F99 says -=*[1469583579.000195]-=*::: "make out/minikube-windows-amd64.exe" should also work and probably be a little faster :slightly_smiling_face:
+U0PT5KRHR says -=*[1469583620.000196]-=*::: I just did that, and got the same error :disappointed: ``` [root@localhost minikube]# make out/minikube-windows-amd64.exe if [ ! -e /root/code/src/k8s.io/minikube/_gopath/src/k8s.io ]; then mkdir -p /root/code/src/k8s.io/minikube/_gopath/src/k8s.io &amp;&amp; ln -s -f /root/code/src/k8s.io/minikube /root/code/src/k8s.io/minikube/_gopath/src/k8s.io; fi CGO_ENABLED=1 go build -ldflags="-X <http://k8s.io/minikube/vendor/k8s.io/kubernetes/pkg/version.gitCommit=c6411395e09da356c608896d3d9725acab821418|k8s.io/minikube/vendor/k8s.io/kubernetes/pkg/version.gitCommit=c6411395e09da356c608896d3d9725acab821418> -X <http://k8s.io/minikube/vendor/k8s.io/kubernetes/pkg/version.gitVersion=v1.3.3|k8s.io/minikube/vendor/k8s.io/kubernetes/pkg/version.gitVersion=v1.3.3> -X <http://k8s.io/minikube/vendor/k8s.io/kubernetes/pkg/version.gitTreeState=clean|k8s.io/minikube/vendor/k8s.io/kubernetes/pkg/version.gitTreeState=clean> -X <http://k8s.io/minikube/pkg/version.version=v0.7.0|k8s.io/minikube/pkg/version.version=v0.7.0> -s -w -extldflags '-static'" -o ./out/localkube ./cmd/localkube # <http://k8s.io/minikube/vendor/github.com/coreos/go-systemd/activation|k8s.io/minikube/vendor/github.com/coreos/go-systemd/activation> _gopath/src/k8s.io/minikube/vendor/github.com/coreos/go-systemd/activation/files.go:47: cannot use fd (type int) as type syscall.Handle in argument to syscall.CloseOnExec ```
+U10AE1F99 says -=*[1469583691.000197]-=*::: :disappointed:
+U10AE1F99 says -=*[1469583696.000198]-=*::: that actually doesn't look windows related
+U10AE1F99 says -=*[1469583716.000199]-=*::: which version of go are you using?
+U0PT5KRHR says -=*[1469583734.000200]-=*::: 1.6.3
+U10AE1F99 says -=*[1469583754.000201]-=*::: do you have GOOS set?
+U0PT5KRHR says -=*[1469583773.000202]-=*::: yeah, set to `windows`
+U10AE1F99 says -=*[1469583783.000203]-=*::: ah, can you try unsetting that?
+U10AE1F99 says -=*[1469583805.000204]-=*::: our Makefile is letting the environment variable override when it probably shouldn't be
+U0PT5KRHR says -=*[1469583817.000205]-=*::: gotcha - giving it a try again
+U10AE1F99 says -=*[1469583833.000206]-=*::: we have to compile localkube itself for linux no matter what platform you're building for
+U0PT5KRHR says -=*[1469583848.000207]-=*::: ah ok! that makes more sense now :slightly_smiling_face:
+U10AE1F99 says -=*[1469588034.000208]-=*::: <@U0PT5KRHR> any luck building?
+U10AE1F99 says -=*[1469588050.000209]-=*::: ah whoops, just saw your message, nice!
+U0PT5KRHR says -=*[1469588102.000210]-=*::: hehe yeah, just finished testing it
+==========
+U1899Q222 says -=*[1469621796.000212]-=*::: Hello all, I've got mongodb running on minikube but when I `minikube stop` and then `minikube start` all the data that was in mongodb is lost. I have the pod mounting a host volume located at `/data/mdb`. The same thing is happening with elasticsearch.
+U0A30SM33 says -=*[1469625898.000213]-=*::: anyone that has more etcd knowledge than me care to help out with <https://github.com/kubernetes/minikube/issues/404> ? tl;dr is there a way to protect etcd from corruption on hard shutdown?
+U0E5AMB36 says -=*[1469631482.000217]-=*::: anyone running minkube via bhyve?
+U10AE1F99 says -=*[1469631558.000218]-=*::: <@U0E5AMB36>: I've used the xhyve driver
+U0E5AMB36 says -=*[1469631581.000219]-=*::: yeah, thats the fork of bhyve.. figured that might work too but no mention of it in docs
+U10AE1F99 says -=*[1469631665.000220]-=*::: <@U0A30SM33> <@U09R2FFHP>: can anyone from the etcd team chime in on <https://github.com/kubernetes/minikube/issues/404>
+U0A30SM33 says -=*[1469632758.000222]-=*::: <@U0E5AMB36>: we don't have *BSD version of minikube i'm afraid. There isn't a bhyve docker machine driver afaik. Would like to support it if possible of course.
+U0E5AMB36 says -=*[1469632817.000223]-=*::: Gotcha, thanks, I figured so much just wanted to verify. Still need minikube for my osx guys which is great
+==========
+U1TKQHL3E says -=*[1469633811.000224]-=*::: hi
+U1TKQHL3E says -=*[1469633818.000225]-=*::: it is possible for me to run minikube in a ci server?
+U1TKQHL3E says -=*[1469633820.000226]-=*::: like travis?
+U1TKQHL3E says -=*[1469633835.000227]-=*::: since minikube depends on a virtualization software I don't know how to do that ?
+U10AE1F99 says -=*[1469633965.000229]-=*::: hey, i don't know of any CI systems that support running virtualization software
+U10AE1F99 says -=*[1469633974.000230]-=*::: to test minikube itself we're using a jenkins setup with physical slaves
+U1TKQHL3E says -=*[1469634037.000231]-=*::: <@U10AE1F99>: got it
+U1TKQHL3E says -=*[1469634119.000232]-=*::: well I know you can switch vm driver
+U1TKQHL3E says -=*[1469634128.000233]-=*::: travis ci uses openvz right now
+U1TKQHL3E says -=*[1469634136.000234]-=*::: don't know if that's one of the options for minikube ?
+U10AE1F99 says -=*[1469634205.000235]-=*::: we have a KVM driver, maybe you can run that in openvz?
+U1TKQHL3E says -=*[1469634220.000236]-=*::: let me see
+U1TKQHL3E says -=*[1469635078.000237]-=*::: not possible, that imply running a vm inside a vm
+U0E5AMB36 says -=*[1469635305.000238]-=*::: if you control the CI server and runners you can install virtualbox/kvm and run the builds via bash like everything else
+U0E5AMB36 says -=*[1469635336.000239]-=*::: vbox and kvm both have extensive clis
+==========
+U179VE6FR says -=*[1469636188.000240]-=*::: <@U10AE1F99>: Hullo, just to bump <@U1899Q222> question from earlier: <https://kubernetes.slack.com/archives/minikube/p1469621796000212>
+U1899Q222 says -=*[1469636227.000242]-=*::: Oh, thanks <@U179VE6FR>
+U10AE1F99 says -=*[1469636991.000244]-=*::: thanks for bumping this, only a few host directories get persisted across reboots
+U10AE1F99 says -=*[1469637007.000245]-=*::: can you open a bug to document these?
+U1899Q222 says -=*[1469638412.000246]-=*::: <@U10AE1F99>: will do
+U1899Q222 says -=*[1469638545.000247]-=*::: Opened issue <https://github.com/kubernetes/minikube/issues/414>
+U10AE1F99 says -=*[1469638578.000249]-=*::: thanks!
+==========

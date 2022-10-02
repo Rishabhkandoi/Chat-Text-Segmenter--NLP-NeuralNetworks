@@ -1,0 +1,109 @@
+==========
+U0PPMUTGR says -=*[1479852291.001272]-=*::: <@U0JFJ4KHS>  on the last update my msft, did that not work? it might be worth it to set up 30 mins with them and Anthony to see if we can resolve it
+U0JFJ4KHS says -=*[1479852950.001273]-=*::: I am able to create NAT using New-NetNAT but can only add mappings from the Container host, looks like updating NAT mappings from within Containers is not supported 
+U0JFJ4KHS says -=*[1479852988.001274]-=*::: Will schedule a 30 minute slot to go over the findings 
+==========
+U0ALRFJH0 says -=*[1479853249.001275]-=*::: the containers need to run in some sort of privileged mode. does `docker run --privileged` work? 
+U0JFJ4KHS says -=*[1479863905.001276]-=*::: As far as I remember, docker on Windows doesn't support privileged mode
+U0ALRFJH0 says -=*[1479907623.001278]-=*::: <@U0JFJ4KHS> can you try updating a NAT mapping from `docker run -it privileged windows/nanoserver PowerShell.exe`
+U0ALRFJH0 says -=*[1479908263.001280]-=*::: ah, it seems `*-NetNat` cmdlets are not available on `nanoserver`. checking if we can install it..
+==========
+U0PT5KRHR says -=*[1479908313.001281]-=*::: hey <@U0ALRFJH0> - how can I help today? sounded like you guys needed me to test something
+U0ALRFJH0 says -=*[1479908538.001282]-=*::: <@U0PT5KRHR> oh definitely. could you follow the new instructions on how to run k8s with windows containers and let us know if everything worked?
+U0ALRFJH0 says -=*[1479908559.001283]-=*::: i am particularly interested in knowing if the `apprenda/pause` image is correctly downloaded from Docker hub and runs as usual.
+U0ALRFJH0 says -=*[1479908588.001284]-=*::: labels `0.1` or `latest` should work
+U0PT5KRHR says -=*[1479909505.001285]-=*::: cool cool
+U0PT5KRHR says -=*[1479909507.001286]-=*::: I'll check it out
+U0ALRFJH0 says -=*[1479909800.001287]-=*::: :+1: thanks
+U0PT5KRHR says -=*[1479909895.001288]-=*::: I am tempted to try it out on AWS
+U0PT5KRHR says -=*[1479909899.001289]-=*::: or is that too crazy? :stuck_out_tongue:
+U0ALRFJH0 says -=*[1479910051.001290]-=*::: its asking for trouble but why not?
+U0PT5KRHR says -=*[1479910058.001291]-=*::: haha
+U0ALRFJH0 says -=*[1479910084.001292]-=*::: i mean, if you get Windows instances (newer than TP5) working alright, by all means, it should be transparent.
+U0PT5KRHR says -=*[1479910090.001293]-=*::: yeah
+U0PT5KRHR says -=*[1479910098.001294]-=*::: I feel like the networking will be the main challenge
+U0PT5KRHR says -=*[1479910106.001295]-=*::: I'll give it a try
+U0ALRFJH0 says -=*[1479910823.001296]-=*::: feeling adventurous, are we? :godmode:
+U0PT5KRHR says -=*[1479910843.001297]-=*::: :smile:
+==========
+U0722SJ4A says -=*[1454793403.000112]-=*::: <@U075BH6M7> why is decreds voting better
+U075BH6M7 says -=*[1454812738.000113]-=*::: <@U0722SJ4A>: its better *if* you want to do voting on the blockchain. Decred not only allows stakeholders to vote, but it also specifically allocates a development fund as part of the minting process
+U075BH6M7 says -=*[1454812793.000114]-=*::: with Bitcoin, youve got this mining centralization problem, meaning that its possible for just 3 to 4 guys (and in our situation, 1 government) to change what Bitcoin is. Thats a serious problem.
+==========
+U08GHKR1R says -=*[1454909313.000116]-=*::: <@U076LGFE0>: I have a beta invite for keybase for you if you would like? Just pm me an email :simple_smile:
+U076LGFE0 says -=*[1454909362.000117]-=*::: <@U08GHKR1R>: for the filesystem?
+U076LGFE0 says -=*[1454909396.000118]-=*::: <@U08GHKR1R>: am already on keybase <https://keybase.io/larry>
+U08GHKR1R says -=*[1454909453.000120]-=*::: ah, excuse me. I thought I had seen you there, didn't realise there was a further invite needed for the file system, was planning on playing with it later today :disappointed:
+U076LGFE0 says -=*[1454909554.000121]-=*::: yeah need to email chrishavent heard a reply though
+U076LGFE0 says -=*[1454909572.000122]-=*::: <@U076LGFE0|larry> uploaded a file: <https://blockstack.slack.com/files/larry/F0LH6TLP2/screen_shot_2016-02-08_at_1.32.09_pm.png|Screen Shot 2016-02-08 at 1.32.09 PM.png>
+U08GHKR1R says -=*[1454909734.000123]-=*::: yeah, read the bottom of that article now. Was so excited to contribute something around here :disappointed: haha, ah life....
+U076LGFE0 says -=*[1454909842.000124]-=*::: we need this for blockstack :_)
+U076LGFE0 says -=*[1454909843.000125]-=*::: :simple_smile:
+U08GHKR1R says -=*[1454909886.000126]-=*::: no doubt my trout :wink:
+==========
+U0722SJ4A says -=*[1454944147.000127]-=*::: Here are the Hacker News posts over the past 100 days that hit 150 points and mention Bitcoin or Blockchain: <https://news.ycombinator.com/item?id=10905118> <https://news.ycombinator.com/item?id=10601154> <https://news.ycombinator.com/item?id=10505362> <https://news.ycombinator.com/item?id=10701785> <https://news.ycombinator.com/item?id=11042096> <https://news.ycombinator.com/item?id=10774204> <https://news.ycombinator.com/item?id=10844612> <https://news.ycombinator.com/item?id=10594453>
+U0723KV7E says -=*[1454945297.000129]-=*::: Interesting article.. Highlight tweeted out by Ryan Hoover.. <https://twitter.com/rrhoover/status/678735192459087873>
+U0723KV7E says -=*[1454945301.000131]-=*::: <https://medium.com/on-startups/how-adding-one-button-increased-our-signups-by-3x-27988ea3d254#.29ptpgy9a>
+U0723KV7E says -=*[1454945332.000133]-=*::: Would love to have people signing up with blockchain ids instead. Its simply convenience. I had quite a few conversations over the weekend with various individuals. All very interested in a decentralized internet where they wont be tracked by Facebook.
+U076LGFE0 says -=*[1454945556.000134]-=*::: speaking of product hunt, does anyone have a invite? <https://www.producthunt.com/@larrysalibra>
+==========
+U0722SJ4A says -=*[1454947432.000136]-=*::: The NSA is already banning SHA256, AES128, and RSA2048 from agency use and is switching to SHA384, AES256, and RSA3072 as a result of fears of the near-future development of a quantum computer: <https://www.iad.gov/iad/library/ia-guidance/ia-solutions-for-classified/algorithm-guidance/cnsa-suite-and-quantum-computing-faq.cfm>
+U0722SJ4A says -=*[1454947498.000138]-=*::: Found through <https://www.reddit.com/r/Bitcoin/comments/44r2wd/nsa_switches_to_quantumresistant_cryptography/>
+U071X9XPC says -=*[1454947526.000140]-=*::: Over the weekend I was chatting with a friend who is finishing his PhD in Physics from Princeton and he said that recently there has been a sudden increase in jobs available for quantum computing
+U071X9XPC says -=*[1454947539.000141]-=*::: big companies like IBM etc have these massive secret projects that are hiring like crazy
+U0722SJ4A says -=*[1454947571.000142]-=*::: Ha, follow the money!
+U0722SJ4A says -=*[1454956865.000143]-=*::: <http://eprint.iacr.org/2015/1018.pdf>
+U0722SJ4A says -=*[1454956872.000144]-=*::: A RIDDLE WRAPPED IN AN ENIGMA
+U0722SJ4A says -=*[1454956877.000145]-=*::: by NEAL KOBLITZ AND ALFRED J. MENEZES
+U0722SJ4A says -=*[1454956887.000146]-=*::: ```Abstract. In August 2015 the U.S. National Security Agency (NSA) released a major policy statement on the need for post-quantum cryptography (PQC). This announcement will be a great stimulus to the development, standardization, and commercialization of new quantumsafe algorithms. However, certain peculiarities in the wording and timing of the statement have puzzled many people and given rise to much speculation concerning the NSA, elliptic curve cryptography (ECC), and quantum-safe cryptography. Our purpose is to attempt to evaluate some of the theories that have been proposed.```
+U071X9XPC says -=*[1454957750.000148]-=*::: Very interesting
+U071X9XPC says -=*[1455033139.000151]-=*::: <http://gnu.io/social/try/>
+U08SZ33PF says -=*[1455138148.000152]-=*::: <@U071X9XPC>: a few months ago there was an a16z podcast w/ Ilyas Khan (cambridge) who made the observation that in the last 1-2 years, the centre of gravity in quantum has completely flipped from academia to private sector, with people &amp; departments being snapped up everywhere
+U071X9XPC says -=*[1455139971.000153]-=*::: ah interesting
+==========
+U07D44N65 says -=*[1455143027.000154]-=*::: <https://medium.com/mine-labs/mediachain-developer-update-iii-a30d9fc5f187#.3fe1izb0x>
+U07C0TB6H says -=*[1455477965.000002]-=*::: <https://medium.com/@barmstrong/i-ll-bet-you-5-000-that-bitcoin-s-first-hard-fork-works-out-just-fine-a380abbe97b3#.rk3h50uum>
+U071X9XPC says -=*[1455488862.000004]-=*::: Fred also posted about this topic
+U071X9XPC says -=*[1455488863.000005]-=*::: <http://avc.com/2016/02/bitcoin-is-having-an-election/>
+U0723KV7E says -=*[1455499139.000006]-=*::: well the blockchain is not dull, thats for sure.
+U076LGFE0 says -=*[1455499660.000007]-=*::: <@U0723KV7E> im personally kind of getting sick of the politics. seems pretty dull to me
+U0723KV7E says -=*[1455499703.000008]-=*::: i am not one for drama but looks like theres a lot of devs out there who feed off it.
+U076LGFE0 says -=*[1455499706.000009]-=*::: would rather see ppl building cool stuff that normal ppl can use than arguing
+U076LGFE0 says -=*[1455499717.000010]-=*::: (which is why i like blockstack)
+U0723KV7E says -=*[1455499745.000011]-=*::: Agreed.. Stop the chatter and get shit done!
+U0723KV7E says -=*[1455499782.000012]-=*::: Blockstack 2016.. This is our year. :blockstack: :boom:  :blockstack: :boom:  :blockstack: :boom:  :blockstack: :boom:  :blockstack: :boom:  :blockstack: :boom:  :blockstack: :boom:  :blockstack: :boom:
+U0723KV7E says -=*[1455499842.000013]-=*::: Speaking of getting shit done. Im just working away on the <http://blockstack.org|blockstack.org> right now.
+U0723KV7E says -=*[1455499850.000014]-=*::: Got to get back to it.
+U0722SJ4A says -=*[1455501783.000015]-=*::: nice
+U0722SJ4A says -=*[1455501789.000017]-=*::: hell yeah!
+U0722SJ4A says -=*[1455501808.000018]-=*::: honestly, Im surprised at how long this whole debate / fiasco has gone on for
+U0722SJ4A says -=*[1455508379.000019]-=*::: Nice post by Muneeb on the diversification of implementations of the Bitcoin protocol: <https://medium.com/@muneeb/forking-a-network-86d1b766d38d#.c7j7iuvyk>
+U071X9XPC says -=*[1455550217.000021]-=*::: <https://blockstack.slack.com/archives/articles/p1455501808000018>
+U071X9XPC says -=*[1455550247.000023]-=*::: Yeah, to me it sounds more like a power struggle to control the direction of development
+U071X9XPC says -=*[1455550309.000024]-=*::: What I really meant (but didnt explicitly say) with bringing up how most open-source projects are maintained a few lead developers was that the people whore doing all the hardwork also get to set the direction by default
+U071X9XPC says -=*[1455550423.000026]-=*::: If you want the project to go in a slightly different direction, roll up the sleeves, put in your 10,000 hours of work and youll earn the right to influence the direction
+U076LGFE0 says -=*[1455555834.000027]-=*::: Bitcoin is money and power politicsmore accurate comparison is to trying to get immigration reform, gun control or &lt;insert divisive piece of legislation here&gt; passed through US Congress than how most open source projects operate.
+U0722SJ4A says -=*[1455570753.000029]-=*::: <https://twitter.com/bitcoincoreorg/status/699189657175748608>
+==========
+U07C0TB6H says -=*[1455610360.000031]-=*::: this is a cool infographic version of the scalability roadmap: <https://imgur.com/XAmGGr6>
+U075BH6M7 says -=*[1455673287.000035]-=*::: got this idea the other day, seems worth a try: <https://twitter.com/taoeffect/status/699765921917698048>
+U075BH6M7 says -=*[1455673852.000038]-=*::: <https://twitter.com/taoeffect/status/699772628119089152>
+==========
+U0723KV7E says -=*[1455746869.000045]-=*::: <https://news.ycombinator.com/item?id=11121841>
+U0723KV7E says -=*[1455746918.000047]-=*::: All of a sudden I'm starting to think my PiPhone is looking pretty good. <https://news.ycombinator.com/item?id=11121841>
+U071X9XPC says -=*[1455747233.000048]-=*::: haha
+U0722SJ4A says -=*[1455750647.000049]-=*::: <http://www.hntoplinks.com/all>
+U0722SJ4A says -=*[1455750661.000050]-=*::: Top HN posts of all time ^
+U0722SJ4A says -=*[1455750665.000051]-=*::: ```1.  A Message to Our Customers (<http://apple.com|apple.com>) 5070 points by epaga 14 hours ago | 197 comments 2.  Tim Cook Speaks Up (<http://businessweek.com|businessweek.com>) 3084 points by replicatorblog 1 year ago | 88 comments 3.  2048 (<http://gabrielecirulli.github.io|gabrielecirulli.github.io>) 2751 points by frederfred 1 year ago | 410 comments 4.  Hyperloop (<http://spacex.com|spacex.com>) 2666 points by spikels 2 years ago | 141 comments 5.  Microsoft takes .NET open source and cross-platform (<http://news.microsoft.com|news.microsoft.com>) 2365 points by ethomson 1 year ago | 164 comments 6.  G is for Google (<http://googleblog.blogspot.com|googleblog.blogspot.com>) 2225 points by dkasper 6 months ago | 163 comments 7.  Email Encryption Software Relies on One Guy, Who Is Going Broke (<http://propublica.org|propublica.org>) 2084 points by r0h1n 1 year ago | 102 comments 8.  Launching in 2015: A Certificate Authority to Encrypt the Entire Web (<http://eff.org|eff.org>) 2013 points by mariusz79 1 year ago | 59 comments 9.  Physicists Detect Gravitational Waves, Proving Einstein Right (<http://nytimes.com|nytimes.com>) 2006 points by intull 6 days ago | 73 comments 10.  Today is The Day We Fight Back (<http://thedaywefightback.org|thedaywefightback.org>) 1958 points by brokenparser 2 years ago | 257 comments 11.  14-Year-Old Boy Arrested for Bringing Homemade Clock to School (<http://techcrunch.com|techcrunch.com>) 1952 points by ahmad19526 5 months ago | 152 comments 12.  Same-Sex Marriage Is a Right, Supreme Court Rules (<http://nytimes.com|nytimes.com>) 1904 points by imd23 7 months ago | 67 comments 13.  Request For Research: Basic Income (<http://blog.ycombinator.com|blog.ycombinator.com>) 1870 points by mattkrisiloff 21 days ago | 253 comments 14.  All Our Patent Are Belong To You (<http://teslamotors.com|teslamotors.com>) 1855 points by gkoberger 1 year ago | 314 comments 15.  Swift is Open Source (<http://swift.org|swift.org>) 1824 points by psuter 2 months ago | 100 comments```
+U071X9XPC says -=*[1455750861.000053]-=*::: wow
+U071X9XPC says -=*[1455750869.000054]-=*::: so many ones about security
+U0722SJ4A says -=*[1455750873.000055]-=*::: yes
+U0722SJ4A says -=*[1455750883.000056]-=*::: 7 and 8: ```7.  Email Encryption Software Relies on One Guy, Who Is Going Broke (<http://propublica.org|propublica.org>) 2084 points by r0h1n 1 year ago | 102 comments 8.  Launching in 2015: A Certificate Authority to Encrypt the Entire Web (<http://eff.org|eff.org>) 2013 points by mariusz79 1 year ago | 59 comments```
+U071X9XPC says -=*[1455754973.000058]-=*::: <https://twitter.com/Bill_Gross/status/700111684052987905>
+U071X9XPC says -=*[1455755059.000060]-=*::: Minix that he refers there is by Andy Tanenbaum, a dutch professor who wrote a bunch of Operating Systems books and had this minix project  <http://www.cs.vu.nl/~ast/>
+U0722SJ4A says -=*[1455755125.000061]-=*::: ha awesome
+==========
+U07DTHT7G says -=*[1455767311.000062]-=*::: Andy Tanenbaum is my academic great grand father :simple_smile:
+U07DTHT7G says -=*[1455767337.000063]-=*::: (Myself -&gt; David Mazieres -&gt; Frans Kaashoek -&gt; Andy)
+U0722SJ4A says -=*[1455768246.000064]-=*::: Quite the remarkable lineage :simple_smile:
+==========

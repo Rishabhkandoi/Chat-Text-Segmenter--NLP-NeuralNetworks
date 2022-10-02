@@ -1,0 +1,114 @@
+==========
+U0ALRFJH0 says -=*[1479159621.001028]-=*::: <@U0JFJ4KHS> thanks!
+==========
+U0PPMUTGR says -=*[1479159827.001029]-=*::: <@U0HSNPGLC>  i would start with the <https://github.com/kubernetes/kubernetes-anywhere> project
+U0PPMUTGR says -=*[1479159859.001031]-=*::: i believe there was also an effort to start an azure sig, but it has not happened yet
+U0HSNPGLC says -=*[1479162575.001032]-=*::: yea, I'm looking at that, doesn't seem to let me start my own build
+U0HSNPGLC says -=*[1479162593.001033]-=*::: I'm new to azure and its confusing me, aws was much easier
+U0PPMUTGR says -=*[1479162688.001034]-=*::: <@U2X7ARA79> can someone from your team help <@U0HSNPGLC>  ?
+==========
+U0PPMUTGR says -=*[1479174318.001035]-=*::: Everyone, can you read through this proposal and we can discuss it tomorrow. i captured most of our discussion. <https://docs.google.com/document/d/1Us9nGywGviZR1C8huojcdyKxXKgKr4LVehKDqsDzg6o/edit?usp=sharing>
+U0PPMUTGR says -=*[1479174380.001037]-=*::: This is the networking proposal for changes to the infra/pause container in a Windows-based POD
+U0ALRFJH0 says -=*[1479207942.001038]-=*::: great job <@U0PPMUTGR> reviewing now.
+U0ALRFJH0 says -=*[1479208280.001039]-=*::: <@U0PPMUTGR> i requests commenting access.
+U0ALRFJH0 says -=*[1479208414.001040]-=*::: i have a few comments but 1) were missing the *localhost* issue 2) overall lgtm
+U0PPMUTGR says -=*[1479217696.001041]-=*::: <https://docs.google.com/document/d/1Us9nGywGviZR1C8huojcdyKxXKgKr4LVehKDqsDzg6o/edit?usp=sharing>
+U0PPMUTGR says -=*[1479217716.001043]-=*::: here's the editable version. i thought i did that yesterday but it didn't take. sorry about that
+U0ALRFJH0 says -=*[1479219712.001044]-=*::: :+1:
+==========
+U0PPMUTGR says -=*[1479224514.001045]-=*::: everyone, kudos to the big contributors that did all the work for 1.5 <@U0PT5KRHR> , <@U0JFJ4KHS>  and <@U0ALRFJH0> ....<http://Newstack.io|Newstack.io> wrote an article on our work -  <http://thenewstack.io/apprenda-led-team-preps-kubernetes-manage-windows-containers/?utm_content=buffer447b2&amp;utm_medium=social&amp;utm_source=twitter.com&amp;utm_campaign=buffer>
+U0PPMUTGR says -=*[1479224523.001047]-=*::: <@U0ALRFJH0> , we need to photoshop you in as well
+U0PPMUTGR says -=*[1479224526.001048]-=*::: :slightly_smiling_face:
+U0PUCUVK6 says -=*[1479224664.001049]-=*::: great work everyone!
+U0PPMUTGR says -=*[1479224739.001050]-=*::: thanks Matt
+U0ALRFJH0 says -=*[1479225131.001051]-=*::: ah, or i can just use <@U2X7ARA79> pic as my own :smile:
+U0ALRFJH0 says -=*[1479225157.001052]-=*::: again, congratulations everyone! you guys rock
+==========
+U0ALRFJH0 says -=*[1479225757.001053]-=*::: <@U0JFJ4KHS> <@U0PT5KRHR> just to make sure were synced, my idea of PoC without code is: 1) set-up NICs as weve discussed a couple weeks ago and <@U0PPMUTGR> put into a drawing 2) run a container (e.g., `microsoft/nanoserver`) much like well be running the infra container 3) run a second container that uses the first container as default gateway 4) prove that we can reach container 2, TCP port X by pointing at container `, TCP port X, e.g. container 1 TCP 80 forwards traffic to container 2 TCP 80 (by using DNAT or similar)
+==========
+U0PPMUTGR says -=*[1479225972.001054]-=*::: Pires, we can add a beard to Anthony and we are set :slightly_smiling_face:
+U0PPMUTGR says -=*[1479226010.001055]-=*::: i think you might need the container in #2 to be windows server core to take advantage of all the networking capabilities of windows
+U0PPMUTGR says -=*[1479226017.001056]-=*::: but Jitu might have a better idea on this
+U0JFJ4KHS says -=*[1479226052.001057]-=*::: right we will need `microsoft/windowsservercore`
+U0PPMUTGR says -=*[1479226152.001058]-=*::: :slightly_smiling_face:
+U0JFJ4KHS says -=*[1479226349.001059]-=*::: <@U0PPMUTGR>, can you forward me the drawing that you made on setting up NICs for the PoC
+U0PPMUTGR says -=*[1479226394.001060]-=*::: Jitu, i am working on moving that to ppowerpoint
+U0PPMUTGR says -=*[1479226400.001061]-=*::: can you wait 15 mins?
+U0JFJ4KHS says -=*[1479226406.001062]-=*::: sure :slightly_smiling_face:
+U0ALRFJH0 says -=*[1479226883.001063]-=*::: <@U0PPMUTGR> <@U0JFJ4KHS> so probably we need both containers to use said image. this is something i havent tried before, just assumed it to be the smaller usable image. seems i was wrong.
+U0PPMUTGR says -=*[1479226927.001064]-=*::: do we need more than 1 container?
+U0PPMUTGR says -=*[1479226938.001065]-=*::: or you mean 1 = pause container, and the other = app container
+U0PPMUTGR says -=*[1479226947.001066]-=*::: app container = the container running the workload
+U0ALRFJH0 says -=*[1479226948.001067]-=*::: for our poc? yes. 1 == infra, 2 == some pod container.
+U0ALRFJH0 says -=*[1479226953.001068]-=*::: yes.
+U0PPMUTGR says -=*[1479226955.001069]-=*::: got it. yeah just making sure
+U0PPMUTGR says -=*[1479226969.001070]-=*::: the 2nd container can be nanoserver, can't it
+U0ALRFJH0 says -=*[1479226974.001071]-=*::: lamme question, are Windows Containers available to Windows 10 or just Server?
+U0PPMUTGR says -=*[1479226993.001072]-=*::: RRAS does not work on client operating systems (windows 10 for example)
+U0ALRFJH0 says -=*[1479227003.001073]-=*::: <@U0PPMUTGR> id assume so but lets try it and see for ourselves. btw, whats the limitation with `nanoserver`? networking stuff?
+U0JFJ4KHS says -=*[1479227155.001074]-=*::: `nanoserver` containers can run on nanoserver hosts
+U0JFJ4KHS says -=*[1479227156.001075]-=*::: <https://technet.microsoft.com/windows-server-docs/get-started/getting-started-with-nano-server>
+U0ALRFJH0 says -=*[1479227212.001077]-=*::: <@U0JFJ4KHS> not on Windows Server, then?
+U0ALRFJH0 says -=*[1479227251.001078]-=*::: im looking at the names and just assuming `nanoserver` containers are just smaller containers that can run anywhere where Windows Containers is supported. im most probably wrong.
+U0JFJ4KHS says -=*[1479227753.001080]-=*::: `nanoserver`are smaller containers but they also cannot run on the same hosts that can run `windowsservercore`
+U0JFJ4KHS says -=*[1479227823.001081]-=*::: <https://msdn.microsoft.com/en-us/virtualization/windowscontainers/deployment/deployment_nano> has a good description on how to setup a `nanoserver` host to run `nanoserver` containers
+==========
+U0PPMUTGR says -=*[1479228064.001082]-=*::: ok i accepted all the changes in the doc and i added the last diagram that i also did with msft
+U0PPMUTGR says -=*[1479228065.001083]-=*::: <https://docs.google.com/document/d/1Us9nGywGviZR1C8huojcdyKxXKgKr4LVehKDqsDzg6o/edit#>
+U0PPMUTGR says -=*[1479228078.001085]-=*::: if you want the powerpoint version of all the diagrams, here it is as well
+==========
+U0ALRFJH0 says -=*[1479228095.001086]-=*::: <@U0JFJ4KHS> thanks for clarifying - so many limitations eh
+U0PPMUTGR says -=*[1479228101.001087]-=*::: <@U0PPMUTGR|mmichael> uploaded a file: <https://kubernetes.slack.com/files/mmichael/F325XPQUR/kubernetes_pod_networking.pptx|Kubernetes POD Networking.pptx>
+U0JFJ4KHS says -=*[1479228155.001088]-=*::: thanks <@U0PPMUTGR>
+U0JFJ4KHS says -=*[1479228395.001089]-=*::: <@U0ALRFJH0>, sorry I take the above statements back, looks like you can run `nanoserver` containers on `windowsservercore` hosts
+U0JFJ4KHS says -=*[1479228472.001091]-=*::: I remember earlier getting kernel version mismatch error messages
+U0JFJ4KHS says -=*[1479228480.001092]-=*::: but I can run them just fine now..
+U0ALRFJH0 says -=*[1479228656.001093]-=*::: great news! now we just need to make sure our concept works there.
+U0PPMUTGR says -=*[1479233242.001094]-=*::: haha. my bad. i should have caught that as well
+U0PPMUTGR says -=*[1479233264.001095]-=*::: if the container host runs Core you can run nanoserver and core inside the container
+U0PPMUTGR says -=*[1479233278.001096]-=*::: iif the container host run nano, you can run only nanoserver inside the container
+==========
+U0PPMUTGR says -=*[1479237431.001098]-=*::: sig-network meets on 12/1 next. when we are ready, we will circulate our proposal with them and also attend the meeting
+U0PPMUTGR says -=*[1479242819.001099]-=*::: Alex, Jitu, Pires, you should have gotten an invite for the 12/1 sig-network meeting
+U0JFJ4KHS says -=*[1479243999.001100]-=*::: yes, got the invite
+U0ALRFJH0 says -=*[1479288721.001101]-=*::: :+1:
+==========
+U0PPMUTGR says -=*[1479290203.001102]-=*::: <@U0JFJ4KHS>  as you are working on docs, make sure to update <https://docs.google.com/spreadsheets/d/1g9JU-67ncE4MHMeKnmslm-JO_aKeltv2kg_Dd6VFmKs/edit#gid=0> with the Link to docs and also <https://docs.google.com/spreadsheets/d/1PcAW-ZQnzlwEs59ygHdFA-72n6FUcGIc2lx4IeoXvco/edit?ts=57ced759#gid=110968752>.  Here is the 1.5 release thread <https://groups.google.com/forum/#!topic/kubernetes-dev/mkmXay18Qsg>
+==========
+U0ALRFJH0 says -=*[1479387733.001105]-=*::: <@U0PT5KRHR> <@U0JFJ4KHS> any updates on the networking tests?
+U0JFJ4KHS says -=*[1479390810.001106]-=*::: Will be looking at that today, was occupied with the docs
+U0ALRFJH0 says -=*[1479391131.001107]-=*::: <@U0JFJ4KHS> did you open a PR for the docs?
+U0PT5KRHR says -=*[1479394035.001109]-=*::: I talked to Dawn Chen from sig-node at Kubecon about the container runtime interface. She mentioned we should definitely looked into it and provide feedback if we need anything from a windows perspective. The interface can be found here  <https://github.com/kubernetes/kubernetes/blob/master/pkg/kubelet/api/v1alpha1/runtime/api.proto>
+U0ALRFJH0 says -=*[1479394210.001111]-=*::: <@U0PT5KRHR> i actually looked at it before for that same reason.
+U0ALRFJH0 says -=*[1479394387.001112]-=*::: my rough analysis of it is that well need specific Windows messages, e.g. `WindowsContainerConfig`. however, at this time, i dont think we can provide reliable feedback because 1) were missing CRI context 2) Windows Containers is not as feature complete as Linuxs counterpart.
+U0ALRFJH0 says -=*[1479394424.001113]-=*::: having that said, im concerned about _when_ well be forced to look into this.
+==========
+U0JFJ4KHS says -=*[1479395441.001114]-=*::: guys can you please review the initial draft for getting-started-guide for Windows <https://github.com/apprenda/kubernetes/tree/windows_docs/docs/getting-started-guides/windows>
+U0ALRFJH0 says -=*[1479395591.001116]-=*::: on it
+U0JFJ4KHS says -=*[1479395762.001117]-=*::: <@U0ALRFJH0>: We need to push the pause image to docker hub
+U0ALRFJH0 says -=*[1479395786.001118]-=*::: <@U0JFJ4KHS> yes! i will take care of that later today or tomorrow.
+U0ALRFJH0 says -=*[1479396445.001119]-=*::: <@U0JFJ4KHS> i have a few comments. i will leave them in the gdoc for your review.
+U0ALRFJH0 says -=*[1479397481.001120]-=*::: <@U0JFJ4KHS> comments done
+U0ALRFJH0 says -=*[1479397489.001121]-=*::: overall lgtm
+U0JFJ4KHS says -=*[1479397583.001122]-=*::: cool..let me take a look
+U0JFJ4KHS says -=*[1479398986.001123]-=*::: I have resolved the comments and updated the google docs page and the guide on github
+U0ALRFJH0 says -=*[1479399138.001124]-=*::: :+1:
+U0PT5KRHR says -=*[1479405096.001125]-=*::: <@U0ALRFJH0> oh nice! awesome to hear that you've looked at the CRI
+U0PT5KRHR says -=*[1479405312.001126]-=*::: <@U0JFJ4KHS> where is the google doc for this?
+U0JFJ4KHS says -=*[1479405331.001127]-=*::: Its the same one that we had earlier <https://docs.google.com/document/d/1IjwqpwuRdwcuWXuPSxP-uIz0eoJNfAJ9MWwfY20uH3Q/edit#>
+U0PT5KRHR says -=*[1479405336.001129]-=*::: aaah gotcha!
+U0PT5KRHR says -=*[1479405337.001130]-=*::: thanks
+U0JFJ4KHS says -=*[1479405342.001131]-=*::: There is no 1 - 1 mapping
+U0JFJ4KHS says -=*[1479405369.001132]-=*::: There are differences in github guide and google docs specially around the layout
+U0PT5KRHR says -=*[1479405375.001133]-=*::: cool cool
+U0PT5KRHR says -=*[1479405382.001134]-=*::: I'll look at github then, which is where the PR will come from
+U0JFJ4KHS says -=*[1479405390.001135]-=*::: right
+U0PT5KRHR says -=*[1479405463.001136]-=*::: should we attempt to look into <@U2X7ARA79>'s networking setup before publishing these docs?
+U0PT5KRHR says -=*[1479405473.001137]-=*::: or should we keep the two NIC approach for now?
+U0JFJ4KHS says -=*[1479405523.001138]-=*::: I had a chat with <@U0PPMUTGR> yesterday and decided that we will go with the two NIC approach first as we know it works..Once we verify the other approach we can update the docs
+U0PT5KRHR says -=*[1479405532.001139]-=*::: makes sense
+U0PT5KRHR says -=*[1479405598.001140]-=*::: <@U0ALRFJH0> is using a 192 CIDR the standard for pod networks? Should we care about that?
+U0PT5KRHR says -=*[1479405750.001141]-=*::: overall looks good to me
+U0ALRFJH0 says -=*[1479406012.001142]-=*::: <@U0PT5KRHR> i havent seen it before but it does respect the IANA-reserved private IPv4 network ranges
+U0ALRFJH0 says -=*[1479406172.001143]-=*::: <@U2X7ARA79> input, or anyones input for that matter, would be great.
+==========

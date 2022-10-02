@@ -1,0 +1,28 @@
+U0PPMUTGR says -=*[1481223024.000181]-=*::: FYI, if you ever want to search or find an old message, our slack channel is archived at <http://kubernetes.slackarchive.io/sig-windows/> (search is still difficult, but the data is there)
+U0PPMUTGR says -=*[1481224632.000183]-=*::: <@U0JFJ4KHS>  PR for updates to doc above LGTM
+U0JFJ4KHS says -=*[1481224666.000184]-=*::: hopefully it gets merged before Monday
+U0PPMUTGR says -=*[1481224888.000186]-=*::: :crossed_swords:
+U0PTURH63 says -=*[1481226683.000187]-=*::: Thanks <@U0PPMUTGR> I'll take you up on that as we get closer
+U0PPMUTGR says -=*[1481356510.000189]-=*::: <@U0JFJ4KHS>  can you please look at this thread and ping Aaron (he is on the thread) to see if it something we can fix. our docs for v1.5 staging are getting a 404 <https://groups.google.com/forum/#!msg/kubernetes-pm/viNA9_tDtbk/0sXh3Za8CQAJ>
+U0JFJ4KHS says -=*[1481433570.000190]-=*::: <@U0PPMUTGR> I have emailed Aaron to see if I can help in resolving the issue. Thanks for bringing this up.
+U0PPMUTGR says -=*[1481475228.000191]-=*::: :slightly_smiling_face: anytime
+U3DGZEY3W says -=*[1481532327.000193]-=*::: Good day. Is there a website/article that gives a good overview of the state of k8s and Windows? I have various multiplatform (Windows and Linux) solutions for which an orchestration platform is desired and I am having difficulty finding recent information about how well k8s and Windows play together.
+U2U84B4BE says -=*[1481532970.000197]-=*::: <@U3DGZEY3W> I am not an expert but a regular user with very similar requirements like yours. I started with this thread <https://github.com/kubernetes/kubernetes/issues/22623> and NOW running my windows clusters (of course managed by K8S) very well
+U2U84B4BE says -=*[1481533065.000200]-=*::: I tell you there are traps if you want to run Windows containers in a private cloud, I'd like to offer my experience if you hit some of those
+U3DGZEY3W says -=*[1481533288.000201]-=*::: Aha thanks for the hint. Hmmm based on <https://github.com/kubernetes/features/issues/116> I get the feeling it is very early phase at most. Would you say that is a fair characterization?
+U2U84B4BE says -=*[1481533521.000203]-=*::: I think it depends how much you want from it.  Given there will be a gap between  feature set to support Linux and Windows  clusters. We designed our overall architecture with pure Linux clusters and pure Windows clusters. Linux clusters are managed with 1.4 and Windows clusters are managed by 1.6alpha (we compiled from Master). We disabled all the admission-control and leverage L3 routing as container networking for Windows clusters.
+U2U84B4BE says -=*[1481533610.000204]-=*::: BTW, AFAIK, it's about the time to release K8S 1.5, Windows support is in with Alpha state.
+U3DGZEY3W says -=*[1481533942.000205]-=*::: I see. Thank you for the information! I think I will observe and see what is the ongoing activity in the Windows area, for the time being, without jumping in too much directly.
+U2U84B4BE says -=*[1481534390.000206]-=*::: No problem :slightly_smiling_face:
+U0PPMUTGR says -=*[1481548033.000207]-=*::: hi <@U3DGZEY3W>, yes the support is in alpha state for v1.5 and we are here to help in any way. You should be able to onboard windows nodes and run windows containers as long as you understand the limitations Here's the getting started guide  - <https://github.com/kubernetes/kubernetes.github.io/blob/release-1.5/docs/getting-started-guides/windows/index.md>
+U0PT5KRHR says -=*[1481556426.000209]-=*::: Just looked at the GCE instructions. Very nice <@U0ALRFJH0>
+U0PT5KRHR says -=*[1481556442.000210]-=*::: I remember playing around with the loopback interface a while back, but couldn't get it to work
+U0PT5KRHR says -=*[1481556454.000211]-=*::: I actually don't remember what I was trying to do with it hehe
+U2U84B4BE says -=*[1481558392.000213]-=*::: <@U0PT5KRHR> I have just tested loopback Adaptor + L3 routing for Windows docker networking, worked great for me~  Name changed to "KM-TEST Loopback Adaptor" in Windows 2016, and better off making use of New-ContainerNetwork instead of docker network create, the prior one supports -NetworkAdaptorName pointing to the loopback device
+U0PT5KRHR says -=*[1481558903.000214]-=*::: <@U2U84B4BE> very nice! on GCE?
+U0JFJ4KHS says -=*[1481559061.000215]-=*::: <@U2U84B4BE> thanks for identifying the log rotation issue with the powershell script. I have tested it and updated the PR with the right value
+U2U84B4BE says -=*[1481559184.000216]-=*::: Thanks <@U0JFJ4KHS> for the update ~
+U2U84B4BE says -=*[1481559209.000217]-=*::: <@U0PT5KRHR> nope, it's all on a private deployment without Internet connection :slightly_smiling_face:
+U0PT5KRHR says -=*[1481559221.000219]-=*::: oh excellent
+U0ALRFJH0 says -=*[1481563195.000220]-=*::: <@U2U84B4BE> <@U0PT5KRHR> it works alright but the containers can't reach the Internet et. Yet!
+U0PPMUTGR says -=*[1481575316.000222]-=*::: today is your day to shine folks. Soak in all the press we are getting from our contributions to Kubernetes. great job everyone!!

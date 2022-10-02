@@ -1,0 +1,108 @@
+U0ALRFJH0 says -=*[1478278475.000814]-=*::: <@U0PT5KRHR>  can you provide me with an example of a PodSpec that uses windows mount pathes?
+U0JFJ4KHS says -=*[1478278674.000815]-=*::: <@U0JFJ4KHS|jbhurat> uploaded a file: <https://kubernetes.slack.com/files/jbhurat/F2YCZRJ2F/-.txt|Untitled>
+U0ALRFJH0 says -=*[1478278810.000816]-=*::: dont pathes on windows use `\`, e.g. `c:\users\pires`?
+U0ALRFJH0 says -=*[1478278932.000818]-=*::: or docker takes care of that?
+U0ALRFJH0 says -=*[1478279087.000819]-=*::: <@U0PPMUTGR> <@U0PT5KRHR> <@U0JFJ4KHS> check this one out <https://github.com/kubernetes/kubernetes/pull/31707/files/6daab2628000c65229f5617bfcb6f04feded5e03#r86589492>
+U0JFJ4KHS says -=*[1478279181.000822]-=*::: Both works on windows 
+U0ALRFJH0 says -=*[1478279221.000823]-=*::: ok, ill be waiting on advice from <@U0BC5M36Y>.
+U0JFJ4KHS says -=*[1478279227.000824]-=*::: Ok
+U0ALRFJH0 says -=*[1478279239.000825]-=*::: please, pay attention to the PR. if i dont reply here, feel free to take over.
+U0ALRFJH0 says -=*[1478279247.000826]-=*::: we need this LGTMed asap.
+U0ALRFJH0 says -=*[1478279278.000827]-=*::: brb
+U0JFJ4KHS says -=*[1478279980.000828]-=*::: <@U0ALRFJH0>, in PodSpec you will have to escape the path `\` e.g. `c:\\users\\pires`
+U0ALRFJH0 says -=*[1478280065.000829]-=*::: Not sure I get it. 
+U0ALRFJH0 says -=*[1478280078.000830]-=*::: We have to support both ways? 
+U0ALRFJH0 says -=*[1478280102.000831]-=*::: Is that supported by docker? 
+U0JFJ4KHS says -=*[1478280222.000833]-=*::: docker supports both
+U0JFJ4KHS says -=*[1478280241.000834]-=*::: but we can put a restriction from k8s point of view using validation
+U0JFJ4KHS says -=*[1478280282.000836]-=*::: with no validation `c:/users/pires` and `c:\\users\\pires` should both do the same thing in PodSpec
+U0JFJ4KHS says -=*[1478280304.000838]-=*::: I hope I am clear
+U0ALRFJH0 says -=*[1478280983.000839]-=*::: Yes. Problem it's too close to propose the latter. 
+U0JFJ4KHS says -=*[1478281000.000840]-=*::: agreed
+U0JFJ4KHS says -=*[1478281008.000841]-=*::: we can limit it to the first one for now
+U0JFJ4KHS says -=*[1478281011.000842]-=*::: using validation
+U0JFJ4KHS says -=*[1478281713.000843]-=*::: the script is here <https://github.com/apprenda/kubernetes/tree/win_kube_scripts/cluster/windows>
+U0JFJ4KHS says -=*[1478281768.000845]-=*::: I am going to open a PR now
+U0PT5KRHR says -=*[1478281835.000846]-=*::: :thumbsup:
+U0PT5KRHR says -=*[1478281837.000847]-=*::: looks good to me
+U0JFJ4KHS says -=*[1478282766.000848]-=*::: <https://github.com/kubernetes/kubernetes/pull/36250>
+U0ALRFJH0 says -=*[1478287265.000850]-=*::: Escaping is weird and error prone
+U0ALRFJH0 says -=*[1478287265.000851]-=*::: I'm in favor of not supporting backslashes
+U0PPMUTGR says -=*[1478293460.000853]-=*::: we should support paths that Windows supports. C:\pathname\pathfolder is the default way to define a path in windows. I see above the we talked about validation of paths. if there is a way to do that, is that validation happening on the kubelet? i support validating the path, regardless of how it was defined to give the user good error messages.
+U0JFJ4KHS says -=*[1478293713.000854]-=*::: the validation happens on the api server and not the kubelet, docker volumes supports mounting volumes in both the ways `c:\pathname\pathfolder` and `c:/pathname/pathfolder`
+U0JFJ4KHS says -=*[1478293802.000855]-=*::: the only thing is that `\` path has to be escaped and validating it could be error prone
+U0PPMUTGR says -=*[1478293925.000856]-=*::: what kind of validation do we do? just that the path is well formed, but not that it exists?
+U0JFJ4KHS says -=*[1478294079.000857]-=*::: there is an existing validation for volume mounts
+U0JFJ4KHS says -=*[1478294086.000858]-=*::: <@U0JFJ4KHS|jbhurat> uploaded a file: <https://kubernetes.slack.com/files/jbhurat/F2YL767J6/-.txt|Untitled>
+U0PPMUTGR says -=*[1478295518.000859]-=*::: i see that now. i also saw a recommendation by Brendan Burns to make deeper checks on the mount paths, specifically on the "drive letter"
+U0JFJ4KHS says -=*[1478295540.000860]-=*::: right
+U0PPMUTGR says -=*[1478295610.000861]-=*::: hey guys, Cole from msft had this request. is this even possible.  ```I assume eventually kubelet will call the docker api to setup the transparent network when a Pod CIDR is allocated rather than requiring the user to manually do it? Otherwise you have to manually allocate Pod CIDRs and can't rely on the cloudprovider to setup the routes for you. That's what kubelet does under Linux anyway -- handles the dynamic network reconfiguration when pod cidr is updated.  ```
+U0PT5KRHR says -=*[1478295648.000862]-=*::: yes, but AFAIK the networking guys are trying to move all that into plugins
+U0PT5KRHR says -=*[1478295724.000863]-=*::: we could write a windows kubenet plugin that could potentially do this
+U0PPMUTGR says -=*[1478295772.000864]-=*::: should we create an issue to track this and potentially see where it falls on priority?
+U0ALRFJH0 says -=*[1478295961.000865]-=*::: i have serious doubts kubernetes people will want the kubelet to _create_ or ask docker or any other runtime to create networking interfaces.
+U0ALRFJH0 says -=*[1478295967.000866]-=*::: but i may be reading this wrong
+U0ALRFJH0 says -=*[1478295978.000867]-=*::: <@U0PPMUTGR> Cole as in <@U0BMY7D2Q>?
+U0PPMUTGR says -=*[1478295991.000868]-=*::: yes
+U0BMY7D2Q says -=*[1478295996.000869]-=*::: waves
+U0PT5KRHR says -=*[1478295999.000870]-=*::: I think what Cole was referring to is what linux does to create cbr0 ?
+U0BMY7D2Q says -=*[1478296004.000871]-=*::: Yes.
+U0BMY7D2Q says -=*[1478296044.000872]-=*::: I mean, that's what kubenet plugin does on AWS/GCE/Azure in Linux.
+U0ALRFJH0 says -=*[1478296049.000873]-=*::: hmmm.. but arent these different types of NICs? i admit im dumb windows users.
+U0ALRFJH0 says -=*[1478296051.000874]-=*::: AH
+U0ALRFJH0 says -=*[1478296078.000875]-=*::: yeah, kubenet is supposed to be a plug-in, much like weave and the likes.
+U0ALRFJH0 says -=*[1478296108.000876]-=*::: i will need to look into that but id say even if we manage to do it, it wont be in time for 1.5.
+U0PPMUTGR says -=*[1478296129.000877]-=*::: oh yes, this is not for 1.5 :slightly_smiling_face:
+U0PPMUTGR says -=*[1478296138.000878]-=*::: that train has left the station so to speak
+U0PT5KRHR says -=*[1478296139.000879]-=*::: I have a branch somewhere with some of this work (a windows kubenet)
+U0PPMUTGR says -=*[1478296167.000880]-=*::: i would say, let's focus on 1.5 right now and file an issue to cover this after 1.5
+U0BMY7D2Q says -=*[1478296260.000881]-=*::: Are y'all in direct contact with the Windows networking folks then? Feel free to ping me if you're ever lacking for Windows folks to talk to.
+U0PPMUTGR says -=*[1478296325.000882]-=*::: we are in direct contact with the windows networking team
+U0PT5KRHR says -=*[1478296333.000883]-=*::: thanks <@U0BMY7D2Q>
+U0PPMUTGR says -=*[1478296341.000884]-=*::: and thanks for the offer Cole
+U0ALRFJH0 says -=*[1478296579.000885]-=*::: <@U0BMY7D2Q> i believe i speak for us all that wed love to have your insight and help both on the design and test of these features.
+U0BMY7D2Q says -=*[1478296608.000886]-=*::: Happy to test, but I don't know enough about Windows internals or networking to really help on the design side.
+U0BMY7D2Q says -=*[1478296629.000887]-=*::: My guess is you're already talking to the right people for that side of things.
+U0BMY7D2Q says -=*[1478296661.000888]-=*::: That having been said, the Windows networking folks aren't going to be Kube experts, so if there's value in me collaborating with them and Apprenda, etc, I'm happy to facilitate that as much as possible.
+U0ALRFJH0 says -=*[1478296674.000889]-=*::: <@U0BMY7D2Q> but you know k8s! :slightly_smiling_face:
+U0ALRFJH0 says -=*[1478296686.000890]-=*::: exactly
+U0PPMUTGR says -=*[1478296754.000891]-=*::: thanks Cole. right now, the windows networking folks got a few brain dumps from Brendan Burns. it would be useful to have you involved at the next go-around of architecture meetings with them
+U0ALRFJH0 says -=*[1478297431.000892]-=*::: ok, <@U0JFJ4KHS> <@U0PPMUTGR> me and BB agreed that path validation is enough as is right now in #31707. this means well support using both escaping backslashes, and fwd slashes.
+U0ALRFJH0 says -=*[1478297482.000893]-=*::: we need to highlight this in docs. we dont want people to use `\\home\pires"` as it will fail
+U0ALRFJH0 says -=*[1478297512.000894]-=*::: as a rule of thumb, id say all our examples would use fwd slashes, like what <@U0JFJ4KHS> shared earlier today.
+U0ALRFJH0 says -=*[1478297646.000895]-=*::: i now hope Tim accepts my answers for #36079
+U0JFJ4KHS says -=*[1478297859.000896]-=*::: Yes
+U0ALRFJH0 says -=*[1478298541.000897]-=*::: ok guys im about to board at any minute. or at least i hope so, a bunch of people being noticed of overbooking :scream:
+U0JFJ4KHS says -=*[1478298627.000898]-=*::: have a safe flight <@U0ALRFJH0> :airplane:
+U0PT5KRHR says -=*[1478298670.000899]-=*::: have a good trip home <@U0ALRFJH0>
+U0ALRFJH0 says -=*[1478298739.000900]-=*::: im not _driving_, so it should be safe as usual. thanks guys! :wave:
+U0K61JBKJ says -=*[1478311331.000901]-=*::: safe travels <@U0ALRFJH0>
+U0K61JBKJ says -=*[1478311337.000902]-=*::: see you soon man!
+U0ALRFJH0 says -=*[1478328142.000903]-=*::: It seems you will, cause I landed safely. Thank you all! And cheers all around for the LGTM in both PRs. You did it, team!
+U0PPMUTGR says -=*[1478358712.000904]-=*::: do we know if all 3 of our PRs merged yet? if we need to ping folks ovre the weekend, we can do that. the monday deadline is approaching :slightly_smiling_face:
+U0PPMUTGR says -=*[1478358719.000905]-=*::: <@U0ALRFJH0>  i hope you made it back safely
+U0ALRFJH0 says -=*[1478382167.000906]-=*::: thanks i did.
+U0ALRFJH0 says -=*[1478382224.000907]-=*::: <@U0PPMUTGR> PRs are merged by the bot. kubelet PR has lgtm but is missing 1.5 label so the bot hasnt merged it. kube-proxy needs LGTM + 1.5 labels. i guess its all dependent on BB
+U0PPMUTGR says -=*[1478406402.000908]-=*::: Is it BB that puts the 1.5 label or someone else?
+U0BMY7D2Q says -=*[1478407860.000909]-=*::: Anyone with labeling permissions should be able to do it...
+U0ALRFJH0 says -=*[1478435000.000910]-=*::: Kubelet PR was merged. The label is just for the bot to set right submit queue ordering. 
+U0ALRFJH0 says -=*[1478435087.000911]-=*::: Kube-proxy pr has LGTM from all involved but no label yet so the bot won't pick it up. 
+U0JFJ4KHS says -=*[1478445054.000912]-=*::: kube-proxy PR got the lgtm label as well, should get merged soon now
+U0ALRFJH0 says -=*[1478445945.000913]-=*::: Kube-proxy pr has LGTM, in queue to merge 
+U0ALRFJH0 says -=*[1478445961.000915]-=*::: Yay! :clap: 
+U0PPMUTGR says -=*[1478469320.000916]-=*::: woohoo!!! this is awesome. 2 down, 1 to go :slightly_smiling_face:
+U0ALRFJH0 says -=*[1478510332.000918]-=*::: morning all, unfortunately the kube-proxy PR needed rebase. i did it + fixed all new files copyright headers, and pushed
+U0ALRFJH0 says -=*[1478510359.000919]-=*::: unfortunately, the bot removes the lgtm label when it detects new pushes
+U0PPMUTGR says -=*[1478522309.000920]-=*::: good morning
+U0PPMUTGR says -=*[1478522348.000921]-=*::: bummer. any way we can individually ping the folks that gave previous LGTM so that this can be done ahead of the code freeze? (maybe you did that already) :slightly_smiling_face:
+U0ALRFJH0 says -=*[1478522557.000922]-=*::: <@U0PPMUTGR> only BB is needed.
+U0ALRFJH0 says -=*[1478522598.000923]-=*::: <@U0PPMUTGR> i didnt but the PR had lgtm before - we just got unlucky with the merge window.
+U0ALRFJH0 says -=*[1478522617.000924]-=*::: i dont see any problem of having this in the submit queue until 6pm PT
+U0ALRFJH0 says -=*[1478522670.000925]-=*::: <https://groups.google.com/forum/#!topic/kubernetes-dev/FEMm12hKpZA>
+U0ALRFJH0 says -=*[1478522683.000926]-=*::: &gt; What if a PR is LGTMed but is not merged by 6 PM PST on Monday, and then requires a rebase - will it still make it into the 1.5 release?  &gt; Most likely, yes. We'll take a look at each PR on a case by case basis. For most PRs that require a rebase, this will not be an issue. If a PR requires a massive rewrite as a result of conflict with another PR, then it may be required to go through the standard exception process.
+U0ALRFJH0 says -=*[1478522734.000927]-=*::: i believe were covered :slightly_smiling_face: but please, do ping <@U0BC5M36Y>
+U0PPMUTGR says -=*[1478525031.000928]-=*::: pinging him now :slightly_smiling_face:
+U0ALRFJH0 says -=*[1478525117.000929]-=*::: :+1:
+U0ALRFJH0 says -=*[1478548134.000930]-=*::: and we have LGTM once more. now we wait and hope for not having to rebase again
+U0PT5KRHR says -=*[1478548151.000931]-=*::: :clap:
+U0K61JBKJ says -=*[1478552735.000932]-=*::: boom!

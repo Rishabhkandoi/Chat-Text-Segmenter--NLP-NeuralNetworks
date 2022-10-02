@@ -1,0 +1,161 @@
+U0ALE41D3 says -=*[1470151961.000301]-=*::: is minikube creating their own boot2docker VMs?
+U0ALE41D3 says -=*[1470151999.000302]-=*::: when I look at <http://boot2docker.io|boot2docker.io> it says they're on docker version 1.10 but the minikube boot2docker vm is using 1.11.1
+U0ALE41D3 says -=*[1470152026.000303]-=*::: just curious if you can specify your own VM version or what the upgrade process looks like going to docker 1.12.0
+U0ACRBLSV says -=*[1470154210.000304]-=*::: I dont think 1.12.0 works with k8s yet
+U0ACRBLSV says -=*[1470154221.000305]-=*::: but am not sure...
+U0ACRBLSV says -=*[1470154240.000306]-=*::: on a mac, I use dvm to set the client version to match the docker server
+U1TUWPL1M says -=*[1470155092.000307]-=*::: heres the kubernetes issue that tracks docker 1.12 <https://github.com/kubernetes/kubernetes/issues/28698>
+U1TUWPL1M says -=*[1470155207.000309]-=*::: <@U0ALE41D3>: you can see what minikube is doing here <https://github.com/kubernetes/minikube/tree/master/deploy/iso>
+U0ALE41D3 says -=*[1470155386.000311]-=*::: <@U1TUWPL1M>: thanks for the links
+U1JVDGD1S says -=*[1470173028.000312]-=*::: Where does minikube drop its logs?
+U1JVDGD1S says -=*[1470173047.000313]-=*::: Full kubernetes distros usually dump 'kube-ized' logs in `/var/log/containers`
+U1JVDGD1S says -=*[1470173111.000314]-=*::: directory is empty when using Minikube. Can't use my typical fluentd aggregation approach without those files present. Is there something I can do in Minikube to populate that folder with log entries, like kubernetes usually does? It symlinks them from `/var/run/docker/logs` and appends kubernetes metadata to the filenames
+U1TUWPL1M says -=*[1470173259.000315]-=*::: there are some for localkube in /var/lib/localkube/
+U1JVDGD1S says -=*[1470175482.000317]-=*::: hmm. what is localkube
+U1TUWPL1M says -=*[1470175817.000318]-=*::: localkube runs the kubernetes cluster within minikube
+U1TUWPL1M says -=*[1470175844.000319]-=*::: <https://github.com/kubernetes/minikube#design>
+U1JVDGD1S says -=*[1470175854.000321]-=*::: ah
+U1JVDGD1S says -=*[1470175876.000322]-=*::: so the contents normally in `/var/log/containers` are located in `/var/lib/localkube`?
+U1TUWPL1M says -=*[1470176127.000323]-=*::: that im actually not positive of - im not sure of exact implementation of localkube
+U1TUWPL1M says -=*[1470176135.000324]-=*::: but that directory is probably a good place to start looking
+U0ALFRU21 says -=*[1470231894.000326]-=*::: could anyone working on minikube on windows share what's their development environment like? i'm using vmware workstation and it's a world of pain getting docker working in that setup.
+U1JVDGD1S says -=*[1470234449.000327]-=*::: not working on minikube, but most of the 'industry' is using it on linux or mac OSX, so I can't really see any path around fighting with docker etc. to get it working
+U1JVDGD1S says -=*[1470234476.000328]-=*::: your best bet may be to just use the vagrant provider
+U1JVDGD1S says -=*[1470234498.000329]-=*::: Then docker would run inside the vagrant nodes, allowing a fully working Kubernetes instance without needing to wrestle with the OS
+U1JVDGD1S says -=*[1470234508.000330]-=*::: (at the cost of more overhead) <@U0ALFRU21>
+U0ALFRU21 says -=*[1470234679.000331]-=*::: i've got minikube 0.7.1 running on windows (with virtualbox when i tried) but i was hoping to contribute some code to make it work with vmware. the issue is that building minikube requires docker.. and docker requires either virtualbox (docker toolbox) or hyper-v (the new docker for windows). I think I might be able to spin up a Linux VM and reuse the docker daemon from it (then point the windows docker.exe executable at it).
+U0ALFRU21 says -=*[1470234713.000332]-=*::: but i just noticed docker-machine is missing a driver for vmware workstation (only supports vmware fusion on OSX) so that's another roadblock
+U14UWF1C4 says -=*[1470234757.000333]-=*::: <@U0ALFRU21>: you should not use windows inside a virtualized environment in order to run docker or minikube since they need to use an hypervisor to run inside a vm (in other words, it is inception: a vm in a vm, but I think that vmware does not support it)
+U0ALFRU21 says -=*[1470234845.000334]-=*::: <@U14UWF1C4>: i'm using minikube on a windows 10 host. but yeah, i understand the nested virtualization issues.. (virtualbox doesn't support it, vmware does, hyper-v only if it's a windows guest)
+U0ALFRU21 says -=*[1470234905.000335]-=*::: maybe i could develop on linux and cross-compile to windows, then test the minikube.exe executable on windows
+U0PT5KRHR says -=*[1470265082.000336]-=*::: <@U0ALFRU21> That's basically what I had to do for developing minikube for Windows. Write code in a Linux host, and then copy the .exe to the Windows host
+U0ALFRU21 says -=*[1470267656.000337]-=*::: <@U0PT5KRHR>: nice, thanks! i'll follow that approach
+U1YEXGY77 says -=*[1470358842.000340]-=*::: hi
+U10AE1F99 says -=*[1470360420.000341]-=*::: hey <@U1YEXGY77> !
+U1YEXGY77 says -=*[1470360798.000342]-=*::: oh! hi <@U10AE1F99> 
+U1YEXGY77 says -=*[1470360827.000343]-=*::: thanks for use xhyve driver :)
+U1YEXGY77 says -=*[1470360864.000344]-=*::: okay, want to release new version for chyve driver?
+U1NGUG1M0 says -=*[1470387417.000348]-=*::: Hi, we have some Minikube issues related to Persistent Volumes. Seems that the Readme (persisted /data folder) refers to an upcoming release of Minikube.  Is that true? If yes, are there any plans to prepare a new release (soon)?
+U0XR6SZDL says -=*[1470410190.000351]-=*::: I'm having some trouble using docker images on minikube's docker engine
+U0XR6SZDL says -=*[1470410223.000352]-=*::: I have a local image tagged for `<http://us.gcr.io|us.gcr.io>` and kubernetes tries to download the external image, even tho the image is there on the local docker
+U0XR6SZDL says -=*[1470410242.000353]-=*::: is that because of `imagePullPolicy`?
+U0XR6SZDL says -=*[1470413825.000354]-=*::: to answer my own question, yes
+U0XR6SZDL says -=*[1470414616.000355]-=*::: when I try to start an old minikube VM with `--cpu` and `--memory` options, it doesn't seem to update the vm config
+U1TUWPL1M says -=*[1470414787.000356]-=*::: if you have an existing vm, `minikube start` will only restart
+U1TUWPL1M says -=*[1470414820.000357]-=*::: you'd need to do a `minikube delete` then `minikube start --cpu --memory` to get a new vm with those options i believe
+U0XR6SZDL says -=*[1470415029.000358]-=*::: cool, I just manually edited the VM on virtualbox
+U1TUWPL1M says -=*[1470415723.000359]-=*::: <@U1NGUG1M0> the /data folder was just merged in and should be in the next release (0.8.0) <https://github.com/kubernetes/minikube/pull/453#issuecomment-237729294>
+U1NGUG1M0 says -=*[1470418753.000361]-=*::: <@U1TUWPL1M>: Thanks for your answer. When can I expect 0.8.0?
+U1FGYMJ6B says -=*[1470421113.000362]-=*::: <@U1NGUG1M0> Releases are typically done once a week so I would image the release will be out towards the tail end of next week.
+U1NGUG1M0 says -=*[1470421163.000364]-=*::: Ok, great
+U1YEXGY77 says -=*[1470622059.000368]-=*::: Hi, I was upgrade xhyve driver backend to hyperkit, also can use virtio-blk qcow2 feature(now build only) Maybe if use qcow2 format than `.sparsebundle`, we can use hyperkits `mirage/ocaml-qcow` feature. support pwritev|preadv. but its depends `opam install uri qcow-format`(See hyperkit README), WDYT in the minikube?
+U1TKQHL3E says -=*[1470676544.000369]-=*::: shouldn't the output of docker ps after running minikube start be information about all the containers running needed by minikube?
+U11H6PJUB says -=*[1470684577.000370]-=*::: <@U1TKQHL3E>: it's not running containers, is it? It's running localkube binary directly. I see the dashboard and addons running as containers, is that what you mean?
+U10AE1F99 says -=*[1470760883.000371]-=*::: <@U1YEXGY77> is that required in the VM or outside the VM?
+U1YEXGY77 says -=*[1470763443.000372]-=*::: <@U10AE1F99>: oh? sorry I dont understand :disappointed: Currently, xhyve driver create and mount `.sparsebundle` disk image automatically. No dependency. But if want to use qcow2 fomat, required that flow before build `docker-machine-driver-xhyve` binary. <https://github.com/docker/hyperkit#building>
+U10AE1F99 says -=*[1470763651.000374]-=*::: Ah i see, they just use that as a library they link into hyperkit
+U1YEXGY77 says -=*[1470764003.000375]-=*::: yeah. xhyve driver embedded hyperkit use static build. like lib9p. So we can also use qcow2. but will increase dependency to `mirage/ocaml-qcow`
+U10AE1F99 says -=*[1470764218.000376]-=*::: yeah that sounds cool
+U10AE1F99 says -=*[1470764227.000377]-=*::: we'd only need that when building docker-machine-driver-xhyve, right?
+U1YEXGY77 says -=*[1470764588.000378]-=*::: yes. and by default, use `sparsebundle` format is better
+U1YEXGY77 says -=*[1470765571.000379]-=*::: or, another way is support docker container build like minikube `IN_DOCKER`
+U0G0Y4B9S says -=*[1470922943.000386]-=*::: hi
+U0G0Y4B9S says -=*[1470923041.000387]-=*::: minikube on windows7 is failing for me, any known issues (except that it's experimental :)
+U0G0Y4B9S says -=*[1470923055.000388]-=*::: <@U0G0Y4B9S|jcw> uploaded a file: <https://kubernetes.slack.com/files/jcw/F20E53Q8G/-.yaml|Untitled>
+U0G0Y4B9S says -=*[1470923091.000389]-=*::: I tried a reboot already :wink:
+U0G0Y4B9S says -=*[1470927367.000391]-=*::: it works after reinstalling VBox
+U1EHLB6GL says -=*[1471011758.000396]-=*::: Can I / How do I write an image spec that references a local image?
+U1EHLB6GL says -=*[1471011858.000397]-=*::: The quickstart sets you up with `kubectl run hello-minikube --image=<http://gcr.io/google_containers/echoserver:1.4|gcr.io/google_containers/echoserver:1.4> --port=8080` which works fiune
+U1EHLB6GL says -=*[1471012064.000399]-=*::: Id like to be able to specify `image: localfs/foo:latest` or something along those lines, but I dont see how
+U1EHLB6GL says -=*[1471015129.000400]-=*::: For those who come after me with the same question: it is  `imagePullPolicy: Never`  Found here: <https://groups.google.com/d/msg/kubernetes-dev/YfvWuFr_XOM/ALTajXO3CgAJ>
+U1TUWPL1M says -=*[1471019024.000401]-=*::: you can also use IfNotPresent
+U0FS5QRU3 says -=*[1471020898.000403]-=*::: hi all
+U0FS5QRU3 says -=*[1471020973.000406]-=*::: so I followed all the steps to make minikube work with kvm here <https://github.com/kubernetes/minikube/blob/master/DRIVERS.md> and added docker-machine-driver-kvm in my path but I still get this error when I do "minikube start": "Error with pre-create check: "VBoxManage not found. Make sure VirtualBox is installed and VBoxManage is in the path", any idea how to make it work?
+U0U052HCM says -=*[1471021010.000409]-=*::: is it possible to change the api server config for minikube?  I want to try integrating openid connect for a POC.
+U0E13B4V9 says -=*[1471022636.000410]-=*::: hehe I just got openidconnect working together with azure active directory, but you need kubernetes 1.3.5 for that
+U0U052HCM says -=*[1471022735.000411]-=*::: should work with any of the 1.3s but Im just trying to build out a local dev environment and have been hitting brick walls on getting 1.3 running locally
+U1TUWPL1M says -=*[1471025376.000412]-=*::: <@U0FS5QRU3>: you need to specify a flag --vm-driver=kvm
+U0FS5QRU3 says -=*[1471025730.000413]-=*::: <@U1TUWPL1M>: I did minikube start --vm-driver=kvm and I still get the same error
+U1TUWPL1M says -=*[1471025767.000414]-=*::: try a minikube delete first
+U0FS5QRU3 says -=*[1471026639.000415]-=*::: ok, minikube delete worked but then when I tried minikube start --vm-driver=kvm it froze my ubuntu, has to hard reboot, tried again and it froze again, I think I'll stick to virtualbox for now
+U1TUWPL1M says -=*[1471026737.000417]-=*::: hmm thats odd.  the initial startup might take awhile and won't give a lot of logs without some flags so it could have been that also
+U1TUWPL1M says -=*[1471026759.000418]-=*::: `--show-libmachine-logs --v=4 --alsologtostderr` will give you some more logs if you run into trouble
+U0A30SM33 says -=*[1471029067.000419]-=*::: <@U0FS5QRU3>: do you normally use kvm outside of minikube? no problems with that? i run minikube under kvm every day without issue so have to try to figure out what's causing kvm to hang your machine
+U20L8GGUF says -=*[1471034855.000420]-=*::: So i just tried this simple test: ``` kind: Pod apiVersion: v1 metadata:   name: bad-perm   labels:     app: bad-perm spec:   securityContext:     runAsUser: 1000     fsGroup: 1000   containers:   - name: run     image: busybox     imagePullPolicy: "IfNotPresent"     command: [ "sh", "-c", "cat /etc/passwd &amp;&amp; ls -la / &amp;&amp; whoami" ]     volumeMounts:     - name: repo       mountPath: /repo     - name: test       mountPath: /empty   volumes:     - name: test       emptyDir: {}     - name: repo       gitRepo:         repository: "<https://github.com/kubernetes/minikube.git>" ```
+U20L8GGUF says -=*[1471034910.000421]-=*::: The permissions on "empty" are good, but the gitRepo permissions stay the same: ``` kubectl logs -f bad-perm root:x:0:0:root:/root:/bin/sh daemon:x:1:1:daemon:/usr/sbin:/bin/false bin:x:2:2:bin:/bin:/bin/false sys:x:3:3:sys:/dev:/bin/false sync:x:4:100:sync:/bin:/bin/sync mail:x:8:8:mail:/var/spool/mail:/bin/false www-data:x:33:33:www-data:/var/www:/bin/false operator:x:37:37:Operator:/var:/bin/false nobody:x:99:99:nobody:/home:/bin/false total 44 drwxr-xr-x   21 root     root          4096 Aug 12 20:43 . drwxr-xr-x   21 root     root          4096 Aug 12 20:43 .. -rwxr-xr-x    1 root     root             0 Aug 12 20:43 .dockerenv drwxr-xr-x    2 root     root         12288 Jun 23 20:13 bin drwxr-xr-x    5 root     root           380 Aug 12 20:43 dev drwxrwsrwx    2 root     1000            40 Aug 12 20:41 empty drwxr-xr-x    2 root     root          4096 Aug 12 20:43 etc drwxr-xr-x    2 nobody   nogroup       4096 Jun 23 20:13 home dr-xr-xr-x  168 root     root             0 Aug 12 20:43 proc drwxrwxrwx    3 root     root            60 Aug 12 20:41 repo drwxr-xr-x    2 root     root          4096 Jun 23 20:13 root dr-xr-xr-x   13 root     root             0 Aug 12 20:40 sys drwxrwxrwt    2 root     root          4096 Jun 23 20:13 tmp drwxr-xr-x    3 root     root          4096 Jun 23 20:13 usr drwxr-xr-x    5 root     root          4096 Aug 12 20:43 var whoami: unknown uid 1000 ```
+U20L8GGUF says -=*[1471035333.000423]-=*::: this volumes proposal doc says that the gitRepo plugin should supportOwnershipManagement:   <https://github.com/kubernetes/kubernetes/blob/master/docs/proposals/volumes.md>
+U1V8KAALC says -=*[1471035391.000425]-=*::: Hi, is there any documentation detailing what minikube iso are available? Is there an iso for each k8s version bump?
+U20L8GGUF says -=*[1471035481.000426]-=*::: <@U1V8KAALC>: <https://storage.googleapis.com/minikube/>  might help
+U1V8KAALC says -=*[1471035542.000427]-=*::: <@U20L8GGUF>: thats what I was looking at, but was hoping there was a prettier/more organized resource
+U1V8KAALC says -=*[1471035544.000428]-=*::: thanks :slightly_smiling_face:
+U1V8KAALC says -=*[1471035587.000429]-=*::: also, if i wanted to mess around with some beta features, i.e. network policies, is there an iso that has this activated on the apiserver?
+U20L8GGUF says -=*[1471036482.000430]-=*::: its set in ``` kubernetes/pkg/volume/git_repo/git_repo.go:210 volume.SetVolumeOwnership(b, fsGroup)```  which is similar to ```empty_dir.go:210: volume.SetVolumeOwnership(ed, fsGroup)```
+U0FS5QRU3 says -=*[1471036813.000431]-=*::: <@U1TUWPL1M>: I use kvm with qemu and it works ok so far
+U10AE1F99 says -=*[1471278156.000434]-=*::: <@U1V8KAALC>: we should have all the beta/alpha features enabled by default. if there are any missing let us know
+U1V8KAALC says -=*[1471278836.000435]-=*::: <@U10AE1F99>: i guess Im on minikube version v0.7.1, which has a default iso with k8s v1.3.3 and I am unable to use Network Policies
+U1V8KAALC says -=*[1471278963.000436]-=*::: if there is a place I should open an issue or report it other than here, let me know what I can do :slightly_smiling_face:
+U10AE1F99 says -=*[1471279146.000437]-=*::: Hmm, we should have all available APIs enabled in runtime_config: <https://github.com/kubernetes/minikube/commit/a2f789590b7de4bef55bea6341b00d355862c1b7>
+U10AE1F99 says -=*[1471279148.000438]-=*::: let me dig in a bit
+U10AE1F99 says -=*[1471279152.000439]-=*::: feel free to open an issue on github
+U10AE1F99 says -=*[1471279876.000440]-=*::: <@U1V8KAALC>: what happens when you try to use a network policy?
+U1V8KAALC says -=*[1471279990.000441]-=*::: `Error from server: error when creating networkpolicy.yaml": the server could not find the requested resource` when I attempt to create
+U1V8KAALC says -=*[1471280009.000442]-=*::: `Unable to list "networkpolicies": the server could not find the requested resource` when i attempt to retrieve
+U1V8KAALC says -=*[1471280032.000443]-=*::: <@U10AE1F99>: ^
+U10AE1F99 says -=*[1471280421.000445]-=*::: Ah, it looks like that just made it into 1.3.4
+U10AE1F99 says -=*[1471280440.000446]-=*::: We added support for it in this commit <https://github.com/kubernetes/minikube/commit/ecf7a35b1940971bd4268bba34cd14dc9f0b6bc6>
+U10AE1F99 says -=*[1471280445.000447]-=*::: which hasn't been released yet
+U10AE1F99 says -=*[1471280451.000448]-=*::: so it'll come out in minikube 0.8
+U1V8KAALC says -=*[1471281088.000449]-=*::: <@U10AE1F99>: okey dokey! thanks for looking into it for me, much appreciated
+U0CA12L6A says -=*[1471314325.000453]-=*::: <@U0ZV4393M>: eta on next minikube release?
+U0CA12L6A says -=*[1471314803.000454]-=*::: <@U10AE1F99>: <https://github.com/kubernetes/minikube/pull/492> what needs to happen next here?
+U10AE1F99 says -=*[1471314848.000456]-=*::: hey, the next release will go out tomorrow or Wednesday
+U10AE1F99 says -=*[1471314860.000457]-=*::: it'll have the 1.3.5 change in it
+U10AE1F99 says -=*[1471314890.000458]-=*::: anything specific you're waiting for?
+U0CA12L6A says -=*[1471316521.000459]-=*::: 1.3.4 is the first 1.3.x that deis works on
+U0CA12L6A says -=*[1471316567.000460]-=*::: <@U10AE1F99>: so I cant minikube for deis stuff until a new release gets cut
+U10AE1F99 says -=*[1471316605.000461]-=*::: ah cool, you should be able to try 1.3.4 now actually
+U0CA12L6A says -=*[1471316619.000462]-=*::: minikube get-k8s-versions The following Kubernetes versions are available:  - v1.3.3  - v1.3.0
+U10AE1F99 says -=*[1471316627.000463]-=*::: ah whoops
+U10AE1F99 says -=*[1471316641.000464]-=*::: we need to push the 1.3.4 still...
+U10AE1F99 says -=*[1471316815.000465]-=*::: just opened <https://github.com/kubernetes/minikube/issues/494>
+U0CA12L6A says -=*[1471316829.000467]-=*::: thanks
+U0CA12L6A says -=*[1471316831.000468]-=*::: watched.
+U21PD486R says -=*[1471340091.000470]-=*::: good morning, came to find out about getting minikube to install me a k8s &gt;= 1.3.4; happy to see that I'll be able to get it soon. What do I need to do to upgrade the k8s version? Delete the cluster and recreate it?
+U1YEXGY77 says -=*[1471347864.000471]-=*::: Hi, <@U10AE1F99>. Now Im develop create qcow2 img written in pure Go. half finished. looks forward : )
+U0C6963R6 says -=*[1471367827.000472]-=*::: crazy question: would it be possible to expose the `kube-dns` service so I can point to it in a `/etc/resolver` config file? (re: <https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man5/resolver.5.html>)
+U1YEXGY77 says -=*[1471367863.000474]-=*::: in macOS?
+U0C6963R6 says -=*[1471367865.000475]-=*::: yeah
+U1YEXGY77 says -=*[1471367895.000476]-=*::: Hm, maybe its behavior should implements to xhyve driver side
+U1YEXGY77 says -=*[1471367903.000477]-=*::: (I dont know)
+U1YEXGY77 says -=*[1471367925.000478]-=*::: I will reseach it
+U0C6963R6 says -=*[1471367939.000479]-=*::: ok
+U0C6963R6 says -=*[1471367947.000480]-=*::: Im pinging around on it as well, will share if I figure something out
+U1YEXGY77 says -=*[1471367999.000481]-=*::: also, it might be have security risk(also I dont know) WDYT?
+U0C6963R6 says -=*[1471368081.000482]-=*::: Im still digging into how minikube is setup, but shouldnt be a problem if the IP used by the VM isnt bridged by the host to its IP
+U1YEXGY77 says -=*[1471368111.000483]-=*::: oh, you use xhyve driver? (my repository project)
+U0C6963R6 says -=*[1471368115.000484]-=*::: yeah
+U1YEXGY77 says -=*[1471368160.000485]-=*::: Hmm, maybe its bug because posted some issue that related IP, DNS
+U1YEXGY77 says -=*[1471368170.000486]-=*::: also research it, wait a moments
+U0C6963R6 says -=*[1471369830.000487]-=*::: managed to get this far: ```13:48 $ dig kubernetes.default.svc.cluster.local @`minikube ip`  ; &lt;&lt;&gt;&gt; DiG 9.8.3-P1 &lt;&lt;&gt;&gt; kubernetes.default.svc.cluster.local @192.168.64.3 ;; global options: +cmd ;; Got answer: ;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 89 ;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0  ;; QUESTION SECTION: ;kubernetes.default.svc.cluster.local. IN A  ;; ANSWER SECTION: kubernetes.default.svc.cluster.local. 30 IN A 10.0.0.1```
+U0C6963R6 says -=*[1471369842.000488]-=*::: obviously, gives me the in-cluster IP
+U0C6963R6 says -=*[1471369878.000489]-=*::: I modified the `kube-dns` service, changing the `type` to `NodePort`.
+U0C6963R6 says -=*[1471369900.000490]-=*::: used: `kubectl edit service --namespace=kube-system kube-dns`
+U0C6963R6 says -=*[1471369965.000491]-=*::: but I guess this is kind of a dead end
+U0C6963R6 says -=*[1471369986.000492]-=*::: because the k8s cluster DNS likely is unaware of the VM, etc.
+U1YEXGY77 says -=*[1471370610.000493]-=*::: ah, sorry, maybe Im misunderstood your said meaning. will more reading your message
+U0C6963R6 says -=*[1471370808.000494]-=*::: Is it still correct that minikube doesnt support `ingress` resources yet?
+U1TUWPL1M says -=*[1471371725.000495]-=*::: <@U0C6963R6>: check out the discussion here <https://github.com/kubernetes/minikube/issues/496#issuecomment-240187902>
+U0C6963R6 says -=*[1471371881.000497]-=*::: just found it
+U0C6963R6 says -=*[1471371882.000498]-=*::: thanks
+U0C6963R6 says -=*[1471371899.000499]-=*::: I think I misread somewhere that ingress wasnt supported in minikube, but Im seeing it is not
+U0C6963R6 says -=*[1471371921.000500]-=*::: If I get somewhere, Ill try and write up some notes
+U0C6963R6 says -=*[1471371936.000501]-=*::: Super loving minikube and xhyve driver, btw.
+U1TUWPL1M says -=*[1471371986.000503]-=*::: thanks, and good to hear!
+U1YEXGY77 says -=*[1471371999.000504]-=*::: thanks lol I will do best in the the future
+U0C6963R6 says -=*[1471374463.000505]-=*::: So, I think I got this working, with a bit of help from <https://medium.com/@rothgar/exposing-services-using-ingress-with-on-prem-kubernetes-clusters-f413d87b6d34#.yfa30ygxx>
+U0C6963R6 says -=*[1471374510.000507]-=*::: <@U0C6963R6|numbsafari> uploaded a file: <https://kubernetes.slack.com/files/numbsafari/F21VC9BHU/echo_headers_ingress_example.txt|Echo Headers Ingress Example>
+U0C6963R6 says -=*[1471374522.000508]-=*::: ^ I created the following resources
+U0C6963R6 says -=*[1471374547.000509]-=*::: And was then able to do this `curl -L --resolve y.echoheaders.dev:80:`minikube ip` <http://y.echoheaders.dev/foo>`
+U0C6963R6 says -=*[1471374589.000510]-=*::: So for the next step, Ill use `dnsmasq` to simply route all `.dev` hosts to `minikube ip`, and then I think Ill be good to go.
+U0C6963R6 says -=*[1471375214.000511]-=*::: awesome, thanks folks
+U0C6963R6 says -=*[1471376125.000512]-=*::: FYI: <https://github.com/kubernetes/minikube/issues/496#issuecomment-240187902>

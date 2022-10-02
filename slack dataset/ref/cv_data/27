@@ -1,0 +1,144 @@
+==========
+U0ALRFJH0 says -=*[1477926928.000437]-=*::: morning people!
+U0PT5KRHR says -=*[1477927701.000438]-=*::: hello <@U0ALRFJH0>!
+U0ALRFJH0 says -=*[1477931378.000439]-=*::: <@U0PPMUTGR> re e2e tests, which branch should be built? `windows_infra_container` or `windows_kube_proxy` or both?
+U0ALRFJH0 says -=*[1477931403.000440]-=*::: or is <@U0JFJ4KHS> cherry-picking from `windows_infra_container`?
+U0ALRFJH0 says -=*[1477931509.000441]-=*::: from where i stand, those two branches seem separate but both are needed so are you guys building `kubelet` from the first and `kube-proxy` from the second?
+U0JFJ4KHS says -=*[1477931537.000443]-=*::: thats right
+U0PT5KRHR says -=*[1477931555.000444]-=*::: yeah - I think windows_kube_proxy is branched off windows_infra_container
+U0ALRFJH0 says -=*[1477931652.000445]-=*::: <@U0PT5KRHR> i dont see your last 2 commits in `windows_infra_container` as part of `windows_kube_proxy` so im assuming binaries are built from separate branches.
+U0ALRFJH0 says -=*[1477932669.000446]-=*::: well, now that i think a little bit more about it, it makes sense to keep the two or more branches separated, since the code in each one that doesnt depends on the code in others.
+U0JFJ4KHS says -=*[1477932757.000447]-=*::: yes, the code for kubelet and kube_proxy are independent of each other
+==========
+U0PPMUTGR says -=*[1477934177.000449]-=*::: guys, do we have an update for our meeting this afternoon, or should we do a quick slack channel update here ? given we met 1 biz day ago, there might not be much to update
+U0ALRFJH0 says -=*[1477934219.000450]-=*::: <@U0PPMUTGR> agreed.
+U0ALRFJH0 says -=*[1477934436.000451]-=*::: on my side * created a Windows Server 2016 on GCP and am now trying to build the code for Windows. will test the resulting binaries as soon as i have them. * reached sig-testing and <@U09R0N2BF> to find guidance on E2E tests for Windows and where to run those - ill continue with our own experiments for now. * looking into the code and checking if its in shape for merge. already have some remarks and will share today or tomorrow with <@U0JFJ4KHS> and <@U0PT5KRHR>.
+U0JFJ4KHS says -=*[1477934620.000452]-=*::: On my end * Identified the issue with Volumes not mounting and was caused because of a condition where volumes where only mounted for GOOS != "windows" * Volume mounts are failing with invalid bind mount spec error, fixing them now
+U0ALRFJH0 says -=*[1477934922.000453]-=*::: <@U0JFJ4KHS> do you mean <https://github.com/kubernetes/kubernetes/pull/31707/files#diff-10055ae93a8699af13ceba0482fc43c3R265>?
+U0JFJ4KHS says -=*[1477934945.000456]-=*::: yes, thats the one
+U0PPMUTGR says -=*[1477935008.000457]-=*::: thanks for the updates folks. good catch Jitu
+U0ALRFJH0 says -=*[1477935010.000458]-=*::: <@U0PT5KRHR> ^ this was one of the things i was meant to ask tomorrow :sweat_smile:
+U0PT5KRHR says -=*[1477935108.000460]-=*::: hehe yeah... in our first pass we ran into issues there because volumes were not working. Now that Jitu has been fixing volumes on Windows, we don't need to disable that
+U0ALRFJH0 says -=*[1477935189.000461]-=*::: sweet.
+==========
+U0ALRFJH0 says -=*[1477935665.000462]-=*::: <@U0JFJ4KHS> is `windows_kubelet` still an active branch?
+U0ALRFJH0 says -=*[1477935690.000463]-=*::: it seems to overlap with `windows_infra_container`.
+U0JFJ4KHS says -=*[1477935703.000465]-=*::: nope, it is not an active branch
+U0ALRFJH0 says -=*[1477935725.000466]-=*::: <@U0JFJ4KHS> so you give me your ok to remove it from our fork?
+U0JFJ4KHS says -=*[1477935790.000467]-=*::: I am OK with it, I will let <@U0PT5KRHR> confirm as well
+U0PT5KRHR says -=*[1477935803.000468]-=*::: yeah, we can delete that branch
+U0ALRFJH0 says -=*[1477935858.000469]-=*::: done!
+==========
+U0PPMUTGR says -=*[1477937634.000470]-=*::: just a quick reminder that today's standup is canceled :slightly_smiling_face:
+U0PPMUTGR says -=*[1477938090.000471]-=*::: Jitu can you also put blogengine in the images for the two new windows nodes?
+U0PPMUTGR says -=*[1477938120.000472]-=*::: oh wait, its there
+U0JFJ4KHS says -=*[1477938129.000473]-=*::: yep, should be there
+U0PPMUTGR says -=*[1477938135.000474]-=*::: but k8s got an error saying ErrImagePull
+U0PPMUTGR says -=*[1477938144.000475]-=*::: let me check the image tags
+U0JFJ4KHS says -=*[1477938150.000476]-=*::: let me confirm the image name:version
+U0JFJ4KHS says -=*[1477938158.000477]-=*::: there might be a mismatch there
+U0PPMUTGR says -=*[1477938195.000478]-=*::: it used to be apprenda\blogengine
+U0PPMUTGR says -=*[1477938200.000479]-=*::: now its just blog-engine
+U0JFJ4KHS says -=*[1477938211.000480]-=*::: oh..ok
+U0JFJ4KHS says -=*[1477938225.000481]-=*::: let me rename it back to apprenda\blogengine
+U0PPMUTGR says -=*[1477938242.000482]-=*::: no need to
+U0PPMUTGR says -=*[1477938248.000483]-=*::: i can change my script
+U0JFJ4KHS says -=*[1477938256.000484]-=*::: cool
+U0JFJ4KHS says -=*[1477938266.000485]-=*::: let me know if you see any other issues
+U0PPMUTGR says -=*[1477938869.000487]-=*::: everything seems to be working great. thanks Jitu!!
+==========
+U0JFJ4KHS says -=*[1477939218.000488]-=*::: :+1:
+U0PPMUTGR says -=*[1477946387.000489]-=*::: i don't know if this is a k8s bug or just a windows bug, but when i shutdown my 2 windows nodes, i went back after 2 minutes to the master node and run two queries 1. queried the nodes and correctly the windows nodes were identified as not healthy 2. queried the PODs and "incorrectly" the windows PODs were signaled as running is that a bug?
+U0JFJ4KHS says -=*[1477946833.000490]-=*::: the nodes were shutdown when they had PODs running?
+U0PPMUTGR says -=*[1477947323.000491]-=*::: yep
+U0PPMUTGR says -=*[1477947336.000492]-=*::: i didn't kill, scale down, or remove the PODs and i just shut down the nodes
+U0JFJ4KHS says -=*[1477948021.000493]-=*::: I see the same behavior in my local environment, ideally I had expected the pods to move to one of the healthy nodes
+U0JFJ4KHS says -=*[1477948191.000495]-=*::: I take the previous statement back
+U0JFJ4KHS says -=*[1477948203.000496]-=*::: I do see that the PODs are rescheduled to the healthy nodes
+U0ALRFJH0 says -=*[1477955912.000497]-=*::: <@U0JFJ4KHS> but <@U0PPMUTGR> is describing a scenario where all nodes are gone, right <@U0PPMUTGR>?
+U0PPMUTGR says -=*[1477967578.000499]-=*::: Yep, the nodes are gone and turned off
+U0PPMUTGR says -=*[1478001249.000501]-=*::: <@U0PT5KRHR> , did our tests pass for the PR?
+U0ALRFJH0 says -=*[1478001270.000502]-=*::: <@U0PPMUTGR> im working on that.
+U0ALRFJH0 says -=*[1478001289.000503]-=*::: got it to compile for linux, darwin and windows.
+U0ALRFJH0 says -=*[1478001311.000504]-=*::: btw, the correct way to do it is smth like `KUBE_BUILD_PLATFORMS=windows/amd64 make WHAT=pkg/kubelet`
+U0ALRFJH0 says -=*[1478001331.000505]-=*::: im about to run the tests but i got distracted by a different issue
+U0ALRFJH0 says -=*[1478001349.000506]-=*::: running the tests now
+U0ALRFJH0 says -=*[1478001421.000507]-=*::: they dont but probably because of some WIP on my side.
+U0PPMUTGR says -=*[1478001427.000508]-=*::: excellent. thanks <@U0ALRFJH0>
+==========
+U0ALRFJH0 says -=*[1478001546.000509]-=*::: ill be picking that up in the next couple hours. just trying to identify a bug in a different part of the code not related to this :sweat_smile:
+U0PT5KRHR says -=*[1478002771.000510]-=*::: hehe thanks <@U0ALRFJH0>
+U0PT5KRHR says -=*[1478002804.000511]-=*::: BTW, if you have to work on other stuff I can drop everything today and work on it instead
+U0ALRFJH0 says -=*[1478002954.000512]-=*::: <@U0PT5KRHR> i dont need to, just trying to get another PR merged that has been pending for a week now.
+U0ALRFJH0 says -=*[1478002961.000513]-=*::: `kubeadm` new release is pending on it
+U0ALRFJH0 says -=*[1478002998.000514]-=*::: but im lacking feedback/guidance on how to fix a few tests and thats not helping. i think i will be able to get it now. will give it another hour and then come back to this stuff.
+U0PT5KRHR says -=*[1478003021.000515]-=*::: ok cool - let me know if anything changes
+U0ALRFJH0 says -=*[1478003036.000516]-=*::: my WIP is in `windows_infra_container_rebase_2`
+U0ALRFJH0 says -=*[1478003044.000517]-=*::: i need to fix tests, though
+U0ALRFJH0 says -=*[1478006035.000518]-=*::: fixed tests in WIP. running `make verify`
+U0ALRFJH0 says -=*[1478011885.000519]-=*::: ok it passes now. <@U0JFJ4KHS> have you pushed your stuff already?
+U0JFJ4KHS says -=*[1478011922.000520]-=*::: not yet, give me few minutes
+U0ALRFJH0 says -=*[1478012914.000521]-=*::: <@U0JFJ4KHS> i can see you have a merge commit. you should use `git pull rebase` to avoid this kind of logs. anyway, ive cherry-picked your changes to `windows_infra_container_rebase_volumes_fix` and im running `make verify` now.
+U0ALRFJH0 says -=*[1478012933.000522]-=*::: meanwhile, going to bootstrap the api server.
+U0JFJ4KHS says -=*[1478012974.000523]-=*::: thanks <@U0ALRFJH0>, will do that going forward
+U0ALRFJH0 says -=*[1478012994.000524]-=*::: it may need conflict fixing but at least wont pollute the commit log.
+U0ALRFJH0 says -=*[1478015249.000525]-=*::: ok `KUBE_BUILD_PLATFORMS=windows/amd64 make WHAT=cmd/kubelet` builds now :slightly_smiling_face:
+U0ALRFJH0 says -=*[1478015268.000526]-=*::: `make verify` passes as well but going to run one last check.
+U0ALRFJH0 says -=*[1478015368.000527]-=*::: ``` $ ls -lash _output/local/bin/windows/amd64/kubelet.exe 209568 -rwxr-xr-x  1 pires  staff   102M Nov  1 11:46 _output/local/bin/windows/amd64/kubelet.exe ```
+==========
+U0ALRFJH0 says -=*[1478016296.000528]-=*::: all checks pass
+U0ALRFJH0 says -=*[1478016316.000529]-=*::: going to test on my GCP machines and report soon - will have a couple meetings in between but should be quick.
+U0PPMUTGR says -=*[1478019104.000530]-=*::: this is awesome. thanks <@U0ALRFJH0>
+U0ALRFJH0 says -=*[1478024373.000531]-=*::: <@U0PPMUTGR> <@U0JFJ4KHS> <@U0PT5KRHR> e2e tests will need more time on our side. after a call with the sig-testing people, i confirmed my concerns that this is a whole new challenge for k8s testing. we have briefly debated a few needs but for we wont be able to proceed with some tests and instructions on how to run them - only then will they look at it.
+U0ALRFJH0 says -=*[1478024417.000532]-=*::: one idea is to run federated tests, meaning we run the tests on _our side_ (whatever that means!) and upload the results to GCS (i know the gist, dont know exactly how to integrate with PR builds).
+U0ALRFJH0 says -=*[1478024456.000533]-=*::: for now, ill try and reach the people working in rknetes as it seems to touch some of our pain points, but no promises can be made.
+U0ALRFJH0 says -=*[1478024465.000534]-=*::: <@U0PPMUTGR> do lmk if this is a blocker in any way.
+U0PT5KRHR says -=*[1478024503.000535]-=*::: makes sense - e2e with windows in the mix is definitely another beast
+U0PPMUTGR says -=*[1478024507.000536]-=*::: this is not a blocker, but we might have to downgrade our v1.5 release to alpha if we can't fully execute e2e tests
+U0ALRFJH0 says -=*[1478024576.000537]-=*::: AFAIK, we need both `windows_infra_container` + `windows_kube_proxy` passing windows builds and i can get that working. actually, just got `windows_infra_container` to pass all the checks but need to review with the guys so we provide a clean commit log.
+U0ALRFJH0 says -=*[1478024625.000538]-=*::: <@U0PPMUTGR> as said before, i am in favor of downgrading to alpha. unless someone shows up with the plan to get this to work. 1 week will not cut it for me, im afraid :disappointed:
+U0PPMUTGR says -=*[1478024683.000540]-=*::: alpha it is. i sent the notification already
+U0ALRFJH0 says -=*[1478024706.000541]-=*::: :confetti_ball:
+U0PPMUTGR says -=*[1478024970.000542]-=*::: fyi, msft folks tried to build our repo and failed. i asked them to join us here to help them troubleshoot this
+U0ALRFJH0 says -=*[1478025239.000543]-=*::: <@U0PPMUTGR> yeah, i fixed those errors.
+U0ALRFJH0 says -=*[1478025266.000544]-=*::: still, it would be great to have said folks around here :slightly_smiling_face:
+U0PPMUTGR says -=*[1478025275.000545]-=*::: yep, that's my goal
+==========
+U0ALRFJH0 says -=*[1478025315.000546]-=*::: <@U0JFJ4KHS> can i interrupt you and get some minutes to try out the new kubelet with you?
+U0PPMUTGR says -=*[1478025327.000547]-=*::: we want to make sure as we are fixing things, we are updating the doc with the instructions on how to use windows nodes in k8s <https://docs.google.com/document/d/1IjwqpwuRdwcuWXuPSxP-uIz0eoJNfAJ9MWwfY20uH3Q/edit>
+U0JFJ4KHS says -=*[1478025345.000549]-=*::: <@U0ALRFJH0> sure, will stop by
+U0ALRFJH0 says -=*[1478025379.000550]-=*::: <@U0PPMUTGR> i will contribute to that doc as soon as both branches pass the necessary checks and are pushed to the PRs upstream. thats whats needs to be done before feature freeze
+U0PPMUTGR says -=*[1478025391.000551]-=*::: :thumbsup:
+==========
+U0ALRFJH0 says -=*[1478028788.000552]-=*::: <@U0PPMUTGR> so `kubelet` is a go! we just tested everything and it works. as agreed with <@U0PT5KRHR> and <@U0JFJ4KHS>, ill rework the PR (on a separate branch) and eventually push it today so we can have feedback from the bot or anyone else.
+U0ALRFJH0 says -=*[1478028845.000553]-=*::: if everything goes as expected, i should help <@U0JFJ4KHS> get `kube-proxy` PR too since its a dep for this feature. please, confirm.
+U0ALRFJH0 says -=*[1478033708.000555]-=*::: <@U0JFJ4KHS> <@U0PT5KRHR> the branch is ready for review, `windows_infra_container_rework`
+U0ALRFJH0 says -=*[1478033788.000556]-=*::: i may revert the `cadvisor_stub.go` removal, but thats it
+U0JFJ4KHS says -=*[1478034357.000557]-=*::: I just had a quick look and it looks good
+U0PPMUTGR says -=*[1478034439.000558]-=*::: if you guys are good with it, i am as well
+U0PPMUTGR says -=*[1478034445.000559]-=*::: thanks guys!
+U0ALRFJH0 says -=*[1478034535.000560]-=*::: <@U0PT5KRHR> need your ok
+U0PT5KRHR says -=*[1478034553.000561]-=*::: taking a quick peek now
+U0ALRFJH0 says -=*[1478034572.000562]-=*::: ill leave `cadvisor_stub.go` out for now. if someone complains, it gets back in.
+U0PT5KRHR says -=*[1478034617.000563]-=*::: Looks good to me <@U0ALRFJH0>
+U0ALRFJH0 says -=*[1478034739.000564]-=*::: thanks :+1:
+==========
+U0ALRFJH0 says -=*[1478034894.000565]-=*::: <@U0PT5KRHR> <@U0JFJ4KHS> you guys have signed the CNCF CLA?
+U0ALRFJH0 says -=*[1478034900.000566]-=*::: <https://identity.linuxfoundation.org/projects/cncf>
+U0PPMUTGR says -=*[1478034908.000567]-=*::: we have an apprenda CLA that covers us all
+U0ALRFJH0 says -=*[1478034916.000568]-=*::: yeah but still you need to follow this
+U0ALRFJH0 says -=*[1478034918.000569]-=*::: otherwise, the bot complains
+U0ALRFJH0 says -=*[1478034937.000570]-=*::: at least, it was the case for me
+U0ALRFJH0 says -=*[1478034982.000571]-=*::: actually, it seems that its only <@U0WB75BC5> who hasnt signed yet.
+U0ALRFJH0 says -=*[1478035014.000572]-=*::: i stand corrected, <@U0JFJ4KHS> also needs to sign.
+U0PPMUTGR says -=*[1478035026.000573]-=*::: come on Jitu :slightly_smiling_face: :slightly_smiling_face: :slightly_smiling_face:
+U0PPMUTGR says -=*[1478035034.000574]-=*::: don't be non compliant :slightly_smiling_face:
+U0ALRFJH0 says -=*[1478035339.000575]-=*::: im actually curious to know why were still required to have Google CLA signed, now that theres CNCF CLA.
+==========
+U2X7ARA79 says -=*[1478036223.000577]-=*::: Hi Everyone, my name is Anthony I'm from Azure Container Service.  We have a new windows docker image available:  publisher": "MicrosoftWindowsServer", "offer": "WindowsServer", "sku": "2016-Datacenter-with-Containers", "version": "2016.0.20161025"
+U2X7ARA79 says -=*[1478036247.000578]-=*::: we had issues with the original image, and the fixes were applied on Friday
+U2X7ARA79 says -=*[1478036308.000579]-=*::: Btw, I'm going through the Kuberenetes instructions, and it recommends to use windows_infra_container branch
+U2X7ARA79 says -=*[1478036332.000580]-=*::: is that the latest, or do you recommend a newer one (or do you have the latest instructions somewhere)
+==========
+U0JFJ4KHS says -=*[1478036347.000581]-=*::: <@U0ALRFJH0>: <@U0PPMUTGR> I have signed Google CLA and not CNCF one
+==========

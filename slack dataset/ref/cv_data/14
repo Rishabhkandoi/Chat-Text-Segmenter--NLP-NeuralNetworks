@@ -1,0 +1,152 @@
+==========
+U1TUWPL1M says -=*[1475013357.000642]-=*::: Hey guys I'll be giving a talk on minikube today at the K8s 1.4 Release Party.  I'll be demoing a ingress controller running on rkt on k8s 1.4 and going through some local dev features we have <https://www.meetup.com/coreos/events/234157584/>
+U0NPZ9SP5 says -=*[1475014577.000644]-=*::: <@U1TUWPL1M> Sounds great ! Any chance it will have a live stream?
+U1TUWPL1M says -=*[1475017489.000645]-=*::: <@U0NPZ9SP5> don't think so but i'll make sure to post the slides and upload the demos somewhere
+U0NPZ9SP5 says -=*[1475018790.000646]-=*::: <@U1TUWPL1M> ok, thanks. Looking forward to it.
+==========
+U2CQH424F says -=*[1475084033.000654]-=*::: (disclaimer: i'm pretty new to playing around with kubernetes to get a better understanding of the ins and outs of deploying and using it) with the minikube setup, kube-addon-manager seems to be using approximately 10% CPU on average (running minikube with the xhyve driver on a 15" 2014 mbp with quad core i7 and 16GB ram)
+U2CQH424F says -=*[1475084040.000655]-=*::: that seems rather high
+U2CQH424F says -=*[1475084060.000656]-=*::: for something that should just be checking for new / modified files and then processing those files if they are present
+U2CQH424F says -=*[1475084091.000657]-=*::: files being yaml workloads
+==========
+U1JCA8TGB says -=*[1475164391.000658]-=*::: Hi there, How is people doing hot reload development or close with kube/minikube?
+==========
+U1YEXGY77 says -=*[1475165383.000659]-=*::: hi, for minikube-dev I was finished develop go-qcow2 package(but very ugly and hardcoded...) <https://github.com/zchee/go-qcow2> create qcow2 disk with no dependencies I want to test xhyve-driver with qcow2 if you have time. WDYT? <@U0DT660QM> Is there any progress for initramfs?
+U1TUWPL1M says -=*[1475166930.000661]-=*::: hey <@U1YEXGY77> i can help  test the xhyve driver with qcow :slightly_smiling_face:
+U1YEXGY77 says -=*[1475167611.000662]-=*::: <@U1TUWPL1M> thanks : ) I will ping when ready
+U1YEXGY77 says -=*[1475168832.000663]-=*::: <@U1TUWPL1M> also, I have question. minikube and my driver using godep. but now, I think gvt is modarn. I want to switch to gvt for manage dependency to my driver. Its no problem? Is there any problems with minikube side?
+U1TUWPL1M says -=*[1475168991.000664]-=*::: i think thats fine, <@U1YEXGY77> .  I'm sure godeps is already vendoring in pkgs that are using gvt
+U1YEXGY77 says -=*[1475169055.000665]-=*::: <@U1TUWPL1M> ok, thanks. I will switch to gvt.
+U1YEXGY77 says -=*[1475172427.000666]-=*::: for minikube-dev: Sorry, more question. It seems hardcoded `kexec` command. If can modify any way such as uses flag, might be useful for debugging. But Its benefits developer only. Do you have any plan, or What do you think? If no plan, no problem. I will(as before) build minikube with the tiny patched. <https://github.com/kubernetes/minikube/blob/master/pkg/minikube/cluster/cluster_darwin.go#L66>
+U1TUWPL1M says -=*[1475172671.000668]-=*::: <@U1YEXGY77> you might want to just use your patched version, im not sure it will be that useful for minikube users to be able to configure that
+U1TUWPL1M says -=*[1475172684.000669]-=*::: i know if i were to mess with it, id probably break a few things haha
+U1YEXGY77 says -=*[1475172810.000670]-=*::: &gt; you might want to just use your patched version, im not sure it will be that useful for minikube users to be able to configure that ok, understand : ) yeah, I thinks so, too lol thanks
+U1YEXGY77 says -=*[1475177357.000671]-=*::: <@U1TUWPL1M> okay, successful ssh login with qcow2. but some hardcoded magic byte : ( Do you have ocaml environment? like <https://github.com/docker/hyperkit#building> or, if you not have, I will upload statically linked pre-compile binary.
+U1YEXGY77 says -=*[1475206302.000675]-=*::: <@U0DT660QM> figured out. we can boot minikube-iso-0.4 : ) its xhyve bug
+==========
+U23ANCV9A says -=*[1475215718.000677]-=*::: Hi , I started using minikube. I am not able to pull local docker images. Does minikube/k8 mandatory require a registry? I also tried creating a local registry with --insecure-registry flag. I am still not able to pull the image. Any ideas? 
+U1TUWPL1M says -=*[1475252461.000680]-=*::: <@U23ANCV9A> check out this issue <https://github.com/kubernetes/minikube/issues/604>
+U1TUWPL1M says -=*[1475252487.000682]-=*::: the insecure registry flag is ignored if the machine is already up
+U23ANCV9A says -=*[1475252616.000683]-=*::: Thanks <@U1TUWPL1M> for getting back to me. That makes sense. Is the registry absolutely required ? Can minikube /k8 pull locally available images directly ?
+U1TUWPL1M says -=*[1475252631.000684]-=*::: yeah definitely
+U1TUWPL1M says -=*[1475252647.000685]-=*::: you'll want to share your docker dameon with `eval $(minkube docker-env)`
+U1TUWPL1M says -=*[1475252668.000686]-=*::: and make sure your yaml files for k8s have `imagePullPolicy: IfNotPresent`
+U23ANCV9A says -=*[1475252711.000687]-=*::: Nice! I will give that a try.... Thanks a ton !!!
+U1TUWPL1M says -=*[1475252731.000688]-=*::: yup np
+==========
+U1RPBNE2Y says -=*[1475259860.000690]-=*::: I'm noticing that minikube says v1.4.0 is available, but when I try to start minikube with 1.4.0, a key not found xml document shows up in /usr/local/bin/localkube. ``` ryans-mbp:~/sw/cirrus-gce% minikube get-k8s-versions The following Kubernetes versions are available:         - v1.4.0         - v1.3.7         - v1.3.6         - v1.3.5         - v1.3.4         - v1.3.3         - v1.3.0 ryans-mbp:~/sw/cirrus-gce% minikube logs ==&gt; /var/lib/localkube/localkube.err &lt;==  ==&gt; /var/lib/localkube/localkube.out &lt;== /usr/local/bin/localkube: line 1: syntax error: unexpected redirection  ryans-mbp:~/sw/cirrus-gce% minikube ssh .....Boot2Docker version 1.11.1, build master : 901340f - Fri Jul  1 22:52:19 UTC 2016 Docker version 1.11.1, build 5604cbe docker@minikube:~$ cat /usr/local/bin/localkube &lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;Error&gt;&lt;Code&gt;NoSuchKey&lt;/Code&gt;&lt;Message&gt;The specified key does not exist.&lt;/Message&gt;&lt;/Error&gt; ```
+U1TUWPL1M says -=*[1475270411.000693]-=*::: <@U1RPBNE2Y> make sure that you have cleared your cache `rm -r ~/.minikube/cache/localkube`
+U1TUWPL1M says -=*[1475270429.000694]-=*::: we have a PR pending to do SHA verification
+U1RPBNE2Y says -=*[1475270659.000695]-=*::: <@U1TUWPL1M> awesome, thanks!
+U1TUWPL1M says -=*[1475270668.000696]-=*::: did that work for you?
+U1RPBNE2Y says -=*[1475270674.000697]-=*::: yep
+U1TUWPL1M says -=*[1475270699.000698]-=*::: cool
+==========
+U1RPBNE2Y says -=*[1475270750.000699]-=*::: maybe since I've got you here I can ask about something else
+U1RPBNE2Y says -=*[1475270771.000700]-=*::: if I stop &amp; start my minikube, I get this: ```2016-09-30 21:25:30.065624 I | etcdserver: advertise client URLs = <http://localhost:2379> 2016-09-30 21:25:30.065666 W | wal: ignored file 0.tmp in wal panic: runtime error: makeslice: len out of range  goroutine 1 [running]: panic(0x3297740, 0xc820333860)         /usr/local/go/src/runtime/panic.go:464 +0x3e6 <http://k8s.io/minikube/vendor/github.com/coreos/etcd/wal.(*decoder).decodeRecord|k8s.io/minikube/vendor/github.com/coreos/etcd/wal.(*decoder).decodeRecord>(0xc820114280, 0xc820258e48, 0x0, 0x0)         /home/aprindle/go/src/k8s.io/minikube/_gopath/src/k8s.io/minikube/vendor/github.com/coreos/etcd/wal/decoder.go:76 +0x27b <http://k8s.io/minikube/vendor/github.com/coreos/etcd/wal.(*decoder).decode(0xc820114280|k8s.io/minikube/vendor/github.com/coreos/etcd/wal.(*decoder).decode(0xc820114280>, 0xc820258e48, 0x0, 0x0)         /home/aprindle/go/src/k8s.io/minikube/_gopath/src/k8s.io/minikube/vendor/github.com/coreos/etcd/wal/decoder.go:54 +0xa8 <http://k8s.io/minikube/vendor/github.com/coreos/etcd/wal.(*WAL).ReadAll(0xc82018ed00|k8s.io/minikube/vendor/github.com/coreos/etcd/wal.(*WAL).ReadAll(0xc82018ed00>, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, ...)         /home/aprindle/go/src/k8s.io/minikube/_gopath/src/k8s.io/minikube/vendor/github.com/coreos/etcd/wal/wal.go:234 +0x214 <http://k8s.io/minikube/vendor/github.com/coreos/etcd/etcdserver.readWAL(0xc820718360|k8s.io/minikube/vendor/github.com/coreos/etcd/etcdserver.readWAL(0xc820718360>, 0x22, 0x0, 0x0, 0x0, 0x0, 0x0, 0xc82018ed00, 0x592f780, 0xc820259090, ...)         /home/aprindle/go/src/k8s.io/minikube/_gopath/src/k8s.io/minikube/vendor/github.com/coreos/etcd/etcdserver/storage.go:87 +0x228 <http://k8s.io/minikube/vendor/github.com/coreos/etcd/etcdserver.restartNode(0xc820082640|k8s.io/minikube/vendor/github.com/coreos/etcd/etcdserver.restartNode(0xc820082640>, 0x0, 0x7f5e4c105028, 0xc82045d5c0, 0x0, 0x0, 0x0, 0x0)         /home/aprindle/go/src/k8s.io/minikube/_gopath/src/k8s.io/minikube/vendor/github.com/coreos/etcd/etcdserver/raft.go:332 +0xff <http://k8s.io/minikube/vendor/github.com/coreos/etcd/etcdserver.NewServer(0xc820082640|k8s.io/minikube/vendor/github.com/coreos/etcd/etcdserver.NewServer(0xc820082640>, 0x0, 0x0, 0x0)         /home/aprindle/go/src/k8s.io/minikube/_gopath/src/k8s.io/minikube/vendor/github.com/coreos/etcd/etcdserver/server.go:328 +0x392d <http://k8s.io/minikube/pkg/localkube.(*EtcdServer).Start(0xc820337530)|k8s.io/minikube/pkg/localkube.(*EtcdServer).Start(0xc820337530)>         /home/aprindle/go/src/k8s.io/minikube/_gopath/src/k8s.io/minikube/pkg/localkube/etcd.go:91 +0x40 <http://k8s.io/minikube/pkg/localkube.Servers.StartAll(0xc82018b380|k8s.io/minikube/pkg/localkube.Servers.StartAll(0xc82018b380>, 0x7, 0x8)         /home/aprindle/go/src/k8s.io/minikube/_gopath/src/k8s.io/minikube/pkg/localkube/servers.go:41 +0x1ac <http://k8s.io/minikube/cmd/localkube/cmd.StartLocalkube()|k8s.io/minikube/cmd/localkube/cmd.StartLocalkube()>         /home/aprindle/go/src/k8s.io/minikube/_gopath/src/k8s.io/minikube/cmd/localkube/cmd/start.go:49 +0x225 <http://k8s.io/minikube/cmd/localkube/cmd.glob.func1(0x578d500|k8s.io/minikube/cmd/localkube/cmd.glob.func1(0x578d500>, 0xc8203373b0, 0x0, 0x3)         /home/aprindle/go/src/k8s.io/minikube/_gopath/src/k8s.io/minikube/cmd/localkube/cmd/root.go:31 +0x14 <http://k8s.io/minikube/vendor/github.com/spf13/cobra.(*Command).execute(0x578d500|k8s.io/minikube/vendor/github.com/spf13/cobra.(*Command).execute(0x578d500>, 0xc82000a190, 0x3, 0x3, 0x0, 0x0)         /home/aprindle/go/src/k8s.io/minikube/_gopath/src/k8s.io/minikube/vendor/github.com/spf13/cobra/command.go:565 +0x85a <http://k8s.io/minikube/vendor/github.com/spf13/cobra.(*Command).ExecuteC(0x578d500|k8s.io/minikube/vendor/github.com/spf13/cobra.(*Command).ExecuteC(0x578d500>, 0x578d500, 0x0, 0x0)         /home/aprindle/go/src/k8s.io/minikube/_gopath/src/k8s.io/minikube/vendor/github.com/spf13/cobra/command.go:651 +0x55c <http://k8s.io/minikube/vendor/github.com/spf13/cobra.(*Command).Execute(0x578d500|k8s.io/minikube/vendor/github.com/spf13/cobra.(*Command).Execute(0x578d500>, 0x0, 0x0)         /home/aprindle/go/src/k8s.io/minikube/_gopath/src/k8s.io/minikube/vendor/github.com/spf13/cobra/command.go:610 +0x2d main.main()         /home/aprindle/go/src/k8s.io/minikube/cmd/localkube/main.go:32 +0x54 ```
+U1TUWPL1M says -=*[1475270801.000701]-=*::: yeah unfortunately theres something weird when you hop between 1.3.x and 1.4 in minikube without recreating the VM
+U1TUWPL1M says -=*[1475270813.000702]-=*::: i havent figured it out yet, but we don't gracefully stop etcd
+U1RPBNE2Y says -=*[1475270815.000703]-=*::: I did a minikube delete... is there something else I should do?
+U1TUWPL1M says -=*[1475270831.000704]-=*::: it should work after a delete and a start w/ 1.4
+U1RPBNE2Y says -=*[1475270850.000705]-=*::: yeah, I'm still seeing problems with only 1.4.
+U0XDUM3FZ says -=*[1475270897.000706]-=*::: <@U0ADKTAMQ> ^ the above looks like something you might be interested in
+U1RPBNE2Y says -=*[1475271103.000708]-=*::: <@U1RPBNE2Y|ryfow> uploaded a file: <https://kubernetes.slack.com/files/ryfow/F2J4FC7S7/kube_1_4_stop_start_failure.txt|kube 1.4 stop/start failure> and commented: Here's a full delete, start, stop, start sequence.  I ran minikube delete just to show that the old vm isn't around.
+U1TUWPL1M says -=*[1475271136.000709]-=*::: yup so i think the issue is that you're accidentally switching between 1.4 and 1.3.x
+U1TUWPL1M says -=*[1475271143.000710]-=*::: the flags need to be specified on every start
+U1TUWPL1M says -=*[1475271166.000711]-=*::: although you can run a `minikube config set kubernetes-version v1.4.0` to pin it in a config file so you won't have to do that
+U1RPBNE2Y says -=*[1475271211.000712]-=*::: Ahhh. That would explain it
+U1TUWPL1M says -=*[1475271252.000713]-=*::: yeah the start command is a little weird...some properties of the VM can't be change on restarts yet (cpu, memory) so thats a no-op, but things like k8s version can change on every start
+U1RPBNE2Y says -=*[1475271254.000714]-=*::: seems odd usability-wise...
+U1TUWPL1M says -=*[1475271307.000715]-=*::: yeah i think theres an issue open somewhere.  was before i started contributing.  it conflates the VM options and some things we're running inside the VM which i agree is confusing
+U1TUWPL1M says -=*[1475271336.000716]-=*::: i have another PR open to warn the user about these things, but its waiting on something else first
+U1TUWPL1M says -=*[1475271344.000717]-=*::: and im not sure thats even a good solution
+U1RPBNE2Y says -=*[1475271413.000718]-=*::: A warning would definitely saved me some time. I appreciate the help.
+U1RPBNE2Y says -=*[1475271414.000719]-=*::: Overall minikube looks super promising for my team. I just need to understand some of these details before trying to roll it out.
+U1TUWPL1M says -=*[1475271438.000720]-=*::: yeah still definitely a WIP on some things but cool
+==========
+U2JE2BY9Z says -=*[1475466119.000727]-=*::: Absolute k8s and minikube beginner here.  I've installed minikube per the instructions (with k8s 1.4), then run "minikube dashboard" and get the following... $ minikube dashboard Opening kubernetes dashboard in default browser... The window server could not be contacted.  open must be run with a user logged in at the console, either as that user or as root.
+U2JE2BY9Z says -=*[1475466129.000728]-=*::: on a Mac
+U2JE2BY9Z says -=*[1475466164.000729]-=*::: any ideas?
+U0U77GDQC says -=*[1475503476.000730]-=*::: <@U2JE2BY9Z> if you do: `open .` and get the same error, its more than likely a mac issue and not a minikube error.  So a mac forum might be a better place to ask
+==========
+U2CQH424F says -=*[1475561802.000734]-=*::: it seems minikube running 1.4.0 doesn't have the monitoring stuff enabled for the dashboard that is discussed in the dashboard blog
+U2CQH424F says -=*[1475561840.000735]-=*::: <http://blog.kubernetes.io/2016/10/Production-Kubernetes-Dashboard-UI-1.4-improvements_3.html>
+U2CQH424F says -=*[1475562217.000737]-=*::: is that right or am i missing something?
+U1YEXGY77 says -=*[1475576807.000738]-=*::: minikube-dev: related `kexec.c`, Do we wait for the reply of the docker? Or own patch?
+U0DTGC97Z says -=*[1475579162.000739]-=*::: <@U2CQH424F> im seeing the same thing (not enabled) - dont know if you have to manually setup heapster or something? - tried getting it running, but i get `W1004 10:58:30.883803       1 reflector.go:330] <http://k8s.io/heapster/metrics/processors/namespace_based_enricher.go:84|k8s.io/heapster/metrics/processors/namespace_based_enricher.go:84>: watch of *api.Namespace ended with: too old resource version: 2676 (3986)` ..
+U0DTGC97Z says -=*[1475579296.000740]-=*::: also i see
+U0DTGC97Z says -=*[1475579298.000741]-=*::: `$ kubectl top node Error from server: the server could not find the requested resource (get services http:heapster:)`
+U0DTGC97Z says -=*[1475579315.000742]-=*::: so thats probably a hint right there
+U0DTGC97Z says -=*[1475579474.000743]-=*::: also, when i create a svc for heapster - it appears, but then disappears again shortly .. which is .. uh, weird
+U0DTGC97Z says -=*[1475579998.000744]-=*::: must be a minikube issue - works just fine with my real cluster :slightly_smiling_face:
+U2CQH424F says -=*[1475591604.000745]-=*::: mmm, ok
+U1TUWPL1M says -=*[1475597045.000746]-=*::: <@U0DTGC97Z> the yamls from the heapster repo won't work directly, you need to make the service type NodePort if i recall correctly
+U1TUWPL1M says -=*[1475597084.000747]-=*::: and you will need to set up heapster as we don't create it by default in minikube
+==========
+U1VL8H66Q says -=*[1475608978.000749]-=*::: Were having a problem where on some developers setups internet names cant be resolved. Everyone is using the same version of kubernetes and minikube, and the kubernetes resource specification files are all the same. Any ideas on what to look for as to what could cause this? So far the only thing that appears to be different is virtual box version
+U1VL8H66Q says -=*[1475609069.000750]-=*::: (works on vbox 5.0.26 does not on 5.1)
+U178RGYJ0 says -=*[1475648691.000751]-=*::: <@U1VL8H66Q> sounds like it is due to different DNS set up on the developer s laptop. I would try `dig`on a working vs broken laptop to see the difference. `dig <http://foo.example.com|foo.example.com> @&lt;dns_ip&gt; will reveal if DNS works or not for a specific DNS server
+U0DTGC97Z says -=*[1475648928.000752]-=*::: <@U1TUWPL1M> yeah, that was my conclusions as well - i was just confused whether or not i needed heapster at all, or it was built in to the api-server  but it all makes sense, and i got it working! .. thx :slightly_smiling_face:
+U1VL8H66Q says -=*[1475673594.000754]-=*::: Thanks <@U178RGYJ0> I will try that out
+==========
+U280CVANB says -=*[1475678180.000756]-=*::: Where can I see logs of the apiserver in minikube? I'm passing some flags with --extra-conf and it seems to not work, so I would like to investigate this.
+U0DT660QM says -=*[1475678717.000757]-=*::: <@U280CVANB> try to start `minikube --v=7 --logtostderr=true`,  you should then also the api server logs using `minikube logs` (the glog settings are passed to localkube)
+U280CVANB says -=*[1475678824.000759]-=*::: <@U0DT660QM> yup that works, thanks!
+==========
+U1VL8H66Q says -=*[1475682584.000760]-=*::: So Ive done a bit more looking into the DNS issue weve been having with minikube. From inside a pod, doing dig <http://google.com|google.com> or dig <http://google.com|google.com> @10.0.0.10 results in "connection timed out; no servers could be reached but doing dig <http://google.com|google.com> @10.0.2.3 does work
+==========
+U0ACRBLSV says -=*[1475687249.000761]-=*::: I am finding that after a start/stop, the k8s services are no longer running
+U0ACRBLSV says -=*[1475687273.000762]-=*::: I think this previously worked
+U1TUWPL1M says -=*[1475687284.000763]-=*::: anything from `minikube logs`?
+U0ACRBLSV says -=*[1475687312.000764]-=*::: hhm , yes
+U0ACRBLSV says -=*[1475687330.000765]-=*::: panic: runtime error: makeslice: len out of range  goroutine 1 [running]: panic(0x3297740, 0xc820869800)  /usr/local/go/src/runtime/panic.go:464 +0x3e6 <http://k8s.io/minikube/vendor/github.com/coreos/etcd/wal.(*decoder).decodeRecord|k8s.io/minikube/vendor/github.com/coreos/etcd/wal.(*decoder).decodeRecord>(0xc82082dc80, 0xc820784e48, 0x0, 0x0)
+U0ACRBLSV says -=*[1475687382.000766]-=*::: <@U0ACRBLSV|warren.strange> uploaded a file: <https://kubernetes.slack.com/files/warren.strange/F2KNUCPCL/-.txt|Untitled>
+U1TUWPL1M says -=*[1475687382.000767]-=*::: i think we should make an issue for that - i've gotten it also.  the cause of it is switching between 1.3.x and 1.4 versions of k8s
+U0ACRBLSV says -=*[1475687394.000768]-=*::: ahhh, right
+U1TUWPL1M says -=*[1475687395.000769]-=*::: the tricky thing is that you don't even realize you're switching
+U1TUWPL1M says -=*[1475687412.000770]-=*::: because you might forget to pass in --kubernetes-version on the second minikube start
+U1TUWPL1M says -=*[1475687431.000771]-=*::: you can do `minikube config set kubernetes-version v1.4.0` to "pin" that version
+U1TUWPL1M says -=*[1475687446.000772]-=*::: but its still confusing i agree
+U0ACRBLSV says -=*[1475687508.000773]-=*::: do I need to recreate the vm to fix this?
+U1TUWPL1M says -=*[1475687545.000774]-=*::: i would try to run it on v1.4 first
+U0ACRBLSV says -=*[1475687595.000775]-=*::: k - that worked
+U0ACRBLSV says -=*[1475687597.000776]-=*::: thx!
+U1TUWPL1M says -=*[1475687622.000777]-=*::: do you mind opening an issue for this?  might be helpful to document it and try to fix it
+U1TUWPL1M says -=*[1475687627.000778]-=*::: if not, i can get to it later
+U0ACRBLSV says -=*[1475687705.000779]-=*::: yep - for sure
+U0ACRBLSV says -=*[1475687737.000780]-=*::: to be clear - I think the issue was that minikube thought I was on a 1.3 k8s, but it was really 1.4?
+U0ACRBLSV says -=*[1475687744.000781]-=*::: Just want to make sure I have the wording correct.
+U1TUWPL1M says -=*[1475687760.000782]-=*::: yeah i think just switching between the two causes issues
+U0ACRBLSV says -=*[1475687768.000783]-=*::: k
+==========
+U0A30SM33 says -=*[1475697090.000785]-=*::: <@U1TUWPL1M> so how about start `--kubernetes-version=...` pins the version? cleaned up on delete.
+U1TUWPL1M says -=*[1475697123.000786]-=*::: <@U0A30SM33> yeah that makes a lot of sense
+U1TUWPL1M says -=*[1475697163.000787]-=*::: should we also pin `vm-driver` <@U0A30SM33> ?
+U0A30SM33 says -=*[1475697168.000788]-=*::: i think so
+U1TUWPL1M says -=*[1475697179.000789]-=*::: all the start cmds?
+U0A30SM33 says -=*[1475697183.000790]-=*::: hmm
+U1TUWPL1M says -=*[1475697195.000791]-=*::: cpu and memory might make sense -- in practice i use the same values
+U1TUWPL1M says -=*[1475697211.000792]-=*::: and since they are tied to a particular vm anyways
+U0A30SM33 says -=*[1475697214.000793]-=*::: yeah good point - i like that idea
+U1TUWPL1M says -=*[1475697240.000794]-=*::: that way we can get around the whole "warn the user" that they need to recreate the VM issue
+U0A30SM33 says -=*[1475697246.000795]-=*::: yeah
+U1TUWPL1M says -=*[1475697260.000796]-=*::: and we could always change it if we start to support changing those values on the fly
+U0A30SM33 says -=*[1475697296.000797]-=*::: only thing to be aware of is how that changes defaults so `--help` wouldn't show the defaults from config file - unless we parse the config file first &amp; set defaults to what's in there
+==========
+U2CQH424F says -=*[1475697328.000798]-=*::: Is it possible to run multiple distinct and named minikube setups? If not then I think it makes sense to make the start args pinned
+U0A30SM33 says -=*[1475697339.000799]-=*::: right now it is not possible
+U2CQH424F says -=*[1475697346.000800]-=*::: And right, check the config to populate the help
+U0A30SM33 says -=*[1475697362.000801]-=*::: way more succinctly put :stuck_out_tongue:
+U2CQH424F says -=*[1475697362.000802]-=*::: It's something that I thought was rather weird
+U1TUWPL1M says -=*[1475697382.000803]-=*::: yeah its not super clear
+U1TUWPL1M says -=*[1475697394.000804]-=*::: yeah we could make the helptext parse the config file too
+U2CQH424F says -=*[1475697412.000805]-=*:::  <@U0A30SM33> ha, I'm not normally succinct. Mostly just thorough :)
+U2CQH424F says -=*[1475697428.000806]-=*::: Maybe I should always communicate from my phone
+U1TUWPL1M says -=*[1475697551.000807]-=*::: cool ill work on a PR for this
+U2CQH424F says -=*[1475753527.000810]-=*::: is it possible to play with ingress on top of minikube?
+U2CQH424F says -=*[1475753541.000811]-=*::: with virtualbox you can forward ports to the host
+U2CQH424F says -=*[1475753575.000812]-=*::: so i'm thinking that setting up an ingress controller that binds to a port could then be accessible from the outside based on a port forwarding rule on the virtualbox instance
+U1Q5R0D5J says -=*[1475757062.000813]-=*::: ingress works fine
+U1Q5R0D5J says -=*[1475757077.000814]-=*::: i have traefik daemonset binding port 80
+U2CQH424F says -=*[1475764531.000815]-=*::: :slightly_smiling_face:
+==========

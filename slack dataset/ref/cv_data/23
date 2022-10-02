@@ -1,0 +1,50 @@
+==========
+U0HSNPGLC says -=*[1474995691.000094]-=*::: meeting?
+U0JFJ4KHS says -=*[1474995741.000095]-=*::: We are on the call <https://zoom.us/my/sigwindows>
+U0HSNPGLC says -=*[1474995791.000096]-=*::: it has a hangout url in the invite
+U0HSNPGLC says -=*[1474995793.000097]-=*::: hence my confusion
+U0PPMUTGR says -=*[1474995829.000098]-=*::: send me your email and i will send you the updated invite
+U0HSNPGLC says -=*[1474995918.000099]-=*::: <mailto:spotter@gmail.com|spotter@gmail.com> but I probably have it, it just a video link as well
+U0PPMUTGR says -=*[1475012056.000100]-=*::: got it. thanks and sorry about the confusion
+==========
+U0PPMUTGR says -=*[1475242475.000104]-=*::: SIG-Windows, i started the process to include our work from this SIG as a beta into v1.5 of k8s. the deadline for an alpha is Nov1st. I will prepare the feature list and deliverables next week
+==========
+U2K20BCFQ says -=*[1475751663.000111]-=*::: Hi All, I am working on experiment after deploying kubernetes on windows so can anyone point me to documentation for windows support and current status- I was referring-  <https://github.com/kubernetes/kubernetes/issues/22623>
+U0PT5KRHR says -=*[1475758846.000113]-=*::: Hello <@U2K20BCFQ>
+U0PT5KRHR says -=*[1475758911.000114]-=*::: The following has info on how to get started on Windows:
+U0PT5KRHR says -=*[1475758912.000115]-=*::: <https://docs.google.com/document/d/1IjwqpwuRdwcuWXuPSxP-uIz0eoJNfAJ9MWwfY20uH3Q/edit#heading=h.96mbls2u62j1>
+U2K20BCFQ says -=*[1475760284.000116]-=*::: Thanks a lot <@U0PT5KRHR>
+U0PT5KRHR says -=*[1475760482.000117]-=*::: no problem!
+==========
+U0PPMUTGR says -=*[1475770626.000118]-=*::: folks, we are demoing the windows server support at the kubernetes community meeting today at 10am PST
+U0HSNPGLC says -=*[1475772771.000119]-=*::: having a bunch of people join who are interested in k8s for windows :slightly_smiling_face:
+U0K61JBKJ says -=*[1475774780.000120]-=*::: great demo guys! well done
+U0PPMUTGR says -=*[1475775476.000121]-=*::: :thumbsup:
+U0HSNPGLC says -=*[1475775878.000122]-=*::: so Qs people are asking me,  is 1.5 target beta quality or better?
+U0PPMUTGR says -=*[1475776208.000123]-=*::: likely beta quality, but we will know more as we get closer
+U0PPMUTGR says -=*[1475776246.000124]-=*::: everyone, i will record the demo from today in full fidelity and we can decide how to distribute it to interested parties
+U0PPMUTGR says -=*[1475795750.000126]-=*::: kubernetes 1.5 beta support for windows server containers will be tracked by this feature - <https://github.com/kubernetes/features/issues/116> Feedback is welcome!
+==========
+U0JFJ4KHS says -=*[1475847501.000129]-=*::: Hi All, I have created few issues to track the work that needs to be done for Kubernetes 1.5 beta support for windows server containers. Please let us know if you would like to contribute to any of those efforts
+U0JFJ4KHS says -=*[1475847503.000130]-=*::: <https://github.com/kubernetes/kubernetes/issues/34263>
+U0JFJ4KHS says -=*[1475847516.000132]-=*::: <https://github.com/kubernetes/kubernetes/issues/34270>
+U0JFJ4KHS says -=*[1475847531.000134]-=*::: <https://github.com/kubernetes/kubernetes/issues/30282>
+U0JFJ4KHS says -=*[1475847542.000136]-=*::: <https://github.com/kubernetes/kubernetes/issues/34327>
+U0PPMUTGR says -=*[1475847709.000138]-=*::: :thumbsup:
+U0JFJ4KHS says -=*[1475848068.000139]-=*::: I started working on DNS Support for Windows Containers and as the support was recently merged to docker master, I downloaded the latest binaries from <https://master.dockerproject.org/>
+U0JFJ4KHS says -=*[1475848128.000140]-=*::: From yesterday's build, I was unable to start docker service and I am planning to debug the issues today
+U0PPMUTGR says -=*[1475851440.000141]-=*::: thanks Jitu. i am hoping the two DNS server PRs on Docker do solve some issues for us
+U0JFJ4KHS says -=*[1475851508.000142]-=*::: I think so too
+==========
+U0PT5KRHR says -=*[1475860902.000143]-=*::: <@U0JFJ4KHS> any updates with the latest docker build?
+U0JFJ4KHS says -=*[1475860929.000144]-=*::: was stuck with different things in the morning, will start looking at it now
+U0PT5KRHR says -=*[1475861681.000145]-=*::: :thumbsup:
+U0JFJ4KHS says -=*[1475866457.000147]-=*::: Looked at event viewer logs for docker and it is failing for minimum version requirements `fatal: Error starting daemon: The docker daemon requires build 14393 or later of Windows Server 2016 or Windows 10`
+U0JFJ4KHS says -=*[1475866459.000148]-=*::: My environment is running `Windows Server 2016 TP5 14300`
+U0PT5KRHR says -=*[1475866870.000149]-=*::: oh nice - so need a new windows install?
+U0PT5KRHR says -=*[1475866874.000150]-=*::: or maybe update?
+U0JFJ4KHS says -=*[1475866903.000151]-=*::: I am trying to figure out a way to force an update
+U0HSNPGLC says -=*[1475870347.000152]-=*::: <@U0JFJ4KHS> <https://social.technet.microsoft.com/Forums/office/en-US/84b7f473-18eb-4453-b262-783e1f365753/can-you-upgrade-from-server-2016-tp-to-server-2016-rtm?forum=WinServerPreview>
+U0HSNPGLC says -=*[1475870350.000153]-=*::: doesn't look positive
+U0JFJ4KHS says -=*[1475871686.000154]-=*::: I thought updating Win Server 2016 TP5 in my local environment would update the build to `14393` or above, but doesn't seem to be the case. When I check for update status, it says that all the updates are installed and I am still at build `14300`
+==========

@@ -1,0 +1,66 @@
+U2X7ARA79 says -=*[1478123015.000738]-=*::: we have kubelet running now and connecting to master
+U2X7ARA79 says -=*[1478123027.000739]-=*::: however the PodCIDRs are not lining up
+U2X7ARA79 says -=*[1478123035.000740]-=*::: master gives us one pod CIDR
+U2X7ARA79 says -=*[1478123041.000741]-=*::: and we have manually configured another
+U2X7ARA79 says -=*[1478123046.000742]-=*::: any ideas here?
+U0JFJ4KHS says -=*[1478174461.000746]-=*::: <@U2X7ARA79>: did you set the CONTAINER_NETWORK environment before running the kubelet. This can cause getting IPs from default docker CIDR then the one configured for transparent network 
+U0ALRFJH0 says -=*[1478177236.000747]-=*::: good news everyone! #31707 (Windows Containers support on K8s) is pretty much ready to merge. the `kube-proxy`, however, will need some rework. well be focusing on that today. high-fives all around, :raised_hand:
+U0PT5KRHR says -=*[1478177258.000749]-=*::: sweet :clap:
+U0PPMUTGR says -=*[1478183042.000750]-=*::: woohooo!!!!!
+U0PPMUTGR says -=*[1478183047.000751]-=*::: awesome job guys!
+U0ALRFJH0 says -=*[1478202358.000752]-=*::: second update: #36079 (Windows `kube-proxy`) has been updated to address first review and passes all checks.
+U0K61JBKJ says -=*[1478204688.000754]-=*::: Great work guys!
+U0K61JBKJ says -=*[1478204699.000755]-=*::: Reading above I saw this
+U0K61JBKJ says -=*[1478204754.000756]-=*::: &gt;the only thing is Start-Process will not start the processes on restart, but I don't think we should bother about that as everyone would want to have their own mechanisms to handle that based on the policies that they might have in place
+U0K61JBKJ says -=*[1478204767.000757]-=*::: I agree with <@U0PPMUTGR> 
+U0K61JBKJ says -=*[1478204799.000758]-=*::: The above thought is a very Linux specific thinking and doesn't quite translate well to Windows 
+U0K61JBKJ says -=*[1478204848.000759]-=*::: The standard practice and pattern for this in Windows is to make your service a Windows Service 
+U0K61JBKJ says -=*[1478204931.000760]-=*::: We actually struggled with this when building ACP as the behavior was purposely different (read inconsistent) between Windows and Linux as Linux admins like to configure how they want to restart processes while in Windows that's just not the expectation. 
+U0K61JBKJ says -=*[1478204959.000761]-=*::: In any case, just my two cents :)
+U0ALRFJH0 says -=*[1478208910.000762]-=*::: takes the two cents and stores them in his pocket. thanks asultan!
+U0ALRFJH0 says -=*[1478208951.000763]-=*::: always good to have feedback from people who have real insight into problems and potential solutions, so thanks for sharing.
+U0PPMUTGR says -=*[1478209320.000764]-=*::: :slightly_smiling_face:  <https://kubernetes.slack.com/archives/sig-windows/p1478208910000762>
+U0PPMUTGR says -=*[1478209353.000766]-=*::: <@U0K61JBKJ>  i think we settled on the powershell script for alpha and we will have a better windows service approach for beta
+U0PPMUTGR says -=*[1478209361.000767]-=*::: like you i agree on all the points you made
+U0PPMUTGR says -=*[1478209425.000768]-=*::: hey guys, in the PRs we are submitting, make sure to reference the feature <https://github.com/kubernetes/features/issues/116>
+U0ALRFJH0 says -=*[1478267545.000770]-=*::: <@U0PPMUTGR> re: feature freeze, i was reading the rules and it seems we can fall into the exception category: <https://github.com/kubernetes/features/blob/master/EXCEPTIONS.md>
+U0ALRFJH0 says -=*[1478267598.000773]-=*::: we will have minimal to no impact on k8s stability because we keep our code separate. this is not the case for the kubelet but Linux tests are in place to make sure we dont break a thing.
+U0ALRFJH0 says -=*[1478267611.000774]-=*::: worst case scenario, we ship a version that dont run Windows containers.
+U0ALRFJH0 says -=*[1478267677.000775]-=*::: so, 1) multiple containers per pod, and 2) workaround dns search may get in, i think
+U0ALRFJH0 says -=*[1478267692.000776]-=*::: and btw, most code here will happen in the `apprenda/pause` image
+U0ALRFJH0 says -=*[1478269643.000777]-=*::: <@U0PPMUTGR> <@U0JFJ4KHS> can i have editor access to the document that details build and deployment?
+U0ALRFJH0 says -=*[1478269656.000778]-=*::: its been weird to suggest changes
+U0PPMUTGR says -=*[1478269656.000779]-=*::: Jitu has the creds
+U0ALRFJH0 says -=*[1478269667.000780]-=*::: im ok with suggesting but it may be harder to review
+U0JFJ4KHS says -=*[1478269675.000781]-=*::: Let me give you access
+U0ALRFJH0 says -=*[1478269691.000782]-=*::: thanks <@U0JFJ4KHS>
+U0JFJ4KHS says -=*[1478269729.000783]-=*::: can you paste your email address here
+U0ALRFJH0 says -=*[1478269787.000784]-=*::: in pvt
+U0JFJ4KHS says -=*[1478269844.000785]-=*::: done
+U0ALRFJH0 says -=*[1478270124.000786]-=*::: im thinking we could make _nightly_ binaries available for people to try out without having to compile
+U0ALRFJH0 says -=*[1478270164.000788]-=*::: ill think more about it and try and come with a plan on my flight back home
+U0JFJ4KHS says -=*[1478270174.000789]-=*::: thats a good idea
+U0ALRFJH0 says -=*[1478270284.000790]-=*::: ill spend some time next week automating `apprenda/pause` build and publishing and pick this up after it. ill share a plan draft for us to review before proceeding.
+U0JFJ4KHS says -=*[1478274409.000791]-=*::: <@U0ALRFJH0>, <@U0PT5KRHR>: once you guys review the powershell script to start kubelet and kube-proxy..do we can open a PR to add it to `kubernetes/cluster/windows` directory
+U0JFJ4KHS says -=*[1478274432.000792]-=*::: let me know if that is OK, or a different directory is prefferred
+U0PT5KRHR says -=*[1478274461.000793]-=*::: seems like a reasonable location
+U0PT5KRHR says -=*[1478274487.000794]-=*::: is there a branch for those scripts?
+U0JFJ4KHS says -=*[1478274492.000795]-=*::: not yet
+U0PT5KRHR says -=*[1478274499.000796]-=*::: cool cool
+U0JFJ4KHS says -=*[1478274514.000797]-=*::: I just created the script and sent it to you guys for review
+U0JFJ4KHS says -=*[1478274533.000798]-=*::: I will create the branch now and lay the ground work
+U0ALRFJH0 says -=*[1478274580.000799]-=*::: <@U0JFJ4KHS> <@U0PT5KRHR> im not sure i will be able to review properly due to my limitations With windows usage, but i trust you + <@U0PPMUTGR> to get it right.
+U0PT5KRHR says -=*[1478274596.000800]-=*::: I think it would be better to review in github in a branch.. what do you think?
+U0ALRFJH0 says -=*[1478274610.000801]-=*::: i agree with the PR but lets make sure to include a note about _it_ pending the other two PRs to get reviewed and merged.
+U0JFJ4KHS says -=*[1478274610.000802]-=*::: <@U0PT5KRHR> sounds good
+U0JFJ4KHS says -=*[1478274622.000803]-=*::: I will create a branch and send it across for review
+U0ALRFJH0 says -=*[1478275418.000804]-=*::: also, we should make clear were focusing our efforts in running k8s node components alone, not master components.
+U0ALRFJH0 says -=*[1478275453.000805]-=*::: while master components should be OS-agnostic, its something we need to spend time with to make sure it works smoothly, e.g. add more scripts, networking stuff, etc.
+U0ALRFJH0 says -=*[1478275547.000806]-=*::: ill try and add this to a doc PR soon, if we get the currently open PRs  merged
+U0ALRFJH0 says -=*[1478275887.000807]-=*::: ah, great news, seems we have good reviews for said PRs :smile:
+U0ALRFJH0 says -=*[1478276068.000808]-=*::: <@U0PT5KRHR> theres one small request on #31707. i can take care of that. sounds good?
+U0PT5KRHR says -=*[1478276123.000809]-=*::: :thumbsup:
+U0PT5KRHR says -=*[1478276126.000810]-=*::: thanks <@U0ALRFJH0>
+U0PPMUTGR says -=*[1478276769.000811]-=*::: i hope this is the last change to merge the kubelet PR :slightly_smiling_face:
+U0PPMUTGR says -=*[1478276773.000812]-=*::: reviewing the PS script now
+U0PPMUTGR says -=*[1478276779.000813]-=*::: PS = powershell

@@ -1,0 +1,167 @@
+==========
+U0723KV7E says -=*[1456935948.000197]-=*::: <http://www.all-internet-security.com/blockstack-makes-dns-more-secure-by-building-on-top-of-the-blockchain/>
+U0723KV7E says -=*[1456935991.000199]-=*::: Logo change request has been made see <#C07QPN6SV> channel
+==========
+U075BH6M7 says -=*[1456942109.000200]-=*::: New okTurtles post: *The Zcash Catch* <https://blog.okturtles.com/2016/03/the-zcash-catch/>
+U074Q9Q3D says -=*[1456947676.000201]-=*::: Oh joy /s:  <https://medium.com/@rosshosman/1password-sends-your-password-across-the-loopback-interface-in-clear-text-307cefca6389#.2ahws7xfq>
+U0722SJ4A says -=*[1456947697.000203]-=*::: noooooo
+U075BH6M7 says -=*[1456948877.000204]-=*::: see the comments for 1pw response /cc <@U074Q9Q3D> <@U0722SJ4A>
+U0722SJ4A says -=*[1456948918.000205]-=*::: <https://news.ycombinator.com/item?id=11210590>
+U0722SJ4A says -=*[1456948929.000206]-=*::: ZeroNet on HN
+U0722SJ4A says -=*[1456948950.000207]-=*::: cc <@U07EAV9V1>
+U075BH6M7 says -=*[1456949135.000208]-=*::: Awesome! Glad to see ZeroNet getting attention it deserves. :simple_smile: Also, just saw someone submitted our Zcash post to HN, tho it needs two upvotes for fp: <https://news.ycombinator.com/newest>
+U071X9XPC says -=*[1456949461.000209]-=*::: I feel that 1Passwords response is not accurate
+U071X9XPC says -=*[1456949467.000210]-=*::: they make it sound like theyre doing all they can
+U071X9XPC says -=*[1456949475.000211]-=*::: and this is just a limit of inter-process communication
+U071X9XPC says -=*[1456949512.000212]-=*::: unencrypted data over loopback device? seriously?
+U071X9XPC says -=*[1456949538.000213]-=*::: a single malicious app on your local computer that can listen to it and youre vulnerable
+U071X9XPC says -=*[1456949548.000214]-=*::: that is *not* the same thing as your OS getting compromised
+U071X9XPC says -=*[1456949553.000215]-=*::: (as they make it sound like)
+U071X9XPC says -=*[1456949602.000216]-=*::: do the key exchange at setup time, Im paying you $$ and security is the *only* reason Im using your product
+U075BH6M7 says -=*[1456949831.000217]-=*::: <@U071X9XPC>: just asked Jeffrey on twitter: <https://twitter.com/taoeffect/status/705124726927020032>
+U071X9XPC says -=*[1456949857.000219]-=*::: well its inter-process communication so no need for HTTPS
+U071X9XPC says -=*[1456949865.000220]-=*::: all that is needed is key exchange between the two processes
+U075BH6M7 says -=*[1456949907.000221]-=*::: <@U071X9XPC>: this is browser extensions were dealing with. as far as i know HTTPS is the most secure option for those
+U075BH6M7 says -=*[1456949918.000222]-=*::: its not easy for them to establish plain old socket connections
+U075BH6M7 says -=*[1456949947.000223]-=*::: (as far as i remember)
+U071X9XPC says -=*[1456950074.000224]-=*::: Its a local TCP connection between two local processes (not the browser extension talking to any outside resources over http/https).
+U075BH6M7 says -=*[1456950105.000225]-=*::: one of those processes is a browser extension running in a browser
+U071X9XPC says -=*[1456950175.000226]-=*::: yeah and extensions (like tabs) are separate processes in Chrome
+U071X9XPC says -=*[1456950177.000227]-=*::: <https://www.quora.com/Why-do-Chrome-extensions-run-in-separate-processes>
+U071X9XPC says -=*[1456950188.000229]-=*::: From 1Passwords blog:
+U071X9XPC says -=*[1456950206.000230]-=*::: ```The researchers have demonstrated that it is possible to install a malicious app that might be able to put itself in a position to capture passwords sent from the browser to 1Password.```
+U071X9XPC says -=*[1456950224.000231]-=*::: This makes it sound like the malicious app needs to do something special to insert itself between the two processes
+U071X9XPC says -=*[1456950231.000232]-=*::: if its clear text on loopback interface
+U071X9XPC says -=*[1456950237.000233]-=*::: all you need is permission to listen to the interface
+U071X9XPC says -=*[1456950240.000234]-=*::: and do a tcp dump
+U071X9XPC says -=*[1456950240.000235]-=*::: thats it
+U075BH6M7 says -=*[1456950249.000236]-=*::: no one is disputing that
+U071X9XPC says -=*[1456950254.000237]-=*::: nothing special needed, everything depends on the permission you give to the app
+U075BH6M7 says -=*[1456950256.000238]-=*::: the question is how to fix it
+U075BH6M7 says -=*[1456950268.000239]-=*::: you are welcome to make your suggestions to 1pw fyi
+==========
+U074Q9Q3D says -=*[1456950294.000240]-=*::: anonymous shared memory segment?  Hard to list them without superuser privileges
+U075BH6M7 says -=*[1456950310.000241]-=*::: https is the best way imo
+U071X9XPC says -=*[1456950346.000242]-=*::: HTTPS is too high level, IMO
+U071X9XPC says -=*[1456950355.000243]-=*::: why would you want to involve outside parties/resources?
+U071X9XPC says -=*[1456950374.000244]-=*::: if I was designing this Id simply require a key-exchange between 1password mini and the app at setup time
+U071X9XPC says -=*[1456950381.000245]-=*::: (they recognize that its a solution/option)
+U071X9XPC says -=*[1456950389.000246]-=*::: they just dont want to complicate UX with it
+U071X9XPC says -=*[1456950399.000247]-=*::: they should at least give the option for advanced users to do the pairing
+U071X9XPC says -=*[1456950404.000248]-=*::: if they are so concerned about UX
+U075BH6M7 says -=*[1456950433.000249]-=*::: &gt; key-exchange between 1password mini and the app at setup time you cant do this in Firefox
+U075BH6M7 says -=*[1456950461.000250]-=*::: and im unsure whether thats possible in Chrome as well
+U075BH6M7 says -=*[1456950528.000251]-=*::: firefox &amp; chrome extensions have limited IPC options
+U071X9XPC says -=*[1456950533.000252]-=*::: umm
+U071X9XPC says -=*[1456950545.000253]-=*::: Im pretty sure I can do key exchange between any two processes over IPC
+U075BH6M7 says -=*[1456950559.000254]-=*::: what do you mean by IPC?
+U071X9XPC says -=*[1456950564.000255]-=*::: I even implemented a very quick/dirty version of this for the IPC happening in the wallet used by blockstack-cli
+U071X9XPC says -=*[1456950569.000256]-=*::: inter-process communication
+U075BH6M7 says -=*[1456950571.000257]-=*::: i know
+U075BH6M7 says -=*[1456950574.000258]-=*::: what specific IPC?
+U071X9XPC says -=*[1456950577.000259]-=*::: any
+U075BH6M7 says -=*[1456950591.000260]-=*::: well, like i said earlier, and you seem to be ignoring: &gt; firefox &amp; chrome extensions have limited IPC options
+U071X9XPC says -=*[1456950664.000261]-=*::: how is it limited? Im not aware. I thought its fairly generic
+U071X9XPC says -=*[1456950666.000262]-=*::: <https://www.chromium.org/developers/design-documents/inter-process-communication>
+U075BH6M7 says -=*[1456950693.000264]-=*::: interesting: <https://twitter.com/jpgoldberg/status/705127840014962688>
+U075BH6M7 says -=*[1456950781.000266]-=*::: <@U071X9XPC>: i might be mistaken about Chrome, but in Firefox anything other than HTTP(S) is a pain. However, you might be right that they could just use HTTP: <https://twitter.com/taoeffect/status/705128529176825856>
+U075BH6M7 says -=*[1456955531.000268]-=*::: <@U071X9XPC>: the root thing is kindof a deal breaker on this issue. @jcs comment is insightful: &gt; You have to be root to sniff network interfaces, and if youre root you could just watch the keystrokes the user just typed in or do many other bad things.
+U071X9XPC says -=*[1456955594.000270]-=*::: you can also give permissions to an app to listen to the loopback interface (as root)
+U074Q9Q3D says -=*[1456955608.000271]-=*::: moreover, you can MITM the connection without root
+U074Q9Q3D says -=*[1456955628.000272]-=*::: you need root do put the interface into promiscuous mode, but not to bind on a high-value port number
+U075BH6M7 says -=*[1456955628.000273]-=*::: <@U074Q9Q3D>: how?
+U071X9XPC says -=*[1456955694.000274]-=*::: yeah come to think of it
+U074Q9Q3D says -=*[1456955695.000275]-=*::: packet capture programs require putting the interface into promiscuous mode, so they can copy packets to userspace as they're being processed.  but if the browser and 1pw plugin are constructed to communicate over a high-numbered port (&gt;1024), then I can just set up an unprivileged middle-man proxy and intercept the communication
+U071X9XPC says -=*[1456955706.000276]-=*::: I dont remember giving 1Password permissions when it installed
+U071X9XPC says -=*[1456955720.000277]-=*::: so it must not be using a low-numbered port
+U074Q9Q3D says -=*[1456955740.000278]-=*::: this is why promiscuous mode is privileged--to stop this kind of attack (both on the loopback interface, and on network traffic)
+U074Q9Q3D says -=*[1456955824.000279]-=*::: as long as the port is high-numbered, I can impersonate either the browser or the plugin
+U071X9XPC says -=*[1456955863.000280]-=*::: also certain programs can legitimately ask for permissions to loopback and youd just click yes
+U071X9XPC says -=*[1456955871.000281]-=*::: and now they can read my passwords in plain text?
+U071X9XPC says -=*[1456955873.000282]-=*::: thats insane
+U075BH6M7 says -=*[1456955934.000283]-=*::: <@U071X9XPC>: you should tweet at them or send them some sort of communication if you havent already. if they bind to a high-numbered port that is deadly. /cc <@U074Q9Q3D>
+==========
+U075BH6M7 says -=*[1456956026.000285]-=*::: <@U071X9XPC> <@U074Q9Q3D>: Jeff says youre wrong. <https://twitter.com/jpgoldberg/status/705150715216302081>
+U074Q9Q3D says -=*[1456956038.000287]-=*::: to sniff, but not to bind
+U075BH6M7 says -=*[1456956050.000288]-=*::: <@U074Q9Q3D>: what does that matter?
+U074Q9Q3D says -=*[1456956076.000289]-=*::: I can bind on a high-number (unprivileged) port and run as a server without needing any privileges.
+U075BH6M7 says -=*[1456956086.000290]-=*::: so what?
+U074Q9Q3D says -=*[1456956087.000291]-=*::: But I can't sniff, since that requires putting the interface into promiscuous mode.
+U075BH6M7 says -=*[1456956091.000292]-=*::: that doesnt matter
+U074Q9Q3D says -=*[1456956183.000293]-=*::: um, yes it does.  If the browser connects to 1pw as a client (i.e. 1pw binds on a port and accepts connections from the browser), then my evil program can do so as well.  Moreover, I can race 1pw to bind on the port it uses, and impersonate 1pw.
+U075BH6M7 says -=*[1456956231.000294]-=*::: <@U074Q9Q3D>: then 1PW cant bind, end of story
+U074Q9Q3D says -=*[1456956248.000295]-=*::: either 1pw or the browser has to bind on the port to establish the connection
+U075BH6M7 says -=*[1456956260.000296]-=*::: if you bind, 1pw cant, end of story
+U074Q9Q3D says -=*[1456956275.000297]-=*::: but the browser can't tell the difference between 1pw and my program
+U075BH6M7 says -=*[1456956292.000298]-=*::: sure it can
+U075BH6M7 says -=*[1456956297.000299]-=*::: your program doesnt know the passwords
+U075BH6M7 says -=*[1456956317.000302]-=*::: *deleted dumb comments
+U075BH6M7 says -=*[1456956352.000304]-=*::: <@U074Q9Q3D>: ok, i recommend not talking to me but talking to jeff directly: <https://twitter.com/taoeffect/status/705151841923780608>
+U075BH6M7 says -=*[1456956726.000307]-=*::: <@U074Q9Q3D>: thats a good point, i didnt realize what you were saying
+U074Q9Q3D says -=*[1456956848.000309]-=*::: no worries!
+U071X9XPC says -=*[1456957263.000310]-=*::: I think this goes deeper than this
+==========
+U071X9XPC says -=*[1456957276.000311]-=*::: I just did a tcpdump and wasnt asked for root
+U071X9XPC says -=*[1456957281.000312]-=*::: in my tcpdump
+U074Q9Q3D says -=*[1456957294.000313]-=*::: is tcpdump setuid?
+U071X9XPC says -=*[1456957298.000314]-=*::: I have
+U071X9XPC says -=*[1456957307.000316]-=*::: ```{"action":"executeFillScript","payload":{"script":[["click_on_opid","__2"],["fill_by_opid","__2","<mailto:m@ali.vc|m@ali.vc>"],["click_on_opid","__3"],["fill_by_opid","__3,**********]]```
+U071X9XPC says -=*[1456957314.000317]-=*::: (I took out the password from there)
+U071X9XPC says -=*[1456957330.000318]-=*::: and I also have data from IPC happening between our CLI processes
+U071X9XPC says -=*[1456957358.000319]-=*::: ```value&gt;&lt;string&gt;{encrypted_payment_privkey": null, "payment_address": null,```
+U071X9XPC says -=*[1456957378.000320]-=*::: the fact that we wrote an IPC setup in 2 days and are using *encrypted communication*
+U071X9XPC says -=*[1456957397.000321]-=*::: and 1Password is an established company that has been around for years and is sending clear text is just insane
+U071X9XPC says -=*[1456957406.000322]-=*::: after digging around
+U071X9XPC says -=*[1456957408.000323]-=*::: it turns out that
+U071X9XPC says -=*[1456957415.000324]-=*::: the fact Im able to do a tcpdump is because
+U074Q9Q3D says -=*[1456957424.000325]-=*::: (tcpdump is *not* setuid root on Debian, but idk about OSX.  Not that it makes much of a difference, though--an unprivileged program can run a setuid-root program)
+U071X9XPC says -=*[1456957434.000326]-=*::: my account is in the access_bpf group
+U071X9XPC says -=*[1456957443.000327]-=*::: I must have added it earlier for Wireshark or some other program that I used
+U071X9XPC says -=*[1456957449.000328]-=*::: but its a setting I *forgot* about
+U071X9XPC says -=*[1456957458.000329]-=*::: and when I added it, the use case was totally legitimate
+U071X9XPC says -=*[1456957476.000330]-=*::: there is no excuse to not doing an key exchange between their two processes
+U075BH6M7 says -=*[1456959122.000332]-=*::: <@U071X9XPC>: yeah probably because of the wireshark installation. which is odd b/c i installed wireshark via Homebrew and couldnt run tcpdump without root
+U074Q9Q3D says -=*[1456959205.000333]-=*::: maybe it's setuid or setgid root (not sure; not running OSX)
+==========
+U0HK0JCA2 says -=*[1456970405.000335]-=*::: welcome Dan! <@U0Q16N1MH> :smile:
+U0Q16N1MH says -=*[1456970461.000336]-=*::: Hey!! Theres a familiar name! Good to see ya here, Taulant :simple_smile:
+==========
+U0722SJ4A says -=*[1456975663.000337]-=*::: <https://blockstackstats.com/>
+U0722SJ4A says -=*[1456975692.000339]-=*::: <https://blockstackstats.com/>
+U0722SJ4A says -=*[1456975713.000341]-=*::: Hey everyone, check this out ^
+U0722SJ4A says -=*[1456975730.000342]-=*::: A site with stats on Blockstack name registrations
+U07CBM9RB says -=*[1456976149.000344]-=*::: Wtf happened on February where you spiked
+U07CBM9RB says -=*[1456976153.000345]-=*::: Do you know?
+U0722SJ4A says -=*[1456976324.000346]-=*::: Yeah we got picked up by the French
+U0722SJ4A says -=*[1456976337.000347]-=*::: A few French bloggers and publications featured us
+U07CBM9RB says -=*[1456976446.000348]-=*::: That's odd...and cool
+U07CBM9RB says -=*[1456976482.000349]-=*::: We could use some French bloggers on our side send them over
+U0722SJ4A says -=*[1456976493.000350]-=*::: Hahaha
+U0722SJ4A says -=*[1456976509.000351]-=*::: We never reached out to them but we should
+==========
+U08GHKR1R says -=*[1457014216.000352]-=*::: A fascinating article about Blockchains as open immutable, linked graphs for any data. Nice mention for onename too :simple_smile: :blockstack:   <http://www.maciejolpinski.com/blog/recreating-googles-pagerank-on-the-bitcoin-blockchain/>
+U0723KV7E says -=*[1457022493.000354]-=*::: Nice. Thanks for posting this <@U08GHKR1R>. :simple_smile:
+==========
+U07D44N65 says -=*[1457046077.000357]-=*::: Someone should invite Maciej to blockstack. His writing is great
+U071X9XPC says -=*[1457046234.000358]-=*::: Just skimmed the article, its nicely written
+U07D44N65 says -=*[1457046358.000360]-=*::: he def has a great conceptual framework for thinking of blockchain implications :simple_smile:
+==========
+U0722SJ4A says -=*[1457135304.000369]-=*::: <https://medium.com/@barmstrong/what-happened-at-the-satoshi-roundtable-6c11a10d8cdf#.911u24c7w>
+U071X9XPC says -=*[1457136186.000371]-=*::: My strategy to encourage alternate implementations would simply be to fund 4-5 top open-source developers to go and create a Go/Rust Bitcoin implementation. Even if it doesnt get fully deployed by miners for a while, itd attract so many good developers and can eventually start getting deployed.
+U071X9XPC says -=*[1457136219.000372]-=*::: Some bigger company from the Bitcoin space would have to take the lead on something like this and drop the $$ :simple_smile:
+U0722SJ4A says -=*[1457137377.000373]-=*::: yeah agreed
+U0722SJ4A says -=*[1457137386.000374]-=*::: Id pump more resources into BTCD
+U0722SJ4A says -=*[1457137387.000375]-=*::: <https://github.com/btcsuite/btcd>
+U0722SJ4A says -=*[1457137399.000377]-=*::: It seems like the highest quality implementation out there
+U0722SJ4A says -=*[1457137410.000378]-=*::: And it already has quite a few contributors
+==========
+U076LGFE0 says -=*[1457153275.000379]-=*::: <https://blockstack.slack.com/archives/articles/p1457136219000372>
+U076LGFE0 says -=*[1457153318.000381]-=*::: unfortunately certain bigger companies seem to prefer to just make medium posts and silly bets
+==========
+U075BH6M7 says -=*[1457199204.000382]-=*::: New post: *Bitcoin! Keep Calm And RBF/CPFP On!* <https://fixingtao.com/2016/03/bitcoin-keep-calm-and-rbfcpfp-on/>
+==========
+U07C0TB6H says -=*[1457210509.000383]-=*::: <https://medium.com/@laurentmt/doing-nothing-is-a-choice-2c26376358a2#.o0kam0qjj>
+U07C0TB6H says -=*[1457210556.000385]-=*::: <@U071X9XPC>: we're writing our implementation in golang as you know...maybe google could help fund the one you're suggesting :wink:
+U07C0TB6H says -=*[1457210614.000386]-=*::: <@U0722SJ4A> there has been some drama with btcd and making their own altcoin
+U07C0TB6H says -=*[1457210630.000387]-=*::: but we're using it in our implementation
+==========

@@ -1,0 +1,137 @@
+==========
+U11H6PJUB says -=*[1467864454.000193]-=*::: should a `make` on OSX work cleanly? (Fresh checkout) I want to know whether I should file an issue or start debugging, or just ignore it if it is not supported.
+U179VE6FR says -=*[1467882701.000194]-=*::: Does the minikube cluster have basic auth credentials?
+U179VE6FR says -=*[1467883031.000195]-=*::: <https://github.com/kubernetes/minikube/issues/284> answers my question I guess &gt;.&gt;
+U10AE1F99 says -=*[1467910709.000197]-=*::: hey <@U11H6PJUB> , make should work on OSX (but you'll need go and Docker)
+U11H6PJUB says -=*[1467910769.000198]-=*::: 1.6.2 and d4m.
+U11H6PJUB says -=*[1467910793.000199]-=*::: Have not tried a docker-machine vm.
+U10AE1F99 says -=*[1467910848.000200]-=*::: what error are you seeing?
+U10AE1F99 says -=*[1467910853.000201]-=*::: i use d4m as well
+U11H6PJUB says -=*[1467912105.000202]-=*::: <@U10AE1F99>: ``` mkdir -p /go/src/k8s.io &amp;&amp; ln -s -f /go/src/k8s.io/minikube /go/src/k8s.io/minikube CGO_ENABLED=1 go build -ldflags="-X <http://k8s.io/minikube/vendor/k8s.io/kubernetes/pkg/version.gitCommit=283137936a498aed572ee22af6774b6fb6e9fd94|k8s.io/minikube/vendor/k8s.io/kubernetes/pkg/version.gitCommit=283137936a498aed572ee22af6774b6fb6e9fd94> -X <http://k8s.io/minikube/vendor/k8s.io/kubernetes/pkg/version.gitVersion=v1.3.0|k8s.io/minikube/vendor/k8s.io/kubernetes/pkg/version.gitVersion=v1.3.0> -X <http://k8s.io/minikube/vendor/k8s.io/kubernetes/pkg/version.gitTreeState=dirty|k8s.io/minikube/vendor/k8s.io/kubernetes/pkg/version.gitTreeState=dirty> -X <http://k8s.io/minikube/pkg/version.version=v0.5.0|k8s.io/minikube/pkg/version.version=v0.5.0> -s -w -extldflags '-static'" -o ./out/localkube ./cmd/localkube mkdir -p /Users/mhb/src/gocode/src/k8s.io/minikube/_gopath/src/k8s.io &amp;&amp; ln -s -f /Users/mhb/src/gocode/src/k8s.io/minikube /Users/mhb/src/gocode/src/k8s.io/minikube/_gopath/src/k8s.io/minikube go get <http://github.com/jteeuwen/go-bindata/|github.com/jteeuwen/go-bindata/>... /Users/mhb/src/gocode/src/k8s.io/minikube/_gopath/bin/go-bindata -nomemcopy -o pkg/minikube/cluster/assets.go -pkg cluster ./out/localkube deploy/iso/addon-manager.yaml deploy/addons/dashboard-rc.yaml deploy/addons/dashboard-svc.yaml make: /Users/mhb/src/gocode/src/k8s.io/minikube/_gopath/bin/go-bindata: No such file or directory make: *** [pkg/minikube/cluster/assets.go] Error 1 ```
+U10AE1F99 says -=*[1467912533.000204]-=*::: hmm, are you running inside of a GOPATH (the /Users/mhb/src/gocode) directory
+==========
+U0HHUJWRY says -=*[1467912833.000205]-=*::: Is there a simple way to modify the api server config or do I have to modify the code here <https://github.com/kubernetes/minikube/blob/master/pkg/localkube/apiserver.go> and rebuild?
+U10AE1F99 says -=*[1467912902.000207]-=*::: there are a few flags, but most of it is hardcoded there
+U10AE1F99 says -=*[1467912905.000208]-=*::: what setting are you trying to change?
+U0HHUJWRY says -=*[1467912941.000209]-=*::: I would like to enable RBAC authz or webhook authz for testing.
+U0HHUJWRY says -=*[1467913027.000210]-=*::: <https://godoc.org/k8s.io/kubernetes/cmd/kube-apiserver/app/options> doesnt seem to have a lot of flexibility
+U10AE1F99 says -=*[1467913335.000212]-=*::: yeah, i think you'll have to recompile then
+U0HHUJWRY says -=*[1467914582.000213]-=*::: ```mkdir -p /Users/joshbowen/Code/Go/src/k8s.io/minikube/_gopath/src/k8s.io &amp;&amp; ln -s -f /Users/joshbowen/Code/Go/src/k8s.io/minikube /Users/joshbowen/Code/Go/src/k8s.io/minikube/_gopath/src/k8s.io/minikube docker run -w /go/src/k8s.io/minikube -e IN_DOCKER=1 -v /Users/joshbowen/Code/Go/src/k8s.io/minikube:/go/src/k8s.io/minikube <http://gcr.io/google_containers/kube-cross:v1.6.2-1|gcr.io/google_containers/kube-cross:v1.6.2-1> make out/localkube make: *** No rule to make target 'out/localkube'.  Stop. make: *** [out/localkube] Error 2``` Anyone gotten this error when trying to run `make`?
+U10AE1F99 says -=*[1467915143.000214]-=*::: How are you running Docker?
+U10AE1F99 says -=*[1467915171.000215]-=*::: it looks like your /Users directory isn't getting mounted into the docker container correctly
+U0HHUJWRY says -=*[1467915285.000216]-=*::: Im running docker through minikube right now
+U0HHUJWRY says -=*[1467915291.000217]-=*::: Which I guess means docker-machine
+U0HHUJWRY says -=*[1467915328.000218]-=*::: No its not docker machine. Its whatever happens if I spin up minikube with xhyve
+U10AE1F99 says -=*[1467915601.000219]-=*::: Ah ok
+U10AE1F99 says -=*[1467915609.000220]-=*::: yeah the xhyve driver doesn't have file sharing enabled right now
+U10AE1F99 says -=*[1467915616.000221]-=*::: so /Users on your mac won't get mapped into the VM
+U0HHUJWRY says -=*[1467915623.000222]-=*::: Gotcha.
+U0HHUJWRY says -=*[1467915628.000223]-=*::: Ill see if it works with the virtual box driver
+U10AE1F99 says -=*[1467915634.000224]-=*::: cool, it should work there
+U0HHUJWRY says -=*[1467915639.000225]-=*::: Thanks
+U10AE1F99 says -=*[1467915657.000226]-=*::: vbox performance is a lot better still
+U0HHUJWRY says -=*[1467915678.000227]-=*::: Oh good to know. Then Ill just ran it there.
+==========
+U11H6PJUB says -=*[1467919047.000228]-=*::: <@U10AE1F99>: for my case, it looks like go-bindata is getting installed to my outside gopath, not the one in the makefile. not sure how to fix that.
+U1PMX3DK3 says -=*[1467920642.000230]-=*::: I seem to have hosed up my minikube.  what is best way to delete it? (i want to try a reinstall)
+U1PMX3DK3 says -=*[1467920687.000231]-=*::: my current issue is ```kubectl  logs  kubernetes-dashboard-d9wep --namespace=kube-system Starting HTTP server on port 9090 Creating API server client for <https://10.0.0.1:443> Error while initializing connection to Kubernetes apiserver. This most likely means that the cluster is misconfigured (e.g., it has invalid apiserver certificates or service accounts configuration) or the --apiserver-host param points to a server that does not exist. Reason: the server has asked for the client to provide credentials```
+U10AE1F99 says -=*[1467921044.000232]-=*::: minikube delete should work
+U11H6PJUB says -=*[1467921739.000233]-=*::: figured it out, PR on the way.
+U10AE1F99 says -=*[1467921757.000234]-=*::: thanks!
+U11H6PJUB says -=*[1467922448.000235]-=*::: ```
+U1PMX3DK3 says -=*[1467927722.000238]-=*::: <@U10AE1F99>: thanks, minikube delete + start fixed all the things
+U10AE1F99 says -=*[1467927815.000239]-=*::: cool, we'll try to get a fix for the underlying issue in the next release
+U11H6PJUB says -=*[1467935406.000240]-=*::: minikube has tls/https turned on, how do I connect to it with curl? All I get is 'unauthorized'?
+U179VE6FR says -=*[1467965604.000241]-=*::: afaik there's no basic auth like the clusters set up on gcloud. You may need to create a secret, unless minikube creates one for you
+U179VE6FR says -=*[1467965641.000242]-=*::: If it's a token, you can add the auth header "Bearer TOKEN"
+U179VE6FR says -=*[1467965660.000243]-=*::: If it's a crt you should be able to specify client cert to curl
+==========
+U1PU5AK1B says -=*[1467966439.000245]-=*::: Hi there! How can you specify "engine options environments"? as used on <https://github.com/kubernetes/minikube/blob/d74ce773cf9e6152c3bbe3bdde304e159f27ba44/vendor/github.com/docker/machine/libmachine/provision/boot2docker.go#L131>
+U1PU5AK1B says -=*[1467966502.000247]-=*::: I need to be able to set HTTP_PROXY variables - and /var/lib/boot2docker/profile is generated on every `minikube start`
+U1PU5AK1B says -=*[1467968003.000249]-=*::: Okey, I found a workaround by manually editing `~/.minikube/machines/minikubeVM/config.json` and setting `HostOptions.EngineOptions.Env`. Perhaps the wrong way to go, but now I'm not blocked any longer
+==========
+U0AKLD04R says -=*[1467982707.000250]-=*::: <@U11H6PJUB>: Im having the same issue, trying to get ingress working, but get error `unexpected error getting runtime information: timed out waiting for the condition`, github issue says its a cert / secret problem: <https://github.com/kubernetes/contrib/issues/864>
+U10AE1F99 says -=*[1467994593.000252]-=*::: hey, you need to set those env variables inside the VM, for the docker daemon?
+U1PU5AK1B says -=*[1468221981.000259]-=*::: <@U10AE1F99>: Yes
+==========
+U11H6PJUB says -=*[1468267390.000265]-=*::: I'd like to use minikube for development of kubernetes itself. Is it possible to run the e2e tests against it?
+U0YQ81WLT says -=*[1468267753.000266]-=*::: I downloaded _minikube_ and am trying to run it in Mac OS. It seems to start without complaint, but then many commands dont work. For example: ```% minikube dashboard E0711 16:08:22.293777   19764 dashboard.go:45] Error accessing the kubernetes dashboard (is minikube running?): Error:  Error getting kubernetes-dashboard service: the server has asked for the client to provide credentials (get services kubernetes-dashboard)```
+U0YQ81WLT says -=*[1468267784.000267]-=*::: _minikube ssh_ works to log me into _docker-machine_.
+U0YQ81WLT says -=*[1468267827.000268]-=*::: When I try to use _kubectl_ against it, I see the following: ```% kubectl get services Error from server: the server has asked for the client to provide credentials```
+U0YQ81WLT says -=*[1468267908.000269]-=*::: <@U0YQ81WLT|seh> uploaded a file: <https://kubernetes.slack.com/files/seh/F1QN8RV8S/component_versions.txt|Component versions>
+U0YQ81WLT says -=*[1468268478.000271]-=*::: When I run _minikube logs_, I see this error in the log file: ```E0711 20:20:20.354449    2788 handlers.go:54] Unable to authenticate the request due to an error: x509: certificate has expired or is not yet valid```
+U0YQ81WLT says -=*[1468268601.000272]-=*::: Well, now _minikube dashboard_ started working.
+U11H6PJUB says -=*[1468268794.000273]-=*::: <@U0YQ81WLT>: it takes a few minutes to start. that bit me too.
+U0YQ81WLT says -=*[1468268806.000274]-=*::: Patience...
+U11H6PJUB says -=*[1468268829.000275]-=*::: I'm learning that is the answer for a lot of k8s stuff.
+==========
+U0CL68J80 says -=*[1468271110.000276]-=*::: Has anyone managed to run minikube from within a docker container? Getting the VM dependencies installed seems tricky.
+U11H6PJUB says -=*[1468271825.000277]-=*::: can you run a VM inside a container? blowing my mind just thinking about it.
+U1QV7F3AN says -=*[1468342341.000282]-=*::: Hello, does anyone know if it is possible to set the host only network when creating a minikube ? Ive tried exporting VIRTUALBOX_HOSTONLY_CIDR="172.16.0.1/24 based on what I saw in GitHub but it was not honored. Any help is appreciated!
+U10AE1F99 says -=*[1468342443.000283]-=*::: can you point me to where you saw that?
+U1QV7F3AN says -=*[1468342511.000284]-=*::: only place I could find was in the Vbox driver <https://github.com/kubernetes/minikube/blob/master/vendor/github.com/docker/machine/drivers/virtualbox/virtualbox.go#L147>
+U1QV7F3AN says -=*[1468342551.000286]-=*::: I need to be able to configure the hostonly network, the company I work for only allows a specific route due to VPN routing rules so we cant use the default
+U1QV7F3AN says -=*[1468342579.000287]-=*::: we already do this when creating our docker-machine instances, so was trying to find an analog in minikube
+U10AE1F99 says -=*[1468342585.000288]-=*::: ah, i don't think that'll work yet in minikube
+U10AE1F99 says -=*[1468342591.000289]-=*::: we don't go through that flag parsing codepath
+U1QV7F3AN says -=*[1468342601.000290]-=*::: ouch
+U10AE1F99 says -=*[1468342634.000291]-=*::: you can probably use the vbox UI to switch the VM over to a different CIDR after starting it
+U1QV7F3AN says -=*[1468342664.000292]-=*::: hmm
+U10AE1F99 says -=*[1468342671.000293]-=*::: ah, but then the generated certs probably wouldn't match
+U1QV7F3AN says -=*[1468342676.000294]-=*::: yeah
+U10AE1F99 says -=*[1468342706.000295]-=*::: could you open a bug for us to add a flag for this?
+U1QV7F3AN says -=*[1468342710.000296]-=*::: sure
+U10AE1F99 says -=*[1468342731.000297]-=*::: thanks!
+U1QV7F3AN says -=*[1468343050.000298]-=*::: <https://github.com/kubernetes/minikube/issues/323> posted, thanks
+==========
+U1LLP308G says -=*[1468419785.000302]-=*::: Hi there! Just getting started with k8s, and found out about minikube today - taking it for a spin. One road bump Ive encountered is that my client API version (1.24) is newer than the server API version (1.23). Im using the latest Docker for Mac from <http://docker.com|docker.com>.
+U1LLP308G says -=*[1468419811.000303]-=*::: Whats the best way to resolve this? Should I expect a newer minikube release, or do I need to downgrade my docker client?
+U1LLP308G says -=*[1468419819.000304]-=*::: (Im new to docker as well as k8s!)
+U11H6PJUB says -=*[1468421517.000305]-=*::: <@U1LLP308G>: (I'm a docker guy not a k8s guy) You couldn't be using the latest docker for mac as your server. It would have to be APIv1.24 if you were running 1.12
+U11H6PJUB says -=*[1468421544.000306]-=*::: My guess is you have an older virtualbox based VM around.
+U11H6PJUB says -=*[1468421592.000307]-=*::: somewhat related, I'm having a lot better luck with the minikube driver that uses xhyve rather than vbox.
+U1LLP308G says -=*[1468421619.000308]-=*::: <@U11H6PJUB>: oh, could well be. I should do a clean out and start over.
+U1LLP308G says -=*[1468421652.000309]-=*::: Ill switch to xhyve too (assume thats The Future?)
+U1LLP308G says -=*[1468421700.000310]-=*::: Thanks for the pointers btw.
+U0ACRBLSV says -=*[1468421858.000311]-=*::: <@U1LLP308G>: If you are on a mac, check out dvm
+U0ACRBLSV says -=*[1468421864.000312]-=*::: docker version manager
+U0ACRBLSV says -=*[1468421870.000313]-=*::: install with homebrew
+U0ACRBLSV says -=*[1468421881.000314]-=*::: lets you switch your docker version
+U1LLP308G says -=*[1468421891.000315]-=*::: <@U0ACRBLSV>: ace - thanks!
+U0YQ81WLT says -=*[1468434728.000317]-=*::: danfairs, try this in your command shell: ```export DOCKER_API_VERSION=1.23```
+U11H6PJUB says -=*[1468435693.000318]-=*::: <@U1LLP308G>: ^that'll do it to.
+U1LLP308G says -=*[1468435821.000319]-=*::: Aha, handy - thanks <@U0YQ81WLT>
+==========
+U12U3NGMT says -=*[1468468430.000320]-=*::: I am trying to get my head around the GOPATH handling in minikube makefile especially when trying to update a dependency. The documentation states that we should make a clean GOPATH and install the dependency build and test. But in the makefile, GOPATH is always defined to point to the vendor directory. It looks like I have to comment this code to use the externally defined GOPAHT. Am I missing something or is the doc incomplete?
+U1MP04JPM says -=*[1468510427.000323]-=*::: Hi all, running the latest minikube (v0.6.0) and seeing a DNS issue
+U1MP04JPM says -=*[1468510447.000324]-=*::: not sure if its minikube specific, kubernetes generally, or my environment
+U1MP04JPM says -=*[1468510486.000325]-=*::: but I have an image that sees DNS results that a different depending on whether its running in kubernetes::minikube or just plain docker
+U1MP04JPM says -=*[1468510496.000326]-=*::: <@U1MP04JPM|ghaskins> uploaded a file: <https://kubernetes.slack.com/files/ghaskins/F1RQ6SJAE/-.txt|Untitled>
+U1MP04JPM says -=*[1468510524.000327]-=*::: first is raw docker, second is within a deployed service running in minikube 0.6.0
+U1MP04JPM says -=*[1468510540.000328]-=*::: (its probably a user-education issue ;)
+U1MP04JPM says -=*[1468510544.000329]-=*::: but any help appreciated
+U1MP04JPM says -=*[1468510593.000330]-=*::: (its manifesting as an inability for me to run things like apt-get update, presumably because the DNS result is bogus
+U1MP04JPM says -=*[1468510667.000331]-=*::: I realize the address being returned is a DNS landing redirectwhat I dont understand is why I am resolving to that
+U1MP04JPM says -=*[1468510848.000332]-=*::: I think the fundamental problem is that the lookup is adding the .<http://haskins.net|haskins.net> suffix when I dont want it to
+U1MP04JPM says -=*[1468510856.000333]-=*::: resulting in a bogus address
+==========
+U0K61JBKJ says -=*[1468534037.000337]-=*::: Hey guys, do you know if anyone has tried to run minikube from a windows workstation?
+U0K61JBKJ says -=*[1468534060.000338]-=*::: sorry if that is a dumb question or if there is another place I should ask instead
+U12U3NGMT says -=*[1468549451.000340]-=*::: <@U0K61JBKJ>: I am working on a PR to make it work properly.
+==========
+U1RT2CNE9 says -=*[1468588225.000343]-=*::: Hi
+U1RT2CNE9 says -=*[1468588254.000344]-=*::: can I switch virtualbox image network type to a LAN visible configuration?
+U1RT2CNE9 says -=*[1468588265.000345]-=*::: may be promiscue?
+U1RT2CNE9 says -=*[1468588291.000346]-=*::: i need to expose my cluster to the offe LAN
+U1RT2CNE9 says -=*[1468588294.000347]-=*::: *office
+==========
+U10AE1F99 says -=*[1468598664.000348]-=*::: hey <@U12U3NGMT>, you only need a clean gopath to make godeps work right during the save/export cycle
+U10AE1F99 says -=*[1468598668.000349]-=*::: here's typically what i do
+U10AE1F99 says -=*[1468598677.000350]-=*::: 1. make a clean gopath, put the minikube source in there
+U10AE1F99 says -=*[1468598691.000351]-=*::: 2. use godep restore ./... to fill in the rest of the gopath from vendor
+U10AE1F99 says -=*[1468598713.000352]-=*::: 3. "go get" the new import, and start using it in code
+U10AE1F99 says -=*[1468598727.000353]-=*::: at that point you can build stuff with just "go build" and "go test" to make sure it's all working
+U10AE1F99 says -=*[1468598745.000354]-=*::: 4. run godep save ./... to import the new package from your GOPATH into vendor
+U0K61JBKJ says -=*[1468600817.000355]-=*::: <@U12U3NGMT>:  I'd be happy to help with that effort if you don't mind
+U0K61JBKJ says -=*[1468600834.000356]-=*::: I'm quite interested in getting this to work from a windows workstation
+==========

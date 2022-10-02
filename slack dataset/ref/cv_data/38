@@ -1,0 +1,110 @@
+==========
+U20L8GGUF says -=*[1483728200.000790]-=*::: is there a way to keep the minikube datetime in sync with the host(osx in my case)?   ``` adavis ~/k8s (master) $ minikube ssh date Thu Jan  5 09:34:50 UTC 2017 vs: adavis ~/k8s  (master) $ date Fri Jan  6 10:41:39 PST 2017 ```
+U20L8GGUF says -=*[1483728215.000791]-=*::: oh der, i see utc vs pst nevermind
+U20L8GGUF says -=*[1483728235.000792]-=*::: but no, thats still off
+U1TUWPL1M says -=*[1483728444.000793]-=*::: <@U20L8GGUF> mine is in sync  ` $ date; minikube ssh -- date Fri Jan  6 10:46:45 PST 2017 Fri Jan  6 18:46:44 UTC 2017 `
+U20L8GGUF says -=*[1483728478.000795]-=*::: are you using new iso? or old boot2docker
+U1TUWPL1M says -=*[1483728494.000796]-=*::: - iso-url: <https://storage.googleapis.com/minikube/iso/minikube-v1.0.1.iso>
+U20L8GGUF says -=*[1483728514.000797]-=*::: gonna try a stop and start, and see what happens, then try that iso
+U1TUWPL1M says -=*[1483728530.000798]-=*::: i dont think we're explictly setting it anywhere though
+U20L8GGUF says -=*[1483728656.000799]-=*::: a stop and then start gets things back in sync.   I wonder if its a function of me "sleeping" my laptop when using virtualbox
+U20L8GGUF says -=*[1483728702.000800]-=*::: ``` minikube ssh date; date Fri Jan  6 18:51:29 UTC 2017 Fri Jan  6 10:51:30 PST 2017 ```
+U20L8GGUF says -=*[1483728858.000801]-=*::: or, it looks like it just has something to do with virtualbox -&gt; <http://superuser.com/questions/463106/virtualbox-how-to-sync-host-and-guest-time>
+U20L8GGUF says -=*[1483729474.000803]-=*::: It looks like this needs to be set (because it doesn't look like it is set by default...)( ``` VBoxManage guestproperty set "VM name" "/VirtualBox/GuestAdd/VBoxService/PARAMETER" VALUE where PARAMETER is one of the following:  --timesync-interval Specifies the interval at which to synchronize the time with the host. The default is 10000 ms (10 seconds). ```
+==========
+U381HQQ1K says -=*[1483736653.000804]-=*::: <@U3G3J59DW> do you have a problem with Symfony apps being *unusably* slow on minikube?
+U381HQQ1K says -=*[1483736661.000805]-=*::: I'm talking minutes to load a page
+U381HQQ1K says -=*[1483736676.000806]-=*::: I've fired up the same app in GKE and it's lightning fast
+U3G3J59DW says -=*[1483736694.000807]-=*::: <@U381HQQ1K> nfs ?
+U381HQQ1K says -=*[1483736717.000808]-=*::: 9p I guess -- standard xhyve mount
+U381HQQ1K says -=*[1483736739.000809]-=*::: maybe the next step would be to package my app into a docker image and see how it runs natively
+U3G3J59DW says -=*[1483736765.000810]-=*::: <@U381HQQ1K> what about if you dont use 9p but aufs is it fast?
+U3G3J59DW says -=*[1483736776.000811]-=*::: yep :slightly_smiling_face: good thinking.
+U3G3J59DW says -=*[1483736788.000812]-=*::: if so consider opcode caching numbers for files
+==========
+U381HQQ1K says -=*[1483736798.000813]-=*::: what's aufs?
+U381HQQ1K says -=*[1483736901.000814]-=*::: I'll a/b test and see what packaged images do for me
+U20L8GGUF says -=*[1483737903.000815]-=*::: aufs is a storage driver.   its a union filesystem that tracks changes (which is why things are slower than usual when using minikube with it.)  to see what storage driver you are using: ```docker info``` would show: ``` ... Storage Driver: aufs  Root Dir: /mnt/sda1/var/lib/docker/aufs  Backing Filesystem: extfs  Dirs: 176  Dirperm1 Supported: true .... ```  The docker folks bypass this overhead with a notion of "--volumes-from", which i havn't found a way to emulate in k8s
+==========
+U33PPMEBH says -=*[1483740812.000817]-=*::: hey - I seem to be having an issue with etcd in minikube
+U33PPMEBH says -=*[1483740884.000818]-=*::: <@U33PPMEBH|portdirect> uploaded a file: <https://kubernetes.slack.com/files/portdirect/F3NFUDQ3W/minikube_logs.txt|minikube logs>
+U33PPMEBH says -=*[1483741037.000819]-=*::: looks like its crashing and taking down localkube with it? I'm running this on a pretty high spec machine (relatively) giving 6Cores and 16GB of ram to minikube with kvm and a pretty fast ssd, so the wal error looks weird
+U33PPMEBH says -=*[1483741161.000820]-=*::: been running the same manifests on a (slightly) older minikube install on my macos laptop no problem with 4 cores and 8gb of ram. Any ideas on how I could try and debug this?
+U1TUWPL1M says -=*[1483741987.000822]-=*::: <@U33PPMEBH> what version are you using?
+U33PPMEBH says -=*[1483742015.000823]-=*::: latest - just downloaded it from github 45 mins ago
+U33PPMEBH says -=*[1483742029.000824]-=*::: will check on laptop just now
+U1TUWPL1M says -=*[1483742052.000825]-=*::: is kubectl configured?
+U1TUWPL1M says -=*[1483742068.000826]-=*::: anything from `kubect logs` and the kube-dns pods?
+U1TUWPL1M says -=*[1483742080.000827]-=*::: ive been seeing a lot of weirdness with the kvm driver
+U33PPMEBH says -=*[1483742123.000828]-=*::: yeah - I'm using this to develop some helm charts - everything works ok for about 5 mins
+U1TUWPL1M says -=*[1483742136.000829]-=*::: weird
+U1TUWPL1M says -=*[1483742156.000830]-=*::: `failed to renew lease kube-system/kube-controller-manager` this is a little suspicious
+U33PPMEBH says -=*[1483742204.000831]-=*::: when it goes down it goes down hard - so cannot get kubectl logs I'll recreate the issue and watch the logs until it dies
+U1TUWPL1M says -=*[1483742226.000833]-=*::: maybe a `minikube ssh -- systemctl status docker
+U33PPMEBH says -=*[1483742266.000835]-=*::: will do - though is systemd on boot2docker?
+U1TUWPL1M says -=*[1483742269.000836]-=*::: actually
+U1TUWPL1M says -=*[1483742308.000837]-=*::: it might be a result of this <https://github.com/kubernetes/minikube/issues/940>
+U1TUWPL1M says -=*[1483742319.000839]-=*::: `killing cmd [find /mnt/sda1/var/lib/docker/aufs/diff/cbfb00495fea7e0ffbc067a7ef988434b278d9b5b6fa4e2b015f074bb4b64649 -xdev -printf .], and cmd [wc -c] due to timeout(2m0s)`
+U1TUWPL1M says -=*[1483742367.000841]-=*::: the new cadvisor version uses the `-printf` flag on find
+U1TUWPL1M says -=*[1483742379.000842]-=*::: however thats not in the b2d find util
+U1TUWPL1M says -=*[1483742388.000843]-=*::: we fixed it by installing GNU find in the new iso
+U1TUWPL1M says -=*[1483742390.000844]-=*::: <http://storage.googleapis.com/minikube/iso/buildroot/minikube-v1.0.1.iso>
+U1TUWPL1M says -=*[1483742401.000845]-=*::: the way that it was coded leaves a bunch of wc zombies
+U1TUWPL1M says -=*[1483742404.000846]-=*::: which is bad
+U33PPMEBH says -=*[1483742404.000847]-=*::: cool - I'll try that
+==========
+U33PPMEBH says -=*[1483742456.000848]-=*::: ``` minikube start --cpus 6 --vm-driver kvm --network-plugin=cni --kubernetes-version v1.5.1 --disk-size 40g --memory 16384 --iso-url=<https://storage.googleapis.com/minikube/iso/minikube-v1.0.1.iso> #wait for start kubectl create -f <http://docs.projectcalico.org/v2.0/getting-started/kubernetes/installation/hosted/calico.yaml> ```
+U1TUWPL1M says -=*[1483742475.000850]-=*::: you can sticky some of those options with `minikube config set` too
+U33PPMEBH says -=*[1483742529.000852]-=*::: oh sweet - learning all the time :slightly_smiling_face:
+U33PPMEBH says -=*[1483742758.000853]-=*::: hmm with that iso helms tiller is stuck in a crashloop backoff :confused:
+U33PPMEBH says -=*[1483742825.000854]-=*::: <@U33PPMEBH|portdirect> uploaded a file: <https://kubernetes.slack.com/files/portdirect/F3NDXD4QJ/-.txt|Untitled>
+U1TUWPL1M says -=*[1483743133.000855]-=*::: are the kube-system pods healthy?
+U1TUWPL1M says -=*[1483743143.000856]-=*::: kube-dns, apiserver etc
+U33PPMEBH says -=*[1483743253.000857]-=*::: there is no api-server pod that I can see?
+U33PPMEBH says -=*[1483743263.000858]-=*::: <@U33PPMEBH|portdirect> uploaded a file: <https://kubernetes.slack.com/files/portdirect/F3NG9063W/-.txt|Untitled>
+U1TUWPL1M says -=*[1483743354.000859]-=*::: yeah thats fine the apiserver runs as a goroutine
+U33PPMEBH says -=*[1483743367.000860]-=*::: just checked again with old iso and helm is happy with that, I'll try again without CNI with the new iso
+U1TUWPL1M says -=*[1483743426.000861]-=*::: not too familar with how helm is deployed, is it deployed with k8s? or are you installing it directly in the minikube VM?
+U1TUWPL1M says -=*[1483743432.000862]-=*::: or on your host
+U33PPMEBH says -=*[1483743442.000863]-=*::: its just a deployment
+U33PPMEBH says -=*[1483743477.000864]-=*::: runs in the kube-system namespace and expects to be able to talk to the api
+U33PPMEBH says -=*[1483743550.000865]-=*::: without Calico it runs OK - so that looks like the culprit with the new iso
+U1TUWPL1M says -=*[1483743596.000867]-=*::: why do you think its the iso?
+U1TUWPL1M says -=*[1483743627.000868]-=*::: oh you mean calico?
+U1TUWPL1M says -=*[1483743629.000869]-=*::: sorry i misread
+U33PPMEBH says -=*[1483743923.000870]-=*::: yeah - so not seeing the same issue with etcd (or something else) taking down localkube with the new iso - but unfortunatly I need CNI networking for the development work I'm doing
+U33PPMEBH says -=*[1483743953.000871]-=*::: (as now its the pods failing... though thats progress :slightly_smiling_face: )
+U33PPMEBH says -=*[1483743971.000872]-=*::: did the boot2docker iso get updated recently?
+U1TUWPL1M says -=*[1483743999.000873]-=*::: no, although in the next version we'll be switching off of it to that new iso that we built with coreos
+U1TUWPL1M says -=*[1483744017.000874]-=*::: (not based off the OS CoreOS though lol)
+U20L8GGUF says -=*[1483744107.000875]-=*::: <@U33PPMEBH> did you just try v2.0 with "kubectl apply -f calico.yaml"
+U33PPMEBH says -=*[1483744186.000876]-=*::: <@U20L8GGUF> I've been lunching calico with `kubectl create -f <http://docs.projectcalico.org/v2.0/getting-started/kubernetes/installation/hosted/calico.yaml>`
+U20L8GGUF says -=*[1483744327.000878]-=*::: in it, it says: ``` # if you're using TLS enabled etcd uncomment the following . etcd_ca: "" etcd_cert: "" etcd_key: "" ``` you might need to configure calico to talk nicely to etcd
+==========
+U33PPMEBH says -=*[1483744363.000879]-=*::: is this a new thing? that manifest has been working fine for some time?
+U20L8GGUF says -=*[1483744399.000880]-=*::: well in calcio v2, they now support the use of a local confd instead of etcd (but etcd is the default)
+U20L8GGUF says -=*[1483744419.000881]-=*::: i don't know if the new iso makes use of certs on etcd, but im guessing it does...
+U33PPMEBH says -=*[1483744441.000883]-=*::: I'll just check the logs 2 mins
+U20L8GGUF says -=*[1483744477.000884]-=*::: hah, you convinced me to try cni, and see what happens
+U33PPMEBH says -=*[1483744508.000885]-=*::: do it :slightly_smiling_face:
+U33PPMEBH says -=*[1483744542.000886]-=*::: these are the docs that we have been using, with no problems for a week or two: <https://github.com/att-comdev/openstack-helm/blob/master/docs/developer/minikube.md>
+U20L8GGUF says -=*[1483744572.000888]-=*::: i seem to be ok: ``` kubectl get pods --all-namespaces NAMESPACE     NAME                                        READY     STATUS    RESTARTS   AGE kube-system   calico-node-c95xc                           2/2       Running   0          55s kube-system   calico-policy-controller-2974666449-5gd62   1/1       Running   0          54s kube-system   default-http-backend-s2jr9                  1/1       Running   0          11m kube-system   heapster-l10bn                              1/1       Running   0          11m kube-system   influxdb-grafana-3dcjz                      2/2       Running   0          11m kube-system   kube-addon-manager-minikube                 1/1       Running   0          12m kube-system   kube-dns-v20-rkghx                          3/3       Running   0          11m kube-system   kubernetes-dashboard-vdnfb                  1/1       Running   0          11m kube-system   nginx-ingress-controller-17vck              1/1       Running   0          11m ```
+U20L8GGUF says -=*[1483744580.000889]-=*::: but i didn't try tiller
+U20L8GGUF says -=*[1483744640.000890]-=*::: i just did a git pull of calico and deployed : calico/v2.0/getting-started/kubernetes/installation/hosted/calico.yaml
+U33PPMEBH says -=*[1483744685.000891]-=*::: is that (I want to say cluster - but thats not right here) using cni for networking?
+U0A2R9WVA says -=*[1483744760.000892]-=*::: if you use self hosted Calico manifest (from that link) it uses CNI (configures it automatically)
+U33PPMEBH says -=*[1483744802.000893]-=*::: do you not also need to set up kube to actually use it?
+U20L8GGUF says -=*[1483744850.000894]-=*::: ```minikube start --iso-url <https://storage.googleapis.com/minikube/iso/minikube-v1.0.1.iso> --memory=4096 --cpus=8 --vm-driver=xhyve --v=999 --logtostderr --show-libmachine-logs --network-plugin=cni --insecure-registry foo-registry``` is what i used to install minikube, then ```kubectl create -f calico.yaml``` to deploy
+U33PPMEBH says -=*[1483744889.000895]-=*::: oh nice - just confused that your pods had been running for 11/12 mins :slightly_smiling_face:
+U33PPMEBH says -=*[1483744918.000896]-=*::: could you run `kubectl run -i -t busybox --image=busybox --restart=Never`
+U20L8GGUF says -=*[1483744919.000897]-=*::: yeah, i set it up with cni, but didn't try to use calico on minikube yet
+U33PPMEBH says -=*[1483744942.000898]-=*::: and then `nslookup kubernetes` and see if that works?
+U20L8GGUF says -=*[1483745036.000899]-=*::: hrm-- can't resolve.
+U33PPMEBH says -=*[1483745072.000900]-=*::: same here
+U0A2R9WVA says -=*[1483745153.000901]-=*::: let me try spinning up minikube
+U0A2R9WVA says -=*[1483745172.000902]-=*::: it has worked for me for VMs with kubeadm and calico
+U0A2R9WVA says -=*[1483745177.000903]-=*::: but havent tried minikube
+U33PPMEBH says -=*[1483745236.000904]-=*::: cheers <@U0A2R9WVA> yeah it works for me no problems with the old (std ISO) and I have been using it for ages with kubeadm no probs
+U0A2R9WVA says -=*[1483745281.000905]-=*::: just to clarify, when you say old ISO you mean minikube ISO, right?
+U33PPMEBH says -=*[1483745293.000906]-=*::: yes the boot2docker based one
+==========

@@ -1,0 +1,88 @@
+==========
+U0PPMUTGR says -=*[1478577426.000936]-=*::: awesome. can't wait to demo the work of this SIG at kubecon tomorrow
+U0PPMUTGR says -=*[1478580117.000937]-=*::: Channel Update: a quick reminder - there is no SIG-Windows meeting tomorrow due to kubecon.
+U0ALRFJH0 says -=*[1478595650.000938]-=*::: its gonna be massive, im sure, <@U0PPMUTGR> :+1:
+U0PPMUTGR says -=*[1478597141.000939]-=*::: :thumbsup:
+==========
+U0PPMUTGR says -=*[1478620985.000940]-=*::: hey guys,  a build of v1.5 should be cut today. can we doublecheck that both our PRs and our code made it into that build?
+U0PPMUTGR says -=*[1478621003.000941]-=*::: if you ask kubernetes-dev, you should be able to get more details into the build
+U0JFJ4KHS says -=*[1478621016.000942]-=*::: kube-proxy PR is not merged yet, it is in the queue
+U0PPMUTGR says -=*[1478621203.000943]-=*::: this is just a merge glitch right, since it has all the required LGTM?
+U0JFJ4KHS says -=*[1478621291.000944]-=*::: right
+U0PPMUTGR says -=*[1478621432.000945]-=*::: i think it makes sense to ping kubernetes-dev about it to make sure it will makeit into the build...let's be proactive just in case
+U0JFJ4KHS says -=*[1478621465.000946]-=*::: there was an email yesterday about it being in the queue and 1.5 label was added to the PR
+U0ALRFJH0 says -=*[1478642670.000947]-=*::: 5 more PRs and ours get merged :+1:
+==========
+U0ALRFJH0 says -=*[1478643177.000948]-=*::: <@U0JFJ4KHS> <@U0PT5KRHR> any reason why were using `microsoft/windowsservercore` as base image for infra container?
+U0ALRFJH0 says -=*[1478643393.000949]-=*::: thinking about using `microsoft/nanoserver`, instead <https://technet.microsoft.com/windows-server-docs/get-started/getting-started-with-nano-server>
+U0ALRFJH0 says -=*[1478643428.000952]-=*::: ah...
+U0ALRFJH0 says -=*[1478643429.000953]-=*::: &gt; Nano Server cannot be configured to use a proxy server to access the internet.
+U0ALRFJH0 says -=*[1478643467.000954]-=*::: i wonder what they mean by this. do they mean some sort of advanced Windows feature other than the basic NAT/netsh proxyport stuff?
+U0PPMUTGR says -=*[1478643794.000955]-=*::: i don't think it is anyhting more advanced than netsh portproxy
+U0ALRFJH0 says -=*[1478643902.000956]-=*::: i remember something like ISA server back in the days. anyway, trying to give it a spin.
+U0ALRFJH0 says -=*[1478643975.000957]-=*::: is there some incantation i need to perform for any `windows` Docker image to be pulled?
+U0ALRFJH0 says -=*[1478644084.000958]-=*::: is it mandatory these images are built on Windows?
+U0ALRFJH0 says -=*[1478645770.000959]-=*::: crap, cant automate the build of the infra container without having a Windows system somewhere.
+U0ALRFJH0 says -=*[1478646341.000960]-=*::: omg.. Docker for Windows doesnt run on Windows Server.
+U0ALRFJH0 says -=*[1478646356.000961]-=*::: is there anything that works without having to read the fine printing?
+U0PPMUTGR says -=*[1478649297.000965]-=*::: <@U0ALRFJH0>  what do you mean docker for windows doesn't run on windows server?
+U0PPMUTGR says -=*[1478649300.000966]-=*::: what's the error?
+U0ALRFJH0 says -=*[1478649471.000967]-=*::: <@U0PPMUTGR> nevermind. its just that I downloaded Docker for Windows but this is not the way to do it in Windows Server. <https://msdn.microsoft.com/virtualization/windowscontainers/docker/configure_docker_daemon> is how it should be done.
+U0ALRFJH0 says -=*[1478649520.000968]-=*::: still, the process is so awkward when compared to something like `apt install docker` or `brew install docker` or a click-based installer.
+U0ALRFJH0 says -=*[1478649533.000969]-=*::: not to mention the reboot after its installed
+U0ALRFJH0 says -=*[1478649578.000970]-=*::: and for some reason, after i restarted, i cant RDP anymore :-s
+U0PPMUTGR says -=*[1478649717.000971]-=*::: :disappointed:
+U0PPMUTGR says -=*[1478649741.000972]-=*::: windows is lagging way behind on package managers as compared to linux
+U0ALRFJH0 says -=*[1478649952.000973]-=*::: the experience so far to run this on the cloud + setup docker has been a bumpy ride.
+==========
+U0ALRFJH0 says -=*[1478689506.000974]-=*::: morning all! kube-proxy PR is merged.
+U0ALRFJH0 says -=*[1478689691.000975]-=*::: but i failed miserably my estimate on automating `apprenda/pause` container image build automation. we need a Windows machine to build this, and im having a hard time with it right now. i think ill build it manually, push it and be done with it for now.  otoh, i will have a meeting later today with someone from Google infra to try and figure out next steps for e2e tests, and i hope to discuss about something like hyperkube for Windows as well.
+U0JFJ4KHS says -=*[1478708096.000977]-=*::: Yes, we can build the pause image manually for now and push it
+U0ALRFJH0 says -=*[1478709518.000978]-=*::: <@U0JFJ4KHS> i could build a simple CI system that would do this, but it would have to run on Windows. problem is, im a Windows noob.
+U0ALRFJH0 says -=*[1478709541.000979]-=*::: at least, im having a bunch of issues with the Server edition
+U0ALRFJH0 says -=*[1478709555.000980]-=*::: i will continue my research and get back to you when i reach a conclusion
+U0JFJ4KHS says -=*[1478710055.000982]-=*::: I can help with setup tomorrow 
+U0ALRFJH0 says -=*[1478710285.000983]-=*::: no problem :slightly_smiling_face:
+U0ALRFJH0 says -=*[1478710287.000984]-=*::: thanks
+==========
+U0ALRFJH0 says -=*[1478710289.000985]-=*::: enjoy kubecon!
+U0PPMUTGR says -=*[1478797540.000986]-=*::: i hope everyone made it safely home from KubeCon.
+U0PPMUTGR says -=*[1478797562.000987]-=*::: i will start on the document for the proposal on networking and share it with the group
+U0ALRFJH0 says -=*[1478798514.000989]-=*::: <@U0PPMUTGR> sure. we should sync tomorrow or early monday.
+U0PPMUTGR says -=*[1478798548.000990]-=*::: yep. i might chat with the guys today at 3pm, but we will sync with you tomorrow. i will send a document when i have it
+U0ALRFJH0 says -=*[1478798551.000991]-=*::: i havent been able to produce much on that front as i spent big part of the week looking at testing.
+U0PPMUTGR says -=*[1478798557.000992]-=*::: i hear u
+U0ALRFJH0 says -=*[1478798573.000993]-=*::: also distracted by kubecon :sweat_smile:
+U0ALRFJH0 says -=*[1478798600.000994]-=*::: ok, lets talk tomorrow then.
+U0ALRFJH0 says -=*[1478798614.000995]-=*::: welcome <@U2LATFD7X> :wave:
+U2LATFD7X says -=*[1478798631.000996]-=*::: thanks <@U0ALRFJH0> :slightly_smiling_face:
+U2LATFD7X says -=*[1478798648.000997]-=*::: loved the demo by <@U0PPMUTGR> at KubeCon some exciting stuff!
+U0PPMUTGR says -=*[1478798660.000998]-=*::: thanks <@U2LATFD7X> !
+U0PPMUTGR says -=*[1478798683.000999]-=*::: the SIG folks, <@U0JFJ4KHS> , <@U0PT5KRHR> and <@U0ALRFJH0>  did all the work :slightly_smiling_face:
+U2LATFD7X says -=*[1478798695.001000]-=*::: love it
+U2LATFD7X says -=*[1478798701.001001]-=*::: gonna try it out myself in a bit :slightly_smiling_face:
+U0ALRFJH0 says -=*[1478798885.001002]-=*::: dont trust <@U0PPMUTGR>! everyone did their part and we got it merged in time for 1.5 :smile:
+U0ALRFJH0 says -=*[1478798925.001003]-=*::: <@U2LATFD7X> were working hard to workaround current Windows Containers limitations, particularly adding multi-container pod support and DNS
+U2LATFD7X says -=*[1478798961.001004]-=*::: yah! thats what <@U0PPMUTGR> said when I asked at his talk looking forward to that kind of parity
+U2LATFD7X says -=*[1478798990.001005]-=*::: so im really liking the routing/circuitbreaking/retry in microservices via sidecars
+U0ALRFJH0 says -=*[1478798997.001006]-=*::: we came up with conceptual solutions, now we need to prove them and then plan for 1.6 features + deliver
+U2LATFD7X says -=*[1478799008.001007]-=*::: (ie, envoy, linkerd, etc) having that on the windows side would be great
+U0ALRFJH0 says -=*[1478799081.001009]-=*::: we also need e2e testing to make sure no one breaks kubelet/kube-proxy for Windows but thats a whole different challenge. well see! glad to have folks like yourself around, always helps keeping motivation and focus:slightly_smiling_face:
+U2LATFD7X says -=*[1478799342.001011]-=*::: :slightly_smiling_face:
+U0PPMUTGR says -=*[1478806325.001012]-=*::: do we need to meet today folks? since we were just at kubecon, we can cancel the standup for today
+U0PT5KRHR says -=*[1478806339.001013]-=*::: works for me
+U0JFJ4KHS says -=*[1478806389.001014]-=*::: yes, we can skip today
+U0PPMUTGR says -=*[1478806398.001015]-=*::: :thumbsup:
+==========
+U0PPMUTGR says -=*[1479143039.001017]-=*::: did our PR end up getting merged? it would be useful to get the beta build (I think one was created) and make sure our stuff is in there
+U0PPMUTGR says -=*[1479143050.001018]-=*::: Jitu, we likely need to start on documentation as well
+U0ALRFJH0 says -=*[1479145501.001019]-=*::: <@U0PPMUTGR> kubelet and kube-proxy PRs were merged.
+U0ALRFJH0 says -=*[1479145519.001020]-=*::: last time I checked the cluster bootstrapping script didn't. 
+U0JFJ4KHS says -=*[1479145553.001021]-=*::: <@U0ALRFJH0> right, bootstrapping script didn't make it in
+==========
+U0JFJ4KHS says -=*[1479149322.001023]-=*::: Guys, secrets are currently broken as we cannot read symlinks from within containers on Windows
+U0JFJ4KHS says -=*[1479149334.001024]-=*::: I have created the below issues against docker
+U0JFJ4KHS says -=*[1479149335.001025]-=*::: <https://github.com/docker/docker/issues/28401>
+==========
+U0HSNPGLC says -=*[1479149528.001027]-=*::: anyone have pointers to bringing up a regular cluster up on azure (not at windows yet), asking for AZURE_DOCKER_REGISTRY and AZURE_DOCKER_REPO.  Do I have to run my own repo on azure or can use something else?
+==========

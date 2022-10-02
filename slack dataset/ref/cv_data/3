@@ -1,0 +1,67 @@
+==========
+U0GLMHV6D says -=*[1468840275.000005]-=*::: How do I use minikube for development purpose. How do I use the binaries build from source code into minikube?
+U0GLMHV6D says -=*[1468840299.000006]-=*::: any document which explains this?
+U0ACRBLSV says -=*[1468851285.000007]-=*::: <@U0GLMHV6D>:  Can you explain what you mean when you say binaries build from source"
+U0ACRBLSV says -=*[1468851304.000008]-=*::: I just download the binary builds of minikube, and install
+U0ACRBLSV says -=*[1468851326.000009]-=*::: you also need kubectl installed to interact with the minikube cluster
+U0ACRBLSV says -=*[1468851337.000010]-=*::: on a mac, you can get that via homebrew
+U0ACRBLSV says -=*[1468851371.000011]-=*::: I also like to setup my docker client to point at the docker running in minikube.  That allows you to do docker builds directly in minkube
+U0ACRBLSV says -=*[1468851425.000012]-=*::: In k8s, you can set imagePullPolicy: Never - and it will use the images from docker without downloading
+U0ACRBLSV says -=*[1468851440.000013]-=*::: makes for a quick build / test cycle
+U0GLMHV6D says -=*[1468858846.000014]-=*::: <@U0ACRBLSV>: After pulling and building the k8s source code, how do I use the k8s binaries with minikube?
+U0ACRBLSV says -=*[1468858860.000015]-=*::: ahh
+U0ACRBLSV says -=*[1468858885.000016]-=*::: You should not need to do that
+U0ACRBLSV says -=*[1468858896.000017]-=*::: minikube sets up the binaries for you
+U0ACRBLSV says -=*[1468858912.000018]-=*::: k8s should be running for you
+U0ACRBLSV says -=*[1468858940.000019]-=*::: If you want to use custom binaries I think you will want to file an issue for that
+U0ACRBLSV says -=*[1468858945.000020]-=*::: not sure that is supported
+U0JE00HA9 says -=*[1468858957.000021]-=*::: <@U0ACRBLSV>: I think <@U0GLMHV6D> want dev env for k8s using minikube
+U0ACRBLSV says -=*[1468858975.000022]-=*::: ahh, ok
+==========
+U1PMX3DK3 says -=*[1468941822.000026]-=*::: hi!  how do I access the minikube api server?  I get an unauthorized response when hitting <https://minikube_ip:8443/api>
+U1PMX3DK3 says -=*[1468941897.000027]-=*::: I should mention Im trying to use the jenkins k8 plugin as described here:  <https://wiki.jenkins-ci.org/display/JENKINS/Kubernetes+Plugin>
+U11H6PJUB says -=*[1468950210.000030]-=*::: there doesn't seem to be a `minikube restart`
+U11H6PJUB says -=*[1468950224.000031]-=*::: if I run `minikube start` twice, does it start two instances?
+U0ACRBLSV says -=*[1468950241.000032]-=*::: <@U1PMX3DK3>: I am guessing you need to lift the certificate that minikube creates for kubectl
+U0ACRBLSV says -=*[1468950253.000033]-=*::: In ~/.kube/config
+U1S80PZR8 says -=*[1468952621.000034]-=*::: I'm going down a similar path - I'm trying to connect to the cluster using the perl sdk and fighting with authentication. I've tried using the certs from the kube config but it isn't connecting.
+U11H6PJUB says -=*[1468953261.000035]-=*::: I've succeded in using the token auth. I can't figure out certs either.
+U11H6PJUB says -=*[1468953302.000036]-=*::: shelling out to kubectl has been the easiest thing, by far :confused:
+U1PMX3DK3 says -=*[1468953383.000037]-=*::: <@U0ACRBLSV>: turns out that there are 2 server IPs listed in kube config, I picked the wrong one :disappointed:  no creds are needed by default
+U1PMX3DK3 says -=*[1468953393.000038]-=*::: anyway, all good i think
+==========
+U0C6963R6 says -=*[1468962010.000039]-=*::: I started going into the docs for using hyberkube to for local dev, and saw the warning at top to look at minikube. But going into the minikube docs you see that it doesnt do things like LoadBalancers, PersistentVolumes and Ingress The first and last are probably not too much of an issue for local dev, but PVs are likely helpful. Have any of you found this to be an issue in practice?
+U0C6963R6 says -=*[1468962065.000040]-=*::: Also, is there any interest in getting either solution to work with Docker for Mac Beta? Ive been very happy getting away from VBox.
+U1FGYMJ6B says -=*[1468970778.000041]-=*::: Hi <@U0C6963R6>, There is currently an issue at minikube's github repo tracking the Docker for Mac Beta.
+==========
+U1TDHJ03U says -=*[1469013314.000044]-=*::: Hi guys I am not able to start  minikube on my local machine   E0720 16:37:50.530352    2886 notify.go:54] Get <https://storage.googleapis.com/minikube/releases.json>: dial tcp 74.125.203.128:443: i/o timeout Starting local Kubernetes cluster... E0720 16:37:51.411795    2886 start.go:74] Error starting host:  Error getting state for host: machine does not exist  Please help me out i am getting this error
+==========
+U0GLMHV6D says -=*[1469014858.000045]-=*::: Hi guys, How to run the k8s binaries into running minikube.
+U0GLMHV6D says -=*[1469014900.000046]-=*::: I mean i have k8s cluster running using minkube
+U0GLMHV6D says -=*[1469014925.000047]-=*::: I need to build the k8s source code and need to run those binaries using minikube?
+==========
+U0C6963R6 says -=*[1469019074.000048]-=*::: Thanks for the link <@U1FGYMJ6B>, should have seen that one when I was searching. /facepalm
+==========
+U09R2FFHP says -=*[1469032951.000050]-=*::: <@U0GLMHV6D>: I dont understand. You want to run k8s on top of k8s in minkube?
+U11H6PJUB says -=*[1469034196.000051]-=*::: I think he wants to use minikube to dev k8s. Have the checked out source code compiled and redeployed in minikube for dev-testing. (That's what I want, at least.)
+==========
+U1JVDGD1S says -=*[1469041794.000053]-=*::: hi!! wow minikube. seems really legit. all of this time I've been using docker-machine and the vagrant provider for local dev. holy resource usage
+U1JVDGD1S says -=*[1469041834.000054]-=*::: Does minikube use CoreOS by default for workers/master? Also is DNS enabled by default? I.e. can I access a `v1.Service` through its `metadata.name` from another clustered service?
+U09R2FFHP says -=*[1469042416.000055]-=*::: <@U1JVDGD1S>: no, not yet. <https://github.com/kubernetes/minikube/issues/187>
+U1JVDGD1S says -=*[1469042850.000057]-=*::: Thanks. Not a dealbreaker by any means. Was just curious.
+U1JVDGD1S says -=*[1469042863.000058]-=*::: DNS looks to be enabled by default, though?
+U1JVDGD1S says -=*[1469042911.000059]-=*::: I'm ultimately looking to access a service (from another pod) simply by using a `v1.Service.metadata.name`, instead of making an additional call to find its IP address
+==========
+U0GLMHV6D says -=*[1469079121.000064]-=*::: <@U09R2FFHP>: I meant what <@U11H6PJUB> mentioned above. After changing k8s source code and building it, how do I use those custom binaries in minikube. But from mailing list I got to know that minikube is not yet there. Seems its still under development
+==========
+U0A30SM33 says -=*[1469089931.000066]-=*::: <@U1JVDGD1S>: Yes DNS is enabled by default. You should be able to use just `serviceName`  if service is in same namespace as pod trying to access the service, `serviceName.namespace.svc` (can probably drop .svc too actually) for services if you want to specify namespace as well, FQDN should be serviceName.namespace.svc.cluster.local` but `cluster.local` suffix isn't required &amp; can be changed in custom deployments so not using it is better IMO.
+==========
+U0DSK18AG says -=*[1469106349.000067]-=*::: on my minikube vm created under 0.6.0, something (in-process skydns, AFAICT) is binding to 53 on the VM's public IP. should that respond to any external `dig @` queries? I've tried several variations including some based on the FQDN example in the message above mine, no responses on any thus far.
+U0DSK18AG says -=*[1469106499.000068]-=*::: in-pod DNS queries are working as expected
+==========
+U1TKQHL3E says -=*[1469107614.000070]-=*::: hi
+U1TKQHL3E says -=*[1469107635.000071]-=*::: after installing minikube in Linux, trying to ping the minikube ip and getting Packet filtered
+==========
+U0NEL7T4G says -=*[1469109342.000072]-=*::: <@U10AE1F99>: hi! any idea when mini-kube would be able to run on Windows? I saw a few pull requests about it a few weeks ago, I though maybe that would be usable by now, but I dont see any references to that on the github project. Thanks!
+U0A30SM33 says -=*[1469113038.000074]-=*::: <@U0NEL7T4G>: I think it can run now... we just need to make a windows release. could you build locally &amp; let us know? alternatively i can upload a binary somewhere for you try &amp; give feedback on
+==========

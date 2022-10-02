@@ -1,0 +1,265 @@
+==========
+U2U84B4BE says -=*[1481596258.000223]-=*::: <@U0ALRFJH0>  I followed the guide and the containers CAN reach the Internet. I'd like to share my configs to help on the troubleshooting. it's all on a private deployment.
+U0ALRFJH0 says -=*[1481627490.000225]-=*::: <@U2U84B4BE> i meant the Google Cloud doc instructions i'm working on and Azure which <@U0JFJ4KHS> is working on.
+U2U84B4BE says -=*[1481628176.000226]-=*::: <@U0ALRFJH0>  we are now porting the deployed solution to AWS Japan, will let you know if it works ~
+U0ALRFJH0 says -=*[1481628804.000227]-=*::: great!
+==========
+U0PPMUTGR says -=*[1481636903.000228]-=*::: hey <@U0JFJ4KHS> you should ping the docs leads about merging that PR with the updated content. now that the content is live for v1.5, they have free time to execute this
+U0JFJ4KHS says -=*[1481637367.000229]-=*::: Sure
+U0ALRFJH0 says -=*[1481640051.000230]-=*::: <@U0JFJ4KHS> did you get time to play with network compartments?
+U0JFJ4KHS says -=*[1481640078.000231]-=*::: not yet, but will start looking at that..was occupied with other stuff
+U0ALRFJH0 says -=*[1481640406.000232]-=*::: documentation is scarce
+U0ALRFJH0 says -=*[1481641047.000233]-=*::: honestly, our threads are becoming more and more confusing to me. <@U0PPMUTGR> we really need someone that deeply understands both worlds, windows networking and kubernetes.
+U0ALRFJH0 says -=*[1481641212.000234]-=*::: i am open to move the hard-way, since Microsoft is so sure we have feature parity with Linux, if they provide someone for us to work with.
+U0PPMUTGR says -=*[1481641569.000235]-=*::: <@U0ALRFJH0>  we have the contacts in the msft networking team. if you can write them an email with what you are trying to achieve and where you need help, i can try to push for this to happen
+U0PPMUTGR says -=*[1481641578.000236]-=*::: Anthony can help us as well
+U0ALRFJH0 says -=*[1481641787.000237]-=*::: <@U0PPMUTGR> i'd love to talk to Anthony first. <@U2X7ARA79> right?
+==========
+U2YMCCZGQ says -=*[1481646076.000239]-=*::: Hi guys!  Im working on adding Azure support in cluster-autoscaler (<https://github.com/kubernetes/contrib/tree/master/cluster-autoscaler>)  Functionality is done, I need to do some code polish.   What is a proper way to submit / discuss my changes? Should I discuss it here OR should I create issue with a corresponding pull-request first?
+==========
+U0723KV7E says -=*[1466624412.000390]-=*::: How is this not all over the media.. I knew there was something off about him.. It's one thing to be sexist privately but to do it publicly, this guy should be shunned from the community. Why isn't this all over tech news? <http://www.adweek.com/news/advertising-branding/gary-vaynerchuk-apologizes-cannes-party-invite-seeking-attractive-females-only-172163>
+U0723KV7E says -=*[1466624990.000393]-=*::: <@U0723KV7E|guy_blockstack> set the channel topic: Blockstack related articles.. All other articles, please post in #random
+U07C0TB6H says -=*[1466628299.000394]-=*::: <@U0723KV7E>: what is a blockstack-related article?
+U0722SJ4A says -=*[1466628417.000395]-=*::: <@U0722SJ4A|ryan_blockstack> set the channel purpose: All articles related to Blockstack and blockchain technology. For all other articles, please post in #random.
+U0722SJ4A says -=*[1466628426.000396]-=*::: <@U07C0TB6H>: does that clarify? ^
+U07C0TB6H says -=*[1466628465.000397]-=*::: ahaha what is a blockchain? :wink:
+U07C0TB6H says -=*[1466628488.000398]-=*::: hm topic and purpose seem to be different
+U0722SJ4A says -=*[1466628506.000399]-=*::: oh what weird
+U07C0TB6H says -=*[1466628520.000400]-=*::: topic is what's displayed above i think
+U0722SJ4A says -=*[1466628532.000401]-=*::: <@U0722SJ4A|ryan_blockstack> set the channel topic: All articles related to Blockstack and blockchain technology. For all other articles, please post in #random.
+U0722SJ4A says -=*[1466628536.000402]-=*::: ohhhh
+U07C0TB6H says -=*[1466628538.000403]-=*::: cool, that helps :slightly_smiling_face:
+U0722SJ4A says -=*[1466628570.000404]-=*::: The answer to what is a blockchain resides within you
+U0722SJ4A says -=*[1466628578.000405]-=*::: Its something we each must discover for ourselves
+U07C0TB6H says -=*[1466628687.000406]-=*::: :om_symbol:
+U071X9XPC says -=*[1466636833.000407]-=*::: blockchain as a spiritual journey
+U1GGRMF2P says -=*[1466662514.000410]-=*::: wow... ryan and muneeb have clearly been doing too much math
+U071X9XPC says -=*[1466698521.000413]-=*::: haha
+U071X9XPC says -=*[1466698528.000414]-=*::: Blockchain jokes are always fun :smile:
+==========
+U07C0TB6H says -=*[1466699382.000415]-=*::: <@U0722SJ4A>: did something new happen with the dao? or are we just daoed out? i am :joy:
+U0722SJ4A says -=*[1466699398.000416]-=*::: just daoed out ha
+U0723KV7E says -=*[1466699479.000417]-=*::: Get the dao outta here!
+==========
+U07C0TB6H says -=*[1466704569.000420]-=*::: <https://nakedsecurity.sophos.com/2016/06/23/154-million-voter-records-exposed-including-gun-ownership-facebook-profiles-and-more/>
+U07C0TB6H says -=*[1466704572.000422]-=*::: aggggh
+U07C0TB6H says -=*[1466704590.000423]-=*::: this is a case where i genuinely believe we need better legal protections
+U07C0TB6H says -=*[1466704745.000424]-=*::: btw are data breaches sufficiently related to blockstack <@U0722SJ4A> ? :wink:
+U0722SJ4A says -=*[1466711555.000426]-=*::: <@U0722SJ4A|ryan_blockstack> set the channel topic: Articles on Blockstack, blockchain technology, and decentralization. For all other articles, please post in #random.
+U0722SJ4A says -=*[1466711572.000427]-=*::: Ha <@U07C0TB6H> Im going to have to keep expanding the channel topic
+U07C0TB6H says -=*[1466711586.000428]-=*::: hahahahaha
+U07C0TB6H says -=*[1466711598.000429]-=*::: seriously though, what a mess
+U07C0TB6H says -=*[1466748600.000432]-=*::: hi <@U1KTA7J01>!
+U1L8GAFJ4 says -=*[1466845156.000436]-=*::: hey .......hello everyone
+U1L8GAFJ4 says -=*[1466845263.000437]-=*::: hey rayan ...I would like to discuss some business  queries with you .
+U0722SJ4A says -=*[1466865451.000438]-=*::: Ok <@U1L8GAFJ4> can you DM me?
+U071X9XPC says -=*[1467138678.000449]-=*::: <https://www.reddit.com/r/ethereum/comments/4qabz9/security_alert_dos_vulnerability_in_the_soft_fork/d4rf9pt?st=ipzsh969&amp;sh=baef307d>
+U071X9XPC says -=*[1467138693.000451]-=*::: ```wat? i thought the ddos attack was already mentioned before the release of the client. now it suddenly becomes a big problem```
+U0722SJ4A says -=*[1467138744.000452]-=*::: oh boy
+U071X9XPC says -=*[1467138746.000453]-=*::: From my top-3 problems for Ethereum post:
+U071X9XPC says -=*[1467138749.000454]-=*::: ```a single attack can effectively stop the network from making forward progress```
+U071X9XPC says -=*[1467138758.000455]-=*::: which is effectively what the DoS attack is
+U0722SJ4A says -=*[1467138779.000456]-=*::: Is it a DoS attack? Or is it a high volume of legitimate requests?
+U0722SJ4A says -=*[1467138782.000457]-=*::: :troll:
+U071X9XPC says -=*[1467138787.000458]-=*::: its not really a DoS
+U071X9XPC says -=*[1467138790.000459]-=*::: thats a bad name
+U071X9XPC says -=*[1467138800.000460]-=*::: DoS is usually lots of requests going to victim
+U071X9XPC says -=*[1467138815.000461]-=*::: here 1 request is getting amplified to take down all nodes
+==========
+U074Q9Q3D says -=*[1467138818.000462]-=*::: related, can someone die from eating too much popcorn?
+U071X9XPC says -=*[1467138822.000463]-=*::: lol
+U0722SJ4A says -=*[1467138845.000464]-=*::: from drinking too much gas?
+U074Q9Q3D says -=*[1467138852.000465]-=*::: do you mean huffing too much gas?
+U0722SJ4A says -=*[1467138858.000467]-=*::: that too
+U07C0TB6H says -=*[1467141521.000468]-=*::: <@U074Q9Q3D>: :popcorn: :popcorn: :popcorn: :popcorn: :popcorn: :popcorn: :popcorn: :popcorn: :popcorn: :popcorn:
+U07C0TB6H says -=*[1467141552.000469]-=*::: @muneeb from what i read, they thought the attack was far more limited than it actually was
+U074Q9Q3D says -=*[1467141605.000471]-=*::: popcorn overdose :dizzy_face:
+==========
+U07HTRSQN says -=*[1467141653.000472]-=*::: <@U07HTRSQN|daniel> uploaded a file: <https://blockstack.slack.com/files/daniel/F1M3X71NZ/83373456.gif|83373456.gif>
+U0722SJ4A says -=*[1467149950.000474]-=*::: Looks like the Urbit crowdsale is just getting kicked off
+U0722SJ4A says -=*[1467149950.000475]-=*::: <https://sale.urbit.org/>
+U1JGE616C says -=*[1467150245.000476]-=*::: What do you think about urbit, <@U0722SJ4A> ?
+U0722SJ4A says -=*[1467150381.000477]-=*::: I actually dont know what to think
+U0722SJ4A says -=*[1467150412.000478]-=*::: At first glance it seems like theyre re-inventing the wheel and stone and molecules themselves
+U1JGE616C says -=*[1467150435.000479]-=*::: Agreed. And I am not sure that it needs to be done.
+U071X9XPC says -=*[1467154300.000480]-=*::: Looks like theyre funded:
+U071X9XPC says -=*[1467154301.000481]-=*::: &gt; Tlon's investors include A16Z, FF Angel, ZhenFund, Tim Draper, and Ben Davenport.
+U071X9XPC says -=*[1467154321.000483]-=*::: &gt;  From 2014 until now, it's been developed by a seed-funded startup called Tlon. Tlon's investors include A16Z, FF Angel, ZhenFund, Tim Draper, and Ben Davenport.
+U071X9XPC says -=*[1467154326.000484]-=*::: and are now doing a crowd sale
+U071X9XPC says -=*[1467154335.000485]-=*::: of some digital land IPv4 stuff
+U0722SJ4A says -=*[1467154718.000486]-=*::: oh interesting
+U0723KV7E says -=*[1467155817.000487]-=*::: What's their name?
+U0723KV7E says -=*[1467155826.000488]-=*::: Tlon?
+U071X9XPC says -=*[1467158968.000489]-=*::: That's the company behind Urbit
+U1JGE616C says -=*[1467162180.000490]-=*::: Its a super ambitious project.
+U0A9NH17X says -=*[1467166227.000491]-=*::: and the sale is already closed
+==========
+U076LGFE0 says -=*[1467218342.000494]-=*::: <@U075C3ETH>'s Masters thesis "Grokya: a Privacy-Friendly Framework for Ubiquitous Computing" <https://www.researchgate.net/profile/Daniel_Farinha2/publication/292144751_Grokya_a_Privacy-Friendly_Framework_for_Ubiquitous_Computing/links/5757d83e08ae5c65490434db.pdf?origin=publication_detail>
+U076LGFE0 says -=*[1467218377.000495]-=*::: Have heard a lot about it over the past couple years and look forward to reading the final work
+U075C3ETH says -=*[1467218403.000496]-=*::: please keep low expectations! :grin:
+U075C3ETH says -=*[1467218451.000497]-=*::: it was a bit of a rush job in the end. lots of stuff left out.
+==========
+U071X9XPC says -=*[1467747491.000524]-=*::: added an integration to this channel: <https://blockstack.slack.com/services/B1P14796G|github>
+U07C0TB6H says -=*[1467909070.000540]-=*::: <http://www.coindesk.com/bitfury-flare-lightning-network-routing/>
+U07C0TB6H says -=*[1467909084.000542]-=*::: Would love any feedback from the blockstack community. :slightly_smiling_face:
+U071X9XPC says -=*[1467911528.000543]-=*::: whats the TLDR?
+U07C0TB6H says -=*[1467911858.000544]-=*::: <https://medium.com/@BitFuryGroup/the-bitfury-group-releases-white-paper-flare-an-approach-to-routing-in-lightning-network-8bc263dcdc92>
+U07C0TB6H says -=*[1467911881.000546]-=*::: Today the Bitfury Group released a white paper about Flare, a hybrid routing algorithm for payment routing on the Lightning Network. The paper suggests a two-phase algorithm: (1) a proactive update of the nodes routing map, which stores information about network topology, along with (2) reactive collection of information as needed when required by a Lightning Network request.
+U074Q9Q3D says -=*[1467912349.000547]-=*::: <@U071X9XPC>: I've worked my way through the intro.  It's pretty interesting--the key problem they're addressing is applying efficient p2p routing algorithms to routing LN messages between hubs (hooray for re-using known-good results from academia!)
+U074Q9Q3D says -=*[1467912357.000548]-=*::: will read the rest on the train tonight
+U07C0TB6H says -=*[1467917331.000549]-=*::: here's a longer summary from roasbeef: <https://www.reddit.com/r/Bitcoin/comments/4roxim/bitfury_releases_proposal_for_bitcoin_lightning/d53653t>
+U07C0TB6H says -=*[1467917376.000551]-=*::: <@U074Q9Q3D>: we've also already gotten feedback of some other academic work we'll reference and cite in v 1.1 of the paper
+==========
+U07HTRSQN says -=*[1468358994.000579]-=*::: This article is going out tomorrow - here's a preview: <http://www.backalleycoder.com/2016/07/12/scaling-decentralized-apps-services-via-blockchain-based-identity-indirection/>
+U1Q7T9Q0G says -=*[1468485065.000587]-=*::: <@U07HTRSQN>: Oh lovely lovely, I really should've seen that before I did my presentation.  I talked a lot about similar things, but that article is just really so super clean and with a lot of good help to wrap heads around the concepts.   Indeed people did really grok what it was all about and got excited, but much of the discussion afterwards was on identity topics and the full difference of on-chain/off-chain.   _Less blockchain is more in many cases_.   Great work!
+U0722SJ4A says -=*[1468508167.000590]-=*::: <@U07HTRSQN>: <@U1Q7T9Q0G> Blockstack is the secret sauce, not the steak.
+U07HTRSQN says -=*[1468517381.000591]-=*::: <@U0722SJ4A>:  blockchain registered identities + identity containers + semantic data standards are the agar upon which all apps and services will grow
+U0722SJ4A says -=*[1468517427.000592]-=*::: oh yes thats a great analogy
+==========
+U0723KV7E says -=*[1468593834.000598]-=*::: <http://www.wsj.com/articles/medicare-backs-id-numbers-for-medical-devices-1468538333>
+U0723KV7E says -=*[1468599315.000600]-=*::: <https://techcrunch.com/2016/07/15/you-cant-have-financial-inclusion-without-digital-inclusion/>
+U0722SJ4A says -=*[1468599504.000602]-=*::: Nice Blockstack mention!
+U0723KV7E says -=*[1468612888.000604]-=*::: <https://soundcloud.com/flyover-labs/ryan-shea-co-founder-of-blockstack-labs-interview>
+U0723KV7E says -=*[1468801119.000005]-=*::: <http://silvertonconsulting.com/blog/2016/07/16/blockstack-a-bitcoin-secured-global-name-space-for-distributed-storage/#sthash.cUQFORT6.dpbs>
+==========
+U079L559C says -=*[1468872928.000008]-=*::: <https://steemit.com/blockchain/@dan/steemit-releases-groundbreaking-account-recovery-solution>
+U0722SJ4A says -=*[1468873107.000010]-=*::: <@U079L559C>: I got a 404 error
+U0722SJ4A says -=*[1468873285.000011]-=*::: <@U079L559C>: whats the basic idea? maybe screenshot? ha
+U079L559C says -=*[1468873327.000012]-=*::: I was hoping someone here could decipher that for me :p 
+U0722SJ4A says -=*[1468873343.000013]-=*::: ah I see
+U079L559C says -=*[1468873357.000014]-=*::: I'm AFK will see if I can find a copy of it in a bit 
+U0722SJ4A says -=*[1468873379.000016]-=*::: ok
+U079L559C says -=*[1468876179.000017]-=*::: <@U0722SJ4A>: link appears back for me 
+U0722SJ4A says -=*[1468876246.000018]-=*::: ah cool
+U0722SJ4A says -=*[1468876256.000019]-=*::: <@U074Q9Q3D>: take a look at this quote: ```Time  If there is no time period during which key changes can be challenged, then the first person to change the lock wins. The more time you have to respond, the less chance that someone will get away. ```
+U074Q9Q3D says -=*[1468876330.000020]-=*::: that's what I'm still struggling with...doesn't this just slow the process down?  It doesn't guarantee that the "right" person gets to make the key change
+U074Q9Q3D says -=*[1468876362.000021]-=*::: or rather, how can a victim stop an adversary from compelling the victim to give the adversary the next steps for acquiring the lock?
+U074Q9Q3D says -=*[1468876372.000022]-=*::: i.e. the adversary doesn't have to hold onto the victim for very long either way
+U0722SJ4A says -=*[1468876380.000023]-=*::: Depends on the key setup
+U0722SJ4A says -=*[1468876389.000024]-=*::: Lets say were working with a 2-of-3
+U0722SJ4A says -=*[1468876497.000025]-=*::: Lets say the user has an account on Bitstamp. The keys can be arranged as follows: 1. Key on users mobile device, protected by the phones lock 2. Key managed on Bitstamp, protected by logic gates triggered by successful 2FA 3. Key managed on BitGo, protected by logic gates triggered by successful 2FA
+U0722SJ4A says -=*[1468876598.000026]-=*::: Lets say theres a time delay of 5 days (like there is with DNS) and that a cancellation operation can be broadcast
+U0722SJ4A says -=*[1468876613.000027]-=*::: If the two companies helping with the escrow realize something went wrong, they can decide not to sign the next time
+U0722SJ4A says -=*[1468876642.000028]-=*::: This is actually the standard in both the financial system and in the DNS system
+U0722SJ4A says -=*[1468876650.000029]-=*::: Heres an example
+U074Q9Q3D says -=*[1468876656.000030]-=*::: no, I get it now
+U0722SJ4A says -=*[1468876666.000031]-=*::: <@U0722SJ4A|ryan_blockstack> uploaded a file: <https://blockstack.slack.com/files/ryan_blockstack/F1SRL87FG/screenshot_2016-07-18_14.35.34.png|Screenshot 2016-07-18 14.35.34.png>
+U074Q9Q3D says -=*[1468876692.000032]-=*::: the missing insight is that the lock mechanism must be designed such that there is a second "cancellation" message
+U0722SJ4A says -=*[1468876705.000033]-=*::: yeah exactly
+U0722SJ4A says -=*[1468876732.000034]-=*::: Lightning is working on adding this in to their protocol
+U074Q9Q3D says -=*[1468876738.000035]-=*::: there are bad alternatives which must be avoided--for example, requiring two confirmations X days apart
+U074Q9Q3D says -=*[1468876772.000036]-=*::: that's what was confusing me--there are many ways to implement a time delay, but we must take extra care to ensure that the adversary must endure the cost of completely controlling the victim for the window of time
+U0722SJ4A says -=*[1468876788.000037]-=*::: yeah for sure
+U0722SJ4A says -=*[1468876813.000038]-=*::: but even if that happens, if the companies helping with the escrow realize that there was a kidnapping, they can hold off on completing authorizations indefinitely
+U0722SJ4A says -=*[1468876834.000039]-=*::: The kidnapping is the most extreme example
+U074Q9Q3D says -=*[1468876868.000040]-=*::: so in reality it would be a 3-phase operation:  (1) transfer initiation, (2) transfer acknowledgement (after X days), and (3) transfer rebuttal (no more than Y days later)
+U0722SJ4A says -=*[1468876880.000041]-=*::: No, it would be 1-phase operation
+U0722SJ4A says -=*[1468876890.000042]-=*::: transfer initiation  inaction within X days
+U074Q9Q3D says -=*[1468876892.000043]-=*::: everyone gets alerted to the transfer's beginning at (1), but the escrow could refuse to do (2) if (1) was initiated in bad faith
+U0722SJ4A says -=*[1468876916.000044]-=*::: If its 5-of-9, Im counting the 5 signatures as the initation step
+U074Q9Q3D says -=*[1468876931.000045]-=*::: sure--(1) might be implicit (i.e. get the signatures off-chain)
+U074Q9Q3D says -=*[1468876964.000046]-=*::: but I would value (1) as a user, since it would alert everyone (including friends and family and escrow holders) that I had begun the process
+U074Q9Q3D says -=*[1468876969.000047]-=*::: even if (1) is off-chain
+U0722SJ4A says -=*[1468876982.000048]-=*::: Im not sure I understand
+U0722SJ4A says -=*[1468877041.000049]-=*::: Im saying theres only a single operation that needs to be sent
+U074Q9Q3D says -=*[1468877041.000050]-=*::: there are two "bad" scenarios here: * the adversary is also in control of the escrow, in which case, the user needs a rebuttal window to deny both the adversary's initial compulsion of the transfer initiation as well as the escrow's acknowledgement * the adversary kidnaps the user but does not control the escrow, in which case, the escrow needs to deny the adversary the transfer
+U074Q9Q3D says -=*[1468877063.000051]-=*::: &gt; Im saying theres only a single operation that needs to be sent I agree; I think I'm talking at a higher layer than you :slightly_smiling_face:
+U0722SJ4A says -=*[1468877118.000052]-=*::: Yes, in scenario 2, the assumption is that the adversary will not be able to maintain control of escrow agent 1 for more than 5 days
+U0722SJ4A says -=*[1468877159.000053]-=*::: In scenario 2, the assumption is that the escrow agents can have policies not to succumb to demands by kidnappers
+U074Q9Q3D says -=*[1468877194.000054]-=*::: right--if the adversary kidnaps the user and controls the escrow, there's not much that can be done
+U074Q9Q3D says -=*[1468877237.000055]-=*::: i.e. this is akin to a state-level actor forcing all escrows to comply with national law, and imprisoning people who don't comply
+U0722SJ4A says -=*[1468877257.000056]-=*::: yeah in that case you cant recover
+U0722SJ4A says -=*[1468877274.000057]-=*::: Theres even a use-case for a timelock with 1-of-1
+U0722SJ4A says -=*[1468877304.000058]-=*::: If I have a single key and the ability to cancel a transaction from a pre-signed certificate from that key, at least I can prevent the attacker from running off with the funds
+U0722SJ4A says -=*[1468877313.000059]-=*::: I may not be able to get the funds myself, but I can at least prevent theft
+U074Q9Q3D says -=*[1468877339.000060]-=*::: yes, that would also be an option (assuming the adversary can't kidnap you forever)
+U074Q9Q3D says -=*[1468877348.000061]-=*::: i.e. this would be an implementation of step (3)
+U0722SJ4A says -=*[1468877354.000062]-=*::: yeah Im not assuming kidnapping in this scenario
+U0722SJ4A says -=*[1468877364.000063]-=*::: this is a device compromise scenario
+U0722SJ4A says -=*[1468877389.000064]-=*::: Scenario 1: device compromise Scenario 2: escrow compromise Scenario 3: kidnapping
+U0722SJ4A says -=*[1468877400.000065]-=*::: All three can be addressed with timelocks
+U07HTRSQN says -=*[1468877406.000066]-=*::: Kidnapping may be the definition of a fringe case - and you might have bigger things to worry about if you were
+U0722SJ4A says -=*[1468877412.000067]-=*::: With varying levels of recovery
+U07HTRSQN says -=*[1468877414.000068]-=*::: like dying
+U0722SJ4A says -=*[1468877441.000069]-=*::: Kidnapping IS a fringe case for a 1B market cap currency
+U0722SJ4A says -=*[1468877458.000070]-=*::: It has been quite common in the existing financial system, though
+U0722SJ4A says -=*[1468877476.000071]-=*::: Which is one of the reasons wires dont go through right away and can be reversed
+U0722SJ4A says -=*[1468877493.000072]-=*::: The instant transfer in Swordfish isnt a thing :wink:
+U071X9XPC says -=*[1468877526.000073]-=*::: I suspect that a big reason for wires not going through instantaneously is compliance
+U0722SJ4A says -=*[1468877553.000074]-=*::: yes thats true
+U0722SJ4A says -=*[1468877585.000075]-=*::: another reason for reversal is that sometimes both wire transfers and domain name transfers are accidents
+U0722SJ4A says -=*[1468877601.000076]-=*::: so the key insight is
+U0722SJ4A says -=*[1468877617.000077]-=*::: there needs to be a point at which a domain name transfer is considered final
+U0722SJ4A says -=*[1468877626.000078]-=*::: there needs to be a point at which a wire transfer is considered final
+U0722SJ4A says -=*[1468877645.000079]-=*::: so they way they do it is have a soft confirm with a reversal period
+U0722SJ4A says -=*[1468877797.000080]-=*::: This is actually the most likely scenario, though
+U0722SJ4A says -=*[1468877808.000081]-=*::: Scenario 4: Escrow 2FA compromise
+U0722SJ4A says -=*[1468877823.000082]-=*::: Where the user is considered 2FAed with an escrow agent erroneously
+U0722SJ4A says -=*[1468877833.000083]-=*::: As in when a users laptop and phone are stolen
+U0722SJ4A says -=*[1468877862.000084]-=*::: If they have the ability to further authenticate with the escrow agent and show that they were in fact not authorizing earlier, they can cause the escrow agent to re-think their decision
+U0722SJ4A says -=*[1468877869.000085]-=*::: Thus cancelling the transaction
+U07HTRSQN says -=*[1468877872.000086]-=*::: but shouldn't all those things (phone, laptop) only have access to derivative keys?
+U07HTRSQN says -=*[1468877881.000087]-=*::: not the master key that owns the actual pointer?
+U0722SJ4A says -=*[1468877882.000088]-=*::: Your master key should be 2-of-3
+U0722SJ4A says -=*[1468877891.000089]-=*::: At minimum
+U0722SJ4A says -=*[1468877901.000090]-=*::: one of those keys could be an escrow agent
+U0722SJ4A says -=*[1468877905.000091]-=*::: 1 could be on your phone
+U0722SJ4A says -=*[1468877910.000092]-=*::: another could be on your computer
+U07HTRSQN says -=*[1468877922.000093]-=*::: we talked about also allowing a 5 word phrase
+U0722SJ4A says -=*[1468877930.000094]-=*::: If both get stolen, but you have a phone backup, youre now racing with the attacker
+U07HTRSQN says -=*[1468877963.000095]-=*::: assuming you added the precomputed transaction to the chain when you registere
+U07HTRSQN says -=*[1468877976.000096]-=*::: you still OK with that method as well?
+U07HTRSQN says -=*[1468877980.000097]-=*::: as an option?
+U0722SJ4A says -=*[1468877992.000098]-=*::: added the precomputed transaction to the chain?
+U07HTRSQN says -=*[1468878002.000099]-=*::: remember or discussion in Boston?
+U07HTRSQN says -=*[1468878006.000100]-=*::: our*
+U0722SJ4A says -=*[1468878030.000101]-=*::: yeah I remember we discussed allowing a user to protect a key with a phrase
+U0722SJ4A says -=*[1468878037.000102]-=*::: but this really comes down to encryption
+U0722SJ4A says -=*[1468878056.000103]-=*::: or key derivation and key lengthening
+U0722SJ4A says -=*[1468878062.000104]-=*::: (depending on how its executed)
+U0722SJ4A says -=*[1468878066.000105]-=*::: but this is a layer that could be added on to multi-sig
+U0722SJ4A says -=*[1468878069.000106]-=*::: and shouldnt be used to replace it
+U07HTRSQN says -=*[1468878106.000107]-=*::: I agree
+U07HTRSQN says -=*[1468878140.000108]-=*::: I could see the phrase  + any one of the devices as 2/N
+U07HTRSQN says -=*[1468878154.000109]-=*::: that would make it really hard to attack, no?
+U0722SJ4A says -=*[1468878172.000110]-=*::: Yeah we can keep increasing the difficulty
+U0722SJ4A says -=*[1468878181.000111]-=*::: But keep in mind people still forget their phrases
+U0722SJ4A says -=*[1468878185.000112]-=*::: people still lose their devices
+U0722SJ4A says -=*[1468878189.000113]-=*::: sometimes it all happens at the same time
+U0722SJ4A says -=*[1468878193.000114]-=*::: Look at how apple does 2FA
+U07HTRSQN says -=*[1468878200.000115]-=*::: sure, but any device you have could contain the second factor
+U07HTRSQN says -=*[1468878211.000116]-=*::: so lose all devices is less likely
+U0722SJ4A says -=*[1468878212.000117]-=*::: They say you can recover your account if you have 2/3 of the following: - Your device - Your password - Your backup phrase
+U07HTRSQN says -=*[1468878232.000118]-=*::: are you guys planning on offering mix and match?
+U0722SJ4A says -=*[1468878235.000119]-=*::: Yeah but imagine you lose 1 device and someone guesses your password
+U07HTRSQN says -=*[1468878237.000120]-=*::: via API?
+U0722SJ4A says -=*[1468878241.000121]-=*::: Now youre racing the attacker
+U0722SJ4A says -=*[1468878265.000122]-=*::: Oh oh! heres another example of time delas
+U0722SJ4A says -=*[1468878278.000124]-=*::: Apple doesnt let you change your 2FA settings for 3 days after you change something else
+U0722SJ4A says -=*[1468878308.000125]-=*::: This gives you time to call up Apple and cancel password, email, 2FA, or security question changes
+U0722SJ4A says -=*[1468878328.000126]-=*::: To prevent an irreversible takeover of your account
+U0722SJ4A says -=*[1468878337.000127]-=*::: Here we get into the continuity theory of identity
+U0722SJ4A says -=*[1468878380.000128]-=*::: Where Apple considers you to be the same person as long as one of the factors changes at a time
+U0722SJ4A says -=*[1468878426.000129]-=*::: And to prevent all of them changing all at once, they introduce a time delay
+U0722SJ4A says -=*[1468878453.000130]-=*::: And <@U07HTRSQN> this management wouldnt happen with the API but would more happen in the desktop app were releasing
+U0722SJ4A says -=*[1468878465.000131]-=*::: Our company can run an API that can act as an escrow agent
+U0722SJ4A says -=*[1468878470.000132]-=*::: An optional one
+U079L559C says -=*[1468892486.000134]-=*::: <@U0722SJ4A>: is there a tl;dr on whether steems proposal is technically sound from your pov?
+U079L559C says -=*[1468892519.000136]-=*::: if so, what are the risks? if not, what are the holes?
+U0722SJ4A says -=*[1468898769.000137]-=*::: <@U079L559C>: 
+U0722SJ4A says -=*[1468899229.000139]-=*::: <@U079L559C>: Well the first thing to mention is all of this has existed before and this model isn't groundbreaking
+U0722SJ4A says -=*[1468899250.000140]-=*::: Second, I really like how they use time locks
+U0722SJ4A says -=*[1468899271.000141]-=*::: Also, I do like how they allow you to tap into your network to help you reset your account
+U0722SJ4A says -=*[1468899283.000142]-=*::: But they only have you pick one person, which is strange
+U0722SJ4A says -=*[1468899351.000143]-=*::: Account notifications are also very valuable
+U0722SJ4A says -=*[1468899420.000144]-=*::: That said, they do challenge the concept that keys are law, but they don't really realize or admit to the fact that they are actually simulating a multi-sig scheme, with the added layers of time locks and account access notifications / monitoring
+U0722SJ4A says -=*[1468899461.000145]-=*::: This is essentially Coinbase Vault with withdrawal limits enabled
+U0722SJ4A says -=*[1468899557.000146]-=*::: Coinbase has account access notifications and with their vault product they have multi-sig, and while they don't have timelocks on the blockchain, they do have the ability to instruct a Coinbase owned key to choose to wait to trigger a transaction
+U0722SJ4A says -=*[1468899597.000147]-=*::: One risk in Steem's model is that the security partner could screw over the user in certain scenarios
+U0722SJ4A says -=*[1468899667.000148]-=*::: Another hole comes from their reliance on the history of passwords. If a previous password was weak or compromised, and a hacker got the current password, there's a compromise opportunity there
+U0722SJ4A says -=*[1468899761.000149]-=*::: I like their description but really depends how they implement it
+U0722SJ4A says -=*[1468899769.000150]-=*::: Lot to be determined
+U079L559C says -=*[1468946065.000153]-=*::: thanks for summarizing <@U0722SJ4A>  tech may not be groundbreaking, but the application of it here is pretty interesting
+U079L559C says -=*[1468946106.000154]-=*::: just starting to dig in on the technical documentation for graphene etc; the steem whitepaper didnt help much on the technical detailsfocused more on the economics, which are very complex
+U0722SJ4A says -=*[1468953034.000156]-=*::: <@U079L559C>: For sure! And yeah, the post was an interesting read
+==========

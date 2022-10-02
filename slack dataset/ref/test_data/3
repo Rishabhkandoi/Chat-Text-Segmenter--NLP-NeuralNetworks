@@ -1,0 +1,61 @@
+==========
+U071X9XPC says -=*[1458766510.000038]-=*::: <http://www.drinchev.com/blog/alert-npm-modules-hijacked/>
+U07CD6UJG says -=*[1458783487.000039]-=*::: <http://www.kristovatlas.com/bitcoin-calculation-problems/>
+U0722SJ4A says -=*[1458851038.000041]-=*::: <https://blog.blockstack.org/dear-npm-founders-your-hands-are-full-but-i-can-help-6fb65df56cdb#.ncci3jtnr>
+U0722SJ4A says -=*[1458851069.000043]-=*::: Hey folks I wrote this new blog post on how NPM could use Blockstack to solve their package security problems.
+U0722SJ4A says -=*[1458851092.000044]-=*::: Would love your thoughts on whether this would work and if working with other package managers first might make more sense.
+U076LGFE0 says -=*[1458851155.000045]-=*::: it would be great to have a tld for each package manager
+U076LGFE0 says -=*[1458851170.000046]-=*::: `.rubygems` etc
+U074Q9Q3D says -=*[1458851188.000047]-=*::: `.apt`
+U0722SJ4A says -=*[1458851209.000048]-=*::: yeah that would make sense
+U076LGFE0 says -=*[1458851231.000049]-=*::: its so $$$$ to start a tld though :wink:
+U0722SJ4A says -=*[1458851260.000051]-=*::: yeah ha
+U0722SJ4A says -=*[1458851320.000052]-=*::: But we were thinking that we can do this thing where if registers a namespace, you put up the money up front and then you can make back all of the cost through proceeds from the name registrations. Then, after that, once you break even, all the proceeds will go to miners.
+U0722SJ4A says -=*[1458851338.000053]-=*::: So its a way to incentivize the creation of namespaces that actually end up getting used.
+U076LGFE0 says -=*[1458851346.000054]-=*::: motivation to promote your tld
+U0722SJ4A says -=*[1458851360.000055]-=*::: Because if you register the names yourself, youre still paying 100% of the cost.
+U0722SJ4A says -=*[1458851363.000056]-=*::: Exactly
+U0722SJ4A says -=*[1458851377.000057]-=*::: Youll want to promote it so others register the names and help you make back your investment
+==========
+U076LGFE0 says -=*[1458906646.000058]-=*::: <https://www.youtube.com/watch?v=T1fqOEhFP40>
+U076LGFE0 says -=*[1458907042.000060]-=*::: this was an amazing talk explaining segregated witness and the problems it solves in pretty easy to understand language by co-author of bips 141-143. i made a video of it because so many people wanted to attend the event but couldnt make it.
+U0723KV7E says -=*[1458918925.000061]-=*::: Great video <@U076LGFE0>.. A bit long so Ill have to finish it up over the weekend. Are you planning on producing more of these on a regular basis?
+==========
+U0723KV7E says -=*[1458919207.000063]-=*::: Congratulations on the growth to our fellow blockstackers from OpenBazaar. Impressive growth! <@U07CBM9RB> <@U07CD6UJG> <@U07CYBWBS> &gt;The project's test version has been downloaded more than 19,593 times <http://www.coindesk.com/7-vendors-early-adopters-openbazaar/>
+U076LGFE0 says -=*[1458920214.000065]-=*::: <@U0723KV7E>: we have a few talks or a panels a month, so the idea is that someone will record them and will upload them. I also set up a podcast feed to make it easy for people <https://www.bitcoinhk.org/bitcoin-lecture-series/podcast.xml> <https://itunes.apple.com/us/podcast/the-bitcoin-lecture-series/id1096689567>
+U07CBM9RB says -=*[1458939616.000068]-=*::: Thanks <@U0723KV7E> 
+U0722SJ4A says -=*[1458939734.000069]-=*::: <@U07CBM9RB>: I see you
+U0722SJ4A says -=*[1458939744.000070]-=*::: you guys are rockin it
+U07CBM9RB says -=*[1458939758.000071]-=*::: Thanks. Hopefully it keeps it up for release
+U07CBM9RB says -=*[1458939764.000072]-=*::: I think that was our last beta
+==========
+U076J2XV5 says -=*[1459126301.000074]-=*::: <@U076J2XV5|light_bitseed> uploaded a file: <https://blockstack.slack.com/files/light_bitseed/F0VQEMPF0/screenshot_2016-03-27-17-48-02-1.png|Slack for Android Upload> and commented: Dat metaphor tho xD <@U0722SJ4A> <https://blog.blockstack.org/it-s-not-about-privacy-phone-protection-21b0d4f400d5#.scowoty4y> 
+U076J2XV5 says -=*[1459126344.000075]-=*::: That "ban encryption bong" sounds like a real buzz kill :confounded:
+U0722SJ4A says -=*[1459132927.000076]-=*::: Haha thanks <@U076J2XV5> 
+==========
+U076LGFE0 says -=*[1459217358.000078]-=*::: <@U076LGFE0|larry> uploaded a file: <https://blockstack.slack.com/files/larry/F0W3DN2P9/img_4291.png|IMG 4291>
+U0723KV7E says -=*[1459256629.000079]-=*::: Hm.. I received the same email this morning/last night. ``` As you know, users in the Bitcoin ecosystem are being targeted by hackers. ``` I was actually unaware of this.
+U0723KV7E says -=*[1459259479.000080]-=*::: Great newsletter <@U076LGFE0>. Well worth the read. <https://www.getrevue.co/profile/larry/archive/14603>
+U076LGFE0 says -=*[1459259502.000082]-=*::: <@U0723KV7E>: wow youre fast!
+U0723KV7E says -=*[1459259535.000083]-=*::: Lol. Ive read a few of those articles already. I have to admit
+U0723KV7E says -=*[1459259537.000084]-=*::: lol
+U076LGFE0 says -=*[1459259537.000085]-=*::: Im still trying to context switch from newsletter mode to my next task
+U0722SJ4A says -=*[1459259538.000086]-=*::: Yeah that was very well done Larry!
+U076LGFE0 says -=*[1459259572.000089]-=*::: thanks!
+==========
+U0722SJ4A says -=*[1459443370.000094]-=*::: <https://www.cryptocoinsnews.com/cornell-study-recommends-4mb-blocksize-bitcoin/>
+U0722SJ4A says -=*[1459451884.000096]-=*::: <https://bitcoincore.org/en/team/>
+U0722SJ4A says -=*[1459452505.000097]-=*::: ```Team  The Bitcoin Core project has a large open source developer community with many casual contributors to the codebase. There are many more who contribute research, peer review, testing, documentation, and translation.  This page list some of the more full time contributors to the project, as well as those who have some administrative roles. ```
+==========
+U07C0TB6H says -=*[1459785118.000107]-=*::: i have no idea what "strategic partnership" even means. it seems to be popping up everywhere lately. <http://www.zdnet.com/article/microsoft-solidifies-its-blockchain-as-a-service-work-with-new-banking-partnership/>
+U0723KV7E says -=*[1459785285.000109]-=*::: No comment on this.. Yet another Microsoft partnership on all blockchains.
+U0723KV7E says -=*[1459785290.000110]-=*::: :see_no_evil:
+U0722SJ4A says -=*[1459785552.000111]-=*::: hahaha
+U0722SJ4A says -=*[1459785574.000113]-=*::: haha replace strategic partnership with strategic press release"
+==========
+U076LGFE0 says -=*[1459867694.000118]-=*::: <http://intheoreum.org/#welcome>
+U076LGFE0 says -=*[1459986320.000123]-=*::: ruby's centralized package management system vulnerable to arbitrary gem replacement <http://blog.rubygems.org/2016/04/06/gem-replacement-vulnerability-and-mitigation.html>
+U076LGFE0 says -=*[1459986340.000124]-=*::: software package space is crying for a blockstack-based solution
+U075BH6M7 says -=*[1459993129.000125]-=*::: <@U076LGFE0>: +1, been saying that since  a long time
+U075BH6M7 says -=*[1459993184.000126]-=*::: getting to the point where i have to spend my time figuring out how to sandbox all these things
+==========

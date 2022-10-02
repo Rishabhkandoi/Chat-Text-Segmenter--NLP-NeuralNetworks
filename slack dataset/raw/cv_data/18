@@ -1,0 +1,40 @@
+U1TUWPL1M says -=*[1478017468.001212]-=*::: <@U2FFR8MA4> make sure that your spec has `imagePullPolicy:IfNotPresent`
+U1TUWPL1M says -=*[1478017482.001213]-=*::: that will tell k8s to use the local version if its already built
+U1VL8H66Q says -=*[1478021973.001214]-=*::: I noticed that v0.12.1 changelog includes "Run kube-dns as addon instead of vendored in kube2sky". Just curious if that is expected to change DNS behavior at all. Just wondering because I've had some strange DNS issues I haven't had a chance to gather enough info to make a ticket on, and wondering if there's a chance it could have been fixed already.
+U1TUWPL1M says -=*[1478021993.001215]-=*::: <@U1VL8H66Q> there shouldn't be any difference
+U1TUWPL1M says -=*[1478022013.001217]-=*::: what kind of DNS issues are you having?
+U1VL8H66Q says -=*[1478022084.001218]-=*::: I don't have all the info we gathered on it in front of me right now, but for some of our developers, they are unable to resolve internet names when using ClusterFirst dnsPolicy. Was unable to figure out what was different that it was working for some people and not others
+U1VL8H66Q says -=*[1478022102.001219]-=*::: (This is as of v0.10.0)
+U1VL8H66Q says -=*[1478022203.001220]-=*::: <@U1VL8H66Q|blab> uploaded a file: <https://kubernetes.slack.com/files/blab/F2X0Q92R1/-.txt|Untitled>
+U1TUWPL1M says -=*[1478022264.001221]-=*::: maybe its related to this issue? <https://github.com/kubernetes/kubernetes/issues/17406>
+U1TUWPL1M says -=*[1478022274.001223]-=*::: running DNS as a pod might have broken this
+U1TUWPL1M says -=*[1478022288.001224]-=*::: the kube-dns has hostNetwork: true
+U1VL8H66Q says -=*[1478022305.001225]-=*::: As an example of the behavior that was seen. The workaround I did for now was to overwrite the VMs resolv.conf to have the kubernetes DNS and the 10.0.2.1 or whatever the VBox DNS is as servers and have dnsPolicy: Default on everything
+U1VL8H66Q says -=*[1478022312.001226]-=*::: Oh let me take a look
+U1TUWPL1M says -=*[1478022318.001227]-=*::: im not sure if that issue is valid
+U1TUWPL1M says -=*[1478022321.001228]-=*::: its a year old
+U0C6963R6 says -=*[1478022358.001229]-=*::: one problem I've noticed is that if I'm running dnsmasq along with minikube things go sideways
+U0C6963R6 says -=*[1478022369.001230]-=*::: I haven't had a chance to work it out, so I just dropped dnsmasq for now
+U0C6963R6 says -=*[1478022377.001231]-=*::: back to using simple /etc/hosts
+U0C6963R6 says -=*[1478022422.001232]-=*::: might not be related to your issue above
+U1VL8H66Q says -=*[1478022523.001233]-=*::: Not related since I am not using dnsmasq, but we have plans to use dnsmasq in the future, so I am still glad you said it!
+U1TUWPL1M says -=*[1478022589.001234]-=*::: theres this issue ive just commented on <https://github.com/kubernetes/minikube/issues/781>
+U1VL8H66Q says -=*[1478022642.001236]-=*::: Yeah, finding that issue is what led to me looking at the changelog and seeing that. We're still on 0.10.0 so it's probably not the same issue as us I think
+U1TUWPL1M says -=*[1478022649.001237]-=*::: gotcha
+U1VL8H66Q says -=*[1478022737.001238]-=*::: I think the issue #17406 is probably also not related because it works for some people and not others with seemingly the same setup. I guess at some point I am just going to have to try to gather as much info as I can and make a ticket
+U14UWF1C4 says -=*[1478023209.001239]-=*::: <@U1TUWPL1M> I tried the workaround of turning off the update notifications and I ended up with more errors:  ``` $ minikube config set WantUpdateNotification false $ minikube dashboard Could not find finalized endpoint being pointed to by kubernetes-dashboard: Temporary Error: Error creating kubeConfig: invalid configuration: no configuration has been provided Temporary Error: Error creating kubeConfig: invalid configuration: no configuration has been provided Temporary Error: Error creating kubeConfig: invalid configuration: no configuration has been provided Temporary Error: Error creating kubeConfig: invalid configuration: no configuration has been provided Temporary Error: Error creating kubeConfig: invalid configuration: no configuration has been provided Temporary Error: Error creating kubeConfig: invalid configuration: no configuration has been provided Temporary Error: Error creating kubeConfig: invalid configuration: no configuration has been provided Temporary Error: Error creating kubeConfig: invalid configuration: no configuration has been provided Temporary Error: Error creating kubeConfig: invalid configuration: no configuration has been provided Temporary Error: Error creating kubeConfig: invalid configuration: no configuration has been provided Temporary Error: Error creating kubeConfig: invalid configuration: no configuration has been provided Temporary Error: Error creating kubeConfig: invalid configuration: no configuration has been provided Temporary Error: Error creating kubeConfig: invalid configuration: no configuration has been provided Temporary Error: Error creating kubeConfig: invalid configuration: no configuration has been provided Temporary Error: Error creating kubeConfig: invalid configuration: no configuration has been provided Temporary Error: Error creating kubeConfig: invalid configuration: no configuration has been provided Temporary Error: Error creating kubeConfig: invalid configuration: no configuration has been provided Temporary Error: Error creating kubeConfig: invalid configuration: no configuration has been provided Temporary Error: Error creating kubeConfig: invalid configuration: no configuration has been provided Temporary Error: Error creating kubeConfig: invalid configuration: no configuration has been provided ```
+U1TUWPL1M says -=*[1478023268.001240]-=*::: thats odd - maybe your machine is in weird state.  try a `minikube start `?
+U0B9MPWSE says -=*[1478024097.001241]-=*::: not sure if this is a kube or minikube issue, but are hostpath volumes supposed to work with deployments?  On a minikube instance a pod can mount a hostpath just fine, but the same pod deployed via a deployment ends up with what appears to be an emptydir instead.
+U20L8GGUF says -=*[1478032661.001243]-=*::: What is the best way to verify a worker node can access the api-master?
+U20L8GGUF says -=*[1478034317.001244]-=*::: ^^ if the port is open this is the easiest way:   ```curl http://$master-ip:8080/api```
+U09R5S9SP says -=*[1457966104.000007]-=*::: Thanks <@U0AGW7007>
+U09R5S9SP says -=*[1457966268.000008]-=*::: We'd like to add Windows support to Kubernetes. We're going to start with the at the node level with tackling the following issue first: <https://github.com/kubernetes/kubernetes/issues/22623> . But the goal is to get all of Kubernetes running on Windows.  You can join us at: <https://groups.google.com/forum/#!forum/kubernetes-sig-windows>
+U0J1XR09Z says -=*[1457970185.000019]-=*::: Onboarding everyone now
+U0K61JBKJ says -=*[1459268544.000029]-=*::: Guys, is the meeting today at 1pm EST or PST?
+U0K61JBKJ says -=*[1459272017.000032]-=*::: for the record the meeting was at 1PM ET (10AM PT).
+U0ETKS891 says -=*[1459272166.000034]-=*::: <@U0PPMUTGR>:  - per the call, please work with Caesar to split up some of the investigation as yo uguys see fit
+U0MH0QZJB says -=*[1459272484.000036]-=*::: ahhhh shit did I miss it?
+U0MH0QZJB says -=*[1459272508.000037]-=*::: guesses he did
+U0MH0QZJB says -=*[1459272524.000038]-=*::: does anyone have minutes or a recording?
+U0J1K4SS0 says -=*[1459276614.000039]-=*::: <@U0J1K4SS0|jchoy> uploaded a file: <https://kubernetes.slack.com/files/jchoy/F0WAGJA8J/call_summary_29_march_2016.txt|Call Summary 29 March 2016>
+U0BM389D4 says -=*[1459281732.000041]-=*::: See my multiarch/ARM proposal here: <https://github.com/kubernetes/kubernetes/issues/17981>. Kubernetes on ARM (an OOTB solution) is here: <https://github.com/luxas/kubernetes-on-arm>

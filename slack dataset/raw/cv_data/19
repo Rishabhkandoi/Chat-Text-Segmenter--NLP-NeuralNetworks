@@ -1,0 +1,47 @@
+U0WB75BC5 says -=*[1459283498.000044]-=*::: <@U0PPMUTGR>: Hello. Please let me know how I can help with the technical investigation into the kubelet gaps for Windows.
+U0PPMUTGR says -=*[1459283559.000045]-=*::: thanks for reaching out <@U0WB75BC5>.  let me ping you offline
+U0BM389D4 says -=*[1459356495.000046]-=*::: I'm also interested in Kubernetes on windows. Is there an open tracking issue for it? I think it should be
+U0BM389D4 says -=*[1459356519.000047]-=*::: /cc <@U09R5S9SP>
+U09R5S9SP says -=*[1459356545.000048]-=*::: Yes weve got an issue
+U0BM389D4 says -=*[1459356564.000049]-=*::: Were?
+U09R5S9SP says -=*[1459356570.000050]-=*::: <https://github.com/kubernetes/kubernetes/issues/22623>
+U0PPMUTGR says -=*[1459954184.000054]-=*::: hi everyone, i would like to let everyone know that we are trying to nail down a 1-hr slot with the windows container team at microsoft to brainstorm around support for windows containers in k8s. During this meeting, we also plan to share details of our investigation so far. i will forward the invite to this slack channel once i we nail down some time slots. thanks!
+U0A31HCBZ says -=*[1459968128.000055]-=*::: thanks <@U0PPMUTGR>!
+U09R5S9SP says -=*[1460477705.000056]-=*::: <@U0PPMUTGR>: will you be on the call today?
+U09R5S9SP says -=*[1460477719.000057]-=*::: <https://plus.google.com/hangouts/_/kismatic.com/sig-windows>
+U09R5S9SP says -=*[1460477792.000059]-=*::: Weve also created a shared document available at: <https://goo.gl/NE0ABx> to track our planning discussions.
+U09R5S9SP says -=*[1460478348.000061]-=*::: Does anybody have anything to add to todays agenda?
+U09R5S9SP says -=*[1460479629.000062]-=*::: The agenda is available at: <https://goo.gl/2Uoz35>
+U09R5S9SP says -=*[1460479714.000064]-=*::: <@U0K61JBKJ>: ^^
+U0K61JBKJ says -=*[1460482325.000066]-=*::: Guys, so during the sig meeting I mentioned the meeting with microsoft next week
+U0K61JBKJ says -=*[1460482418.000067]-=*::: Currently scheduled for 12 PM ET (9:00 AM PT), if you would like to attend the meeting please let me know and I will forward you privately an invite to the gotomeeting. We need to know this in advanced so we can know if we can discuss things under NDA or not.
+U0K61JBKJ says -=*[1460482559.000069]-=*::: <@U0AGW7007>: and <@U09R5S9SP> it would be great if we could have participation from everyone involved including Kismatic and Google so ping me directly if you would like to attend the meeting as well
+U0AGURFHS says -=*[1460482565.000070]-=*::: Today's presentation was helpful! Will it possible to give the same presentation in one of the sig-node meetings?
+U09R5S9SP says -=*[1460482606.000071]-=*::: <@U0AGURFHS>: Ive recorded Cesars demo and will share the link shortly.
+U0AGURFHS says -=*[1460482693.000072]-=*::: Sweet. If/when we want to have design discussions, we should do a design presentation with the sig-node though..
+U09R5S9SP says -=*[1460482713.000073]-=*::: <@U0AGURFHS>: agreed 100%
+U0AGW7007 says -=*[1460483304.000075]-=*::: <@U0K61JBKJ>, not sure I can join, but please send me an invite.
+U09R5S9SP says -=*[1460484359.000077]-=*::: <https://goo.gl/2XxOtY>
+U09R5S9SP says -=*[1460484406.000078]-=*::: This is <@U0WB75BC5> demo (shared with his permission)
+U0PPMUTGR says -=*[1461041296.000007]-=*::: hi everyone, members from Apprenda and Red Hat have created the first version of a technical investigations document on how to bring the kubelet to Windows. Comments and feedback is welcome from everyone (everyone has the ability to add comments) - if you want edit/write access, let me know through the Slack messaging system.  <https://docs.google.com/document/d/1qhbxqkKBF8ycbXQgXlwMJs7QBReiSxp_PdsNNNUPRHs/edit?usp=sharing>  Our goal is to share some of these findings with Microsoft during our Wednesday meeting. The focal point of that meeting is to go over some of the questions for Microsoft that we started accumulating in this document. If you have additional questions to bring during that discussion, please add them to the document. ```Big thanks to <@U0JFJ4KHS>  and <@U0WB75BC5> for most of the work on this document```
+U0J1K4SS0 says -=*[1461160402.000009]-=*::: Seems like we have a common underlying problem no matter what we do for providing an equivalent of cAdvisor functionality on Windows: a new dependency on a new data store subsystem, or a need to provide a Windows port of InfluxData's InfluxDB.   I'd be more inclined to roll up the chain of adding support to upstream dependencies for our platform than introducing new dependencies as a smaller lift. Thoughts?
+U0K61JBKJ says -=*[1461165140.000010]-=*::: Guys msft meeting happening in less than an hour. If you are interested in joining this is your last chance to ping me.
+U0PPMUTGR says -=*[1461167149.000011]-=*::: <@U0J1K4SS0>:  why do we need a dependency on a data store subsystem like influxDB?
+U0J1K4SS0 says -=*[1461168454.000012]-=*::: <@U0PPMUTGR> InfluxDB is the storage mechanism that existing cAdvisor code uses to provide its on-node event stream store.
+U0PPMUTGR says -=*[1461208808.000013]-=*::: got it. thanks Jon
+U0PPMUTGR says -=*[1461209079.000014]-=*::: everyone, thank you for attending the meeting with Microsoft today. it was a very productive meeting and many thanks to Taylor and team for attending. During the meeting, I was making updates in real time to the doc in the "open questions to Microsoft" section. Feel free to read through the Q&amp;A and raise additional questions or concerns. After the meeting we identified a couple of next steps 1. Set up meeting with the kubernetes community to discuss what does a POD looks like on windows. Any preferences on days or timeslots? 2. Start writing some POC code, expanding on the work that Cesar did to integrate the kubelet code with the docker API for windows server containers. Apprenda will start on some of this work and will continue to share that with the community
+U0WB75BC5 says -=*[1461613565.000016]-=*::: I added Windows on Kube to the node-sig's agenda for tomorrow's (4/26) meeting @ 2:30PM ET. We can go over the findings from the discussion with Microsoft and get more folks from the node-sig providing feedback. You can join the node-sig group at <https://groups.google.com/forum/#!forum/kubernetes-sig-node>
+U0PPMUTGR says -=*[1461681596.000017]-=*::: <@U0WB75BC5>:  thanks for the update
+U0WB75BC5 says -=*[1461683098.000018]-=*::: The agenda for the sig-node meeting (along with Google Hangout url) is here: <https://docs.google.com/document/d/1Ne57gvidMEWXR70OxxnRkYquAoMpt56o75oZtg-OeBg/edit>
+U0WB75BC5 says -=*[1461683189.000019]-=*::: Do you think it'd be useful to have some slides summarizing the findings we have so far? Or should going over the existing marked up document be enough?
+U0PPMUTGR says -=*[1461684634.000020]-=*::: Cesar, taking it offline with you and Jitu on the slides. yes, it would be useful to have them
+U0WB75BC5 says -=*[1461687873.000021]-=*::: Slides for meeting: <https://docs.google.com/presentation/d/16nYb13oulBoB4d6QZXYm-9sk3TN898qumzY5ur4wirU/pub?start=false&amp;loop=false&amp;delayms=60000>
+U0AGW7007 says -=*[1461693379.000022]-=*::: how was the meeting?  (sorry i couldnt attend.)
+U0AGW7007 says -=*[1461693392.000023]-=*::: and, thanks for sharing the slides!
+U0WB75BC5 says -=*[1461693743.000024]-=*::: We went over the slides and <@U0PPMUTGR> made some corrections. We're going to go over those slides in the sig-node meeting
+U0WB75BC5 says -=*[1461693933.000025]-=*::: The sig-node meeting is actually starting now @2pm ET
+U0PPMUTGR says -=*[1461699147.000029]-=*::: From Taylor ```  As discussed to  heres a sample in .net for interacting directly with the HCS/HNS.  Again as mentioned as we finalize the HCS/HNS the APIs are expected to change and ultimately this sample will likely be updated to accommodate (or a new sample).  <https://github.com/Microsoft/dotnet-computevirtualization>   -Taylor ```
+U0JFJ4KHS says -=*[1462391067.000033]-=*::: Hi all, one of the next steps following the meeting with Microsoft was to start working on POC to support Kubernetes on Windows. We have created a document (<https://docs.google.com/document/d/19B1cCiMHxnduNZ44afxPoIKpfNXgFxiVJldSgUShl2s/edit#>) describing the areas to contribute. Please review the doc and provide your feedback and comments
+U0JFJ4KHS says -=*[1462391155.000034]-=*::: Also, if you would like to contribute in a specific area, please assign your name in the table at the top of the document. If there is already another person assigned to an area you want to contribute, we can have more than one so that folks can work as a team
+U0PPMUTGR says -=*[1462896676.000038]-=*::: hi all, is there an agenda for today's call? i would like to add to the agenda the fact that a POC is underway and described in the document <https://docs.google.com/document/d/19B1cCiMHxnduNZ44afxPoIKpfNXgFxiVJldSgUShl2s/edit#>
+U0PPMUTGR says -=*[1462899769.000039]-=*::: everyone, the K8s sig-windows meetup invite is located here <https://calendar.google.com/calendar/render?action=VIEW&amp;eid=OXFmYTUzM2pzMWxwYnF1b2V1MXUxaXUxOTAgbWljaG1pa2VAbQ&amp;ctz=America/Chicago&amp;hl=en&amp;t=AKUaPmYjL7EeBCyPXU0mcAHcuiPscnWnLAJh2iaQ-klqH76lfzCOpAC_qnwKRw0coUtw69_vWyPVPYgVXYRJlsTYYRQ5yf8zcg%3D%3D&amp;sf=true&amp;output=xml#eventpage_6>

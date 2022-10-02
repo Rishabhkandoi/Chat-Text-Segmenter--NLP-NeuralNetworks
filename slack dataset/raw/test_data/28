@@ -1,0 +1,36 @@
+U3K38QC73 says -=*[1483118955.000683]-=*::: <@U0JFJ4KHS> Wondering if you could answer a question for me
+U0JFJ4KHS says -=*[1483119532.000684]-=*::: Sure
+U3K38QC73 says -=*[1483120166.000685]-=*::: In the document it says we need 2 nics per vm. The vm already has a nic for standard internet connections. Does this mean 1 more nic needs to be created?
+U3K38QC73 says -=*[1483120175.000686]-=*::: Little confused on that part
+U0JFJ4KHS says -=*[1483120329.000687]-=*::: Yes, for now 2 nics are required. We are working on to overcome that limitation 
+U3K38QC73 says -=*[1483121874.000688]-=*::: So i just need to create the internal vm-switch and i should be ok correct?
+U0JFJ4KHS says -=*[1483122294.000689]-=*::: internal vm-switch might not work, you would need to external NICs, one of which will be used by the transparent network
+U3K38QC73 says -=*[1483122835.000690]-=*::: ok i will try and if not i will create another nic for the vm(s)
+U3K38QC73 says -=*[1483122840.000691]-=*::: thanks for the help!
+U0JFJ4KHS says -=*[1483122844.000692]-=*::: sure np
+U3K38QC73 says -=*[1483124996.000693]-=*::: Does anyone know if kubeproxy has windows binaries that we can download or we must build ourself's?
+U3K38QC73 says -=*[1483125181.000694]-=*::: I havent seen any but i thought i would ask anyway
+U0JFJ4KHS says -=*[1483125219.000695]-=*::: <@U0ALRFJH0> created a PR for it, checking if it was merged and if binaries are generated
+U0JFJ4KHS says -=*[1483125460.000696]-=*::: actually PR was merged and it was by Brendan Burns and not <@U0ALRFJH0> <https://github.com/kubernetes/kubernetes/pull/38919>
+U3K38QC73 says -=*[1483125585.000698]-=*::: Looks like changes still need to be made by the looks of things
+U0JFJ4KHS says -=*[1483125598.000699]-=*::: yes
+U0JFJ4KHS says -=*[1483125624.000700]-=*::: looks like for now you will have to build the binaries
+U3K38QC73 says -=*[1483125629.000701]-=*::: :disappointed:
+U3K38QC73 says -=*[1483125665.000702]-=*::: I think until the binaries are built i will hold off on trying kubernetes for windows
+U2U84B4BE says -=*[1483192255.000704]-=*::: <@U3K38QC73> I'd like to share my private build if you just want it for evaluation
+U3K38QC73 says -=*[1483204918.000705]-=*::: <@U2U84B4BE> that would be great! Much appreciated
+U0PPMUTGR says -=*[1483253992.000706]-=*::: <@U0ALRFJH0>, we are good on quota. i just have billing notifications on :slightly_smiling_face: so if you need to use more, you are always free to do so :slightly_smiling_face:
+U0ALRFJH0 says -=*[1483355925.000707]-=*::: :+1:
+U3F0QN1MW says -=*[1483363915.000708]-=*::: <@U0PPMUTGR> <@U0ALRFJH0>  Hi, did you try to run kubernetes cluster on nanoserver? Or is it not possible right now? 
+U0ALRFJH0 says -=*[1483364347.000709]-=*::: <@U3F0QN1MW> i haven't tried it but i don't see a reason why it wouldn't work.
+U3F0QN1MW says -=*[1483365149.000710]-=*::: <@U0ALRFJH0> according to docs RRAS is  required. And I cannot find way how to install it on nanoserver - so maybe it's not supported. I'll try to ask  on some nanoserver forum 
+U0ALRFJH0 says -=*[1483365498.000711]-=*::: ah, you may be right. <@U0JFJ4KHS> is the local expert in on-prem setups.
+U0JFJ4KHS says -=*[1483366227.000712]-=*::: <@U3F0QN1MW> yes for now RRAS is required, we are testing other approaches to see if we can live without having to enable RRAS, but so far have not been able to do that
+U3K38QC73 says -=*[1483385422.000713]-=*::: <@U0JFJ4KHS> do you think it would be worth it to create a vagrant setup for the windows portion to atleast get started? I think it would help beginners get going
+U0JFJ4KHS says -=*[1483386319.000714]-=*::: yes, I think it would definitely help beginners get started
+U3LMBA1BP says -=*[1483435657.000716]-=*::: Hi all, i need to learn on kubernetes on Windows Server 2016 (Virtual Box). Anybody has done this then let me know how can i proceed
+U0JFJ4KHS says -=*[1483452761.000718]-=*::: Hi <@U3LMBA1BP>, the instructions in getting started guide <http://kubernetes.io/docs/getting-started-guides/windows/> should work in your case
+U3L4RE1UG says -=*[1483466976.000722]-=*::: hey
+U3L4RE1UG says -=*[1483467013.000723]-=*::: this is Alin from Cloudbase Solutions, I was wondering if there is a meeting soon?
+U0JFJ4KHS says -=*[1483467142.000724]-=*::: <@U3L4RE1UG> thanks for bringing this up, looks like the recurring meeting invite ended in 2016, <@U0PPMUTGR> can you please create a new invite
+U1B51TCUW says -=*[1483467485.000725]-=*::: <@U0PPMUTGR>,  quick intro: <@U3L4RE1UG> and <@U3L4RG672> work on our Open vSwitch Windows team and worked with <@U1B89EWCR> on the k8s port

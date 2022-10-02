@@ -1,0 +1,135 @@
+U3F7ML9T5 says -=*[1483579680.000634]-=*::: Ha sorry for the noise. I found it :+1::skin-tone-3:
+U1XLRPD8B says -=*[1483589038.000636]-=*::: Hi guys, how do I bind a file or path during minikube startup?
+U1XLRPD8B says -=*[1483589455.000637]-=*::: What I intend to do is trying RBAC with k8s, and I need to pass simple username password csv file since set `minikube` as superuser does not let me grant clusterrole / clusterrolebinding policy yml.
+U1XLRPD8B says -=*[1483589511.000638]-=*::: And, default built-in  admin / cluster-admin do not export it's key / cert.
+U1XLRPD8B says -=*[1483589594.000640]-=*::: Or let me know where the key / cert of default build-in admin / cluster-admin located inside minikube also fine.
+U1XLRPD8B says -=*[1483595302.000641]-=*::: ``` Host folder sharing is not implemented on Linux yet. ``` :white_frowning_face:
+U1TUWPL1M says -=*[1483597668.000642]-=*::: <@U1XLRPD8B> you can always set up an nfs mount manually
+U1TUWPL1M says -=*[1483597689.000643]-=*::: ive been working on host folder sharing for linux
+U1TUWPL1M says -=*[1483597751.000644]-=*::: if you use virtualbox and `iso-url=<https://storage.googleapis.com/minikube/iso/minikube-v1.0.1.iso>` it works on linux
+U1TUWPL1M says -=*[1483597762.000645]-=*::: that iso-url will be the default in minikube v0.15
+U1TUWPL1M says -=*[1483597789.000646]-=*::: i believe that virtualbox mounts your $HOME at /hosthome
+U1XLRPD8B says -=*[1483597818.000647]-=*::: will try this. thanks for advice :bow:
+U1TUWPL1M says -=*[1483597845.000648]-=*::: here are some tips on getting nfs working <https://github.com/kubernetes/minikube/issues/2#issuecomment-233581253>
+U1TUWPL1M says -=*[1483597850.000650]-=*::: <@U1XLRPD8B>
+U1X86991U says -=*[1483625608.000651]-=*::: Hi, I tried to start minikube with RBAC as command below: ``` minikube start --memory=4096 \ &gt; --extra-config=apiserver.RuntimeConfig=api/all=true,<http://rbac.authorization.k8s.io/v1alpha1|rbac.authorization.k8s.io/v1alpha1> \ &gt; --extra-config=apiserver.AuthorizationMode=RBAC \ &gt; --extra-config=apiserver.AuthorizationRbacSuperUser=ming,minikube,admin \ &gt; extra-config=apiserver.BasicAuthFile=/Users/mingchinhsieh/basic-auth.csv ```
+U1X86991U says -=*[1483625635.000652]-=*::: But when I look at the log file (`minikube logs`), it looks like having trouble to take argument `extra-config=apiserver.RuntimeConfig=api/all=true,<http://rbac.authorization.k8s.io/v1alpha1|rbac.authorization.k8s.io/v1alpha1>`: ``` $ minikube logs ==&gt; /var/lib/localkube/localkube.err &lt;== I0105 14:08:42.835938    2917 localkube.go:116] Setting RuntimeConfig to api/all=true,<http://rbac.authorization.k8s.io/v1alpha1|rbac.authorization.k8s.io/v1alpha1> on apiserver. W0105 14:08:42.835997    2917 localkube.go:118] Unable to set RuntimeConfig to api/all=true,<http://rbac.authorization.k8s.io/v1alpha1|rbac.authorization.k8s.io/v1alpha1>. Error: Unable to find field by name: RuntimeConfig I0105 14:08:42.836029    2917 localkube.go:116] Setting AuthorizationMode to RBAC on apiserver. W0105 14:08:42.836039    2917 localkube.go:118] Unable to set AuthorizationMode to RBAC. Error: Unable to find field by name: AuthorizationMode I0105 14:08:42.836045    2917 localkube.go:116] Setting AuthorizationRbacSuperUser to ming,minikube,admin on apiserver. W0105 14:08:42.836049    2917 localkube.go:118] Unable to set AuthorizationRbacSuperUser to ming,minikube,admin. Error: Unable to find field by name: AuthorizationRbacSuperUser I0105 14:08:42.836053    2917 localkube.go:116] Setting BasicAuthFile to /Users/mingchinhsieh/basic-auth.csv on apiserver. W0105 14:08:42.836057    2917 localkube.go:118] Unable to set BasicAuthFile to /Users/mingchinhsieh/basic-auth.csv. Error: Unable to find field by name: BasicAuthFile I0105 14:08:42.836061    2917 localkube.go:116] Setting RuntimeConfig to api/all=true,<http://rbac.authorization.k8s.io/v1alpha1|rbac.authorization.k8s.io/v1alpha1> on apiserver. W0105 14:08:42.836064    2917 localkube.go:118] Unable to set RuntimeConfig to api/all=true,<http://rbac.authorization.k8s.io/v1alpha1|rbac.authorization.k8s.io/v1alpha1>. Error: Unable to find field by name: RuntimeConfig I0105 14:08:42.836068    2917 localkube.go:116] Setting AuthorizationMode to RBAC on apiserver. W0105 14:08:42.836072    2917 localkube.go:118] Unable to set AuthorizationMode to RBAC. Error: Unable to find field by name: AuthorizationMode I0105 14:08:42.836075    2917 localkube.go:116] Setting AuthorizationRbacSuperUser to ming,minikube,admin on apiserver. W0105 14:08:42.836081    2917 localkube.go:118] Unable to set AuthorizationRbacSuperUser to ming,minikube,admin. Error: Unable to find field by name: AuthorizationRbacSuperUser I0105 14:08:42.836087    2917 localkube.go:116] Setting BasicAuthFile to /Users/mingchinhsieh/basic-auth.csv on apiserver. W0105 14:08:42.836093    2917 localkube.go:118] Unable to set BasicAuthFile to /Users/mingchinhsieh/basic-auth.csv. Error: Unable to find field by name: BasicAuthFile ```
+U1X86991U says -=*[1483625656.000653]-=*::: What did I do wrong?
+U1X86991U says -=*[1483626050.000655]-=*::: Also tried what <@U1TUWPL1M> suggested (`--iso-url=<https://storage.googleapis.com/minikube/iso/minikube-v1.0.1.iso`>) no luck.
+U3G3J59DW says -=*[1483636128.000656]-=*::: <@U20L8GGUF> &amp; <@U1TUWPL1M> was able to get NFS based /Users bidi sharing working once i figured out that the MacOS /etc/exports permission issues. only propblem now is that the performance is very poor. im assuming  i can adjust this with nfs mounting optiosn though. digging into that now and will report.
+U1TUWPL1M says -=*[1483640381.000658]-=*::: <@U1X86991U> you might want to try `--extra-config=apiserver.GenericServerRunOptions.RuntimeConfig=api/all=true,<http://rbac.authorization.k8s.io/v1alpha1|rbac.authorization.k8s.io/v1alpha1>`
+U1TUWPL1M says -=*[1483640388.000659]-=*::: looks like the apiserver struct has changed slightly
+U20L8GGUF says -=*[1483641267.000660]-=*::: <@U3G3J59DW> what reproducible steps can be taken to see the performance problem?  something like this is helpful:  <https://github.com/kubernetes/minikube/issues/419>
+U2MGHJJN4 says -=*[1483644729.000663]-=*::: oh, there is a minikube channel! :slightly_smiling_face:
+U2MGHJJN4 says -=*[1483644746.000664]-=*::: I was just asking in the kubernetes-users channel about Stateful Sets and minikube
+U2MGHJJN4 says -=*[1483644834.000665]-=*::: has anyone had success creating and using one in minikube before? I've created one and the hostname on the 2 pods are correct, and a nslookup on `kubernetes.default` works so dns in general is fine, but lookups on the stateful set service records fail
+U1TUWPL1M says -=*[1483644892.000666]-=*::: yes <@U2MGHJJN4>
+U1TUWPL1M says -=*[1483644902.000667]-=*::: what name are you trying to resolve?
+U2MGHJJN4 says -=*[1483644946.000668]-=*::: the `&lt;service&gt;.namespace` name
+U1TUWPL1M says -=*[1483644960.000669]-=*::: have you also created a headless service for the statefulset?
+U2MGHJJN4 says -=*[1483644981.000670]-=*::: yea, and `hostname -f` gives the proper fqdns
+U2MGHJJN4 says -=*[1483644987.000671]-=*::: within the containers
+U1TUWPL1M says -=*[1483645045.000672]-=*::: can you look it up with the fqdns name?
+U2MGHJJN4 says -=*[1483645082.000673]-=*::: na
+U1TUWPL1M says -=*[1483645087.000674]-=*::: to be fair ive only used it with the pods with `web-{0..N-1}.nginx.default.svc.cluster.local`
+U2MGHJJN4 says -=*[1483645103.000676]-=*::: `nslookup` fails on the fqdns as well
+U1TUWPL1M says -=*[1483645112.000677]-=*::: hmm well thats odd
+U2MGHJJN4 says -=*[1483645128.000678]-=*::: ``` root@chain1-1:/# hostname -f chain1-1.vonnegut.default.svc.cluster.local root@chain1-1:/# nslookup chain1-1.vonnegut.default.svc.cluster.local Server:  10.0.0.10 Address: 10.0.0.10#53  ** server can't find chain1-1.vonnegut.default.svc.cluster.local: NXDOMAIN ```
+U1TUWPL1M says -=*[1483645300.000679]-=*::: any logs from the kube-dns pods?
+U2MGHJJN4 says -=*[1483645380.000680]-=*::: hm
+U2MGHJJN4 says -=*[1483645382.000681]-=*::: ` 2017-01-05T19:36:18.087061118Z W0105 19:36:18.086902       1 reflector.go:330] pkg/dns/dns.go:155: watch of *api.Service ended with: too old resource version: 2803 (4108) `
+U1TUWPL1M says -=*[1483645384.000682]-=*::: the steps at the end of this doc might help debug
+U1TUWPL1M says -=*[1483645385.000683]-=*::: <http://kubernetes.io/docs/admin/dns/>
+U1TUWPL1M says -=*[1483645399.000685]-=*::: i think thats an ok warning
+U2MGHJJN4 says -=*[1483645409.000686]-=*::: ok
+U2MGHJJN4 says -=*[1483645422.000687]-=*::: ok, i'll look through these to see if i can find where it is going wrong
+U381HQQ1K says -=*[1483645734.000688]-=*::: hey are there ways to allocate more or less resources to xhyve?
+U1TUWPL1M says -=*[1483645746.000689]-=*::: <@U381HQQ1K> cpu/memory?
+U381HQQ1K says -=*[1483645750.000690]-=*::: yeah
+U381HQQ1K says -=*[1483645766.000691]-=*::: I'm running an app on Minikube and it seems slower than my old vagrant/virtualbox setup
+U1TUWPL1M says -=*[1483645776.000692]-=*::: yeah there are flags on `minikube start`, unfortunately you need to recreate the vm
+U1TUWPL1M says -=*[1483645792.000693]-=*::: --disk-size, --cpus, --memory
+U381HQQ1K says -=*[1483645796.000694]-=*::: that's totally fine...everything is disposable with helm charts :slightly_smiling_face:
+U1TUWPL1M says -=*[1483645813.000696]-=*::: i think the defaults are 20g disk, 2 cpu, 2gb memory?
+U381HQQ1K says -=*[1483645823.000697]-=*::: hmmm that should be enough
+U1TUWPL1M says -=*[1483645826.000698]-=*::: i usually run mine with as much as i can afford though
+U381HQQ1K says -=*[1483645875.000699]-=*::: does Docker for Mac also use xhyve?
+U381HQQ1K says -=*[1483645894.000700]-=*::: I'm running both so I'm wondering if that's going to give me a performance hit
+U1TUWPL1M says -=*[1483645961.000701]-=*::: yeah its unnecessary to run both unless you really need docker 1.12
+U1TUWPL1M says -=*[1483645974.000702]-=*::: you can get a docker daemon with `eval $(minikube docker-env)`
+U381HQQ1K says -=*[1483645991.000704]-=*::: yeah I know but I was running into problems with my builds
+U381HQQ1K says -=*[1483646015.000705]-=*::: i.e. some of my tools would only work on my "local" docker instance
+U381HQQ1K says -=*[1483646018.000706]-=*::: and not via minikube
+U1TUWPL1M says -=*[1483646022.000707]-=*::: gotcha
+U381HQQ1K says -=*[1483646025.000708]-=*::: possibly permissions issues, I'm not sure
+U381HQQ1K says -=*[1483646046.000709]-=*::: I've just reduced my Docker for Mac to 1CPU/1GB (the lowest setting)
+U381HQQ1K says -=*[1483646110.000710]-=*::: <@U1TUWPL1M> do you know if there's a way to specify my kubernetes IP address?
+U381HQQ1K says -=*[1483646120.000711]-=*::: cluster IP I mean
+U2MGHJJN4 says -=*[1483646163.000712]-=*::: dns really seems to be fine. `nslookup 172-17-0-8.default.pod.cluster.local` from the container works as well. just nothing for the hostname/subdomain that is supposed to exist
+U1TUWPL1M says -=*[1483646165.000713]-=*::: you can do ClusterIP: NodePort and specify a port on $(minikube ip)
+U1TUWPL1M says -=*[1483646185.000714]-=*::: actually its type: NodePort
+U1TUWPL1M says -=*[1483646199.000715]-=*::: <@U2MGHJJN4> what driver and OS are you on?
+U1TUWPL1M says -=*[1483646207.000716]-=*::: just wondering
+U2MGHJJN4 says -=*[1483646210.000717]-=*::: linux kvm
+U1TUWPL1M says -=*[1483646233.000718]-=*::: hmm i have seen a few issues with the driver
+U1TUWPL1M says -=*[1483646251.000719]-=*::: i actually wrote my own that is almost ready that we are probably going to vendor into minikube soon
+U2MGHJJN4 says -=*[1483646516.000720]-=*::: own driver?
+U1TUWPL1M says -=*[1483647075.000721]-=*::: yeah the kvm driver isn't really maintained that much anymore
+U2MGHJJN4 says -=*[1483647110.000722]-=*::: ah
+U2MGHJJN4 says -=*[1483647226.000723]-=*::: oh, also, is there a way to upgrade the docker it uses?
+U1TUWPL1M says -=*[1483647319.000724]-=*::: no the docker version is determined by minikube, which we use whatever version kubernetes is using
+U1TUWPL1M says -=*[1483647322.000725]-=*::: currently thats 1.11
+U2MGHJJN4 says -=*[1483647340.000726]-=*::: ah, didn't think about it being tied to kubernetes
+U1TUWPL1M says -=*[1483647363.000727]-=*::: technically kubernetes doesnt really "default" to any version but i think most the test suite uses 1.11
+U2MGHJJN4 says -=*[1483647404.000728]-=*::: ok :disappointed:, my 1.12 doesn't seem to be able to work with it, I get a failure building an image, so had been starting the kube-registry in minikube, dealin gwith all the insecure-registry settings and pushing to it
+U2MGHJJN4 says -=*[1483647427.000729]-=*::: guess I can try downgrading
+U1TUWPL1M says -=*[1483647507.000730]-=*::: whats the failure?
+U1TUWPL1M says -=*[1483647514.000731]-=*::: `minikube ssh -- systemctl status docker`
+U2MGHJJN4 says -=*[1483647581.000732]-=*::: the docker daemon keeps running fine, it is `Untar re-exec error: exit status 1: output: archive/tar: invalid tar header`
+U2MGHJJN4 says -=*[1483647586.000733]-=*::: when building the image
+U20L8GGUF says -=*[1483647677.000734]-=*::: I want to share a local registry between multiple docker-machines and minikube environments. 192.168.99.100 is the dedicated shared working registry (running in a docker-machine vm): ```curl <http://192.168.99.100:80/v2/>   {}``` which shows the registry is fine and I am able to both push and pull to it using native docker for osx, but I am stuck trying to have minikube access it (i think a route entry needs to be put in place)  the test: ``` minikube ssh docker -D pull 192.168.99.100:80/hello-world DEBU[0000] Trusting 1 certs Using default tag: latest Pulling repository 192.168.99.100:80/hello-world Network timed out while trying to connect to <http://192.168.99.100:80/v1/repositories/hello-world/images>. You may want to check your internet connection or if you are behind a proxy.```
+U1TUWPL1M says -=*[1483647724.000735]-=*::: <@U2MGHJJN4> this might be related to your issue <https://github.com/docker/docker/issues/14022>
+U1TUWPL1M says -=*[1483647731.000737]-=*::: `GNU tar requires symbolic links has set their sizes to zero, that's why it didn't worked with Docker `
+U1TUWPL1M says -=*[1483647838.000738]-=*::: <@U20L8GGUF> i think you'll need to change the network for vbox machines to talk to each other
+U20L8GGUF says -=*[1483647879.000739]-=*::: minikube was setup to use the xhyve driver.
+U2MGHJJN4 says -=*[1483647891.000740]-=*::: <@U1TUWPL1M> maybe, it works fine with docker 1.12 but minikube is 1.11
+U1TUWPL1M says -=*[1483647922.000741]-=*::: hmm
+U381HQQ1K says -=*[1483649689.000742]-=*::: anyone know if minikube on xhyve is faster than with virtualbox?
+U381HQQ1K says -=*[1483649696.000743]-=*::: I'm seeing mixed opinions on the webs
+U3H5YQD5J says -=*[1483650138.000744]-=*::: A lot of online benchmarks are mixed because the answer is it depends on the type of workload
+U3H5YQD5J says -=*[1483650162.000745]-=*::: Whats the cost of trying each for a small chunk of your usual workload, and seeing for yourself?
+U3G3J59DW says -=*[1483650596.000746]-=*::: <@U381HQQ1K> its a small world. i just ran into your blackfire question on twitter in my search to figure out why i cant profile a page and get "This URL is non reachable: <http://192.168.99.100> while running on minikube.
+U3G3J59DW says -=*[1483650611.000747]-=*::: did you figure it out?
+U3G3J59DW says -=*[1483650648.000748]-=*::: i examined the requests in the background page chrome inspector and they are indeed gettng 502s but when i attempt to copy as curl the same request i get a 200.
+U3G3J59DW says -=*[1483650737.000749]-=*::: <@U381HQQ1K> if you can use 9p filesystem with xhyve im sure that any reasonable amount of directory scanning with symfony would be more than made up for regardless of the overhead difference. it usually coems down to disk io for me.
+U3G3J59DW says -=*[1483650775.000750]-=*::: i however seems stuck with NFS for the time being under xhyve.
+U381HQQ1K says -=*[1483651353.000751]-=*::: <@U3G3J59DW> oh man how long ago was that?
+U381HQQ1K says -=*[1483651730.000752]-=*::: <https://twitter.com/tmirks/status/565955026301243393>
+U20L8GGUF says -=*[1483654347.000754]-=*::: after minikube ssh,  how does a route get created to satisfy "curl <http://192.168.99.100>" where 192.168.99.100 is a different VM?   The path would be: minikube -&gt; osx -&gt; docker-machineVM
+U1X86991U says -=*[1483656638.000755]-=*::: <@U1TUWPL1M> no luck. `GenericServerRunOptions` doesnt pass options to localkube. ``` $ minikube logs -- Logs begin at Thu 2017-01-05 22:42:58 UTC, end at Thu 2017-01-05 22:47:22 UTC. -- Jan 05 22:43:13 minikube systemd[1]: Starting Localkube... Jan 05 22:43:13 minikube localkube[2955]: I0105 22:43:13.796718    2955 localkube.go:116] Setting GenericServerRunOptions.RuntimeConfig to api/all=true,<http://rbac.authorization.k8s.io/v1alpha1|rbac.authorization.k8s.io/v1alpha1> on apiserver. Jan 05 22:43:13 minikube localkube[2955]: W0105 22:43:13.796826    2955 localkube.go:118] Unable to set GenericServerRunOptions.RuntimeConfig to api/all=true,<http://rbac.authorization.k8s.io/v1alpha1|rbac.authorization.k8s.io/v1alpha1>. Error: Unable to set type config.ConfigurationMap. Jan 05 22:43:13 minikube localkube[2955]: I0105 22:43:13.796833    2955 localkube.go:116] Setting Authorization.Mode to RBAC on apiserver. Jan 05 22:43:13 minikube localkube[2955]: W0105 22:43:13.796838    2955 localkube.go:118] Unable to set Authorization.Mode to RBAC. Error: Unable to find field by name: Authorization Jan 05 22:43:13 minikube localkube[2955]: I0105 22:43:13.796842    2955 localkube.go:116] Setting Authorization.RbacSuperUser to ming,minikube,admin on apiserver. Jan 05 22:43:13 minikube localkube[2955]: W0105 22:43:13.796845    2955 localkube.go:118] Unable to set Authorization.RbacSuperUser to ming,minikube,admin. Error: Unable to find field by name: Authorization Jan 05 22:43:13 minikube localkube[2955]: I0105 22:43:13.796848    2955 localkube.go:116] Setting Authentication.PasswordFile.PasswordFileAuthenticationOptions.BasicAuthFile to /Users/mingchinhsieh/basic-auth.csv on apiserver. Jan 05 22:43:13 minikube localkube[2955]: W0105 22:43:13.796852    2955 localkube.go:118] Unable to set Authentication.PasswordFile.PasswordFileAuthenticationOptions.BasicAuthFile to /Users/mingchinhsieh/basic-auth.csv. Error: Unable to find field by name: Authentication Jan 05 22:43:13 minikube localkube[2955]: I0105 22:43:13.796855    2955 localkube.go:116] Setting GenericServerRunOptions.RuntimeConfig to api/all=true,<http://rbac.authorization.k8s.io/v1alpha1|rbac.authorization.k8s.io/v1alpha1> on apiserver. Jan 05 22:43:13 minikube localkube[2955]: W0105 22:43:13.796859    2955 localkube.go:118] Unable to set GenericServerRunOptions.RuntimeConfig to api/all=true,<http://rbac.authorization.k8s.io/v1alpha1|rbac.authorization.k8s.io/v1alpha1>. Error: Unable to set type config.ConfigurationMap. Jan 05 22:43:13 minikube localkube[2955]: I0105 22:43:13.796861    2955 localkube.go:116] Setting Authorization.Mode to RBAC on apiserver. Jan 05 22:43:13 minikube localkube[2955]: W0105 22:43:13.796865    2955 localkube.go:118] Unable to set Authorization.Mode to RBAC. Error: Unable to find field by name: Authorization Jan 05 22:43:13 minikube localkube[2955]: I0105 22:43:13.796868    2955 localkube.go:116] Setting Authorization.RbacSuperUser to ming,minikube,admin on apiserver. Jan 05 22:43:13 minikube localkube[2955]: W0105 22:43:13.796872    2955 localkube.go:118] Unable to set Authorization.RbacSuperUser to ming,minikube,admin. Error: Unable to find field by name: Authorization ```
+U1TUWPL1M says -=*[1483662619.000756]-=*::: <@U1X86991U> so how to read this is that  `Error: Unable to find field by name: Authorization` means that you have used the wrong field name.  You should take a look at <https://godoc.org/k8s.io/kubernetes/cmd/kube-apiserver/app/options#APIServer> to see how the fields are named
+U1TUWPL1M says -=*[1483662748.000758]-=*::: look like you need Authorization.Mode and Authorization.PolicyFile
+U1TUWPL1M says -=*[1483662777.000759]-=*::: it seems like authorization.rbacSuperUser has been deprecated <https://github.com/kubernetes/kubernetes/blob/master/pkg/kubeapiserver/options/authorization.go#L75>
+U1TUWPL1M says -=*[1483662808.000761]-=*::: `Unable to set GenericServerRunOptions.RuntimeConfig to api/all=true,<http://rbac.authorization.k8s.io/v1alpha1|rbac.authorization.k8s.io/v1alpha1>. Error: Unable to set type config.ConfigurationMap.` this is an actual error that im about to submit a fix for
+U1TUWPL1M says -=*[1483663486.000762]-=*::: this is the PR <https://github.com/kubernetes/minikube/pull/965>
+U1XLRPD8B says -=*[1483664192.000764]-=*::: <@U1TUWPL1M> So you mean `--extra-config=apiserver.Authorization.PolicyFile=path/to/policy.json`  is mandatory if `--extra-config=apiserver.Authorization.Mode=RBAC` provided?
+U1XLRPD8B says -=*[1483664258.000765]-=*::: cuz I provided `--extra-config=apiserver.Authorization.Mode=RBAC` previously.
+U1XLRPD8B says -=*[1483664356.000766]-=*::: Also, how about `--extra-config=Authentication.PasswordFile.PasswordFileAuthenticationOptions.BasicAuthFile=/Users/mingchinhsieh/basic-auth.csv` ? it seems not taking it at all.
+U1XLRPD8B says -=*[1483669186.000768]-=*::: It seems `--extra-config=apiserver.Authorization.PolicyFile=path/to/policy.json` is for ABAC mode, see: <http://kubernetes.io/docs/admin/authorization/> So does it mean in order to get RBAC to work, ABAC is mandatory?
+U2MGHJJN4 says -=*[1483726058.000773]-=*::: <@U1TUWPL1M> thought I'd let you know that it seems it wasn't a minikube issue at all with my stateful set dns... I creatd a real cluster on google and deployed and am seeing the same issue :disappointed:. will try again in minikube when I figure out what I'm doing wrong :slightly_smiling_face:. thanks for the help yesterday
+U0PRC9KPY says -=*[1483727426.000774]-=*::: does anyone use storage-class with minikube?
+U0PRC9KPY says -=*[1483727457.000775]-=*::: i have a helm chart that specifies a storage-class annotation, and I created a PV with a matching StorageClass annotation
+U0PRC9KPY says -=*[1483727469.000776]-=*::: and it still creates the PV in /tmp/hostpath_pv
+U0PRC9KPY says -=*[1483727502.000777]-=*::: if I take away the storage-class annotation on the PVC in the chart
+U0PRC9KPY says -=*[1483727507.000778]-=*::: and create an un-annotated PV
+U0PRC9KPY says -=*[1483727519.000779]-=*::: the mapping is successful (it doesnt create one of those tmp pvs)
+U2MGHJJN4 says -=*[1483727855.000780]-=*::: <@U1TUWPL1M> *doh* it seems the issue was my service didn't have selectors.... which is odd since i assumed that the pods being in the dashboard under the service meant they were "in sync". I'm guessing also that a confusion was that the use of `serviceName` in the stateful set is how the hostname name gets set, making it look like the service and stateful set are working togethe properly
+U1TUWPL1M says -=*[1483727884.000781]-=*::: <@U2MGHJJN4> awesome, glad you got it working
+U2MGHJJN4 says -=*[1483727884.000782]-=*::: once I added a selector to the server and labels in the spec of the stateful set it started working
+U2MGHJJN4 says -=*[1483727899.000783]-=*::: I may have to suggest some improvements to the docs :slightly_smiling_face:
+U1TUWPL1M says -=*[1483727901.000784]-=*::: its tough, sometime the documentation for k8s isn't that great
+U1TUWPL1M says -=*[1483727909.000785]-=*::: yep, and things move quickly
+U1TUWPL1M says -=*[1483727913.000786]-=*::: hard to get devs to write docs :slightly_smiling_face:
+U2MGHJJN4 says -=*[1483727914.000787]-=*::: right
+U2MGHJJN4 says -=*[1483727919.000788]-=*::: hehe :slightly_smiling_face:
+U2MGHJJN4 says -=*[1483727936.000789]-=*::: now to get back to using minikube hopefully

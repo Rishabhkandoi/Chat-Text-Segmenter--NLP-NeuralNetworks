@@ -1,0 +1,240 @@
+==========
+U076J2XV5 says -=*[1464128457.000363]-=*::: <@U0BTC3MM1>: no mention of Counterparty (<http://counterparty.io/news/proposal-for-ethereum-smart-contracts-on-counterparty-mainnet/>) and sidechains such as Rootstock (<http://www.rootstock.io/>) in your post seems to be a glaring oversight when discussing extending Bitcoin's functionality.   Also an oversight: no mention of all the apps coming out of the 21  community (<https://21.co/mkt/>, <https://21.co/learn/#apps>), or BitMarkets (2-party escrow <http://www.bitmarkets.org|www.bitmarkets.org>), or OpenBazaar (3-party escrow <http://www.openbazaar.org|www.openbazaar.org>), etc - many fun/ mindblowing apps have been built with Bitcoin over the years.   You make a lot of good points in the post so I don't mean to take away from any of the points you made, but I would have liked to see a more complete acknowledgement of what apps have been built/ can be built with Bitcoin.  One more thing I would add is that Bitcoin could conceivably adopt any of Ethereum's advancements if they align with Bitcoin's values and are seen to be competitive advantages (e.g. GHOST, Casper, etc). It's all FOSS after all. So each community is like doing "free" R&amp;D for the other and can both learn from each other and incorporate advancements, ultimately strengethening the network effect of whichever comes out ahead (it is Bitcoin's race to lose right now).  Overall, a well-written, balanced post. Thanks for sharing!
+U0BTC3MM1 says -=*[1464128497.000364]-=*::: yep - thats a fair critique
+U0BTC3MM1 says -=*[1464128550.000365]-=*::: I dont view rootstock as an app, but thats fair with openbazaar and the 21 stuff
+U076J2XV5 says -=*[1464128583.000366]-=*::: right, I meant that as a means of catching up with Ethereum in terms of what apps could be built with a more complete scripting language
+U0722SJ4A says -=*[1464128716.000367]-=*::: <@U0BTC3MM1>: Id also point out that Blockstack is quickly emerging as an app platform and embodies the higher layer model mentioned
+U0722SJ4A says -=*[1464128719.000368]-=*::: might be good to reference
+U0BTC3MM1 says -=*[1464129037.000369]-=*::: yeah - thats what i was getting at with the bitthereum part
+U0BTC3MM1 says -=*[1464129074.000370]-=*::: its a good point as well
+==========
+U076LGFE0 says -=*[1464146432.000372]-=*::: <https://stratechery.com/2016/the-curse-of-culture/> 
+U076LGFE0 says -=*[1464146463.000374]-=*::: It's about Apple &amp; Google but hard to read it and not think of Bitcoin &amp; Ethereum
+U071X9XPC says -=*[1464148603.000375]-=*::: <@U0BTC3MM1>: I was running behind on a deadline and didn't get to read this yet. I've expressed concerns with Ethereum privately until now e.g., to USV partners but it seems like problems with Ethereum are really not well understood and it's probably time to write a public review of these issues. 
+U071X9XPC says -=*[1464148661.000376]-=*::: Coinbase putting their weight behind Ethereum is a big big deal and I think a rigorous technical review of Ethereum should be done before that happens 
+U071X9XPC says -=*[1464148681.000377]-=*::: Ah well it looks like it had already happened but you know what I mean :slightly_smiling_face:
+U071X9XPC says -=*[1464176812.000381]-=*::: Ethereum has built a great community and I love the pace of experimentation: It's good for the overall space, but we need to acknowledge the challenges that are currently unsolved and these are some extremely hard technical problems.
+==========
+U07HTRSQN says -=*[1464192814.000385]-=*::: figured you all would appreciate this: <http://www.backalleycoder.com/2016/05/25/the-nickelback-persistence-conjecture/>
+U071X9XPC says -=*[1464193496.000386]-=*::: ```The mean duration that data will remain persistently available on an open source, decentralized, distributed system that reaches at least the size, popularity, or acolyte following of Nickelback, is roughly equal to the time period from which Nickelbacks songs first became available to the day no peer nodes remain that circulate their music```
+U07HTRSQN says -=*[1464193532.000387]-=*::: I got tired of the bullshit from Tony and Mike on the Identity team
+U07HTRSQN says -=*[1464193549.000388]-=*::: So I figured I would skewer their BS in the most comical way possible
+U0BTC3MM1 says -=*[1464196109.000389]-=*::: <@U071X9XPC>: would love to hear them
+U0BTC3MM1 says -=*[1464196126.000390]-=*::: what are the top 2 in your mind?
+U0BTC3MM1 says -=*[1464196291.000391]-=*::: frankly one of the objectives of the post was to try and test out the argument in a way
+U0BTC3MM1 says -=*[1464196298.000392]-=*::: I want to hear all those arguments come out
+U071X9XPC says -=*[1464196346.000393]-=*::: Ethereum in the current form works at small scale and by design breaks at large scale. Every new user/node is adding state for every other node/user at a rate that is not sustainable. There are two sides to this:
+U071X9XPC says -=*[1464196394.000394]-=*::: 1) Incorrect understanding of average app developers: for example, I was judging a hackathon and 1 app developer had a design where he was trying to match students with tutors and was generating a new ethereum contract per matching request. Ethereum does 100K transactions per day at peak. This means that a single developers app cant even have 1 million users.
+U071X9XPC says -=*[1464196588.000395]-=*::: 2) Fundamental distributed systems limits: if we forget about incorrect understanding of app developers who treat Ethereum as Ethereum will solve all our problems and you only look at the overhead of creating a world computer where every node replays every computation its unclear how this will ever scale. You can either have global state where total state is small or you can have partitioned networks with lots of state (and try to sync to the global network periodically). People seem to think Ethereum will solve this problem. I hope they can, but to put things in perspective itd require creating some new distributed systems theoretical advancement that researchers didnt discover in the past 30 years or so.
+U071X9XPC says -=*[1464196884.000396]-=*::: This is about scalability. The other top issue in my mind is execution of untrusted remote code. Ethereums argument is that because you are paying for compute steps you can only do limited computations and cant have infinite loops. Sure. But even within those limited steps, someone can crash your VM. The problem basically boils down to can we run untrusted remote code with 100% guarantee that it will not crash my program?. If Ethereum cant solve this problem then a single attack can effectively stop the entire network (imagine all ethereum nodes crashing after processing a single transaction) and if Ethereum can solve this problem then theyve opened a brave new world of remote code execution from untrusted parties, a problem that people have been wrestling with for decades.
+U071X9XPC says -=*[1464196955.000397]-=*::: With a limited scripting language, the scope of this problem narrows down (and thats why Bitcoin uses a limited scripting language).
+U074Q9Q3D says -=*[1464198668.000400]-=*::: Imagine if the DAO had a bug that triggered an infinite loop.  It would stall the entire Ethereum network until it ran out of all of its gas.  It could take a while.
+U071X9XPC says -=*[1464198676.000401]-=*::: To put remote code execution in perspective consider the analogy that in our browser we only go to websites we trust because we don't want weird/malicious websites to run in our browser and do harmful things. With Ethereum, the equivalent model is that your browser is forced to run all websites on the Internet when you come online (malicious or not). 
+U074Q9Q3D says -=*[1464198778.000402]-=*::: "the world computer" currently means "you run everyone else's code," with all the implications that carries.  Contrast with the Web, where at least you only run the web apps you choose to run.
+U074Q9Q3D says -=*[1464198940.000403]-=*::: Blockstack achieves the computing model of the web (you run only what you want to run) while achieving global decentralized consensus on application state, getting the best of both worlds
+U07DTHT7G says -=*[1464201865.000406]-=*::: <@U074Q9Q3D>: But we can just statically analyze code to determine if it will halt in a reasonable amount of time, no?
+U074Q9Q3D says -=*[1464202451.000407]-=*::: <@U07DTHT7G>: yes we can, but has the DAO been subject to this analysis?  Even then, what if looping forever is the desired behavior?
+U074Q9Q3D says -=*[1464202638.000408]-=*::: I could imagine that one day the EVM could require all smart-contracts to carry proofs that they will terminate on all inputs in less than X steps, but this does not happen yet.  Requiring the proof would also increase the barrier-to-entry for developing smart contracts, if universally enforced.
+U074Q9Q3D says -=*[1464203258.000411]-=*::: However, if EVM did start requiring these proofs, hopefully formal program verification would get more mainstream acceptance :smile:
+U0722SJ4A says -=*[1464205489.000412]-=*::: ha an then youd need to have a program that interprets the proof
+U074Q9Q3D says -=*[1464205591.000414]-=*::: that's not too difficult--most theorem provers have a hand-verified "kernel" that can verify untrusted proofs on untrusted programs
+U074Q9Q3D says -=*[1464205619.000415]-=*::: i.e. the developer proves that the kernel will correctly accept or reject a proof on all inputs
+U07DTHT7G says -=*[1464205769.000416]-=*::: Sorry, that was a joke. You know, halting problem and all...
+U071X9XPC says -=*[1464205836.000417]-=*::: lol
+U074Q9Q3D says -=*[1464205953.000418]-=*::: lol, though you were getting at something like Coverty for EVM (which might not be a bad idea)
+U1920NN5R says -=*[1464205962.000419]-=*::: but is ethereums language turing complete?
+U074Q9Q3D says -=*[1464205966.000420]-=*::: it is
+==========
+U0X9PT7DG says -=*[1464207185.000421]-=*::: You guys should really put up this discussion on THE DAO slack or r/ethereum. Would be cool to see a good discussion on this!
+U0X9PT7DG says -=*[1464207236.000422]-=*::: And what's up with the poll Ryan did? Seem like ethereum is winning
+U0X9PT7DG says -=*[1464207493.000424]-=*::: Is there any possibility that maybe one day blockstack would move onto Ethereum?
+U0722SJ4A says -=*[1464207506.000425]-=*::: well Blockstack can work on any blockchain
+U0722SJ4A says -=*[1464207517.000426]-=*::: we could start a second network on top of ethereum or any other blockchain
+U0722SJ4A says -=*[1464207534.000427]-=*::: there could be multiple namespaces existing across multiple blockchains
+U0722SJ4A says -=*[1464207543.000428]-=*::: (but a single namespace can only exist on one blockchain at a time)
+U0722SJ4A says -=*[1464207553.000429]-=*::: And we would recommend that people use namespaces on the most secure blockchain at the time
+U0722SJ4A says -=*[1464207577.000430]-=*::: So if Ethereum ever became the most secure blockchain, thered be a strong case for starting namespaces there or migrating namespaces over there
+U099X8H27 says -=*[1464229401.000431]-=*::: Ethereums answer to scalability is always proof of stake + sharding too which actually doesnt address any of the problems that come out of using it as an application platform, it just means that lots of little blockchains are tied together. There needs to be a comprehensive solution for all server side logic to be handled by a network - Id say thats an extra layer that runs code with much more localised consensus - like between users of that one application. If you have deterministic code you dont have to run code several thousands of times to validate it, you should be able to configure virtual chains to behave in practice like private blockchains even, but anchored onto the public chain. Ive been disappointed with the lack of progress for core infrastructure - the ethereum community were talking all about it as an application platform in late 2014 but all the tools being developed seem to be focused on getting people to write lots and lots of contracts, which isnt necessarily useful. they should be developing standard boilerplate contracts and have the community vet them.
+U099X8H27 says -=*[1464229499.000432]-=*::: taylor gerring did say that they are looking at reworking it so that the state was not kept by the contract - meaning that it could be stored in swarm instead (which I think is a much better model) but that seems to be a while away
+U07HTRSQN says -=*[1464237869.000434]-=*::: Correct me if I am wrong, but sharding, CASPER, and all the optimizations I see in the long-term scalability projections from Ethereum still result in superlinear scaling, which doesn't even being to approach the scale required for a fraction of the rate needed to support an on-chain world.
+U07HTRSQN says -=*[1464237902.000435]-=*::: Doesn't even *begin
+U07HTRSQN says -=*[1464237993.000436]-=*::: Realistically, you'd need *billions* of transactions per second, and the ability to sync much more data with each one.
+U07HTRSQN says -=*[1464238119.000437]-=*::: Why don't more people doing the basic math on how much transactional demand there would be? That's not even that hard, just a handful of use-cases can exhaust the total theoretical limits of a distributed system's ability to circulate data.
+U099X8H27 says -=*[1464239822.000438]-=*::: exactly
+U0722SJ4A says -=*[1464247620.000439]-=*::: Yeah, sharding doesnt seem very promising to me. Casper seems really cool, though, if it works properly.
+==========
+U0723KV7E says -=*[1464274725.000442]-=*::: Ha! Good on him for getting revenge on the media! Love this type of stuff. :slightly_smiling_face:
+U0723KV7E says -=*[1464274727.000443]-=*::: <http://www.nytimes.com/2016/05/26/business/dealbook/peter-thiel-tech-billionaire-reveals-secret-war-with-gawker.html>
+U071X9XPC says -=*[1464275785.000445]-=*::: Gawker was making life hell for people whore just minding their own business and trying to do innovative things e.g., PG
+U071X9XPC says -=*[1464275820.000446]-=*::: I dont think it was just personal attacks on him. Their valleywag blog was a pain for so many in the Valley.
+U0723KV7E says -=*[1464276150.000448]-=*::: Either way.. They were intentionally being malicious. Love hearing that he hit them back hard. Media companies in the US need a wake up call. Theyre terrible. Maybe, they should think about gov funding so they can concentrate on real stories. The D wouldnt be a republican candidate if that was the case. But there are trade offs that go with that. (Says the Canadian.. ie. CBC)
+==========
+U07HTRSQN says -=*[1464276183.000449]-=*::: Everyone just to read <http://Reason.com|Reason.com> daily - problem solved
+U07HTRSQN says -=*[1464276190.000450]-=*::: :wink:
+U074Q9Q3D says -=*[1464278258.000452]-=*::: &gt; Casper seems really cool, though, if it works properly. Even if it did (waiting for the whitepaper), the security assumption comes down to assuming that it's harder to steal the private keys to the majority of stake than it is to get permanent control over the majority of compute power
+U0722SJ4A says -=*[1464281353.000454]-=*::: Heres a snapstorm I put together on self-sovereign identity and the blockchain: <https://www.youtube.com/watch?v=w6zLao4_2Go>
+U0723KV7E says -=*[1464281819.000456]-=*::: Really like this <@U0722SJ4A>. Great explanation of why ssi is important and how it could/can/ has been solved by Blockstack. Definitely recommend watching..
+U076J2XV5 says -=*[1464283066.000458]-=*::: lol even I have been on the sharp end of Valleyrag's stick before. Good riddance.
+U076J2XV5 says -=*[1464283725.000459]-=*::: I gave a shoutout to Blockstack in this blog post published this morning: <https://twitter.com/lightcoin/status/735840291639296000>
+U0722SJ4A says -=*[1464294246.000461]-=*::: nice!
+U0BTC3MM1 says -=*[1464373647.000464]-=*::: <@U0722SJ4A>: that was really solid
+==========
+U0BTC3MM1 says -=*[1464373674.000465]-=*::: is there any article youd recommend thats at the forefront of how people are thinking about identity + blockchain?
+U0BTC3MM1 says -=*[1464373717.000466]-=*::: one thing I am thinking about more is how we can serve as a high signal provider of identity verification
+U0722SJ4A says -=*[1464373718.000467]-=*::: Thanks! I assume youre referring to the video?
+U0BTC3MM1 says -=*[1464373724.000468]-=*::: yep :thumbsup:
+U0BTC3MM1 says -=*[1464373735.000469]-=*::: Maybe though some kind of paid API in an ethereum contract
+U0722SJ4A says -=*[1464373751.000470]-=*::: ok interesting
+U0BTC3MM1 says -=*[1464373751.000471]-=*::: (very rough/early thoughts)
+U0722SJ4A says -=*[1464373768.000472]-=*::: I can write up something on what I think would be the best way to do this
+U0722SJ4A says -=*[1464373773.000473]-=*::: Ill send you the medium post :slightly_smiling_face:
+U0722SJ4A says -=*[1464373781.000474]-=*::: imo, smart contracts are not the way to do this
+U0722SJ4A says -=*[1464373794.000475]-=*::: standard crypto, signatures, hashes, keychains
+U0722SJ4A says -=*[1464373823.000476]-=*::: and then one should just use the blockchain for linking keys to names and routing information
+U0722SJ4A says -=*[1464373870.000477]-=*::: RE identity articles, I can send you some
+U0722SJ4A says -=*[1464373874.000478]-=*::: I saw you tweet out the one by vinay gupta
+U0BTC3MM1 says -=*[1464373887.000479]-=*::: Yeah I feel like I have a decent grasp of the concept overall
+U0BTC3MM1 says -=*[1464373900.000480]-=*::: I am more interested in ideas for implementation now
+U0BTC3MM1 says -=*[1464373917.000481]-=*::: that article + your snapstorm basically gives a good overview of the concepts
+U0722SJ4A says -=*[1464373924.000482]-=*::: yeah agreed
+==========
+U0722SJ4A says -=*[1464373973.000483]-=*::: So it sounds like itd be useful if I write one that is more concrete when it comes to implementing a system where Coinbase and others can vouch for the identities of users.
+U0BTC3MM1 says -=*[1464374011.000484]-=*::: that would be great - dont mean to create work for you, but whatever the best way to lean about different approaches is
+U0722SJ4A says -=*[1464374016.000485]-=*::: no not at all
+U0722SJ4A says -=*[1464374019.000486]-=*::: Ive been meaning to do this
+U0722SJ4A says -=*[1464374039.000487]-=*::: lots of content that needs to be created around all of these concepts
+U0BTC3MM1 says -=*[1464374043.000488]-=*::: Cool
+U0722SJ4A says -=*[1464374057.000489]-=*::: Id love to know what your goals are here, though
+U0BTC3MM1 says -=*[1464374058.000490]-=*::: Im sure youve seen <https://www.proofofphone.com/> and <https://proofofphysicaladdress.com/>
+U0722SJ4A says -=*[1464374069.000492]-=*::: are you thinking of providing this ID verification as a service?
+U0BTC3MM1 says -=*[1464374074.000494]-=*::: super basic obviously
+U0BTC3MM1 says -=*[1464374075.000495]-=*::: yes
+U0722SJ4A says -=*[1464374081.000496]-=*::: ok cool
+U0722SJ4A says -=*[1464374084.000497]-=*::: and yes, Ive seen those
+U0722SJ4A says -=*[1464374107.000498]-=*::: doesnt work, as far as I can tell, though
+U0722SJ4A says -=*[1464374114.000499]-=*::: did it work for you?
+U0BTC3MM1 says -=*[1464374148.000500]-=*::: I havent tried it
+U0722SJ4A says -=*[1464374153.000501]-=*::: Also, this isnt really proof of phone. Its really attestation of phone"
+U0722SJ4A says -=*[1464374163.000502]-=*::: There is zero proof here
+U0BTC3MM1 says -=*[1464374175.000503]-=*::: yes, thats right - proof is too strong. it should be viewed as one of many signals imo
+U0722SJ4A says -=*[1464374181.000504]-=*::: Yeah, Im pretty sure its a non-working app
+U0BTC3MM1 says -=*[1464374182.000505]-=*::: i really like how you explained that in your video
+U0722SJ4A says -=*[1464374190.000506]-=*::: thanks
+U0722SJ4A says -=*[1464374315.000507]-=*::: what pieces of information would coinbase be comfortable attesting to?
+U0BTC3MM1 says -=*[1464374491.000508]-=*::: ideally we could do as much as a given user would want us to share
+U0BTC3MM1 says -=*[1464374515.000509]-=*::: but its 100% up to them
+U0722SJ4A says -=*[1464374530.000510]-=*::: but you could/should only attest to info that coinbase verified through another party, correct?
+U0722SJ4A says -=*[1464374540.000511]-=*::: address, credit card info, bank account info, etc.
+U0BTC3MM1 says -=*[1464374546.000512]-=*::: yes, i suppose that is correct
+U0BTC3MM1 says -=*[1464374562.000513]-=*::: interesting, hadnt fully thought about that
+U0722SJ4A says -=*[1464374570.000514]-=*::: yeah, otherwise its only purported info
+U0722SJ4A says -=*[1464374580.000515]-=*::: you can verify email addresses, you can verify phone numbers
+U0722SJ4A says -=*[1464374594.000516]-=*::: even then youre trusting gmail and twilio but we can ignore that for the most part :slightly_smiling_face:
+U0BTC3MM1 says -=*[1464374780.000517]-=*::: yep
+U0BTC3MM1 says -=*[1464374783.000518]-=*::: its all signal
+U0BTC3MM1 says -=*[1464374788.000519]-=*::: nothing is definitive
+U0722SJ4A says -=*[1464374800.000520]-=*::: yeah
+U0722SJ4A says -=*[1464374812.000521]-=*::: and thanks for the shoutout!
+U0722SJ4A says -=*[1464374940.000522]-=*::: Also, it depends on what you mean by definitive, but there are certain ways we could get to near definitive-ness, assuming that we can trust certain cryptographic primitives.
+U0722SJ4A says -=*[1464374986.000523]-=*::: If all events in the world were recorded on blockchains, either directly or through hashes in merkle trees ala proof of existence, then we could be certain about certain things.
+U0BTC3MM1 says -=*[1464375126.000524]-=*::: sure
+U0BTC3MM1 says -=*[1464375133.000525]-=*::: but we dont live in the metaverse yet :slightly_smiling_face:
+U0722SJ4A says -=*[1464375138.000526]-=*::: haha truth
+U0BTC3MM1 says -=*[1464375147.000527]-=*::: its all about the bridge from physical to blockchain
+U0722SJ4A says -=*[1464375163.000528]-=*::: definitely
+U07HTRSQN says -=*[1464375178.000529]-=*::: <@U0BTC3MM1>:  we got this :wink:
+U0BTC3MM1 says -=*[1464375185.000530]-=*::: ha
+==========
+U07HTRSQN says -=*[1464375221.000531]-=*::: basically: <https://twitter.com/csuwildcat/status/726771785946005504>
+U0723KV7E says -=*[1464375270.000533]-=*::: Love the Identity/Seahawk Meme <@U07HTRSQN> two of my fav interests. :wink:
+U071X9XPC says -=*[1464379189.000534]-=*::: <http://hackingdistributed.com/2016/05/27/dao-call-for-moratorium/>
+U071X9XPC says -=*[1464379221.000536]-=*::: I think this is how Ethereum can work
+U071X9XPC says -=*[1464379237.000537]-=*::: Step 1: Do something crazy and just aim for the moon
+U071X9XPC says -=*[1464379247.000538]-=*::: Step 2: Get a lot of attention
+U071X9XPC says -=*[1464379269.000539]-=*::: Step 3: Get experts to review the system and propose fixes
+U071X9XPC says -=*[1464379288.000540]-=*::: Step 4: Listen and adapt
+U071X9XPC says -=*[1464379290.000541]-=*::: Step 5: Repeat
+U074Q9Q3D says -=*[1464379523.000542]-=*::: Step 4 can be hard if there are a lot of people who stand to make a lot of money by ignoring the experts, though
+U071X9XPC says -=*[1464379545.000544]-=*::: how the upgrade of the DAO would work?
+U071X9XPC says -=*[1464379565.000546]-=*::: they will need a majority vote for upgrading I assume
+U074Q9Q3D says -=*[1464379582.000547]-=*::: yeah--you can split your funds from the DAO on an individual basis
+U074Q9Q3D says -=*[1464379610.000548]-=*::: so I guess you'd have a market of various DAO versions, where hopefully everyone uses the latest one with all the security fixes
+U099X8H27 says -=*[1464398585.000550]-=*::: <@U071X9XPC>: they need a very big quorum to upgrade the contract, if they dont do it soon they risk not reaching it
+U07HTRSQN says -=*[1464399630.000551]-=*::: <@U071X9XPC>: but what could really suck is if between Step 2 and Step 3 there is a critical bug that results in, say, the loss, theft, or corruption of hundreds of millions of dollars
+==========
+U0722SJ4A says -=*[1464407013.000552]-=*::: Did you guys see this?
+U0722SJ4A says -=*[1464407014.000553]-=*::: <https://www.reddit.com/r/ethereum/comments/4lcito/a_call_for_a_temporary_moratorium_on_the_dao/>
+U0722SJ4A says -=*[1464407101.000557]-=*::: This is interesting: <https://www.reddit.com/r/ethereum/comments/4lcito/a_call_for_a_temporary_moratorium_on_the_dao/d3m7z0q>
+U0722SJ4A says -=*[1464407169.000559]-=*::: <@U0722SJ4A|ryan_blockstack> uploaded a file: <https://blockstack.slack.com/files/ryan_blockstack/F1CER292N/screen_shot_2016-05-27_at_11.46.19_pm.png|Screen Shot 2016-05-27 at 11.46.19 PM.png>
+U099X8H27 says -=*[1464411214.000560]-=*::: very good paper
+==========
+U076LGFE0 says -=*[1464548863.000566]-=*::: <https://medium.com/humane-tech/the-immortal-myths-about-online-abuse-a156e3370aee#.emb5uh7iq>
+U076LGFE0 says -=*[1464549074.000568]-=*::: One of my favorite things about the blockstack community is that it's a corner of the bitcoin world free from the abuse &amp; hate that permeates so much of the space.  Keep up the good work everybody!
+U076J2XV5 says -=*[1464627883.000575]-=*::: Really interesting contrarian viewpoints on reputation + identity in this thread <https://twitter.com/leashless/status/736893346610876416>
+U076J2XV5 says -=*[1464627981.000578]-=*::: <@U076LGFE0> agreed! I don't know how/why the mods in some other bitcoin communities allow their members to treat each other with such contempt and disrespect. Really happy with the professional discourse here :v:
+==========
+U0722SJ4A says -=*[1464717595.000583]-=*::: <https://blog.blockstack.org/blockstack-labs-partners-with-microsoft-3ffccebf3f4f#.h6h8eulot>
+U08GHKR1R says -=*[1464719856.000585]-=*::: very exciting stuff <@U0722SJ4A> - has your thesis shifted slightly wrt to ethereum, are you in the camp that says these two are complementary not necessarily competitive, or is it just a great opportunity to work with people thinking and doing along similar lines to you just on a slightly different chain?
+U08GHKR1R says -=*[1464719908.000586]-=*::: and well done either way, you guys deserve every kudo you get. (btw, enjoyed your snapchat storm the other day, one might even say I identified with what you had to say)
+U071X9XPC says -=*[1464720179.000587]-=*::: Weve always been pushing for a blockchain agnostic model.
+U071X9XPC says -=*[1464720205.000588]-=*::: Blockstack doesnt rely on any particular blockchain. This was a key lesson from our experience running on Namecoin.
+U071X9XPC says -=*[1464720265.000589]-=*::: The system can migrate between blockchains, if needed e.g., because of security issues and can also support multiple blockchains (a particular namespace can live on a particular blockchain).
+U074Q9Q3D says -=*[1464720301.000590]-=*::: yeah--we're seeing that non-trivial applications can out-live the blockchains they live on
+U08GHKR1R says -=*[1464720560.000592]-=*::: <@U071X9XPC>: thank you for wiping away some of the cobwebs, have been wrapped up elsewhere for some time. I remember now why I'm such a big fan - agnosticism when it comes to blockchains is a thesis I really support. Stoked that it is gaining you guys some traction. As soon as I have a viable need to run a blockstack node, I will let you know - played around with it some a few weeks back, but without a commercial application it's hard to really test. Either way though, its pretty cool :simple_smile:   And <@U074Q9Q3D> you guys are certainly living proof of that. Would it be possible for you all to put together a brief summary for the community from an insider's perspective at ID2020 (or have you done so and I just missed it). Would love to read that
+==========
+U071X9XPC says -=*[1464723041.000593]-=*::: Picked up by ZDNet: <http://www.zdnet.com/article/microsoft-collaborates-on-blockchain-based-id-system/>
+U0722SJ4A says -=*[1464723278.000595]-=*::: Nice!
+U0722SJ4A says -=*[1464723283.000596]-=*::: Nice!
+U0X9PT7DG says -=*[1464777063.000599]-=*::: Ok guys so can someone ELI5 about the recent announcements and what Blockstack on Bitcoin Blockchain is doing with uPort by Consensys on Ethereum and how does Microsoft fit into all of this?
+U0X9PT7DG says -=*[1464787390.000602]-=*::: And mainly what happens to all the identities already registered and what happens if there is a collision?
+U071X9XPC says -=*[1464792706.000604]-=*::: There will be no collisions. There will be only 1 global namespace. The information for TLDs will be registered on the Bitcoin blockchain. Individual namespaces will be able to specify which blockchain they want to live on. The .id namespace (which is the largest namespace right now) lives on the Bitcoin blockchain. Its possible to start new spaces e.g., .eth which can be on the Ethereum blockchain (depends on when Ethereum is integrated and so on).
+U071X9XPC says -=*[1464792734.000605]-=*::: Analogy to DNS is that there is only 1 global root directory, but .uk TLD is managed by the United Kingdom.
+U071X9XPC says -=*[1464792775.000606]-=*::: So you first go to the global root to find information about the TLD and then you go to party (or blockchain in our system) that is responsible for running that TLD for further information. Makes sense?
+U074Q9Q3D says -=*[1464792791.000607]-=*::: is currently doing The Big Refactoring that will add support for using multiple blockchains this waynefj40
+==========
+U071X9XPC says -=*[1464795239.000609]-=*::: <https://www.usv.com/blog/usv-thesis-20>
+U071X9XPC says -=*[1464795296.000611]-=*::: USV announcing their investment in Mediachain.
+U071X9XPC says -=*[1464795303.000612]-=*::: Congrats <@U079L559C> <@U07D44N65> <@U0ACPJ917> !
+U079L559C says -=*[1464795404.000613]-=*::: thanks! <@U071X9XPC> much learned and inspired by being a part of this community here. excited to integrate blockstack id in mediachain !
+U071X9XPC says -=*[1464795680.000614]-=*::: awesome!
+U0ACPJ917 says -=*[1464795996.000615]-=*::: thanks muneeb
+==========
+U0X9PT7DG says -=*[1464807274.000618]-=*::: So are we sure that someone one day will not make a .id available on Ethereum?
+U074Q9Q3D says -=*[1464807297.000619]-=*::: if they tried, the server would simply reject it
+U0X9PT7DG says -=*[1464807322.000620]-=*::: Like will there be a consensus on what can be used and what can't 
+U0X9PT7DG says -=*[1464807387.000622]-=*::: Which server exactly?
+U074Q9Q3D says -=*[1464807428.000623]-=*::: the agreement between Blockstack and Consensus is that the Bitcoin blockchain will hold all the namespace IDs, but names themselves can live either exclusively on Bitcoin or exclusively on Ethereum
+U074Q9Q3D says -=*[1464807465.000625]-=*::: the namespace setup transactions will indicate to Blockstack Server which blockchain to search for names
+U071X9XPC says -=*[1464807485.000626]-=*::: yeah, more like there will be a single blockchain that records data for all TLDs
+U071X9XPC says -=*[1464807489.000627]-=*::: kind of like DNS root servers
+U071X9XPC says -=*[1464807508.000628]-=*::: if you are not using the correct root then you are not on the system and are on something else
+U071X9XPC says -=*[1464807531.000629]-=*::: best explained in a diagram
+U071X9XPC says -=*[1464807548.000630]-=*::: imagine a single root (data stored on a single blockchain) that points to other blockchains
+U071X9XPC says -=*[1464807553.000631]-=*::: there is only 1 global view
+U071X9XPC says -=*[1464807560.000632]-=*::: no conflicts, no inconsistencies
+U071X9XPC says -=*[1464807600.000633]-=*::: if someone tries to register .id on the root they get a response that .id is already registered
+U0X9PT7DG says -=*[1464807613.000635]-=*::: Yeah but Consensys != Ethereum Foundation 
+U071X9XPC says -=*[1464807631.000636]-=*::: right then theyd have a different universe not compatible with this effort
+U071X9XPC says -=*[1464807643.000637]-=*::: its like having a DNS system which is not the ICANN DNS
+U071X9XPC says -=*[1464807667.000638]-=*::: this is by far the largest effort to create a blockchain based namespace
+U071X9XPC says -=*[1464807688.000639]-=*::: and were pretty confident that with Microsoft putting its weight behind this technology (and more big players in the pipeline)
+U0X9PT7DG says -=*[1464807696.000640]-=*::: Yeah a Blockstack is now kind of a Standard :wink: 
+U071X9XPC says -=*[1464807700.000641]-=*::: this one is going to win :slightly_smiling_face:
+U071X9XPC says -=*[1464807730.000643]-=*::: Microsoft is only the first major player to announce support
+U0X9PT7DG says -=*[1464807797.000644]-=*::: Still consensys also joining brings everything Ethereum together with it..
+U071X9XPC says -=*[1464807811.000646]-=*::: yep, thats big
+U071X9XPC says -=*[1464807820.000647]-=*::: we can always talk to the Ethereum Foundation as well
+U0X9PT7DG says -=*[1464807831.000648]-=*::: HUUUUUGEEEE 
+U071X9XPC says -=*[1464807872.000649]-=*::: there is also a W3C blockchain workshop at MIT
+U071X9XPC says -=*[1464807873.000650]-=*::: <https://www.w3.org/2016/04/blockchain-workshop/>
+U071X9XPC says -=*[1464807893.000651]-=*::: And <@U0722SJ4A> <@U07U10AGH> and others are going to introduce them to this joint effort
+U071X9XPC says -=*[1464807901.000652]-=*::: a bunch of Ethereum folks are also attending
+U071X9XPC says -=*[1464807906.000653]-=*::: a common standard helps everyone
+U071X9XPC says -=*[1464807919.000654]-=*::: to move onto the next stage
+U0X9PT7DG says -=*[1464808195.000655]-=*::: I don't know but Nick joined the core team and he has been working on Ethereum Name Service for a while now <https://github.com/Arachnid/EIPs/blob/ens/EIPS/eip-XXX.md>
+U074Q9Q3D says -=*[1464808371.000657]-=*::: Blockstack already addresses all of the shortcomings in that EIP
+U074Q9Q3D says -=*[1464808448.000658]-=*::: also, is there a running implementation somewhere?
+U071X9XPC says -=*[1464808450.000659]-=*::: To put things in perspective, thats a proposal and we have 2+ years of experience of running a production system.
+U071X9XPC says -=*[1464808467.000660]-=*::: There are things you dont think about until you *actually* run a production system.
+U0X9PT7DG says -=*[1464808539.000661]-=*::: Oh yeah agreed. And <@U074Q9Q3D> I don't about running implementation but maybe <@U0ZAT6T8F> himself can help!
+==========

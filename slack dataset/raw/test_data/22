@@ -1,0 +1,120 @@
+U0723KV7E says -=*[1476807495.000813]-=*::: Blockstack mentioned in the latest Steemit Blog Post
+U0723KV7E says -=*[1476807496.000814]-=*::: <https://steemit.com/blockstack/@passthepiece/blockchain-the-forever-ledger>
+U0722SJ4A says -=*[1476824875.000819]-=*::: <@U0723KV7E> that looks like an auto-generated article ha
+U0723KV7E says -=*[1476824919.000820]-=*::: haha
+U0722SJ4A says -=*[1476824919.000821]-=*::: The writing doesnt even make sense, the article doesnt flow ha. They just scraped a bunch of pieces of content and slapped them together.
+U071X9XPC says -=*[1476824971.000822]-=*::: could be a bot
+U071X9XPC says -=*[1476824977.000823]-=*::: who wrote it
+U071X9XPC says -=*[1476825033.000824]-=*::: are you guys familiar with SCIgen?
+U0723KV7E says -=*[1476825033.000825]-=*::: great way to auto generate SEO
+U071X9XPC says -=*[1476825033.000826]-=*::: <https://pdos.csail.mit.edu/archive/scigen/>
+U071X9XPC says -=*[1476825043.000827]-=*::: its a tool to write research papers automatically (bots)
+U071X9XPC says -=*[1476825050.000828]-=*::: they sent these papers to a bunch of conferences
+U071X9XPC says -=*[1476825055.000829]-=*::: and a couple even got accepted :slightly_smiling_face:
+U0731R5T3 says -=*[1476825181.000830]-=*::: Papers written by bots got accepted?
+U0731R5T3 says -=*[1476825187.000831]-=*::: Were doomed haha!
+U071X9XPC says -=*[1476825292.000832]-=*::: this was primarily done to show how crappy some CS conferences are (they dont even really read/review papers)
+U071X9XPC says -=*[1476825303.000833]-=*::: junk conferences if you will
+U071X9XPC says -=*[1476825313.000834]-=*::: but some outputs from the tool are pretty funny
+U0731R5T3 says -=*[1476825334.000835]-=*::: Ohhhh, I thought they were accepted for real haha.
+U0731R5T3 says -=*[1476825355.000836]-=*::: I will read some of them to see.
+U071X9XPC says -=*[1476825425.000837]-=*::: yes a crappy conference actually accepted a paper!
+U0731R5T3 says -=*[1476825539.000838]-=*::: Wow...
+U0731R5T3 says -=*[1476825547.000839]-=*::: Thats sad.
+U074Q9Q3D says -=*[1476882348.000844]-=*::: <@U0B163N5S> look what I found while reading HN this morning :). <https://github.com/nicola/decentralized-research>
+U0B163N5S says -=*[1476884375.000846]-=*::: btw, I will ping you as soon as things get stable again
+U0B163N5S says -=*[1476884380.000847]-=*::: <@U074Q9Q3D> how funny! Some one must have put it there!
+U0722SJ4A says -=*[1476885696.000848]-=*::: ha awesome
+U0722SJ4A says -=*[1476885699.000849]-=*::: great work <@U0B163N5S>
+U071X9XPC says -=*[1476888801.000850]-=*::: Ha awesome. I was maintaining <https://github.com/blockstack/reading-list>
+U071X9XPC says -=*[1476888836.000852]-=*::: Would love to learn what papers you liked a lot and would recommend for this reading list 
+U071X9XPC says -=*[1476888870.000853]-=*::: From previous experience having quick high level summaries (written by non-authors) helps people to quickly pick up the main ideas 
+U07DTHT7G says -=*[1476890034.000854]-=*::: <@U071X9XPC> You might consider one/both of these, as they describe systems, built on cloud storage, yet with zero-trust.  Would be interesting to adapt those (both architecturally and implementation) now that we have BlockStack, both in terms of secure IDs and secured storage.   (In particular, its still not trivial, because those systems are interested in ones in which you have multiple writers per object, as opposed to having a single user / PK associated with storage.)  <http://sns.cs.princeton.edu/projects/untrusted-cloud/>
+U07DTHT7G says -=*[1476890759.000856]-=*::: <@U071X9XPC> <@U074Q9Q3D> If you guys think something like that would be interesting, e.g., how to build something like Etherpad inside the new blockstack browser, might have some undergrads interested.  Let me know.
+U074Q9Q3D says -=*[1476890870.000857]-=*::: Absolutely!
+U074Q9Q3D says -=*[1476890888.000858]-=*::: Please send them our way; we'd be happy to get them started :smile:
+U074Q9Q3D says -=*[1476890999.000859]-=*::: Is this for an independent study or the like?  I could come to Princeton once a week or so and help mentor them
+U071X9XPC says -=*[1476892435.000860]-=*::: thatd be amazing!
+U071X9XPC says -=*[1476892466.000861]-=*::: and from our end we can dedicate resources to fixing any issues theyre having
+U071X9XPC says -=*[1476892477.000862]-=*::: better documentation, better API interfaces etc
+U074Q9Q3D says -=*[1476892505.000863]-=*::: also helping them run experiments if they need it
+U071X9XPC says -=*[1476892505.000864]-=*::: having people build real apps helps a lot in improving things from our end
+U0X9PT7DG says -=*[1477191907.000881]-=*::: <https://medium.com/@Physes/how-to-build-a-more-secure-domain-system-5efed811409e#.44e4u63zu>
+U076LGFE0 says -=*[1477195110.000883]-=*::: <http://www.alexkyte.me/2016/10/how-bittorrent-really-works.html?m=1>
+U07DTHT7G says -=*[1477230527.000885]-=*::: <@U0X9PT7DG> (and others):  That article points at DNS poisoning with Dyn (although strangely talks about DNS records on Dyns servers as being poisoned, while poisoning typically refers to cache poisoning which is a very different attack based on the (historically) limited set of IDs used to identify DNS responses, although this was mitigated in the last decade).  Thats the first Ive heard of DNS poisoning" in the context of the Dyn attacks  I had previously thought they were primarily DDoS attacks.   Do you know anything more about it?  If the primary focus is DDOS, its less clear how mechanisms focusing primarily on *security* (a la DNSSEC, or blockchain-based approaches) would help with *unavailability*, with the caveat that these systems do full replication (at the cost of scalability and/or personalization).  So, replicating your DNS zone file in the blockchain itself would certainly make it more survivable, but at the cost of being able to actively control server selection, e.g., performing load/locality-based selection very common among CDNs and large geo-replicated providers.
+U07DTHT7G says -=*[1477230844.000886]-=*::: For what its worth, most solutions to DNS (including some of Guns prior work  ( <https://www.cs.cornell.edu/people/egs/papers/codons-sigcomm.pdf> <https://www.cs.cornell.edu/people/egs/papers/dnssurvey.pdf> ) focus on making old-school DNS more robust, i.e., the serving of static zone files.    That works if you are using a public third-party DNS service (although Dyn does appear to use Anycasted servers (<http://dyn.com/dns/network-map/>), so it perhaps localized the impact of these attacks), but not if you want programmatic, low-TTL control of resolution.  This seems a bit fundamental, although maybe some hybrid is also some solution, i.e., a fall back to static (round-robin) DNS resolution when your active servers arent available for any reason.
+U074Q9Q3D says -=*[1477257132.000888]-=*::: &gt; with the caveat that these systems do full replication (at the cost of scalability and/or personalization) Full replication of static state (i.e. long-TTL state) could be done today.  If there were 10 billion public DNS names, and each DNS name was allotted 10KB of state, then a 10TB disk can hold the entire DNS state.  I can get 10TB of storage for less than $500.  It's not far-fetched to believe that we could give each home router a 100% replica of the DNS state (or if not home routers, then name servers at ISP peering points).  Either way, DNS lookups for static state could stay within your AS.  &gt;  but at the cost of being able to actively control server selection, e.g., performing load/locality-based selection very common among CDNs and large geo-replicated providers. I think this could be solved with one layer of indirection: have the service's static zonefile point to a set of "request-routing" servers that serve this dynamic information.  These request-routing servers would work as before, but the key improvement over the status quo is that if they get taken offline (like Dyn), the *service* can update its zonefile to point to a different set of request-routers (e.g. a back-up DNS cluster running in-house).  This limits the amount of time for which the attack on Dyn would be effective--all the affective sites would simply switch DNS providers, and all ISPs/home-routers would learn about the switch-over in a reasonable amount of time (e.g. however long it took for the underlying blockchain to confirm the update).
+U076LGFE0 says -=*[1477281685.000890]-=*::: just picked up my copy <https://twitter.com/lightcoin/status/790349432025968640>
+U071X9XPC says -=*[1477320457.000893]-=*::: <@U07DTHT7G> Yep, I also assumed that the concern is just DDoS and not DNS (cache) poisoning. RE availability, one interesting thing about a blockchain approach is that if I get you a copy of the blockchain you can independently verify that you have the correct version (proof of work). Cant do that with a version of DNS records shipped to you on a hard disk.
+U071X9XPC says -=*[1477320516.000894]-=*::: Which means that we have more flexibility about how to widely replicate blockchain-based DNS records. The source of the records doesnt matter at all.
+U07D44N65 says -=*[1477326412.000896]-=*::: Hey Blockstack, we've got a big announcement today! We've launched *Mediachain Attribution Engine* as well as *Mediachain 1.0*.  We think Attribution Engine is the best image search engine for creators. It lets you find free, high quality images that you can share and re-use with attribution baked in automatically.   Attribution Engine is the first application powered by decentralized, open data in Mediachain and is built on top of the newly launched protocol architecture (v1.0).  <http://images.mediachain.io>  Read these two blog posts to get all the juicy details!
+U07D44N65 says -=*[1477326421.000897]-=*::: <https://blog.mediachain.io/introducing-mediachain-attribution-engine-2dc1ea6aa31f>
+U07D44N65 says -=*[1477326430.000899]-=*::: <https://blog.mediachain.io/mediachain-v1-0-be2b8fa2153>
+U071X9XPC says -=*[1477326456.000901]-=*::: ah cool! checking it out
+U07D44N65 says -=*[1477326460.000902]-=*::: You'll notice Blockstack in our stack diagram (on the roadmap)!
+U07D44N65 says -=*[1477326542.000904]-=*::: We're also doing a post on Hacker News. Appreciate your upvotes so we can spread the word. <https://news.ycombinator.com/newest> (excuse the shameless plug :blush:)
+U076LGFE0 says -=*[1477370315.000917]-=*::: congrats <@U07D44N65> ! really exciting!
+U0723KV7E says -=*[1477422484.000925]-=*::: <https://news.ycombinator.com/item?id=12790002>
+U0723KV7E says -=*[1477422513.000926]-=*::: Forbes: ZCash Will Be a Truly Anonymous Blockchain-Based Currency
+U0723KV7E says -=*[1477422527.000928]-=*::: <https://news.ycombinator.com/item?id=12790002>
+U07D44N65 says -=*[1477439517.000929]-=*::: <@U076LGFE0> thanks :smile:
+U07D44N65 says -=*[1477499922.000938]-=*::: <https://bitcoinmagazine.com/articles/mediachain-labs-launches-blockchain-based-content-attribution-engine-1477498201> :slightly_smiling_face:
+U0722SJ4A says -=*[1477515398.000941]-=*::: Awesome work <@U07D44N65> 
+U0722SJ4A says -=*[1477515436.000942]-=*::: Was super excited about that announcement
+U0722SJ4A says -=*[1477515452.000943]-=*::: And also about the OB1 launch of OpenBazaar Deploy
+U07D44N65 says -=*[1477518325.000945]-=*::: thanks <@U0722SJ4A> :smile:
+U2UKVHNFM says -=*[1477518841.000946]-=*::: Thanks! Glad to be here.
+U0723KV7E says -=*[1477757857.000972]-=*::: <https://techcrunch.com/2016/10/29/zcash-blockstack-and-appcoins-oh-my/>
+U074Q9Q3D says -=*[1477925603.000997]-=*::: <https://news.bitcoin.com/blockchain-prevented-ddos-attack/>
+U071X9XPC says -=*[1477925861.000999]-=*::: ```Blockstacks engineer Jude Nelson explained how their DNS platform couldve prevented the October 21st attack.  By using the Bitcoin blockchain to bind the name to a public key and DNS information, Blockstack allows anyone to register a name while simultaneously ensuring that only the names owner can control it, says Nelson. ```
+U071X9XPC says -=*[1477925892.001000]-=*::: ``` If the Dyn attackers wanted to knock websites offline in Blockstack, they would have to attack either the individual sites or attack the Bitcoin network itself. Even then, all the Dyn attackers could do is slow down name updates, he added.```
+U074Q9Q3D says -=*[1477925904.001001]-=*::: pretty sure that's taken from Slack.  Trying to find the exact quote.
+U071X9XPC says -=*[1477926018.001002]-=*::: Our slack is public and journalists are watching!
+U0723KV7E says -=*[1477926965.001003]-=*::: <@U074Q9Q3D> <@U071X9XPC> can either of you create a tweet storm around that article by <http://bitcoin.com|bitcoin.com>?
+U0731R5T3 says -=*[1477942864.001007]-=*::: <https://slack.engineering/building-hybrid-applications-with-electron-dc67686de5fb#.si7kkk8x0>
+U0723KV7E says -=*[1478029766.001023]-=*::: Do these guys have a bot running? <https://steemit.com/blockstack/@passthepiece/blockstack-the-new-decentralized-internet>
+U0723KV7E says -=*[1478029769.001025]-=*::: <https://passthepiece.com/blockstack-the-new-decentralized-internet/>
+U071X9XPC says -=*[1478097001.001037]-=*::: Blast from the past: <https://da-data.blogspot.com/2014/08/minting-money-with-monero-and-cpu.html>
+U071X9XPC says -=*[1478097020.001039]-=*::: (this post is from 2014, but relevant today given interest in Zcash mining)
+U0722SJ4A says -=*[1478129523.001044]-=*::: <https://github.com/moshest/p2p-index>
+U2U9P8CCA says -=*[1478165204.001047]-=*::: <@U0722SJ4A> reminds me of <https://github.com/steve-vincent/awesome-decentralized>.
+U2U9P8CCA says -=*[1478165221.001049]-=*::: I wish we could centralise those resources tho :joy:
+U2U9P8CCA says -=*[1478165233.001050]-=*::: cause then you have <https://github.com/oddvar/awesome-decentralized-web> and <https://github.com/gdamdam/awesome-decentralized-web>
+U071X9XPC says -=*[1478287417.001058]-=*::: <http://tothestars.io/blog/2016/11/2/serverless-mapreduce>
+U0722SJ4A says -=*[1478560574.001079]-=*::: Published this article about Spreading the Gospel of Decentralization: <https://blog.blockstack.org/spreading-the-gospel-of-decentralization-6a3404ebd869#.wzqpwhjq7> - thanks for having me submit this <@U1FM0BV0W> :slightly_smiling_face:
+U071X9XPC says -=*[1478562766.001081]-=*::: Spreading the gospel ah :wink:
+U071X9XPC says -=*[1478805154.001095]-=*::: <https://twitter.com/brynosaurus/status/796789424042508288>
+U071X9XPC says -=*[1478805177.001097]-=*::: Rethinking Internet architecture with blockchains paper at HotNets 2016
+U071X9XPC says -=*[1478805214.001098]-=*::: (HotNets is where crazy ideas for Internet architecture papers get published and then once the design is fully sketched authors generally submit the full paper to SIGCOMM)
+U074Q9Q3D says -=*[1478805250.001099]-=*::: hey! we're in the related work section
+U071X9XPC says -=*[1478805275.001100]-=*::: its behind a pay wall
+U071X9XPC says -=*[1478805279.001101]-=*::: can you send the paper?
+U074Q9Q3D says -=*[1478805328.001102]-=*::: <@U074Q9Q3D|jude> uploaded a file: <https://blockstack.slack.com/files/jude/F316J28TX/p204-hari.pdf|p204-hari.pdf>
+U074Q9Q3D says -=*[1478805331.001103]-=*::: there you go
+U071X9XPC says -=*[1478805333.001104]-=*::: speaking of paywalls can you send a copy of this as well:
+U071X9XPC says -=*[1478805333.001105]-=*::: <https://www.usenix.org/publications/login/fall2016/bootstrapping-trust-distributed-systems-blockchains>
+U074Q9Q3D says -=*[1478805355.001106]-=*::: sorry, that one's paywalled for me :confused:
+U071X9XPC says -=*[1478805412.001107]-=*::: ah OK
+U074Q9Q3D says -=*[1478805427.001108]-=*::: ``` Blockstack [18], similar to Namecoin, is an example of a naming and identity solution, but instead of using a blockchain to provide naming for the Internet, it provides a name to blockchain address mapping for the Bitcoin blockchain. ``` We should send them a correction
+U074Q9Q3D says -=*[1478805467.001109]-=*::: or write a paper on the Atlas network :smile:
+U071X9XPC says -=*[1478805539.001110]-=*::: yeah not sure thats accurate
+U071X9XPC says -=*[1478805552.001111]-=*::: kind of is but misses the point
+U076LGFE0 says -=*[1479032738.001120]-=*::: <http://userfeeds.io/>
+U0722SJ4A says -=*[1479060290.001121]-=*::: Very interesting <@U076LGFE0> 
+U0723KV7E says -=*[1479303011.001143]-=*::: <http://www.ted.com/talks/bettina_warburg_how_the_blockchain_will_radically_transform_the_economy>
+U0723KV7E says -=*[1479407174.001152]-=*::: Gavin Woods new project
+U0723KV7E says -=*[1479407175.001153]-=*::: <https://ethcore.io/index.html>
+U0723KV7E says -=*[1479407189.001155]-=*::: PARITY - ETHEREUM BROWSER by Ethcore
+U071X9XPC says -=*[1479416451.001158]-=*::: <https://www.troyhunt.com/8-million-github-profiles-were-leaked-from-geekedins-mongodb-heres-how-to-see-yours/>
+U071X9XPC says -=*[1479508677.001166]-=*::: <http://blog.kraken.com/post/153209105847/security-advisory-mobile-phones>
+U0723KV7E says -=*[1479508862.001168]-=*::: Whoa! not good at all
+U07P4RPNG says -=*[1479574740.001170]-=*::: <https://eprint.iacr.org/2016/1062.pdf>
+U071X9XPC says -=*[1479738710.001175]-=*::: <@U07P4RPNG> interesting to see Srini Devadas working on Bitcoin!
+U07P4RPNG says -=*[1479738922.001176]-=*::: <@U071X9XPC> right and they call out blockstack in the paper
+U071X9XPC says -=*[1479739068.001177]-=*::: ah yeah
+U071X9XPC says -=*[1479739088.001178]-=*::: they probably should refer the USENIX paper and the Virtualchain paper for SNV
+U0722SJ4A says -=*[1479741179.001179]-=*::: ha I was quoted apparently
+U0722SJ4A says -=*[1479741209.001180]-=*::: ```One disadvantage of this approach, according to one of the Blockstack co-founders [34], is that it requires a secret key to manage the Catena log and would thus centralize the system```
+U0722SJ4A says -=*[1479741225.001181]-=*::: It sounds like they're dismissing this point ha
+U071X9XPC says -=*[1479741598.001182]-=*::: centralize :wink:
+U0722SJ4A says -=*[1479741724.001183]-=*::: <@U0722SJ4A|ryanshea> uploaded a file: <https://blockstack.slack.com/files/ryanshea/F34HG7K16/30417901.jpg|haha>

@@ -1,0 +1,114 @@
+U0FUZV5RT says -=*[1474477642.000390]-=*::: Would it be worth putting a note in the readme? <https://github.com/kubernetes/minikube#features> <https://github.com/kubernetes/minikube#known-issues> are a little contradictory (e.g. rkt support)
+U09R2FFHP says -=*[1474477672.000392]-=*::: <@U1TUWPL1M> wanna give the talk? I dont know if we have a volunteer yet
+U1TUWPL1M says -=*[1474477678.000393]-=*::: <@U0FUZV5RT> yeah definitely, feel free to open a PR or I can get around to it later
+U1TUWPL1M says -=*[1474477704.000394]-=*::: <@U09R2FFHP> sure
+U09R2FFHP says -=*[1474477715.000395]-=*::: I will email the team and cc you, thanks :slightly_smiling_face:
+U1TUWPL1M says -=*[1474477733.000396]-=*::: ok awesome
+U1TUWPL1M says -=*[1474477737.000397]-=*::: looking forward to it
+U0ZV4393M says -=*[1474478107.000399]-=*::: <@U09R2FFHP> <@U1TUWPL1M> I am also available to help present, let me know!
+U0FUZV5RT says -=*[1474480374.000401]-=*::: Still struggling to get minikube with CNI working - any tips for debugging? ```minikube start \     --container-runtime=rkt \     --network-plugin=cni \     --iso-url=<https://github.com/coreos/minikube-iso/releases/download/v0.0.4/minikube-v0.0.4.iso> Starting local Kubernetes cluster... Kubectl is now configured to use the cluster. ...wait ~15 mnintes...   ~ kubectl get po The connection to the server 192.168.99.100:8443 was refused - did you specify the right host or port?```
+U09R2FFHP says -=*[1474480428.000402]-=*::: <@U0FUZV5RT> is k8s just not ocming up?
+U09R2FFHP says -=*[1474480436.000403]-=*::: <@U0FUZV5RT> I would ssh in and poke around `minikube ssh`
+U1TUWPL1M says -=*[1474480448.000404]-=*::: `minikube logs` is a good place to start also
+U09R2FFHP says -=*[1474480465.000405]-=*::: heh, TIL, I have been going into /var/lib/localkube
+U1TUWPL1M says -=*[1474480476.000406]-=*::: haha
+U0FUZV5RT says -=*[1474480515.000407]-=*::: Glad we're all learning :smile:  The logs are quite revealing
+U0FUZV5RT says -=*[1474480522.000408]-=*::: <@U0FUZV5RT|tomdee> uploaded a file: <https://kubernetes.slack.com/files/tomdee/F2EAHBJ6Q/-.txt|Untitled>
+U0FUZV5RT says -=*[1474480596.000409]-=*::: Arghh, now I deleted the machine in virtualbox and I get: ```minikube start \     --container-runtime=rkt \     --network-plugin=cni \     --iso-url=<https://github.com/coreos/minikube-iso/releases/download/v0.0.4/minikube-v0.0.4.iso> Starting local Kubernetes cluster... E0921 10:56:11.288058    5906 start.go:85] Error starting host: Error getting state for host: machine does not exist. Retrying. E0921 10:56:11.389139    5906 start.go:85] Error starting host: Error getting state for host: machine does not exist. Retrying. E0921 10:56:11.487242    5906 start.go:85] Error starting host: Error getting state for host: machine does not exist. Retrying. E0921 10:56:11.487264    5906 start.go:91] Error starting host:  Error getting state for host: machine does not exist Error getting state for host: machine does not exist Error getting state for host: machine does not exist ```
+U0FUZV5RT says -=*[1474480603.000410]-=*::: How do I reset things to try again?
+U1TUWPL1M says -=*[1474480603.000411]-=*::: hmm try a `minikube stop` and then a `minikube start` with the same flags
+U1TUWPL1M says -=*[1474480615.000412]-=*::: ive noticed a few times we dont shut down etcd gracefully
+U1TUWPL1M says -=*[1474480622.000413]-=*::: i havent gotten to the root of it though
+U0FUZV5RT says -=*[1474480629.000414]-=*::: blow away ~/.minikube?
+U1TUWPL1M says -=*[1474480640.000416]-=*::: probably not necessary
+U09R2FFHP says -=*[1474480664.000417]-=*::: I also often have to hunt for renegade processes in vmware (virtualbox used to have a similar issue)
+U0FUZV5RT says -=*[1474480792.000418]-=*::: I did blow it away but now I get ```minikube start \     --container-runtime=rkt \     --network-plugin=cni \     --iso-url=<https://github.com/coreos/minikube-iso/releases/download/v0.0.4/minikube-v0.0.4.iso> Starting local Kubernetes cluster... E0921 10:58:28.703636    6292 start.go:85] Error starting host: Error creating host: Error creating machine: Error checking the host: Error checking and/or regenerating the certs: There was an error validating certificates for host "192.168.99.101:2376": dial tcp 192.168.99.101:2376: i/o timeout You can attempt to regenerate them using 'docker-machine regenerate-certs [name]'. Be advised that this will trigger a Docker daemon restart which will stop running containers. . Retrying. Kubectl is now configured to use the cluster. ```
+U1TUWPL1M says -=*[1474480827.000419]-=*::: if you deleted ~/.minikube without deleting the VM that might leave it in a weird state
+U1TUWPL1M says -=*[1474480835.000420]-=*::: i.e. certs are gone
+U09R2FFHP says -=*[1474480863.000422]-=*::: blow it all away, reboot, and start over :slightly_smiling_face: All of these desktop VM systems are buggy and annoying in my experience.
+U09R2FFHP says -=*[1474480877.000423]-=*::: this is why vagrant is a thing
+U1TUWPL1M says -=*[1474480880.000424]-=*::: lol
+U09R2FFHP says -=*[1474480884.000425]-=*::: hacks on hacks
+U1TUWPL1M says -=*[1474480885.000426]-=*::: its true
+U09R2FFHP says -=*[1474481027.000427]-=*::: :heart: tomdee :slightly_smiling_face:
+U1TUWPL1M says -=*[1474481079.000428]-=*::: i also don't know if <@U0DT660QM> has done any testing with v1.4 on the rkt-iso
+U09R2FFHP says -=*[1474481118.000429]-=*::: <@U1TUWPL1M> are there newer localkube betas for v1.4? I tried v1.4-beta.2 and it didnt work and higher numbers didnt exist
+U1TUWPL1M says -=*[1474481132.000431]-=*::: <@U09R2FFHP> theres v1.4.0-beta.8
+U1TUWPL1M says -=*[1474481149.000432]-=*::: we broke some old localkube releases, so im working on automating the entire process
+U1TUWPL1M says -=*[1474481165.000433]-=*::: ill have a PR to fix the options in minikube later today
+U09R2FFHP says -=*[1474481170.000434]-=*::: neato, will try
+U0FUZV5RT says -=*[1474481181.000435]-=*::: On the "desktop VM systems are hard" isn't that why <https://github.com/docker/hyperkit> exists?
+U0FUZV5RT says -=*[1474481197.000437]-=*::: I liked being able to just `docker run` the hyperkube image but all the docs for that have been removed
+U0FUZV5RT says -=*[1474481212.000438]-=*::: But I'm committed to getting this working :smile:
+U09R2FFHP says -=*[1474481250.000439]-=*::: <@U0FUZV5RT> yea, hyperkit is a little, "hyperbolic" in how much it helps. There is ongoing work to support xhyve
+U1TUWPL1M says -=*[1474481293.000440]-=*::: the maintainer of xhyve <@U1YEXGY77> is working on qcow2 and hyperkit support too - so i would think we could see some good improvement in that driver
+U0FUZV5RT says -=*[1474481406.000441]-=*::: So - if I want to use CNI you _think_ I need to use the coreos/minikube-iso image. But we're not sure what k8s version I can use?
+U0FUZV5RT says -=*[1474481445.000442]-=*::: ooooo, it looks like ```minikube start \           --container-runtime=rkt \     --network-plugin=cni \     --iso-url=<https://github.com/coreos/minikube-iso/releases/download/v0.0.4/minikube-v0.0.4.iso> \     --kubernetes-version=v1.4.0-beta.8``` is working
+U1TUWPL1M says -=*[1474481456.000443]-=*::: you will need to use the coreos/minikube-iso if you want CNI
+U1TUWPL1M says -=*[1474481479.000444]-=*::: the default right now is a modified boot2docker iso, but we are planning to cutover to the coreos iso ASAP
+U1TUWPL1M says -=*[1474481487.000445]-=*::: which will support both runtimes
+U1TUWPL1M says -=*[1474481502.000446]-=*::: and has our friend systemd
+U0FUZV5RT says -=*[1474481640.000447]-=*::: So, now that I can use kubectl, I see that the kubernetes-dashboard isn't working. What's the expected "out of the box" CNI experience? Should I see a CNI config file in place? Which plugin is used?
+U1TUWPL1M says -=*[1474481679.000448]-=*::: is the pod itself failing? or you cant access the dashbord?
+U0FUZV5RT says -=*[1474481701.000449]-=*::: Pod itself is failing - `failed to SyncPod: failed to set up pod network: cni config unintialized`
+U1TUWPL1M says -=*[1474481993.000451]-=*::: i would open an issue <https://github.com/coreos/minikube-iso>
+U0DT660QM says -=*[1474482471.000453]-=*::: <@U0FUZV5RT> this cni config is being used currently for cni: <https://github.com/coreos/minikube-iso/blob/master/board/coreos/minikube/rootfs-overlay/usr/libexec/kubernetes/kubelet-plugins/net/exec/k8s.conf>
+U0DT660QM says -=*[1474482490.000455]-=*::: <@U0FUZV5RT> sorry, didn't test yet with k8s 1.4-beta8
+U0FUZV5RT says -=*[1474482583.000456]-=*::: How can I configure the directory that's used for CNI configs?
+U0DT660QM says -=*[1474482620.000457]-=*::: currently you can't in minikube
+U0DT660QM says -=*[1474482647.000458]-=*::: I can add this though
+U0FUZV5RT says -=*[1474482650.000459]-=*::: oh no! I can't customize CNI! Yes, adding that would be really useful...
+U0FUZV5RT says -=*[1474482696.000461]-=*::: I can't write files to the current directory which is quite limiting...
+U0DT660QM says -=*[1474482743.000462]-=*::: sure sure, I used a first sane default so people at least start using it in conjunction with (any) cni
+U0DT660QM says -=*[1474482772.000463]-=*::: leaving out `--network-plugin` will use the noop plugin in rkt
+U0FUZV5RT says -=*[1474482830.000464]-=*::: I'm a calico, CNI and flannel maintainer and I would really like to be able use them with minikube. Can you give me some pointers to what I'd need to change to customize the --network-plugin-dir that's passed to the kubelet?
+U0DT660QM says -=*[1474482852.000465]-=*::: yah, exactly ... just a sec
+U0FUZV5RT says -=*[1474482871.000466]-=*::: Maybe here? <https://github.com/kubernetes/minikube/blob/master/pkg/localkube/kubelet.go>
+U0DT660QM says -=*[1474482917.000468]-=*::: yep
+U0DT660QM says -=*[1474482924.000469]-=*::: concretely <https://github.com/kubernetes/minikube/blob/270f1820381eb7ad49bb7ec11f86d3cde7c2b299/pkg/localkube/kubelet.go#L47>
+U0DT660QM says -=*[1474482987.000472]-=*::: currently I ship the stock cni plugins with the image: <https://github.com/coreos/minikube-iso/blob/master/package/cni-bin/cni-bin.mk>
+U0DT660QM says -=*[1474483092.000474]-=*::: so to get going with completely custom plugins (i.e. copying over the calico binary) we could do it via shares
+U0FUZV5RT says -=*[1474483175.000475]-=*::: I'd just `<https://github.com/projectcalico/calico-containers/blob/master/docs/cni/kubernetes/manifests/calico-hosted.yaml>` which will use k8s to put the binary in place
+U0FUZV5RT says -=*[1474483202.000477]-=*::: The binary isn't a problem at the moment though - /opt/bin/cni is writable
+U0DT660QM says -=*[1474483210.000478]-=*::: ah nice!
+U0FUZV5RT says -=*[1474483226.000479]-=*::: The problem is that the directory for the CNI config is read only
+U0FUZV5RT says -=*[1474483252.000480]-=*::: When developing minikube and localkube changes do I need to run in a VM? I'm using linux so can I just do everything locally?
+U0FUZV5RT says -=*[1474483265.000481]-=*::: What's your typical workflow when making changes?
+U09R2FFHP says -=*[1474483328.000482]-=*::: <https://tectonic.com/blog/minikube-and-rkt.html> Just FYI :slightly_smiling_face:
+U0DT660QM says -=*[1474483365.000485]-=*::: ``` $ make $ ./out/minikube start --container-runtime=rkt --kubernetes-version=file:///home/sur/src/minikube/src/k8s.io/minikube/out/localkube --iso-url=<http://localhost:2015/rootfs.iso9660> --vm-driver=kvm --memory=4096 --cpus=2 ```
+U0DT660QM says -=*[1474483374.000486]-=*::: <@U09R2FFHP> hah, great, thanks!
+U20SXNV8W says -=*[1474483387.000487]-=*::: is there a way to spin up additional nodes in minikube.. or is that beyond minikube's scope?
+U0DT660QM says -=*[1474483408.000488]-=*::: where `localhost:2015` is a silly little `caddy` server on my machine in the `buildroot/output/images` folder
+U0FUZV5RT says -=*[1474483440.000489]-=*::: OK, cool thanks. I'm heading out for lunch now but will try it out this afternoon.
+U0DT660QM says -=*[1474483466.000490]-=*::: <@U0FUZV5RT> sure thing, let me know if you need any help
+U0DT660QM says -=*[1474483503.000491]-=*::: <@U20SXNV8W> currently minikube supports only one node
+U20SXNV8W says -=*[1474483553.000492]-=*::: awesome... I can stop bashing my head against a wall.. thanks!
+U0DT660QM says -=*[1474483577.000493]-=*::: <@U0FUZV5RT> for building a new image, see <https://github.com/coreos/minikube-iso#build-instructions> (very straightforward, if you're having a linux box)
+U0CBHE6GM says -=*[1474487459.000496]-=*::: <@U09R2FFHP> amazing job with minikube and rkt! 
+U09R2FFHP says -=*[1474487473.000497]-=*::: its all <@U0DT660QM> and the team,
+U0ACRBLSV says -=*[1474573122.000501]-=*::: Is there a recommended way of installing an ingress controller on minikube
+U0ACRBLSV says -=*[1474573152.000502]-=*::: I have been using the nginx one, and seems to work OK, but was wondering if there is a more standard approach (using addons?)
+U1TUWPL1M says -=*[1474573600.000503]-=*::: <@U0ACRBLSV> im actually working on that right now - any suggestions on how you'd like to configure it/ turn it on?
+U1TUWPL1M says -=*[1474573608.000504]-=*::: <https://github.com/kubernetes/minikube/issues/611>
+U1TUWPL1M says -=*[1474573629.000506]-=*::: i was thinking we could bundle the nginx ingress controller with minikube and show you how to swap it out with something else
+U1TUWPL1M says -=*[1474573634.000507]-=*::: maybe through `minikube config`
+U0ACRBLSV says -=*[1474573741.000508]-=*::: that would be cool
+U0ACRBLSV says -=*[1474573762.000509]-=*::: possibly have a command line switch on start?
+U0ACRBLSV says -=*[1474573771.000510]-=*::: start with-ingress
+U0ACRBLSV says -=*[1474573774.000511]-=*::: or some such thing
+U1TUWPL1M says -=*[1474573814.000512]-=*::: yeah - we actually havent documented it well yet, but we're using viper for configuration of some parameters, so you can use flag, env vars, or a config file
+U0ACRBLSV says -=*[1474573838.000513]-=*::: and it would be good to default to having it on
+U0ACRBLSV says -=*[1474573853.000514]-=*::: For newbies - it can be confusing if it is not enabled
+U1TUWPL1M says -=*[1474573856.000515]-=*::: yeah
+U0ACRBLSV says -=*[1474573886.000516]-=*::: Happy to be a tester when you get that feature!
+U1TUWPL1M says -=*[1474573892.000517]-=*::: sounds good
+U0FUZV5RT says -=*[1474575373.000518]-=*::: My minikube VM seems to have just changed IP address, how do I cope with that?
+U0FUZV5RT says -=*[1474575387.000519]-=*::: I updated the config - `kubectl  config set clusters.minikube.server <https://192.168.99.102:8443>`
+U0FUZV5RT says -=*[1474575400.000520]-=*::: But certs are still wrong - ```kubectl get pod --all-namespaces                                 Unable to connect to the server: x509: certificate is valid for 192.168.99.100, 10.0.0.1, not 192.168.99.102```
+U0NPZ9SP5 says -=*[1474631270.000525]-=*::: <@U0FUZV5RT> Apparently this issue was fixed on v0.4.0: <https://github.com/kubernetes/minikube/issues/208>
+U0NPZ9SP5 says -=*[1474631283.000527]-=*::: which version are you using?
+U261Y5ENR says -=*[1474637356.000528]-=*::: Has anyone tried using minikube in production?
+U0A30SM33 says -=*[1474637450.000529]-=*::: <@U261Y5ENR> minikube is really only for local single node deployments so i wouldn't expect it to be used for production workloads, more for trying out kubernetes, learning about it &amp; developing apps to run kubernetes
+U261Y5ENR says -=*[1474647366.000530]-=*::: <@U0A30SM33> thanks, however it seems to work well for very simple clusters on development so id expect it to work the same in production
+U0A30SM33 says -=*[1474648899.000531]-=*::: <@U261Y5ENR> minikube uses libmachine to provision a single node all-in-one cluster for development &amp; learning. in production you want multiple nodes on multiple hosts - minikube is not the right solution for this
+U261Y5ENR says -=*[1474648937.000532]-=*::: i understand, but sometimes thats overkill. if its a simple app starting out, having master+minion on the same server is good enough

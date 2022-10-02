@@ -1,0 +1,168 @@
+==========
+U074Q9Q3D says -=*[1464885219.000981]-=*::: kk, have a safe trip :slightly_smiling_face:
+==========
+U074Q9Q3D says -=*[1464885323.000982]-=*::: The reasons I'm really hesitant to implement Blockstack as a smart contract are (1) it will be expensive to run in terms of gas burnt, (2) it basically doubles the amount of code we have to maintain, and (3) if we want external Blockstack nodes to have the same view of the names in Ethereum as the smart contract, we have to spend a lot of time testing and verifying that the smart contract implementation behaves the same was as the Blockstack Python implementation (which is probably something we should do at some point, but it's a lot to ask right now)
+U07HTRSQN says -=*[1464885379.000983]-=*::: <@U074Q9Q3D>: keeping two copies of the BS is a nonstarter, IMO
+U07HTRSQN says -=*[1464885386.000984]-=*::: don't do that to yourselves
+U074Q9Q3D says -=*[1464885452.000985]-=*::: &gt; keeping two copies of the BS :poop: :poop:
+U071X9XPC says -=*[1464885704.000986]-=*::: lol
+U074Q9Q3D says -=*[1464885927.000987]-=*::: So I found this and I read through the related links:  <https://ethereum.stackexchange.com/questions/359/where-is-the-state-data-stored>
+U074Q9Q3D says -=*[1464885935.000989]-=*::: regarding Ethereum chain-state storage
+U074Q9Q3D says -=*[1464885958.000990]-=*::: I think the key difference between Ethereum and Bitcoin is as follows, w.r.t. bootstrapping
+U074Q9Q3D says -=*[1464885977.000991]-=*::: Ethereum does not require clients to download all transactions when bootstrapping; only the sequence of state tree headers
+U074Q9Q3D says -=*[1464885988.000992]-=*::: whereas Bitcoin *forces* clients to download all the transactions and verify them
+U074Q9Q3D says -=*[1464886005.000993]-=*::: Bitcoin peers that don't run `-txindex=1` simply discard spent transactions
+U074Q9Q3D says -=*[1464886096.000994]-=*::: I would be curious to know the long-term implications of these bootstrapping strategies--in particular, does Bitcoin's requirement that all peers bootstrap from the full chain state incentivize people to maintain full chain state replicas better than Ethereum?  Or does the fact that Ethereum peers can bootstrap more quickly ensure that there will be sufficient Ethereum "archive nodes" even if the fraction of archive nodes to Ethereum nodes is smaller than the ratio of Bitcoin's txindex nodes to non-txindex nodes?
+==========
+U071X9XPC says -=*[1464895449.000997]-=*::: Ah wow, looks like Gun Sirer started a research center for cryptocurrency research
+U071X9XPC says -=*[1464895450.000998]-=*::: <http://initc3.org/people>
+U071X9XPC says -=*[1464895500.000999]-=*::: &gt; IC3 is an initiative of faculty members at Cornell University, Cornell Tech, and UC Berkeley. It's based at the Jacobs Technion-Cornell Institute at Cornell Tech in NYC.  Cryptocurrencies and smart contracts are maturing into a rich spectrum of new financial instruments and business tools, and blending finance with computer science in unprecedented ways. IC3 aims to meet the cryptocurrency community's growing need for scientific leadership in cryptography, programming languages, and distributed systems that will foster impactful innovations with rigorous foundations. By working directly with experts in finance, through outreach to financial institutions, entrepreneurs, regulators, and free software development communities, IC3 will develop practical tools and technologies that balance security and privacy, meet the needs of mainstream consumers and the financial industry, and promote social good.
+U074Q9Q3D says -=*[1464897568.001001]-=*::: wow, that's an impressive list
+==========
+U0ZAT6T8F says -=*[1464943152.001005]-=*::: <@U074Q9Q3D>: Having a "trusted node" seems like a nonstarter. I don't need to trust the Ethereum Foundation gave me a valid Ethereum client, because I can examine the source and verify for myself; likewise, the parts of the client that affect consensus are self-verifying, in that any node that doesn't adhere to them will be unable to sync or create a fork. There are non-Ethereum-foundation clients on the network that can help verify that they're not _all_ secretly running some non-whitepaper protocol, too.
+U0ZAT6T8F says -=*[1464943168.001006]-=*::: In contrast, there's no way for me to verify that code someone else is running does what it says it does.
+U0ZAT6T8F says -=*[1464943237.001007]-=*::: RE your other points, I don't know the protocol well enough to know how much gas it will consume, but if it's doing signature verification and processing state updates, it shouldn't be that bad. Multiple implementations seem like a good thing if you're trying to design a protocol, as they help ensure that the spec, not the code, is the final authority on how something should behave; that's the reason Ethereum has multiple implementations.
+U0ZAT6T8F says -=*[1464943270.001008]-=*::: And RE "which contract is the correct one", if you design it to accept only valid updates (and ideally, incentivize them), you don't have to worry about that - any contract with the right code that receives up-to-date updates is correct.
+U074Q9Q3D says -=*[1464967572.001014]-=*::: Hi <@U0ZAT6T8F>, thank you for taking the time to reply! &gt; Having a "trusted node" seems like a nonstarter. I don't need to trust the Ethereum Foundation gave me a valid Ethereum client, because I can examine the source and verify for myself; likewise, the parts of the client that affect consensus are self-verifying, in that any node that doesn't adhere to them will be unable to sync or create a fork. There are non-Ethereum-foundation clients on the network that can help verify that they're not _all_ secretly running some non-whitepaper protocol, too. Let me expand point (3) in my argument.  If you run your own Blockstack node, *then you don't have to trust the one being run by the Ethereum Foundation*, because your node will examine the state that the Ethereum Foundation's node writes to the Ethereum blockchain and verify that it is consistent with the state that your Blockstack node would have written had it been the writer.  In other words, your Blockstack node *audits* the Ethereum Foundation's node.  The difference is that instead of having your node mirror its state to the blockchain (and duplicate the state that the Ethereum Foundation had already written), your node would instead curate an off-chain copy and compare it to the on-chain state at each block.  To communicate the equivalence of your off-chain copy and the on-chain state to your smart contracts, you would have your Blockstack node curate a "pointer" contract that points to on-chain state your node found to be equivalent to your trusted off-chain state (be it the Ethereum Foundation's state or someone else's).  Your smart contracts would then use the pointer contract to do lookups with the on-chain state.  Since you independently concluded that the on-chain state is equivalent to your off-chain state, the Blockstack node that wrote the on-chain state remains outside your trusted computing base. &gt; In contrast, there's no way for me to verify that code someone else is running does what it says it does. If your node's off-chain copy diverges from the on-chain state, then you know to stop trusting the on-chain state.  Your Blockstack node would update your pointer contract to point to no-op state, leading to fail-stop name lookup behavior (instead of continuing to use the known-bad state).  If it turns out that the curator was doing bad things, then your recovery path would be to have your node replicate its off-chain state to the Ethereum blockchain and update your pointer contract to refer to *your* copy instead. Related, I'd love to hear your thoughts about chain sharding.  Isn't that equivalent to trusting the behavior of code you cannot see? &gt; And RE "which contract is the correct one", if you design it to accept only valid updates (and ideally, incentivize them), you don't have to worry about that - any contract with the right code that receives up-to-date updates is correct. The same goes for Blockstack--if you and I each start our own Blockstack nodes and follow the same protocol, we'll both arrive at the same state (in the absence of deep blockchain forks, of course).  However, the point I was getting at in my comment was the need to overcome *social* divergence--if there are two different naming smart contracts that each claim to be the "authoritative" naming smart contract (i.e. think of them as two competing DNS roots), then the user ultimately has to choose which view of the world xe wants.  There's no technical solution; the user must make a judgement call (same goes for Blockstack, and Namecoin, and DNS).  I was trying to say that if the user is making a judgement call already, then being able to view the code and the state it curates is insufficient for bootstrapping naming.
+U0ZAT6T8F says -=*[1464967765.001015]-=*::: I understand that if you run your own node you don't have to trust anything. But my point is that if you implement a node in a contract, you don't need to run a node, and you _still_ don't have to trust anything. I don't think having the Ethereum Foundation run a node helps much in either case; nothing in the current system requires you to trust the foundation with anything you can't verify yourself, and I think it would be bad to introduce something like that, even just as an "easy" option.
+U0ZAT6T8F says -=*[1464967806.001016]-=*::: I'm not sure why you'd create a contract that accepts and stores updates from an off-chain blockstack node that still requires trust; I don't know the protocol, but it seems like it ought to be only slightly more complicated to actually verify that the updates are valid, removing the need to trust the node.
+U071X9XPC says -=*[1464967829.001017]-=*::: Is the main difference implementing blockstack name rules/logic as a Ethereum contract vs. as virtualchain in the Blockstack server?
+U0ZAT6T8F says -=*[1464967835.001018]-=*::: And yes, there can be competing roots, but you face the same problem when bringing up a blockstack node, no? I don't see how choosing (or deploying yourself) a contract is different from choosing or deploying a node
+U0ZAT6T8F says -=*[1464967847.001019]-=*::: <@U071X9XPC>: Pretty much, yes.
+U0ZAT6T8F says -=*[1464967861.001020]-=*::: Basically, sidechaining Ethereum, or actually doing it in Ethereum directly.
+U071X9XPC says -=*[1464967873.001021]-=*::: Can we do both? As in the Ethereum contract can implement it and do whatever it wants but external Blockstack nodes can audit and raise a red flag if the Ethereum implementation diverges?
+U0ZAT6T8F says -=*[1464967907.001022]-=*::: That certainly seems tractable.
+U0ZAT6T8F says -=*[1464967944.001023]-=*::: Like I said earlier, if you're developing a protocol, multiple implementations seem like a useful sanity check that the behavior of the code matches that described in your spec anyway. :slightly_smiling_face:
+==========
+U071X9XPC says -=*[1464967953.001024]-=*::: Also does it make sense to start a Ethereum channel?
+U074Q9Q3D says -=*[1464967958.001025]-=*::: &gt; Is the main difference implementing blockstack name rules/logic as a Ethereum contract vs. as virtualchain in the Blockstack server? I'm arguing yes.  From both trust and functionality standpoints, there should be no difference.
+U074Q9Q3D says -=*[1464967989.001026]-=*::: The only difference is the implementation
+U071X9XPC says -=*[1464968012.001027]-=*::: I agree Jude that they are the same thing, but I feel that the Ethereum developers have bought into the smart contract way of doing things and might be an easier sell to them if you say here is a smart contract
+U0ZAT6T8F says -=*[1464968024.001028]-=*::: My fundamental point is that if you implement it as a contract, everyone who has an Ethereum node now automatically has a blockstack resolver (or resolvers) that's every bit as trustworthy as a standalone implementation.
+U0ZAT6T8F says -=*[1464968039.001029]-=*::: Which seems like a pretty nice property to have
+U071X9XPC says -=*[1464968042.001030]-=*::: only for the namespaces on Ethereum right?
+U071X9XPC says -=*[1464968048.001031]-=*::: not global namespaces
+U0ZAT6T8F says -=*[1464968058.001032]-=*::: For whatever namespaces you set it up to follow. I think it'd be useful to be able to resolve any name, if that's tractable.
+U0ZAT6T8F says -=*[1464968073.001033]-=*::: Again, my lack of indepth knowledge of the blockstack protocol handicaps me a bit here :slightly_smiling_face:
+U074Q9Q3D says -=*[1464968083.001034]-=*::: however, the Ethereum smart contract implementation would not see any name information from other blockchains
+U071X9XPC says -=*[1464968089.001035]-=*::: For global stuff that youd need external oracle/blockstack-server
+U074Q9Q3D says -=*[1464968096.001036]-=*::: at least, not without using a Blockstack node as an oracle
+U071X9XPC says -=*[1464968119.001037]-=*::: <@U0ZAT6T8F>: fasterst way to catch up is <https://blockstack.org/docs/how-blockstack-works>
+U0ZAT6T8F says -=*[1464968129.001039]-=*::: Thanks!
+U071X9XPC says -=*[1464968141.001040]-=*::: the in-depth way is <http://blockstack.org/blockstack.pdf> (you can even ignore the namecoin stuff)
+U071X9XPC says -=*[1464968150.001041]-=*::: well be putting up a final camera ready version up there soon
+U0ZAT6T8F says -=*[1464968157.001042]-=*::: <@U074Q9Q3D>: Right, although you don't need an oracle per-se if you can incentivize people providing updates. RANDAO is a good example of this.
+U0ZAT6T8F says -=*[1464968233.001043]-=*::: Eg, if the contract's able to verify if an update is valid or not, and you can offer a small bounty for valid updates (that's the hard bit here, I admit), you can set it up so multiple independent parties will be incentivized to send updates to the contract.
+U0ZAT6T8F says -=*[1464968261.001044]-=*::: Though figuring out how to pay for that is an issue, as is preventing nodes from spamming updates just to profit from the fees :stuck_out_tongue:
+U074Q9Q3D says -=*[1464968408.001045]-=*::: right--dealing with spam would be extremely difficult.  However, if you're going to go so far as to incentivize external input, why wouldn't I incentivize people to run a Blockstack node and have it send in the updates it discovers?  That would also ensure that Ethereum smart contracts get the same global view of the namespaces
+==========
+U071X9XPC says -=*[1464968680.001046]-=*::: <@U0ZAT6T8F>: where are you based out of?
+U0ZAT6T8F says -=*[1464969015.001047]-=*::: <@U071X9XPC>: London
+==========
+U0ZAT6T8F says -=*[1464969052.001048]-=*::: <@U074Q9Q3D>: Because again, if the Ethereum contract doesn't verify the updates, I can't verify if the external node is honest or not.
+U074Q9Q3D says -=*[1464969099.001049]-=*::: &gt; Right, although you don't need an oracle per-se if you can incentivize people providing updates. But, I can trust people to provide the updates?
+==========
+U071X9XPC says -=*[1464969117.001050]-=*::: ah was thinking itd be good to meet in person and discuss these things
+U0ZAT6T8F says -=*[1464969125.001051]-=*::: Where are you?
+U071X9XPC says -=*[1464969129.001052]-=*::: maybe a Google hangout sometime :slightly_smiling_face:
+U071X9XPC says -=*[1464969132.001053]-=*::: Were NYC based
+==========
+U0ZAT6T8F says -=*[1464969138.001054]-=*::: <@U074Q9Q3D>: If your contract can validate the updates are valid, yes
+U0ZAT6T8F says -=*[1464969145.001055]-=*::: <@U071X9XPC>: Ah, right
+U071X9XPC says -=*[1464969678.001056]-=*::: <https://www.youtube.com/watch?v=OM6XIICm_qo&amp;feature=youtu.be>
+==========
+U0ZAT6T8F says -=*[1464969911.001058]-=*::: <@U074Q9Q3D>: Just realised I didn't answer your Q about sharding; the idea is that a transaction on one shard should be able to be cryptographically proven to any other shard, so you can verify that the transaction took place. Each shard effectively sidechains all the others.
+U0ZAT6T8F says -=*[1464969924.001059]-=*::: But that's very much a WIP, and I'm not working on it :slightly_smiling_face:
+U0ZAT6T8F says -=*[1464970033.001060]-=*::: So, from reading that article, it certainly seems like it should be fairly low overhead to write a contract that accepts, verifies, and stores valid blockstack transactions. Storing the actual data associated with each name, rather than just the hash, would be more expensive, obviously.
+U0ZAT6T8F says -=*[1464970082.001061]-=*::: One option might be to maintain the state excluding the data records, and allow users who want to resolve their domain on-chain to submit the additional data themselves.
+U0ZAT6T8F says -=*[1464970090.001062]-=*::: I'll read the PDF over the weekend if I get a chance. :slightly_smiling_face:
+U074Q9Q3D says -=*[1464970269.001063]-=*::: &gt; Storing the actual data associated with each name Fortunately, this shouldn't be necessary :slightly_smiling_face:  The design goal is to enable each user to choose where and how their data gets stored, since the nature of the data being stored influences these decisions (example: I don't want a copy of my employment contract to be hosted on the blockchain, even if it's encrypted)
+U074Q9Q3D says -=*[1464970293.001064]-=*::: Of course, we would supply a driver to let users store data directly on-chain, if they want to and are wiling to pay the associated fees
+U0ZAT6T8F says -=*[1464970295.001065]-=*::: *nods*
+==========
+U0ZAT6T8F says -=*[1464970306.001066]-=*::: What form do the data records take, normally?
+U074Q9Q3D says -=*[1464970319.001067]-=*::: a signed JWT by default
+U074Q9Q3D says -=*[1464970332.001068]-=*::: but any format is allowed, just as long as it has a canonical serialization
+U0ZAT6T8F says -=*[1464970429.001069]-=*::: Is a structure defined for the JWT payload?
+U0ZAT6T8F says -=*[1464970451.001070]-=*::: I assume the common case is DNS glue records to the nameserver for the domain? Or something analagous?
+U074Q9Q3D says -=*[1464970706.001071]-=*::: ah, there are two layers at work here.  On the lower "routing" layer, there's a DNS zonefile for the user, whose hash is in the blockchain.  The zonefile has a `TXT` record that holds the user's data public key, and a set of `URI` records that point to the JWT.  Each Blockstack node stores a full replica of all zonefiles, which they gossip and propagate to each other out-of-band (this is feasible since zonefiles are small--on the order of 4K--and the number of them and the rate at which the working set grows are both constrained by the blockchain(s) on which their hashes live).  In the upper "storage" layer, the user's JWT payload can have any structure they want.  However, the Onename app requires that it follows the schema here:  <https://schema.org/Person>.
+U0ZAT6T8F says -=*[1464970827.001075]-=*::: Okay, so the "name update" transactions on the blockchain contain hashes of the zonefile for that domain, not hashes of the JWT data?
+U074Q9Q3D says -=*[1464970835.001076]-=*::: yes
+U0ZAT6T8F says -=*[1464970843.001077]-=*::: It sounds like the JWT stuff is entirely independent of blockstack; you could implement it on top of regular DNS?
+U074Q9Q3D says -=*[1464970899.001078]-=*::: right--we're aiming to use any/all existing infrastructure to read, write, and host JWT data.  However, the public key that signs the JWT is attested to by the zonefile hash in the blockchain, so they're all outside the trusted computing base :smile:
+U0ZAT6T8F says -=*[1464970967.001080]-=*::: Gotcha
+U074Q9Q3D says -=*[1464970987.001081]-=*::: we ship a set of storage drivers that allow Blockstack clients to interface with the infrastructure via a common URL schema
+U074Q9Q3D says -=*[1464971060.001082]-=*::: e.g. the client would resolve `<blockstack://judecn.id/profile.json>` to my profile, and verify that it was signed by the public key in my zonefile.  The data would be obtained by giving the URI records in my zonefile to my client's storage drivers to go fetch
+U0ZAT6T8F says -=*[1464971076.001083]-=*::: Is a blockstack node capable of producing a 'proof' with its response that demonstrates that the result was served from a given zonefile hash?
+U074Q9Q3D says -=*[1464971095.001084]-=*::: yes--the read will simply fail if the signature cannot be validated
+U0ZAT6T8F says -=*[1464971102.001085]-=*::: Not quite what I meant
+U0ZAT6T8F says -=*[1464971134.001086]-=*::: If I know the current content hash for a domain, but not the contents of the zonefile, can I ask another blockstack serve to resolve a name for me, and have it produce the RRs and a proof that they came from the zonefile whose hash I have?
+U0ZAT6T8F says -=*[1464971194.001087]-=*::: Because that would permit 'light' nodes, who know the state of the root but don't participate in the DHT and know all the contents of the zonefiles; they would only need a source for the content hashes they can trust, the ability to issue a DNS query, and the ability to verify a proof.
+U074Q9Q3D says -=*[1464971264.001088]-=*::: ah, I see
+U074Q9Q3D says -=*[1464971268.001089]-=*::: yes--that's what SNV does
+U074Q9Q3D says -=*[1464971275.001090]-=*::: let me see if I can get the URL...
+U074Q9Q3D says -=*[1464971293.001091]-=*::: <https://blockstack.org/docs/light-clients>
+U0ZAT6T8F says -=*[1464971563.001093]-=*::: Hm, I think that's still not the same thing
+U0ZAT6T8F says -=*[1464971584.001094]-=*::: Suppose I have a complete copy of the blockstack state database, gathered by reading the blockchain and applying all the operations.
+U0ZAT6T8F says -=*[1464971601.001095]-=*::: But I don't have access to the DHT or other storage mechanism containing the content whose hashes are in the blockstack DB.
+U0ZAT6T8F says -=*[1464971636.001096]-=*::: Is there a way I can ask a node "please resolve 'A <http://www.example.com|www.example.com>' for me", and have it respond with both the RRs for that domain, and cryptographic proof they're accurate, that I can verify with my blockstack state DB?
+U074Q9Q3D says -=*[1464971696.001097]-=*::: yes--if you have a complete copy of the blockstack state database, then you also have a copy of every name's current zonefile hash.  You can then ask any blockstack server for a name's zonefile, and then verify its authenticity by ensuring its hash matches the hash in your database.
+U0ZAT6T8F says -=*[1464971738.001098]-=*::: True; can I do that without having to join the DHT and look it up myself?
+U074Q9Q3D says -=*[1464971754.001099]-=*::: yes--the blockstack server now has a RESTful API call that lets you do this
+U0ZAT6T8F says -=*[1464971767.001100]-=*::: (Also, tangentially, aren't you concerned with preventing zone enumeration? That certainly put a dent in DNSSEC adoption)
+U074Q9Q3D says -=*[1464971770.001101]-=*::: in fact, we're getting rid of the DHT in favor of having each blockstack server maintain a full replica of all zonefiles (called an "atlas node")
+U0ZAT6T8F says -=*[1464971836.001102]-=*::: In that case, if you can implement an Ethereum contract that is capable of replaying blockstack transactions and maintaining a state DB, any ethereum node would also be capable of resolving blockstack names with a minimum of external glue code. That seems pretty damn cool to me.
+U074Q9Q3D says -=*[1464971876.001103]-=*::: that should be possible, provided that the smart contract also holds onto each zonefile as well as the zonefile hash :slightly_smiling_face:
+U0ZAT6T8F says -=*[1464971884.001104]-=*::: (And in fact, the logical way to do an ethereum-local blockstack implementation, as opposed to one that imports external data, would be to have users send updates by calling the contract, and have it synthesize signed data and emit it as a log, rather than having it parse the data itself)
+U0ZAT6T8F says -=*[1464971908.001105]-=*::: Well, here I'm thinking about resolution by off-chain entities, in which case the contract would only have to hold the hash
+U0ZAT6T8F says -=*[1464971923.001106]-=*::: The 'stub resolver' would just know where to find an Ethereum node, and where to find a Blockstack server that can serve up the zonefile.
+U074Q9Q3D says -=*[1464971939.001107]-=*::: sure, that would work :slightly_smiling_face:
+U0ZAT6T8F says -=*[1464971955.001108]-=*::: You don't think that's an awesome enough reason to implement a blockstack node in the EVM? :wink:
+U074Q9Q3D says -=*[1464971987.001109]-=*::: there's still the major wrinkle of how the EVM blockstack node is able to learn the zonefile hashes for names hosted outside of ethereum :wink:
+U0ZAT6T8F says -=*[1464972027.001110]-=*::: Someone pushes the transactions to it, either because they're incentivized to do so, or just because they're nice like that :wink:
+U0ZAT6T8F says -=*[1464972046.001111]-=*::: Though starting off by solving the hosted-on-ethereum problem seems like it'd be a sensible first step. :slightly_smiling_face:
+U074Q9Q3D says -=*[1464972106.001112]-=*::: &gt; Someone pushes the transactions to it, either because they're incentivized to do so, or just because they're nice like that :wink: This is what I was getting at in my original reply above--a Blockstack node would mirror its state to Ethereum, enabling Ethereum contracts to resolve non-Ethereum name zonefile hashes
+U074Q9Q3D says -=*[1464972117.001113]-=*::: but then the question becomes, how do you know which state mirror to trust?
+U0ZAT6T8F says -=*[1464972137.001114]-=*::: Right. But IMO, the ethereum contract has to verify the updates, not just accept them on faith.
+U0ZAT6T8F says -=*[1464972159.001115]-=*::: You trust the one with accurate code that started off at the genesis hash that is correct for the TLD you're trying to resolve. :slightly_smiling_face:
+U0ZAT6T8F says -=*[1464972220.001116]-=*::: Hm, for offchain roots, you do need more than just the transaction from the other chain, in order to ensure the order matches. That's not intractable, but it does add some complexity.
+U074Q9Q3D says -=*[1464972238.001117]-=*::: right--I'm trying to figure out how we avoid simply copying all other virtualchain transactions into Ethereum
+U074Q9Q3D says -=*[1464972246.001118]-=*::: sounds wasteful
+U074Q9Q3D says -=*[1464972248.001119]-=*::: wait
+U074Q9Q3D says -=*[1464972272.001120]-=*::: maybe instead, we could mirror the consensus hashes, thereby enabling smart contracts to query blockstack nodes for prior virtualchain transactions?
+U074Q9Q3D says -=*[1464972280.001121]-=*::: (via SNV protocol)
+U0ZAT6T8F says -=*[1464972298.001122]-=*::: Smart contracts can't directly do that; they'd need to use an oracle, which would make the whole thing asynchronous
+U074Q9Q3D says -=*[1464972307.001123]-=*::: hmf, yeah...
+U0ZAT6T8F says -=*[1464972328.001124]-=*::: For common resolution needs of smart contracts (eg, finding other smart contracts), that's a nonstarter, but maybe the answer is "smart contracts are sufficiently different they need a separate resolution mechanism)
+==========
+U0ZAT6T8F says -=*[1464972338.001125]-=*::: I have to head home again, pick this up later?
+U074Q9Q3D says -=*[1464972344.001126]-=*::: sure thing
+U074Q9Q3D says -=*[1464972351.001127]-=*::: we should start a Github issue for this
+U0ZAT6T8F says -=*[1464972354.001128]-=*::: definitely
+U0ZAT6T8F says -=*[1464972368.001129]-=*::: We should probably narrow our scope, too :wink:
+U074Q9Q3D says -=*[1464972373.001130]-=*::: haha
+U0ZAT6T8F says -=*[1464972374.001131]-=*::: Rather than trying to solve every problem at once :wink:
+U074Q9Q3D says -=*[1464972386.001132]-=*::: but where's the fun in that :wink:
+==========
+U0X9PT7DG says -=*[1465002133.001135]-=*::: Verifiable Credentials on the Blockchain @chrisjagers <https://medium.com/learning-machine-blog/blockchain-credentials-b4cf5d02bbb7>
+U076J2XV5 says -=*[1465086798.000002]-=*::: So happy to see Open Badges and blockchain projects converge. It really is a great combination of technologies. 
+U076J2XV5 says -=*[1465087293.000003]-=*::: Related: <https://twitter.com/Liberationtech/status/739254195430273024>
+U076J2XV5 says -=*[1465087371.000005]-=*::: Context: <https://medium.com/mit-media-lab/certificates-reputation-and-the-blockchain-aee03622426f#.x544djvjn>
+==========
+U1E69621Y says -=*[1465234927.000018]-=*::: It sounds like <@U0ZAT6T8F>, <@U071X9XPC>, and <@U074Q9Q3D> were really getting somewhere with the discussion of how to bring Ethereum into the Blockstack mix. The subject of name resolution and registration is one of the more important ones in the blockchain sphere if we're going to be the "new web". :slightly_smiling_face:  Someone suggested perhaps creating an #ethereum channel here. Maybe a more general #name-registry or #dns would be more appropriate so that all discussions on the subject can be in one place.  I'm excited about the possibility of a cross-blockchain name resolution/registration system. I don't think either Bitcoin or Ethereum is going away anytime soon! But I do agree with <@U0ZAT6T8F> that the Ethereum side would have to address the needs of contracts, which have no access to the network. Just treating the Ethereum blockchain the same as Bitcoin's leaves out a large portion of Ethereum's utility.
+U0722SJ4A says -=*[1465240053.000019]-=*::: <@U1E69621Y>: I agree. We actually already have the <#C18RC128G> channel. Would that work?
+==========
+U0722SJ4A says -=*[1465240082.000020]-=*::: Also, when I was in Berlin I meet the team at GreatScript. Pretty cool project: <https://greta.io/>
+U1E69621Y says -=*[1465240101.000022]-=*::: Is <#C18RC128G> for the discussion of TLDs?
+U0722SJ4A says -=*[1465240103.000023]-=*::: They also refer to it as a decentralized CDN"
+U0722SJ4A says -=*[1465240109.000024]-=*::: Yeah for TLDs
+U0722SJ4A says -=*[1465240119.000025]-=*::: maybe another channel would be appropriate, I suppose
+U0722SJ4A says -=*[1465240125.000026]-=*::: idk
+U1E69621Y says -=*[1465240129.000027]-=*::: "A purpose has not been set for <#C18RC128G>" :slightly_smiling_face:
+U1E69621Y says -=*[1465240147.000028]-=*::: According to its channel details
+U1E69621Y says -=*[1465240215.000029]-=*::: It doesn't really matter as long as we all agree where to discuss things. Dominating <#C07QZT3RS> with DNS/registrar/TLD talk is probably not great.
+U0722SJ4A says -=*[1465240228.000030]-=*::: yeah agreed
+U0722SJ4A says -=*[1465240239.000031]-=*::: lets move the convo to <#C18RC128G> for now then and then we can decide
+U1E69621Y says -=*[1465240284.000032]-=*::: Works for me! Except that I'm heading home soon, so I won't be back online probably until tomorrow.
+U0722SJ4A says -=*[1465240289.000033]-=*::: ok
+==========

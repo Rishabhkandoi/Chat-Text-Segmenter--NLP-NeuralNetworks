@@ -1,0 +1,141 @@
+U0ALRFJH0 says -=*[1480522943.001668]-=*::: any updates <@U0JFJ4KHS>?
+U0JFJ4KHS says -=*[1480522973.001669]-=*::: My second Windows node is not working as expected, unable to create any PODs on it
+U0JFJ4KHS says -=*[1480522975.001670]-=*::: looking at that
+U0JFJ4KHS says -=*[1480523007.001671]-=*::: I think we would need atleast 2 Windows nodes to test the forwarding theory
+U0ALRFJH0 says -=*[1480523193.001672]-=*::: true
+U0ALRFJH0 says -=*[1480523242.001673]-=*::: i created two nodes, on each i created an internal switch and set subnet for each. after enabling forwarding i tried to ping but it didn't work.
+U0JFJ4KHS says -=*[1480523275.001674]-=*::: does it work if you enable RRAS
+U0ALRFJH0 says -=*[1480523384.001675]-=*::: i haven't tried
+U0ALRFJH0 says -=*[1480523389.001676]-=*::: going to try it now
+U0ALRFJH0 says -=*[1480524204.001677]-=*::: <@U0JFJ4KHS> when you enable RRAS, do you restart the machine?
+U0JFJ4KHS says -=*[1480524214.001678]-=*::: nope, no need to start the machine
+U0ALRFJH0 says -=*[1480524229.001679]-=*::: :+1:
+U0JFJ4KHS says -=*[1480524246.001680]-=*::: so forwarding enabled and RRAS disabled, didn't work
+U0ALRFJH0 says -=*[1480524258.001681]-=*::: :sweat:
+U0JFJ4KHS says -=*[1480524261.001682]-=*::: for sanity trying the other way round and see if it still works
+U0ALRFJH0 says -=*[1480524400.001683]-=*::: :+1:
+U0ALRFJH0 says -=*[1480524412.001684]-=*::: on my side, the internal switch doesn't seem to work.
+U0ALRFJH0 says -=*[1480524422.001685]-=*::: the nodes won't route/fwd packets from one node to the other
+U0ALRFJH0 says -=*[1480524432.001686]-=*::: i've enabled forwarding and RRAS
+U0ALRFJH0 says -=*[1480524439.001687]-=*::: also added needed routes
+U0ALRFJH0 says -=*[1480524472.001688]-=*::: ``` Active Routes: Network Destination        Netmask          Gateway       Interface  Metric       192.168.3.0    255.255.255.0       10.142.0.5       10.142.0.2    271 ```
+U0ALRFJH0 says -=*[1480524504.001689]-=*::: `10.142.0.5` is the other Windows machine with `192.168.3.0/24` subnet
+U0ALRFJH0 says -=*[1480524537.001690]-=*::: as a reminder, i'm trying this just to try and make it work without the second Ethernet NIC
+U0ALRFJH0 says -=*[1480527655.001691]-=*::: bbl guys. cya tomorrow or later.
+U0ALRFJH0 says -=*[1480527657.001692]-=*::: :wave:
+U0PPMUTGR says -=*[1480527927.001693]-=*::: :thumbsup:
+U0ALRFJH0 says -=*[1480529328.001694]-=*::: <@U0JFJ4KHS>  GCP guys replied back. they are going to give us access to an alpha feature that may help.
+U0JFJ4KHS says -=*[1480529342.001695]-=*::: thats great
+U0JFJ4KHS says -=*[1480529362.001696]-=*::: btw, my tests with RRAS enabled worked
+U0JFJ4KHS says -=*[1480529369.001697]-=*::: and forwarding enabled did not
+U0ALRFJH0 says -=*[1480532404.001698]-=*::: :sweat: 
+U0ALRFJH0 says -=*[1480532412.001699]-=*::: Thanks for confirming
+U0PPMUTGR says -=*[1480546323.001700]-=*::: hey guys, i assume we are not ready to go talk to sig-network tomorrow
+U0PPMUTGR says -=*[1480546332.001701]-=*::: i will ping the guys and let them know we will not make it
+U0ALRFJH0 says -=*[1480591140.001702]-=*::: thanks <@U0PPMUTGR>
+U0ALRFJH0 says -=*[1480597014.001703]-=*::: <@U0PPMUTGR> <@U0JFJ4KHS> <@U0PT5KRHR> i'm trying a different thing on GCP today, given some feedback from the Google guys. they've been very, very helpful and open. i think we'll hangout some time next week.
+U0PPMUTGR says -=*[1480597459.001704]-=*::: sounds good
+U0ALRFJH0 says -=*[1480603915.001705]-=*::: do we want to do meeting today?
+U0ALRFJH0 says -=*[1480604137.001706]-=*::: in related news, <https://cloudplatform.googleblog.com/2016/11/one-PowerShell-cmdlet-to-manage-both-Windows-and-Linux-resources-no-kidding.html>
+U0PPMUTGR says -=*[1480604503.001708]-=*::: we are on the bridge right now. with jitu
+U0ALRFJH0 says -=*[1480605114.001709]-=*::: joining
+U0ALRFJH0 says -=*[1480605125.001710]-=*::: ah, you're gone
+U0JFJ4KHS says -=*[1480605128.001711]-=*::: we just got off the call
+U0ALRFJH0 says -=*[1480605138.001712]-=*::: ok
+U0ALRFJH0 says -=*[1480605148.001713]-=*::: <@U0JFJ4KHS> you shared our status?
+U0PPMUTGR says -=*[1480605174.001714]-=*::: yeah wejust got off
+U0JFJ4KHS says -=*[1480605179.001715]-=*::: I didn't had the latest from you, other than what was on the slack
+U0PPMUTGR says -=*[1480605180.001716]-=*::: is there a 1liner status from you Pires?
+U0ALRFJH0 says -=*[1480605237.001717]-=*::: i'm trying to get k8s networking to run as we documented it, but in GCP. our instructions will work only on Azure or physical nodes one can manage, e.g. add new NIC.
+U0ALRFJH0 says -=*[1480605281.001718]-=*::: there are a few other things related to the effort i committed to do but it's all in stand-by, until i get this working.
+U0ALRFJH0 says -=*[1480605304.001719]-=*::: as we speak, i'm messing with Windows Loopback NIC
+U0PPMUTGR says -=*[1480605330.001720]-=*::: thanks
+U0ALRFJH0 says -=*[1480605448.001721]-=*::: btw, i just learned we can recover GCP VMs even if we screw up networking :astonished: <https://cloud.google.com/compute/docs/instances/interacting-with-serial-console>
+U0ALRFJH0 says -=*[1480605455.001722]-=*::: i've never seen anything like this in other clouds.
+U0PPMUTGR says -=*[1480605806.001723]-=*::: azure has it but does not expose it to end users
+U0PPMUTGR says -=*[1480605808.001724]-=*::: neat!
+U0ALRFJH0 says -=*[1480606718.001725]-=*::: yeah, every cloud has it - they need to manage the instances somehow - but do not expose it, exactly!
+U0ALRFJH0 says -=*[1480609384.001726]-=*::: <@U0JFJ4KHS> i feel dumb (again!)
+U0ALRFJH0 says -=*[1480609411.001727]-=*::: one doesn't need RRAS, it seems. but after `netsh int ipv4 set int 5 forwarding=enabled`, the machine needs to reboot :disappointed:
+U0ALRFJH0 says -=*[1480609426.001728]-=*::: i keep forgetting it's Windows i'm dealing with.
+U0JFJ4KHS says -=*[1480609495.001729]-=*::: I rebooted my machines yesterday, but I think I did that after re-enabling `RRAS`
+U0ALRFJH0 says -=*[1480609947.001730]-=*::: <@U0JFJ4KHS> also, did you have to create any Azure routes?
+U0ALRFJH0 says -=*[1480609958.001731]-=*::: or `route add` on nodes was enough?
+U0JFJ4KHS says -=*[1480609977.001732]-=*::: this was on my local cluster, so just `route add`
+U0JFJ4KHS says -=*[1480609989.001733]-=*::: on Azure we had to configure Azure routes with RRAS
+U0ALRFJH0 says -=*[1480610008.001734]-=*::: ah... and by doing that, did you skip the `route add` on the nodes?
+U0JFJ4KHS says -=*[1480610016.001735]-=*::: yes
+U0ALRFJH0 says -=*[1480610024.001736]-=*::: interesting!
+U0ALRFJH0 says -=*[1480610060.001737]-=*::: i'm trying again with `route add` and just asked GCP people if that should work as they've asked me to use GCP Routes as well :wink:
+U0ALRFJH0 says -=*[1480610097.001738]-=*::: i'm left wondering if cloud providers block routing. it would make sense, to prevent their infra from coming down with misbehaving users
+U0JFJ4KHS says -=*[1480610144.001739]-=*::: that might be true
+U0ALRFJH0 says -=*[1480613297.001740]-=*::: i was just confirmed this is the case.
+U0ALRFJH0 says -=*[1480613319.001741]-=*::: this is interesting, because it just gives us one more reason to come up with a networking daemon outside of the kubelet.
+U0ALRFJH0 says -=*[1480613333.001742]-=*::: even one that understands the cloud it's running on so it can provision routes.
+U0ALRFJH0 says -=*[1480613360.001743]-=*::: `winkubenet --cloud-provider=gcp` :smile:
+U0ALRFJH0 says -=*[1480613669.001744]-=*::: <@U0PPMUTGR> any info on GCP credits for this SIG?
+U0PPMUTGR says -=*[1480615890.001745]-=*::: we got some for Apprenda. let me send you the info in private
+U0ALRFJH0 says -=*[1480615946.001746]-=*::: <@U0PPMUTGR> i think ike was the one looking for that info. i don't think i need it. we just _apply_ the credits on our account and use them to pay bills
+U0PPMUTGR says -=*[1480615997.001748]-=*::: why you think we don't need it
+U0PPMUTGR says -=*[1480616177.001749]-=*::: FYI, k8s master branch is open for development again
+U0ALRFJH0 says -=*[1480616343.001750]-=*::: <@U0PPMUTGR> i (Pires) don't need that info. at least, afaik, credits is just a voucher that one account owner should redeem in GCP console.
+U0ALRFJH0 says -=*[1480616356.001751]-=*::: i'm not one of Apprenda's GCP owner but ike is
+U0ALRFJH0 says -=*[1480616984.001752]-=*::: <@U0JFJ4KHS> i think i got everything to work but i need your help
+U0ALRFJH0 says -=*[1480617000.001753]-=*::: in azure, when you create the transparent network, does Ethernet 2 has an ip assigned?
+U0JFJ4KHS says -=*[1480617037.001754]-=*::: yes, I assign it a private IP
+U0ALRFJH0 says -=*[1480617106.001755]-=*::: before or after creating the transparent network?
+U0ALRFJH0 says -=*[1480617125.001756]-=*::: ah, after
+U0JFJ4KHS says -=*[1480617149.001757]-=*::: before creating the VM, when I create Ethernet Adapter, I assign it an IP, which I then assign to a VM
+U0ALRFJH0 says -=*[1480617149.001758]-=*::: btw, `netsh interface ipv4 set address "vEthernet (HNSTransparent)" addr=192.168.` doesn't work
+U0ALRFJH0 says -=*[1480617157.001759]-=*::: addr is not a valid flag
+U0ALRFJH0 says -=*[1480617185.001760]-=*::: `netsh interface ipv4 set address "vEthernet (HNSTransparent)" static 192.168.1.1 255.255.255.0` does work
+U0JFJ4KHS says -=*[1480617201.001761]-=*::: the first command worked for me
+U0ALRFJH0 says -=*[1480617236.001762]-=*::: ``` PS C:\&gt; netsh interface ipv4 set address "vEthernet (HNSTransparent)" addr=192.168.1.1 The syntax supplied for this command is not valid. Check help for the correct syntax.  Usage: set address [name=]&lt;string&gt;              [[source=]dhcp|static]              [[address=]&lt;IPv4 address&gt;[/&lt;integer&gt;] [[mask=]&lt;IPv4 mask&gt;]              [[gateway=]&lt;IPv4 address&gt;|none [gwmetric=]&lt;integer&gt;]              [[type=]unicast|anycast]              [[subinterface=]&lt;string&gt;]              [[store=]active|persistent] ```
+U0PT5KRHR says -=*[1480617254.001763]-=*::: I ran into that as well
+U0JFJ4KHS says -=*[1480617474.001764]-=*::: just tried again and still works for me
+U0ALRFJH0 says -=*[1480617491.001765]-=*::: success, i have a pod network working with a private NIC (a Microsoft Loopback NIC)
+U0ALRFJH0 says -=*[1480617638.001766]-=*::: baby steps
+U0PT5KRHR says -=*[1480617751.001767]-=*::: niiiceee!
+U0ALRFJH0 says -=*[1480618138.001768]-=*::: `docker run --network=podnet --rm -it microsoft/nanoserver powershell`
+U0ALRFJH0 says -=*[1480618162.001769]-=*::: pod has IP assigned to it but can't ping outside it subnet
+U0ALRFJH0 says -=*[1480618184.001770]-=*::: so, in Azure, do our pods use the transparent or the NAT network?
+U0JFJ4KHS says -=*[1480618209.001771]-=*::: infra uses NAT, and other containers use transparent
+U0ALRFJH0 says -=*[1480618293.001772]-=*::: <@U0JFJ4KHS> how are the other containers accessing the internet?
+U0JFJ4KHS says -=*[1480618317.001773]-=*::: do they have to
+U0JFJ4KHS says -=*[1480618325.001774]-=*::: let me check
+U0ALRFJH0 says -=*[1480618390.001775]-=*::: if your app needs to consume an external api, how will you do it? :wink:
+U0ALRFJH0 says -=*[1480619411.001776]-=*::: <@U0JFJ4KHS> they can't connect, right?
+U0JFJ4KHS says -=*[1480619435.001777]-=*::: not using transparent, checking something else, just a minute
+U0ALRFJH0 says -=*[1480619448.001778]-=*::: sure
+U0ALRFJH0 says -=*[1480619654.001779]-=*::: <@U0JFJ4KHS> i suggest to put the documentation PR on hold until we clarify these issues.
+U0ALRFJH0 says -=*[1480619665.001780]-=*::: i could add doc on how to get this to work on GCP as well.
+U0ALRFJH0 says -=*[1480620043.001781]-=*::: <@U0JFJ4KHS> we need a NAT interface to add NAT rules, right?
+U0JFJ4KHS says -=*[1480620070.001782]-=*::: yes
+U0ALRFJH0 says -=*[1480620104.001783]-=*::: i am able to route traffic from node 2 to container in transparent network in node 1.
+U0ALRFJH0 says -=*[1480620116.001784]-=*::: only thing that it's missing is masquerading for the docker transparent network
+U0ALRFJH0 says -=*[1480620134.001785]-=*::: in linux this is done with a bridge and IPTables
+U0ALRFJH0 says -=*[1480620147.001786]-=*::: `"com.docker.network.bridge.enable_ip_masquerade": "true"`
+U0JFJ4KHS says -=*[1480620224.001788]-=*::: I am not sure if that is supported on Windows
+U0ALRFJH0 says -=*[1480620235.001789]-=*::: there's no bridge driver for windows
+U0JFJ4KHS says -=*[1480620577.001790]-=*::: <@U0ALRFJH0> are you able to create l2bridge mode instead of transparent
+U0ALRFJH0 says -=*[1480620611.001791]-=*::: yes, i am. will that work?
+U0ALRFJH0 says -=*[1480620825.001792]-=*::: actually, i thought i could. just tried it but HNS complains
+U0ALRFJH0 says -=*[1480621781.001793]-=*::: why you asked <@U0JFJ4KHS> ?
+U0ALRFJH0 says -=*[1480623012.001794]-=*::: <@U0JFJ4KHS> now that i think of it, i think we need to install something related to hyper-v. checking my notes and history...
+U0ALRFJH0 says -=*[1480623036.001795]-=*::: ah, yes `dism /Online /Enable-Feature /FeatureName:Microsoft-Hyper-V /All`. then reboot.
+U0ALRFJH0 says -=*[1480623053.001796]-=*::: after that you can `docker network create -d l2bridge ...`
+U0ALRFJH0 says -=*[1480623287.001797]-=*::: but that mode has the same limitations
+U0JFJ4KHS says -=*[1480623496.001798]-=*::: sorry was in a meeting
+U0ALRFJH0 says -=*[1480623617.001799]-=*::: actually, i forgot one thing. retrying with l2bridge..
+U0ALRFJH0 says -=*[1480623804.001800]-=*::: same result
+U0ALRFJH0 says -=*[1480623825.001801]-=*::: i will ask they guys from GCP if they have some idea
+U0JFJ4KHS says -=*[1480623888.001802]-=*::: yes, same results for me as well
+U0ALRFJH0 says -=*[1480625527.001804]-=*::: in linux i'd do something like `iptables -t nat -A POSTROUTING -i &lt;transparent nic&gt; -d !&lt;cluster pod subnet&gt;,!&lt;service subnet&gt; -o &lt;external nic&gt; -j MASQUERADE`
+U0PPMUTGR says -=*[1480731182.001806]-=*::: team, i had to give a status update on our work. this is what i typed
+U0PPMUTGR says -=*[1480731184.001807]-=*::: ```1. The Windows support work we did for Kubernetes is now officially part of v1.5 and is called out as 1 of the top 5 features of the release. 2. The team created documentation for our v1.5 support and the PR is now under review 3. We are investigating enhancements for v.1.6 of Kubernetes, concentrating on:         a. Investigating and prototyping solutions in enhancing kube-proxy to solve networking challenges for intra-POD and inter-POD networking          b. Updating networking architecture to work for Google Compute Engine         c. Working closely with Microsoft networking team and the Azure team on the networking architecture for v1.6```
+U0PPMUTGR says -=*[1480731451.001809]-=*::: <@U0JFJ4KHS>  just mentioned our doc PR got merged 2 hrs ago. great news for the weekend!
+U0PT5KRHR says -=*[1480948295.000005]-=*::: I won't be able to join today's sync up
+U0ALRFJH0 says -=*[1480949991.000006]-=*::: hope you're doing fine <@U0PT5KRHR>!
+U0PT5KRHR says -=*[1480965321.000008]-=*::: thanks <@U0ALRFJH0> - nothing crazy, just had to handle something at home :slightly_smiling_face:
+U0ALRFJH0 says -=*[1480966738.000009]-=*::: glad to hear that.
+U0ALRFJH0 says -=*[1481018051.000010]-=*::: <@U0PPMUTGR> Amruta told me credits had been approved. please, keep an eye on it and sync with Ike so we can use them.

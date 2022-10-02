@@ -1,0 +1,58 @@
+U0PT5KRHR says -=*[1473701004.000026]-=*::: <@U0JFJ4KHS> how's the netsh portproxy issue?
+U0JFJ4KHS says -=*[1473701058.000027]-=*::: no luck so far, going through event logs to see if anything is logged in there
+U0PPMUTGR says -=*[1473709613.000029]-=*::: Meeting notes for the SIG will be captured here. feel free to propose new items for discussion <https://groups.google.com/forum/#!topic/kubernetes-sig-windows/HemARQd8i5w>
+U0K61JBKJ says -=*[1473786201.000030]-=*::: Sig meeting happening now
+U0PT5KRHR says -=*[1473944065.000034]-=*::: <@U0JFJ4KHS> there's an open issue on the environment variables: <https://github.com/docker/docker/issues/25988>
+U0JFJ4KHS says -=*[1473944989.000036]-=*::: Oh..ok, didn't notice that
+U0PT5KRHR says -=*[1473945905.000037]-=*::: Not sure exactly if the process gets the env vars or not
+U0JFJ4KHS says -=*[1473946194.000038]-=*::: I am using the same docker version as the one described in the issue and don't see environment variables defined inside the container
+U0PT5KRHR says -=*[1473949171.000039]-=*::: Yeah ... looks like env vars might not be working on Docker windows
+U0PPMUTGR says -=*[1473949667.000040]-=*::: we should like post back in that thread and see if anyone got a workaround to it (besides the registry). i would also call out Taylor Brown in the message to see if he can confirm or deny
+U0JFJ4KHS says -=*[1473949699.000041]-=*::: sure, let me do that
+U0JFJ4KHS says -=*[1473950088.000042]-=*::: do you know Taylor's github handle?
+U0PPMUTGR says -=*[1473952155.000043]-=*::: <https://github.com/taylorb-microsoft>
+U0JFJ4KHS says -=*[1473952173.000045]-=*::: Thanks
+U0PPMUTGR says -=*[1473953350.000046]-=*::: Everyone, did anyone get a chance to look through the PR and provide feedback?
+U0JFJ4KHS says -=*[1473953449.000047]-=*::: <@U0PT5KRHR>, what docker version are you using
+U0PT5KRHR says -=*[1473953489.000048]-=*::: let me double check
+U0JFJ4KHS says -=*[1473953557.000049]-=*::: I wonder if the environment variable issue is limited to 1.13.0-dev, I am thinking of going back to 1.12.0 and see if it works
+U0PT5KRHR says -=*[1473953685.000050]-=*::: I am on 1.12
+U0JFJ4KHS says -=*[1473953707.000051]-=*::: is it possible to confirm, if you see environment variables in the container
+U0PT5KRHR says -=*[1473953715.000052]-=*::: Yeah - let me give it a try
+U0PT5KRHR says -=*[1473954000.000053]-=*::: Seems to be working in 1.12
+U0PT5KRHR says -=*[1473954012.000054]-=*::: I created a quick dockerfile with an `ENV` set, and then exec'd into it
+U0PT5KRHR says -=*[1473954017.000055]-=*::: and the env var was there
+U0JFJ4KHS says -=*[1473954037.000056]-=*::: Thanks for checking, let me revert docker to 1.12 in my Env
+U0PPMUTGR says -=*[1473957023.000057]-=*::: that's awesome. Jitu, hopefully this unblocks the next step
+U0PPMUTGR says -=*[1473973398.000058]-=*::: Msft submitted these two PRs for enabling DNS servers on docker containers for windows. ``` <https://github.com/docker/docker/pull/25987>  <https://github.com/docker/libnetwork/pull/1412>  ``` Does anyone know if these are accepted how they will be pushed out? will this be part of the docker install on windows?
+U0PT5KRHR says -=*[1473974918.000059]-=*::: I would think so... they'd end up in the windows docker
+U0PT5KRHR says -=*[1474304880.000060]-=*::: how's it going <@U0JFJ4KHS> ?
+U0PT5KRHR says -=*[1474304897.000061]-=*::: any updates on the proxy? :slightly_smiling_face:
+U0JFJ4KHS says -=*[1474304943.000062]-=*::: working on firewall rules..I have identified the rules that are needed for both kubelet and kube-proxy, will be making code changes now
+U0PT5KRHR says -=*[1474305526.000063]-=*::: nice
+U0PPMUTGR says -=*[1474320745.000064]-=*::: hi all, Jitu created an issue with iptables and windows and how we will control firewall rules. if anyone has any ideas or thoughts on this topic, please chime in <https://groups.google.com/forum/#!topic/kubernetes-sig-network/-npgm1GIFz0>
+U0HSNPGLC says -=*[1474326544.000065]-=*::: I thought windows had a form of nat rewriting
+U0HSNPGLC says -=*[1474326591.000066]-=*::: i.e. netsh stuff
+U0HSNPGLC says -=*[1474326653.000067]-=*::: i.e. something along the lines of <https://technet.microsoft.com/en-us/library/cc754535(v=ws.10).aspx> or <https://technet.microsoft.com/en-us/library/cc731068(v=ws.10).aspx> but I haven't looked deeply into it
+U0HSNPGLC says -=*[1474326829.000068]-=*::: that's just re the userspace proxying part
+U0JFJ4KHS says -=*[1474330067.000069]-=*::: Hi <@U0HSNPGLC>, you are right regarding userspace proxying part, we are using netsh portptoxy in the implementation. My question around firewall rules that are required to be defined for pod endpoints.. We have couple of options there either to define them at cluster setup time or should kube-proxy define it
+U0HSNPGLC says -=*[1474330275.000070]-=*::: So this is speaking off the cuff, but could be wrong.  Take a linux k8s cluster in aws, my assumption is that the node has to be wide open to the the rest of the nodes, so the vpc security groups would have to be defined as such
+U0HSNPGLC says -=*[1474330311.000071]-=*::: or to rephrase, there is no real host level firewall at node level, just rely on firewalling at the cluster level with whatever hte cloud provides
+U0PPMUTGR says -=*[1474376369.000072]-=*::: that's interesting. so behind the router, everything is wide open, and you just firewall the front entry proxy. this diagram also seems to suggest the same
+U0PPMUTGR says -=*[1474376376.000073]-=*::: <https://github.com/kubernetes/kubernetes/blob/master/docs/design/architecture.md>
+U0PPMUTGR says -=*[1474376399.000075]-=*::: <@U0PPMUTGR|mmichael> uploaded a file: <https://kubernetes.slack.com/files/mmichael/F2DJLFUMR/pasted_image_at_2016_09_20_08_59_am.png|Pasted image at 2016-09-20, 8:59 AM>
+U0PT5KRHR says -=*[1474378168.000076]-=*::: that was my initial reaction as well... I think the firewall is out of scope for kubelet / kube-proxy
+U0JFJ4KHS says -=*[1474378724.000077]-=*::: sounds good..I have made note of all the rules that are required. For now, we can include those in the documentation and make them part of the cluster setup
+U0K61JBKJ says -=*[1474396125.000079]-=*::: I think that projects like Calico help you control access visibility once inside the cluster but by default it may be wide open
+U0G8JNZGF says -=*[1474461483.000080]-=*::: hi guys, anybody has a summaries of the current state so we know where we are?
+U0PT5KRHR says -=*[1474463633.000081]-=*::: Hey - we have an open PR for making the kubelet run on windows. With the changes, we are able to schedule pods on windows.
+U0PT5KRHR says -=*[1474463688.000082]-=*::: We are also finishing up the kube-proxy side of things, allowing windows pods to communicate with services
+U0PT5KRHR says -=*[1474463803.000084]-=*::: DNS isn't supported on windows containers quite yet, but we can use env vars to get the IP of services
+U0G8JNZGF says -=*[1474465802.000085]-=*::: :+1:
+U0G8JNZGF says -=*[1474630616.000087]-=*::: <@U0PT5KRHR> the current container on TP5 seems can't hold onto DHCPed IPs, it can't survive container stop/start, machine reboot, how did you solve this problem?
+U0PT5KRHR says -=*[1474637578.000088]-=*::: hey <@U0G8JNZGF> - I believe the pod gets recycled and it just gets a new IP
+U0PT5KRHR says -=*[1474984698.000089]-=*::: how's it going with Azure <@U0JFJ4KHS> ? :slightly_smiling_face:
+U0JFJ4KHS says -=*[1474984856.000090]-=*::: Trying to analyze the cryptic messages powershell returns, when creating VMs in Azure :grimacing:
+U0K61JBKJ says -=*[1474988505.000091]-=*::: guys, 1.4 just went out
+U0K61JBKJ says -=*[1474988515.000092]-=*::: should we try to get this pushed through for 1.5?
+U0K61JBKJ says -=*[1474988520.000093]-=*::: it would really be awesome if we could

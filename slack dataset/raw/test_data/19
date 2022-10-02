@@ -1,0 +1,64 @@
+U08BDV693 says -=*[1470691499.000612]-=*::: AMEX just announced AmexChain.  You run servers in exchange for rewards points.  :slightly_smiling_face:
+U071X9XPC says -=*[1470691630.000613]-=*::: seriously?
+U071X9XPC says -=*[1470691659.000614]-=*::: after WayneChain you need to take new blockchain announcements with a grain of salt :wink:
+U07KF7KKJ says -=*[1470692428.000616]-=*::: <@U08BDV693>: can I read?
+U08BDV693 says -=*[1470693047.000617]-=*::: <@U07KF7KKJ>: I messaged you
+U0722SJ4A says -=*[1470694236.000618]-=*::: pretty cool, Matt Corallo is doing a sabbatical at Chaincode Labs: <http://bluematt.bitcoin.ninja/2016/08/08/chaincode/>
+U07C0TB6H says -=*[1470694473.000619]-=*::: <@U0722SJ4A>: and he's announced a hacker residency to learn about bitcoin protocol development
+U07C0TB6H says -=*[1470694483.000620]-=*::: could be of interest to the blockstack community!
+U07C0TB6H says -=*[1470694491.000621]-=*::: <@U08BDV693>: also very curious
+U0722SJ4A says -=*[1470695017.000622]-=*::: yeah for sure
+U0722SJ4A says -=*[1470695031.000623]-=*::: <@U08BDV693>: Id like to see too
+U076LGFE0 says -=*[1470739388.000627]-=*::: <@U076LGFE0|larry> uploaded a file: <https://blockstack.slack.com/files/larry/F1ZHZRUP7/fasskey_-_transaction_authentication_protocol_-_ieee_netsoft_2016_-_v20160622a.pdf|FASSKey - Transaction Authentication Protocol - IEEE NetSoft 2016 - v20160622a.pdf> and commented: I met a gentleman at last nights bitcoin meetup that shared this paper with me. Hadnt heard of fasskey before.
+U076LGFE0 says -=*[1470739403.000628]-=*::: &gt;AbstractWe present an identity authentication system which is cryptographically strong, pseudonymous, efficient enough to run well on current smart phone devices, and easily extensible for payment and transactional functionality. We also describe high security algorithm and programming methods for the implemen- tation, including server, network transmission, and application development. The system is intellectual property unencumbered and provably secure. The end user app implementation uses multi factor security, a combination of unique device, user password, and fingerprint or PIN. We use well-known and proven cryptographic primitives.
+U071X9XPC says -=*[1470758149.000629]-=*::: ah cool
+U071X9XPC says -=*[1470758150.000630]-=*::: <http://www.wired.co.uk/article/bitcoin-reid-hoffman>
+U071X9XPC says -=*[1470872951.000645]-=*::: <https://medium.com/@anildash/the-lost-infrastructure-of-social-media-d2b95662ccd3#.yul712o6z>
+U071X9XPC says -=*[1470872964.000647]-=*::: What the Blockstack community is really building
+U071X9XPC says -=*[1470872975.000648]-=*::: weve all felt that this infrastructure has disappeared over time
+U071X9XPC says -=*[1470872981.000649]-=*::: and things got more centralized
+U071X9XPC says -=*[1470872990.000650]-=*::: but this blog post really puts it into perspective
+U071X9XPC says -=*[1470873029.000651]-=*::: <@U071X9XPC|muneeb_blockstack> uploaded a file: <https://blockstack.slack.com/files/muneeb_blockstack/F20934AJU/pasted_image_at_2016_08_10_07_50_pm.png|Pasted image at 2016-08-10, 7:50 PM>
+U1F1MB1UZ says -=*[1470905352.000655]-=*::: hilarious
+U1F1MB1UZ says -=*[1470905374.000656]-=*::: Anil chose to write a blog about the lost social tech on medium.
+U1F1MB1UZ says -=*[1470905387.000657]-=*::: something responsible for it
+U071X9XPC says -=*[1470931705.000660]-=*::: ha yeah, posting it on Medium is ironic but most of the audience is there
+U071X9XPC says -=*[1470931707.000661]-=*::: <http://appleinsider.com/articles/16/08/10/oops-microsoft-leaks-its-golden-key-unlocking-windows-secure-boot-and-exposing-the-danger-of-backdoors?utm_content=buffer9e2e6&amp;utm_medium=social&amp;utm_source=twitter.com&amp;utm_campaign=buffer>
+U071X9XPC says -=*[1470931724.000663]-=*::: (sorry <@U07HTRSQN> dont mean to pick on Microsoft, so this is an important topic and a real example)
+U07HTRSQN says -=*[1470931743.000665]-=*::: No worries, the people who did that are dumbasses
+U071X9XPC says -=*[1470931851.000666]-=*::: lol
+U079L559C says -=*[1471015996.000668]-=*::: <https://medium.com/@jessewalden/even-better-imagine-if-opting-in-to-creative-commons-on-medium-made-the-work-available-in-a-bb7b1f55d622#.c23c4d9zh>  response to anils post above (<https://blockstack.slack.com/archives/articles/p1470872951000645>)
+U0723KV7E says -=*[1471017643.000670]-=*::: <https://medium.com/iconominet/introducing-new-financial-instruments-for-a-decentralised-economy-43399edcf2e7>
+U0722SJ4A says -=*[1471020087.000672]-=*::: <https://medium.com/@demibre/on-tokens-and-crowdsales-309e49d9530d#.7qccg8ksa>
+U0722SJ4A says -=*[1471020096.000674]-=*::: Nice post <@U07U2F0ET>
+U0722SJ4A says -=*[1471020123.000675]-=*::: Great to see the deep thought thats been put into this
+U0722SJ4A says -=*[1471020139.000676]-=*::: <@U079L559C>: great response too
+U0722SJ4A says -=*[1471020170.000677]-=*::: <@U079L559C>: <@U07U2F0ET> why dont you guys submit the articles here: <https://www.reddit.com/r/blockstack>
+U07U2F0ET says -=*[1471020250.000679]-=*::: will do, thanks for sharing <@U0722SJ4A>
+U0722SJ4A says -=*[1471020689.000680]-=*::: for sure!
+U0723KV7E says -=*[1471024131.000681]-=*::: Yeah.. great post <@U07U2F0ET>.. :slightly_smiling_face:
+U07U2F0ET says -=*[1471024201.000682]-=*::: thanks <@U0723KV7E>! Things are getting interesting in this area
+U0723KV7E says -=*[1471024289.000683]-=*::: agreed.. :slightly_smiling_face:
+U099X8H27 says -=*[1471046632.000684]-=*::: <https://prestonbyrne.com/2016/08/12/against-crowdsales/>
+U074Q9Q3D says -=*[1471051419.000686]-=*::: I enjoyed the reality check that article brought.  I think the lessons are that if you're going to do a coin sale, you should make sure that: (1) the coin-operated system is already up and running before the first sale,  (2) make sure there's no pre-mine, pre-issuance, or ICO (or if there is, it's only to accredited investors),  (3) make sure you don't control all the mining power from the get-go, and  (4) rigorously and publicly analyze the system to make sure it doesn't create perverse incentives for participants.
+U0723KV7E says -=*[1471268174.000687]-=*::: <https://techcrunch.com/2016/08/14/compost/>
+U0723KV7E says -=*[1471270676.000689]-=*::: &gt;Preston J. Byrne prestonbyrne "Against Crowdsales I agree with Preston on the majority of what he is saying but he clearly states I see nothing Normally, I would not chime in on a topic and let others battle it out but I actually feel bad for Preston on this post. Smart guy but does not actually see what the value of this NEW token concept is. Its not the currency of the past and the token is of value because the protocol layer has value. people are actually buying into the the value of the technology. While speculative at the beginning it may be, as the network grows, value increases as more and more users and apps are onboarded. There is no mention of this in his post. Great post if we were talking about the currencies of old however.
+U08SZ33PF says -=*[1471270822.000690]-=*::: brief piece explaining some terminology Im finding helpful in thinking through issues around the dao hard fork: <https://medium.com/@Vlad_Zamfir/dear-ethereum-community-acfa99a037c4>
+U0722SJ4A says -=*[1471271474.000694]-=*::: <http://www.nytimes.com/2016/08/13/business/dealbook/bitcoin-blockchain-banking-finance.html>
+U08BDV693 says -=*[1471273953.000696]-=*::: <https://medium.com/@WayneVaughan/chainpoint-a-standard-blockchain-proof-protocol-79def1c37189#.g0z3bav1m>
+U08BDV693 says -=*[1471273995.000698]-=*::: Thanks to <@U0722SJ4A> and <@U074Q9Q3D> for their help with Chainpoint 2.0.
+U0722SJ4A says -=*[1471274101.000699]-=*::: Great work <@U08BDV693>!
+U0722SJ4A says -=*[1471274113.000700]-=*::: Such a clean and well-designed standard, happy to have helped out
+U074Q9Q3D says -=*[1471274207.000701]-=*::: congratulations <@U08BDV693>!  happy to have helped as well
+U08BDV693 says -=*[1471275429.000702]-=*::: Thanks guys.  Now that Chainpoint uses JSON-LD, we can sign receipts.  Now if I only knew someone with a decentralized identity registry :slightly_smiling_face:
+U08BDV693 says -=*[1471275454.000703]-=*::: Heres a direct link the new Chainpoint web site: <http://chainpoint.org>
+U0722SJ4A says -=*[1471275536.000705]-=*::: :smile:
+U0723KV7E says -=*[1471276528.000706]-=*::: congrats <@U08BDV693>
+U0723KV7E says -=*[1471276531.000707]-=*::: :slightly_smiling_face:
+U071X9XPC says -=*[1471276612.000708]-=*::: the standard is looking good <@U08BDV693> !
+U0KS413FV says -=*[1471277811.000709]-=*::: <@U08BDV693>: looks great! Fits right into a project im doing, is there a lib to actually register such a transaction?
+U071X9XPC says -=*[1471295290.000712]-=*::: New post on r/blockstack will get posted here :slightly_smiling_face:
+U0722SJ4A says -=*[1471295530.000714]-=*::: <@U071X9XPC>: awesome, great work!
+U0723KV7E says -=*[1471295670.000715]-=*::: Is there a way to show the Reddit logo instead of the IFTTT logo?
+U071X9XPC says -=*[1471296146.000716]-=*::: nothing straight forward / quick
+U071X9XPC says -=*[1471296155.000717]-=*::: its the official IFTTT app that is posting the message

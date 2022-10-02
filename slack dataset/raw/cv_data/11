@@ -1,0 +1,179 @@
+U0ACRBLSV says -=*[1473863521.000168]-=*::: <@U2AEXRCUB>  Yes - exactly.  Assuming have your Dockerfile in a local dir on your desktop, you docker build directly to the minikube docker instance.  In your k8s manifests, you set the imagePullPolicy: IfNotPresent
+U2AEXRCUB says -=*[1473863574.000169]-=*::: <@U0ACRBLSV> Umm, so I do that eval, and I run `docker build` as usual, and then i run my deployment with the name of the local image, and it will work?
+U0ACRBLSV says -=*[1473863594.000170]-=*::: yep
+U0ACRBLSV says -=*[1473863608.000171]-=*::: docker build -t my-image  .
+U0ACRBLSV says -=*[1473863621.000172]-=*::: then you can reference my-image in your k8s manifest
+U0ACRBLSV says -=*[1473863642.000173]-=*::: and it will already be in the docker cache - so it wont need to pull it
+U1B8PHP0D says -=*[1473863772.000174]-=*::: <@U179VE6FR> thanks for your relpy, was unfortunately in a meeting then
+U1B8PHP0D says -=*[1473863878.000175]-=*::: i started minikube v0.9.0 from scratch and also deleted `~/.minikube`. and then i end up with a setup without dns
+U179VE6FR says -=*[1473863936.000176]-=*::: Are services able to communicate?
+U1B8PHP0D says -=*[1473863949.000177]-=*::: no, they are complaining
+U179VE6FR says -=*[1473863975.000178]-=*::: .minikube got recreated when you pulled 0.9 right?
+U1B8PHP0D says -=*[1473864007.000179]-=*::: yes, when i do `minikube start` it is recreated
+U179VE6FR says -=*[1473864111.000180]-=*::: gud gud. Any other kube-system services/deployments/rcs present?
+U179VE6FR says -=*[1473864212.000181]-=*::: Actually I can't seem to tie my `kube-dns` to anything behind the service...investigating how this is actually working :stuck_out_tongue:
+U179VE6FR says -=*[1473864225.000182]-=*::: WHat sort of errors are the pods throwing?
+U1B8PHP0D says -=*[1473864263.000183]-=*::: ``` $ minikube version minikube version: v0.9.0  $ minikube delete $ rm ~/.minikube -rf $ minikube start --vm-driver kvm --memory 2048  $ kubectl get --all-namespaces pods NAMESPACE     NAME                            READY     STATUS    RESTARTS   AGE kube-system   kube-addon-manager-minikubevm   1/1       Running   0          1m kube-system   kubernetes-dashboard-3fyzw      1/1       Running   0          50s```
+U1B8PHP0D says -=*[1473864307.000184]-=*::: ah, ok service is running ```$ kubectl get --all-namespaces services                                                                                                                                   NAMESPACE     NAME                   CLUSTER-IP   EXTERNAL-IP   PORT(S)         AGE default       kubernetes             10.0.0.1     &lt;none&gt;        443/TCP         2m kube-system   kube-dns               10.0.0.10    &lt;none&gt;        53/UDP,53/TCP   2m kube-system   kubernetes-dashboard   10.0.0.252   &lt;nodes&gt;       80/TCP          1m```
+U1B8PHP0D says -=*[1473864346.000185]-=*::: but `dns` does not show up here: ```$ kubectl cluster-info Kubernetes master is running at <https://192.168.42.230:8443> kubernetes-dashboard is running at <https://192.168.42.230:8443/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard>```
+U179VE6FR says -=*[1473864362.000186]-=*::: me neither
+U179VE6FR says -=*[1473864379.000188]-=*::: It seems to work a tad different to our usual gce provided cluster
+U179VE6FR says -=*[1473864410.000189]-=*::: This now seems a pod config related issue, which should be easier to fix than minikube setup :stuck_out_tongue:
+U1B8PHP0D says -=*[1473864454.000190]-=*::: i am getting errors like this `2016-09-14T13:32:46.627785645Z curl: (6) Couldn't resolve host 'grafana'`. But this used to work before..
+U179VE6FR says -=*[1473864505.000191]-=*::: And there was clearly a service tied to the grafana deployment/pod
+U179VE6FR says -=*[1473864507.000192]-=*::: ?
+U1B8PHP0D says -=*[1473864603.000193]-=*::: yes, there were also other dns related errors..
+U1B8PHP0D says -=*[1473864756.000194]-=*::: ok, weird, i tried now the third time from scratch and it works... :confused:
+U179VE6FR says -=*[1473864840.000195]-=*::: The best kind of problem, the one that goes away by itself ^^
+U1B8PHP0D says -=*[1473864878.000196]-=*::: yeah, but thanks a lot for lenging me your ears :slightly_smiling_face:
+U1V8KAALC says -=*[1473876201.000198]-=*::: hey yall, quick question. How do I get the  `NetworkPolicy` resource enabled? Im running the default iso, k8s v1.3.3.is there another iso i should be using?
+U1TUWPL1M says -=*[1473887458.000200]-=*::: looks like its a feature request right now <https://github.com/kubernetes/minikube/issues/528> <@U1V8KAALC>
+U1V8KAALC says -=*[1473887523.000202]-=*::: thanks <@U1TUWPL1M> !
+U2BTQSN13 says -=*[1473926084.000204]-=*::: hi folks, I have one question, I did `make` and found that binary is getting installed in ./out/minikube
+U2BTQSN13 says -=*[1473926097.000205]-=*::: why it is not in $GOPATH/bin folder?
+U2BTQSN13 says -=*[1473926112.000206]-=*::: so that one can execute it directly instead of ./out/minikube version ?
+U0U77GDQC says -=*[1473927422.000207]-=*::: <@U2BTQSN13> the minikube binary looks for localkube in that location during development and copies it to the boot2docker vm, but other than that i dont know
+U261Y5ENR says -=*[1473931533.000208]-=*::: any of you guys using minikube alongside dinghy?
+U20L8GGUF says -=*[1473978682.000211]-=*::: does ```minikube start --kubernetes-version="v1.4.0-beta.2"``` work for anyone?
+U20L8GGUF says -=*[1473982322.000213]-=*::: the file /var/lib/localkube/localkube.out says that localkube has problems with the flag "--node-ip"
+U20L8GGUF says -=*[1473982604.000214]-=*::: its trying to use localkube version: v0.8.0 instead of v0.10.0
+U1TUWPL1M says -=*[1473991101.000215]-=*::: <@U20L8GGUF> i think you're having this issue <https://github.com/kubernetes/minikube/issues/532>
+U1B8PHP0D says -=*[1474021367.000217]-=*::: i couldn't get `v0.10.0` to run. tried different versions of kubernetes: <https://github.com/kubernetes/minikube/issues/599#issuecomment-247563482>
+U2BHE493L says -=*[1474029009.000222]-=*::: sorry to interrupt, i'm running minikube on my local machine. is there a way to change the docker daemon binary that minikube uses? I would really like to use the experimental docker builds as they have CR support
+U1TUWPL1M says -=*[1474034644.000223]-=*::: <@U2BHE493L> not at this point
+U2BHE493L says -=*[1474037943.000224]-=*::: <@U1TUWPL1M> can i use any docker binary if i build a cluster from scratch?  like this <http://kubernetes.io/docs/getting-started-guides/scratch/>
+U0A30SM33 says -=*[1474057629.000225]-=*::: <@U2BHE493L> You can provide your own ISO for the minikube VM via the `--iso-url` flag. You can build an ISO with updated docker version by reusing scripts in <https://github.com/kubernetes/minikube/tree/master/deploy/iso>
+U0A30SM33 says -=*[1474057680.000227]-=*::: But note that Kubernetes isn't validated against latest versions of Docker
+U2BHE493L says -=*[1474099394.000229]-=*::: <@U0A30SM33> Thanks!. will try that out
+U0AKLD04R says -=*[1474249891.000232]-=*::: This came up in an issue but if anyone wants to pull images from AWS ECR on their minikube, can use this: <https://github.com/upmc-enterprises/awsecr-creds>
+U1TUWPL1M says -=*[1474343373.000234]-=*::: the v1.4.0-beta.8 localkube is out, try it with `minikube start --kubernetes-version=v1.4.0-beta.8`
+U2BHE493L says -=*[1474370508.000237]-=*::: Do i really need to have a boot2docker iso? can i actually, have a iso, from say, ubuntu:latest and run minikube?
+U1YEXGY77 says -=*[1474373852.000238]-=*::: Sorry noisy. <@U2BHE493L> <https://github.com/zchee/docker-machine-driver-xhyve/issues/135> Did you post this issue?
+U2BHE493L says -=*[1474373877.000240]-=*::: <@U1YEXGY77> no, i did not
+U1YEXGY77 says -=*[1474373895.000241]-=*::: ah, sorry! ignore it
+U1TUWPL1M says -=*[1474388459.000242]-=*::: <@U2BHE493L> you'll need an ISO with a container runtime (e.g. docker or rkt), but you can supply your own with the --iso-url flag
+U1TUWPL1M says -=*[1474388496.000243]-=*::: <@U2BHE493L> you can also build your own off our Dockerfile <https://github.com/kubernetes/minikube/blob/master/deploy/iso/Dockerfile>
+U0DT660QM says -=*[1474389340.000246]-=*::: <@U1YEXGY77> hello :slightly_smiling_face:
+U1YEXGY77 says -=*[1474389347.000247]-=*::: hello :slightly_smiling_face:
+U1YEXGY77 says -=*[1474389350.000248]-=*::: Hmm
+U0DT660QM says -=*[1474389354.000249]-=*::: thanks a lot for trying this :slightly_smiling_face:
+U1YEXGY77 says -=*[1474389359.000250]-=*::: np!
+U0DT660QM says -=*[1474389370.000251]-=*::: I've tackled all the hypervisors, kvm, virtualbox, and vmware fusion, xhyve is the last :wink:
+U1YEXGY77 says -=*[1474389408.000252]-=*::: ok, now try it
+U1YEXGY77 says -=*[1474389409.000253]-=*::: but
+U1YEXGY77 says -=*[1474389435.000254]-=*::: first launch is fine, but next or later is repro
+U0DT660QM says -=*[1474389473.000255]-=*::: interesting, for me the first launch also doesn't work :confused:
+U1YEXGY77 says -=*[1474389537.000256]-=*::: Hmm
+U1YEXGY77 says -=*[1474389538.000257]-=*::: question
+U1YEXGY77 says -=*[1474389552.000258]-=*::: what docker version of <https://github.com/coreos/minikube-iso/releases/download/xhyve/minikube-xhyve.iso>?
+U1YEXGY77 says -=*[1474389566.000259]-=*::: ^ currently
+U1YEXGY77 says -=*[1474389595.000261]-=*::: its 1.11.1?
+U0DT660QM says -=*[1474389681.000262]-=*::: yes, exactly (see <https://github.com/coreos/minikube-iso/blob/master/package/docker-bin/docker-bin.mk#L7>)
+U1YEXGY77 says -=*[1474389694.000264]-=*::: Ah, Hmm
+U1YEXGY77 says -=*[1474389699.000265]-=*::: wait
+U1YEXGY77 says -=*[1474389763.000266]-=*::: sorry, its terminal log. but definitely, can launched at first...
+U1YEXGY77 says -=*[1474389799.000267]-=*::: <@U1YEXGY77|zchee> uploaded a file: <https://kubernetes.slack.com/files/zchee/F2DPHUPEY/-.sh|Untitled>
+U1YEXGY77 says -=*[1474389863.000268]-=*::: Do you have any wrong or different point from that?
+U1YEXGY77 says -=*[1474389918.000269]-=*::: or, maybe im launched old boot2docker?
+U0DT660QM says -=*[1474389923.000270]-=*::: <@U1YEXGY77> I guess you are still using the cached iso
+U0DT660QM says -=*[1474389927.000271]-=*::: <@U1YEXGY77> yes :slightly_smiling_face:
+U1YEXGY77 says -=*[1474389937.000272]-=*::: oh, ok. got it
+U1YEXGY77 says -=*[1474389939.000273]-=*::: Hm
+U0DT660QM says -=*[1474389939.000274]-=*::: <@U1YEXGY77> you'd need to `rm -rf ~/.minikube`
+U1YEXGY77 says -=*[1474389949.000276]-=*::: try it. wait
+U1YEXGY77 says -=*[1474390060.000277]-=*::: Hmm, anyway, `vm exit[0]` error is reproduced.
+U1YEXGY77 says -=*[1474390142.000278]-=*::: maybe thats needs C level workaround. should fix `Hypervisor.framework` or xhyve(hyperkit) side source
+U1YEXGY77 says -=*[1474390177.000279]-=*::: I will try fix it
+U0DT660QM says -=*[1474390179.000280]-=*::: <@U1YEXGY77> understood, maybe
+U1YEXGY77 says -=*[1474390185.000281]-=*::: yeah
+U1YEXGY77 says -=*[1474390200.000282]-=*::: <@U0DT660QM> ah, forgot mention
+U1YEXGY77 says -=*[1474390242.000283]-=*::: <@U0DT660QM> its
+U1YEXGY77 says -=*[1474390284.000284]-=*::: <@U0DT660QM> urgent(emergency?) issue?
+U0DT660QM says -=*[1474390360.000285]-=*::: <@U1YEXGY77> no, it's not emergency :wink: I think it would be very nice to have an alternative ISO with different runtimes. Also the minikube maintainer <@U10AE1F99>  (around?) is interested in pulling this into minikube directly :slightly_smiling_face:
+U0DT660QM says -=*[1474390377.000286]-=*::: <@U1YEXGY77> anyway, thanks a ton for the help :+1:
+U1YEXGY77 says -=*[1474390389.000287]-=*::: <@U0DT660QM> Now Im try use qcow2 disk image implements to xhyve-driver. 3/4 finished. so, if its emergency, I will debug `vm exit[0]`
+U1YEXGY77 says -=*[1474390390.000288]-=*::: ah
+U1YEXGY77 says -=*[1474390428.000289]-=*::: <@U0DT660QM> ok, got it. but I will continue to debug it.
+U1YEXGY77 says -=*[1474390524.000291]-=*::: <@U0DT660QM> ah, FYI
+U1YEXGY77 says -=*[1474390642.000292]-=*::: <@U0DT660QM> fix kexec args to `-f 'kexec,/path/to/vmlinuz64,/path/to/initrd.img, user=docker console=ttyS0 console=tty0 noembed nomodeset norestore waitusb=10 base host=boot2docker`, actually remove `loglevel=3`, will more get kernel level logs
+U1YEXGY77 says -=*[1474390753.000293]-=*::: <https://github.com/kubernetes/minikube/blob/master/pkg/minikube/cluster/cluster_darwin.go#L66>
+U1YEXGY77 says -=*[1474391410.000295]-=*::: <@U0DT660QM> are you still there?
+U1YEXGY77 says -=*[1474391560.000296]-=*::: <@U0DT660QM> got `Initramfs unpacking failed: junk in compressed archive` error. Do you have any idea about this?
+U0DT660QM says -=*[1474392360.000297]-=*::: <@U1YEXGY77> sorry, it is evening here in europe
+U0DT660QM says -=*[1474392366.000298]-=*::: hmm, i have not seen this
+U1YEXGY77 says -=*[1474392370.000299]-=*::: <@U0DT660QM> I dont know linux kernel, but boot2docker have `CONFIG_INITRAMFS_SOURCE=`, minikube have not that <https://github.com/boot2docker/boot2docker/blob/master/kernel_config#L177>
+U0DT660QM says -=*[1474392373.000301]-=*::: but i have an idea, let me create a new image
+U1YEXGY77 says -=*[1474392418.000302]-=*::: <@U0DT660QM> ah! np, sorry : P japan is AM2:20
+U1YEXGY77 says -=*[1474392741.000304]-=*::: <@U0DT660QM> &gt; but i have an idea, let me create a new image yeah, I also create new iso on docker container now
+U0DT660QM says -=*[1474393186.000305]-=*::: <@U1YEXGY77> oh man, that is very late :stuck_out_tongue:
+U1YEXGY77 says -=*[1474393225.000306]-=*::: <@U0DT660QM> lol
+U1YEXGY77 says -=*[1474393259.000307]-=*::: <@U0DT660QM> <https://github.com/coreos/minikube-iso/releases/tag/xhyve> thats iso have any hack?
+U1YEXGY77 says -=*[1474393300.000309]-=*::: <@U0DT660QM> related xhyve
+U0DT660QM says -=*[1474393334.000310]-=*::: <@U1YEXGY77> only a small one: usually buildroot creates a `bzImage` (your code expects `vmlinuz64`), and `initrd` (your code expects `initrd.img`)
+U0DT660QM says -=*[1474393354.000311]-=*::: so the only "hack" I did was to change the names in the ISO
+U0DT660QM says -=*[1474393376.000312]-=*::: but buildroot lets me create a pure `vmlinuz`, that's what I'd like to try
+U1YEXGY77 says -=*[1474393510.000313]-=*::: @pur understand. thanks. Will it try tomorrow?
+U0DT660QM says -=*[1474393518.000315]-=*::: <@U1YEXGY77> sure, go to sleep!!!
+U0DT660QM says -=*[1474393523.000316]-=*::: and thanks! :slightly_smiling_face:
+U1YEXGY77 says -=*[1474393526.000317]-=*::: okay : )
+U1YEXGY77 says -=*[1474393550.000318]-=*::: <@U0DT660QM> np!
+U2DGVTWC8 says -=*[1474396732.000319]-=*::: Is anyone else having luck starting Minikube with `--kubernetes-version=v1.4.0-beta.8` ?
+U1TUWPL1M says -=*[1474396754.000321]-=*::: <@U2DGVTWC8> what problem are you having?
+U2DGVTWC8 says -=*[1474396807.000322]-=*::: kubectl can not reach host
+U1TUWPL1M says -=*[1474396818.000323]-=*::: can you do a `minikube logs` ?
+U1TUWPL1M says -=*[1474396849.000324]-=*::: you might need to `minikube stop` then start it again...sometimes etcd doesn't stop gracefully between switching k8s versions
+U2DGVTWC8 says -=*[1474396950.000325]-=*::: oh, didnt know it was possible to switch k8s versions without re-installing :stuck_out_tongue_closed_eyes:
+U2DGVTWC8 says -=*[1474396967.000326]-=*::: im in the middle of my nth install right now
+U1TUWPL1M says -=*[1474396984.000327]-=*::: haha sorry i dont think its actually documented anywhere
+U1TUWPL1M says -=*[1474397003.000328]-=*::: but you shouldnt even have to restart your VM, although I've been seeing a few cases where you do actually need to stop and start again
+U2DGVTWC8 says -=*[1474397077.000329]-=*::: this was my command
+U2DGVTWC8 says -=*[1474397080.000330]-=*::: ```  minikube start --vm-driver vmwarefusion --cpus 4 --memory 8192 --kubernetes-version=v1.4.0-beta.8 ```
+U2DGVTWC8 says -=*[1474397099.000331]-=*::: and now its stuck on `Starting local Kubernetes cluster`
+U1TUWPL1M says -=*[1474397252.000332]-=*::: i had made a typo in the v1.4.0 release, try a `rm -r ~/.minikube/cache/localkube` and then try to start it again
+U1TUWPL1M says -=*[1474397255.000333]-=*::: it should work now
+U1TUWPL1M says -=*[1474397334.000334]-=*::: cant wait until the minikube-bot can handle these releases by itself hahah...
+U2DGVTWC8 says -=*[1474397364.000335]-=*::: automate all the things :robot_face:
+U1TUWPL1M says -=*[1474397381.000336]-=*::: haha yes
+U2DGVTWC8 says -=*[1474397500.000337]-=*::: <@U2DGVTWC8|starefossen> uploaded a file: <https://kubernetes.slack.com/files/starefossen/F2DRY76G7/minikube_start__fatal_error.txt|minikube start: fatal error> and commented: hmm.. not sure if this is related or what :confused:
+U1TUWPL1M says -=*[1474397566.000338]-=*::: whats this output from?
+U2DGVTWC8 says -=*[1474397591.000339]-=*::: ``` minikube start --vm-driver vmwarefusion --cpus 4 --memory 8192 --kubernetes-version=v1.4.0-beta.8 ```
+U2DGVTWC8 says -=*[1474397712.000340]-=*::: started working again after `minikube stop &amp;&amp; minikube start`
+U2DGVTWC8 says -=*[1474397811.000342]-=*::: and now `minikube start --kubernetes-version=v1.4.0-beta.8`works :smile:
+U1TUWPL1M says -=*[1474397819.000343]-=*::: woo
+U2DGVTWC8 says -=*[1474397823.000344]-=*::: thanks!!!
+U1TUWPL1M says -=*[1474397841.000345]-=*::: the error above though, thats your error?
+U2DGVTWC8 says -=*[1474397867.000346]-=*::: yeah
+U2DGVTWC8 says -=*[1474397916.000347]-=*::: got a few similar the last couple of days with `kubectl` too
+U1TUWPL1M says -=*[1474397922.000348]-=*::: <@U1FGYMJ6B>
+U1TUWPL1M says -=*[1474398102.000349]-=*::: well if you're able to reproduce it again, please open an issue <@U2DGVTWC8>
+U2DGVTWC8 says -=*[1474398109.000350]-=*::: sure thing!
+U2DGVTWC8 says -=*[1474398125.000351]-=*::: thanks for helping me, Matt!
+U1TUWPL1M says -=*[1474398144.000352]-=*::: no problem have fun hacking on beta.8
+U1YEXGY77 says -=*[1474400013.000353]-=*::: <@U0DT660QM> I tried many build iso, but same. error occur was <http://lxr.free-electrons.com/source/init/initramfs.c#L497> ref: - <https://github.com/mist64/xhyve/issues/74> - <https://github.com/mist64/xhyve/issues/116>  But(maybe) googles fuchsia magenta fixed on fuchsia-mirror/third_party-qemu. If run the magenta kernel use official qemu, occur same error. Use fuchsia-mirror/third_party-qemu, works fine. I don't know what fuchsia patched. And I do not yet try pure `vmlinuz`. Todays up to here.
+U0DT660QM says -=*[1474444803.000356]-=*::: <@U1YEXGY77> great finding! I'll link these issues here <https://github.com/coreos/minikube-iso/issues/17>
+U1YEXGY77 says -=*[1474444928.000358]-=*::: <@U0DT660QM> oh! thanks : ) I'll try other ways
+U0FUZV5RT says -=*[1474476974.000361]-=*::: How would I go about using the latest kubernetes 1.4 beta with minikube? Is it something that requires code changes?
+U1TUWPL1M says -=*[1474477092.000362]-=*::: <@U0FUZV5RT> minikube start --kubernetes-version=v1.4.0-beta.8
+U1TUWPL1M says -=*[1474477160.000363]-=*::: unfortunately we publish the k8s versions so theres a bit of a delay between when k8s releases and when we have a local version available.
+U0FUZV5RT says -=*[1474477185.000364]-=*::: That's easy! I was thrown by this output ```minikube get-k8s-versions The following Kubernetes versions are available:   - v1.4.0-beta.2  - v1.4.0-beta.1  - v1.4.0-beta.0  - v1.3.6  - v1.3.5  - v1.3.4  - v1.3.3  - v1.3.0 ```
+U1TUWPL1M says -=*[1474477238.000365]-=*::: yeah theres an issue that details that
+U1TUWPL1M says -=*[1474477250.000366]-=*::: its not quite right
+U1TUWPL1M says -=*[1474477269.000367]-=*::: usually its fine, but our 0.10.0 release broke some things so we needed to rebuild some old versions
+U0FUZV5RT says -=*[1474477280.000368]-=*::: OK, that's good to know.
+U1TUWPL1M says -=*[1474477294.000369]-=*::: <https://github.com/kubernetes/minikube/issues/599>
+U0FUZV5RT says -=*[1474477310.000371]-=*::: I'm wanting to play around with CNI, but I've seen that `minikube start --network-plugin=cni` isn't bringing up my cluster properly
+U0FUZV5RT says -=*[1474477338.000372]-=*::: How is the kubelet run in the VM? e.g. what init system is used?
+U1TUWPL1M says -=*[1474477371.000373]-=*::: k8s is run through this binary localkube which actually just runs the components in go routines with a little magic
+U0FUZV5RT says -=*[1474477405.000374]-=*::: :open_mouth:
+U1TUWPL1M says -=*[1474477432.000375]-=*::: <https://github.com/kubernetes/minikube/tree/master/pkg/localkube>
+U0FUZV5RT says -=*[1474477442.000377]-=*::: How should I check what options the kubelet is being started with? e.g. if I want to see where my CNI config should be stored?
+U1TUWPL1M says -=*[1474477482.000378]-=*::: i think a `--alsologtostderr` should output the commands that are run inside the vm
+U1TUWPL1M says -=*[1474477520.000379]-=*::: im actually not totally sure how the CNI stuff is working, <@U0DT660QM> could probably help with that.  I think it only works with the alternative iso found at <https://github.com/kubernetes/minikube/tree/master/pkg/localkube>
+U09R2FFHP says -=*[1474477546.000381]-=*::: <@U0FUZV5RT> I think the rkt binary does CNI
+U1TUWPL1M says -=*[1474477560.000382]-=*::: yup thats right
+U09R2FFHP says -=*[1474477564.000383]-=*::: yes, pretty sure it only works with the new minikube iso
+U09R2FFHP says -=*[1474477588.000385]-=*::: <@U1TUWPL1M> we need to merge the minikube iso into the minikube repo
+U09R2FFHP says -=*[1474477589.000386]-=*::: :slightly_smiling_face:
+U1TUWPL1M says -=*[1474477607.000387]-=*::: haha yes definitely
+U1TUWPL1M says -=*[1474477630.000388]-=*::: also unrelated but i saw that theres going to be a minikube talk at next weeks coreos meetup <@U09R2FFHP> , anything we can do to help?
+U1TUWPL1M says -=*[1474477639.000389]-=*::: planning on being there anyway

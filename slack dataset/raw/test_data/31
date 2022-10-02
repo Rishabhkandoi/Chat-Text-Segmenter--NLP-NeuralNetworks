@@ -1,0 +1,139 @@
+U3L9MP7NF says -=*[1483338175.000475]-=*::: is it possible to run minikube with a manually compiled version of kubernetes?
+U09R373U1 says -=*[1483388986.000477]-=*::: <@U371K2XC1> I know some users installed Calico (also CNI based) on minikube a while back, but I'm not sure if there were extra steps involved beyond the usual "kubectl apply" approach.
+U381HQQ1K says -=*[1483474836.000482]-=*::: anyone have success running MySQL on a `hostPath` PV?
+U381HQQ1K says -=*[1483474844.000483]-=*::: I'm running into permissions issues :0(
+U1TUWPL1M says -=*[1483481542.000484]-=*::: <@U381HQQ1K> <https://github.com/kubernetes/minikube/issues/956>
+U1TUWPL1M says -=*[1483481578.000486]-=*::: not sure why the host path provisioner didnt implement fsgroup spec
+U1TUWPL1M says -=*[1483481581.000487]-=*::: looking to patch it upstream
+U371K2XC1 says -=*[1483485849.000488]-=*::: <@U09R373U1>: thx, I'll try that
+U381HQQ1K says -=*[1483502687.000489]-=*::: <@U1TUWPL1M> yep that's the exact issue. I'll follow this on GitHub, thanks!
+U3G3J59DW says -=*[1483513666.000491]-=*::: <@U381HQQ1K> and <@U1TUWPL1M> i dont want to muddy your issue there but i think ive observed the same thing with the RecursiveDirectoryIterator() in php on 9p file mounts for host paths. I can successfully is_dir() and f_open() files in it but RecursiveDirectoryIterator() returns null. Let me make a quick reproducible case to isolate for testing/confirmation.
+U3G3J59DW says -=*[1483514227.000492]-=*::: building kubernetes on that commit to test as well for resolution.
+U3G3J59DW says -=*[1483518992.000493]-=*::: uh this is the longest make ever.. :slightly_smiling_face: i think im going to switch to this KUBE_FASTBUILD flag.
+U3G3J59DW says -=*[1483539160.000494]-=*::: Good morning. I awoke to a freshly minted copy of kubernetes for my envs (darwin &amp; x86_64) an di know how to replace kubectl but i just realized because of the magic that is the gcloud sdk i have no idea how kubernetes itself is actually provisioned via xhyve driver. Is there any documentation anywhere to get from a fresh build to a place i can test this issue? thx!
+U381HQQ1K says -=*[1483542100.000495]-=*::: <@U3G3J59DW> can't help you there but hopefully fixing the permissions will solve both issues?
+U381HQQ1K says -=*[1483542114.000496]-=*::: i.e. <https://github.com/kubernetes/minikube/issues/956>
+U3G3J59DW says -=*[1483542149.000498]-=*::: <@U381HQQ1K> exactly my hope as well. i was just trying to figure out how to build minikube with that patch/commit
+U3G3J59DW says -=*[1483542178.000499]-=*::: it looks like maybe this: <https://github.com/kubernetes/minikube/blob/master/UPDATE_KUBERNETES.md> ?
+U3G3J59DW says -=*[1483542324.000501]-=*::: though "godep restore ./" requires hg in my $PATH and brew install hg builds python 2.7 from scratch apparently. quite the chore. :slightly_smiling_face:
+U381HQQ1K says -=*[1483542588.000502]-=*::: yes I figure it's easier just to let the "GO pros" figure this one out :slightly_smiling_face:
+U381HQQ1K says -=*[1483542611.000503]-=*::: <https://gopro.com/>
+U3G3J59DW says -=*[1483546644.000505]-=*::: <@U381HQQ1K> id really like to be able to contribute on this platform as im gearing my whole team up with it this week. its usually just a little adjustment to business as usual in the makefiles and build process.
+U381HQQ1K says -=*[1483546694.000506]-=*::: are you running anything on k8s yet?
+U381HQQ1K says -=*[1483546701.000507]-=*::: in production, I mean
+U3G3J59DW says -=*[1483546945.000508]-=*::: <@U381HQQ1K> yes sir. and wer emoving a multimillion pageview site over by EOMonth i hope.
+U381HQQ1K says -=*[1483547781.000509]-=*::: we're in the process of migrating a couple hundred sites :slightly_smiling_face:
+U381HQQ1K says -=*[1483547814.000510]-=*::: that's coupled with a retooling across the board so it's going to take some time
+U1TUWPL1M says -=*[1483553184.000512]-=*::: <https://storage.googleapis.com/minikube-builds/957/minikube-darwin-amd64> <https://storage.googleapis.com/minikube-builds/957/minikube-linux-amd64> <https://storage.googleapis.com/minikube-builds/957/minikube-windows-amd64.exe>
+U1TUWPL1M says -=*[1483553191.000513]-=*::: <@U381HQQ1K> <@U3G3J59DW>
+U1TUWPL1M says -=*[1483553215.000515]-=*::: those are the CI builds from <https://github.com/kubernetes/minikube/pull/959>
+U381HQQ1K says -=*[1483555848.000517]-=*::: <@U3G3J59DW> do you think this whole issue is the same reason I'm getting this:
+U381HQQ1K says -=*[1483555904.000518]-=*::: <@U381HQQ1K|tmirks> uploaded a file: <https://kubernetes.slack.com/files/tmirks/F3MDBG7B6/permissions_issue_.txt|Permissions issue?>
+U381HQQ1K says -=*[1483555949.000519]-=*::: I'm building that in the pod on Minikube but having problems doing a simple `composer install`
+U3M9CQK7Y says -=*[1483558671.000521]-=*::: Is there anyway I can use minikube if I'm already working inside a vagrant VM on macOS?
+U1TUWPL1M says -=*[1483558701.000522]-=*::: <@U3M9CQK7Y> any reason why you wouldn't want to run it natively on macOS?
+U3M9CQK7Y says -=*[1483558740.000523]-=*::: because all my provisioning tooling is done on linux package managers, also I like to keep the host machine not cluttered with dev-tools
+U3M9CQK7Y says -=*[1483558756.000524]-=*::: I work on the terminal most of the time (emacs and the like)
+U3M9CQK7Y says -=*[1483558774.000525]-=*::: I know is not the majority's way of doing things, but I was wondering if there are some workarounds I could try
+U1TUWPL1M says -=*[1483558792.000526]-=*::: well minikube basically manages a VM and runs the localkube binary
+U1TUWPL1M says -=*[1483558808.000527]-=*::: <https://github.com/kubernetes/minikube/tree/master/pkg/localkube>
+U3M9CQK7Y says -=*[1483558841.000529]-=*::: uhmm, I'm guessing the answer is, no (-:
+U1TUWPL1M says -=*[1483558843.000530]-=*::: so you could run that
+U3M9CQK7Y says -=*[1483558853.000531]-=*::: ohh
+U3M9CQK7Y says -=*[1483558854.000532]-=*::: so run
+U3M9CQK7Y says -=*[1483558856.000533]-=*::: localkube
+U3M9CQK7Y says -=*[1483558876.000534]-=*::: is there already a compile packaged version for that?
+U3G3J59DW says -=*[1483558876.000535]-=*::: <@U1TUWPL1M> thank you! sorry i was afk.
+U1TUWPL1M says -=*[1483558895.000536]-=*::: yeah <@U3M9CQK7Y>, let me find a link
+U3G3J59DW says -=*[1483558903.000537]-=*::: i was hoping hed make a PR on that.
+U3M9CQK7Y says -=*[1483558945.000538]-=*::: thanks <@U1TUWPL1M>
+U1TUWPL1M says -=*[1483559005.000539]-=*::: <@U3M9CQK7Y> <https://storage.googleapis.com/minikube/k8sReleases/v1.5.1/localkube-linux-amd64>
+U1TUWPL1M says -=*[1483559016.000540]-=*::: thats k8s v1.5.1
+U1TUWPL1M says -=*[1483559020.000541]-=*::: theres other versions published too
+U3M9CQK7Y says -=*[1483559131.000542]-=*::: <@U1TUWPL1M> awesome,  I'll try to set that up locally and see how that goes, if I run into issues I'll post some more questions over here, thanks for your help!
+U3G3J59DW says -=*[1483562800.000545]-=*::: <@U1TUWPL1M> i recreated (delete then start) the xhyve minikube box using that built binary and tested the 9P fs and it still failed in my setup. the same file setup works under vbox but the file performance is abysmal.   Whats odd is that im running the php-fpm processes as a user i made that = 1000 uid so that it owns the directory. It can create (f_write()) and edit files but returns nothing when attempting to scan a directory with built in php support across php7,6, and 5: `new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir), RecursiveIteratorIterator::SELF_FIRST );`  i wonder whats different about the files/mount options i cant tell if its a php bug or something different in how the files are accessed/made available and i dont know how to test that. is there a way i can alter the mount options for that 9p filesystem? im just generally out of ideas for ways to trouble shoot and thought you might have one. thanks again.
+U3G3J59DW says -=*[1483562884.000546]-=*::: yikes sorry that didnt seem like such a manifesto when i typed it..
+U1TUWPL1M says -=*[1483563333.000547]-=*::: so the xhyve driver uses 9p for the /Users mount, you can actually modify the mount  options through the binary, although unfortunately minikube doesnt expose that
+U1TUWPL1M says -=*[1483563343.000548]-=*::: virtualbox does its own thing
+U1TUWPL1M says -=*[1483563359.000549]-=*::: you can try to set up a NFS mount manually with the VM
+U1TUWPL1M says -=*[1483563391.000550]-=*::: im not actually sure how the permissions are set in the 9p fs with xhyve. im sure theres a lot that can go wrong there
+U381HQQ1K says -=*[1483565850.000551]-=*::: <@U3G3J59DW> <@U1TUWPL1M> I'm fighting permissions here too with xhyve /Users mount
+U381HQQ1K says -=*[1483565863.000552]-=*::: my pod is running apache and can't write
+U381HQQ1K says -=*[1483565904.000553]-=*::: so problems writing cache files, etc.
+U3G3J59DW says -=*[1483566162.000554]-=*::: <@U381HQQ1K> fortunately your problems are a little easier to solve i think.
+U3G3J59DW says -=*[1483566184.000555]-=*::: <@U381HQQ1K> do you need apache to write for php i assume? mod_php?
+U381HQQ1K says -=*[1483566203.000556]-=*::: yep
+U381HQQ1K says -=*[1483566209.000557]-=*::: symfony
+U3G3J59DW says -=*[1483566286.000558]-=*::: cool. and youre using xhyve or vbox?
+U3G3J59DW says -=*[1483566324.000559]-=*::: <@U381HQQ1K>?
+U381HQQ1K says -=*[1483566378.000560]-=*::: xhyve
+U3G3J59DW says -=*[1483566405.000561]-=*::: ok so usiing 9p as well then on host.
+U381HQQ1K says -=*[1483566413.000562]-=*::: presumably
+U3G3J59DW says -=*[1483566419.000563]-=*::: ar eyour files all owned by 100:staff?
+U381HQQ1K says -=*[1483566424.000564]-=*::: I'm using whatever xhyve + minikube does by default
+U3G3J59DW says -=*[1483566425.000565]-=*::: 1000
+U381HQQ1K says -=*[1483566459.000566]-=*::: inside minikube right?
+U3G3J59DW says -=*[1483566464.000567]-=*::: sure
+U3G3J59DW says -=*[1483566473.000568]-=*::: ls -lah the /Users dir
+U381HQQ1K says -=*[1483566481.000569]-=*::: yeah that's right
+U3G3J59DW says -=*[1483566485.000570]-=*::: you see 1000:staff?
+U381HQQ1K says -=*[1483566493.000571]-=*::: I see docker:staff but docker's UID is 1000
+U381HQQ1K says -=*[1483566494.000572]-=*::: so yeah
+U381HQQ1K says -=*[1483566499.000573]-=*::: that's inside minikube
+U3G3J59DW says -=*[1483566526.000574]-=*::: hrm. im not sure how you have docker as 1000 did you make it?
+U381HQQ1K says -=*[1483566534.000575]-=*::: oh I see
+U3G3J59DW says -=*[1483566536.000576]-=*::: useradd -ms /bin/bash -u 1000 docker or the like?
+U381HQQ1K says -=*[1483566538.000577]-=*::: it's 1000
+U381HQQ1K says -=*[1483566545.000578]-=*::: inside the pod I see 1000:staff
+U381HQQ1K says -=*[1483566558.000579]-=*::: in /etc/group I see staff == 50
+U381HQQ1K says -=*[1483566562.000580]-=*::: so I think that's fine
+U3G3J59DW says -=*[1483566573.000581]-=*::: ok then in that case just make a user using that comand in your dockerfile: `useradd -ms /bin/bash -u 1000 php-user`
+U381HQQ1K says -=*[1483566574.000582]-=*::: essentially I'm seeing 1000:50 across the board
+U3G3J59DW says -=*[1483566588.000583]-=*::: and run apache as that user/group
+U3G3J59DW says -=*[1483566596.000584]-=*::: works for me for all usual operations.
+U381HQQ1K says -=*[1483566599.000585]-=*::: ahhh I see
+U3G3J59DW says -=*[1483566610.000586]-=*::: you can do that in apache2.conf
+U381HQQ1K says -=*[1483566622.000587]-=*::: for experimental purposes could I just change the UID of `www-data`?
+U3G3J59DW says -=*[1483566671.000588]-=*::: actually i think the process gets the UID when it runs so it would probably still be the old one
+U3G3J59DW says -=*[1483566688.000589]-=*::: it may work but i could see reasons why it might not
+U381HQQ1K says -=*[1483566693.000590]-=*::: I'm talking about hacking my `passwd` file :slightly_smiling_face:
+U381HQQ1K says -=*[1483566705.000591]-=*::: if that works I can rebuild my image
+U3G3J59DW says -=*[1483566710.000592]-=*::: your apache container is already running though
+U381HQQ1K says -=*[1483566722.000593]-=*::: true true
+U3G3J59DW says -=*[1483566725.000594]-=*::: meaning that your process is as well.
+U381HQQ1K says -=*[1483566729.000595]-=*::: yeah
+U381HQQ1K says -=*[1483566741.000596]-=*::: OK let me give it a whirl
+U3G3J59DW says -=*[1483566741.000597]-=*::: i would make a user but its worth testng both ways to know for the future
+U3G3J59DW says -=*[1483566749.000599]-=*::: <@U381HQQ1K> please report back
+U3G3J59DW says -=*[1483566753.000600]-=*::: good luck!
+U381HQQ1K says -=*[1483566756.000601]-=*::: sir yes sir!
+U381HQQ1K says -=*[1483566764.000602]-=*::: is this how you do it, <@U3G3J59DW>?
+U3G3J59DW says -=*[1483566790.000603]-=*::: yep. that notifies me or whomever you mention
+U381HQQ1K says -=*[1483566808.000604]-=*::: no I mean do you create a user for apache?
+U381HQQ1K says -=*[1483566810.000605]-=*::: hah
+U3G3J59DW says -=*[1483566836.000606]-=*::: yes that is what i did to solve my perm issues. and it works for f_open() and f_write()
+U3G3J59DW says -=*[1483566850.000607]-=*::: but not for <http://php.net/manual/en/class.recursivedirectoryiterator.php>
+U3G3J59DW says -=*[1483566854.000608]-=*::: and i cant figure out why
+U3G3J59DW says -=*[1483566874.000609]-=*::: form everything i can test it seems to be just fine but php returns null.
+U381HQQ1K says -=*[1483567080.000610]-=*::: ahh I see
+U381HQQ1K says -=*[1483567090.000611]-=*::: maybe this would solve my mysql problems too
+U381HQQ1K says -=*[1483567177.000612]-=*::: <@U3G3J59DW> from a best practices standpoint I'd like to use the same docker image in all environments, is it kosher to use this new user with UID 1000 across the board?
+U381HQQ1K says -=*[1483567196.000613]-=*::: obviously only doing this for a Minikube issue that's not a problem on GKE
+U381HQQ1K says -=*[1483568216.000614]-=*::: <@U3G3J59DW> quick update, setting the Apache user in the official Apache image is as simple as setting an environment variable `APACHE_RUN_USER` and `APACHE_RUN_GROUP`
+U3G3J59DW says -=*[1483571204.000615]-=*::: <@U381HQQ1K> nice! did it work?
+U381HQQ1K says -=*[1483571253.000616]-=*::: I believe so yes!
+U381HQQ1K says -=*[1483571263.000617]-=*::: I added a user via Dockerfile first
+U3G3J59DW says -=*[1483571270.000618]-=*::: excellent. well done
+U381HQQ1K says -=*[1483571271.000619]-=*::: then set the environment variables in the Deployment spec
+U381HQQ1K says -=*[1483571277.000620]-=*::: thank you for the tip!
+U381HQQ1K says -=*[1483571294.000621]-=*::: seems to be working fine
+U381HQQ1K says -=*[1483571347.000622]-=*::: I'd like to try this same technique on my Percona (MySQL) pod
+U3G3J59DW says -=*[1483572350.000623]-=*::: <@U1TUWPL1M> thanks for the pointer. i am now currently chasing down how to specify `xhyve-experimental-nfs-share` into my `minikube start` command. i was able to get it to create one with an nfs share via `docker-machine` but for some reason minikube isnt picking up on my local env vairable or command line options
+U3G3J59DW says -=*[1483572402.000624]-=*::: FWIW i couldnt find ANYWHERE to modify the options for 9p in docker-machine-xhyve.
+U20L8GGUF says -=*[1483572811.000625]-=*::: <@U3G3J59DW> does this help?  <https://github.com/kubernetes/minikube/issues/2#issuecomment-233581253>
+U3G3J59DW says -=*[1483572884.000627]-=*::: <@U20L8GGUF> driving home and ill check! thank you for the pointer. i saw this and gave it a half hearted try but that was last night at 3am. :slightly_smiling_face:
+U3G3J59DW says -=*[1483573292.000628]-=*::: the network bit was jacked iirc
+U3G3J59DW says -=*[1483573667.000629]-=*::: <@U20L8GGUF>: yeah just tested and got  `mount: 192.168.64.1:/Users failed, reason given by server: Permission denied mount: mounting 192.168.64.1:/Users on /Users failed: Bad file descriptor` I need ot dig into the permissions i guess
+U20L8GGUF says -=*[1483574892.000630]-=*::: what does ```minikube ssh ip route``` show?
+U20L8GGUF says -=*[1483575021.000631]-=*::: and /etc/exports has the following entry right?  /Users -network 192.168.64.0 -mask 255.255.255.0 -alldirs -maproot=root:wheel
+U3F7ML9T5 says -=*[1483578809.000632]-=*::: Hm, <@U20L8GGUF> I looked at  <https://github.com/kubernetes/minikube/issues/2> because Im playing with Minikube as an alternative development environment (for fun). I am using Docker for Mac with the xhyve driver (which works great with Minikube for me). However Im trying to use the K8S Deployment object, and not quite clear on how to mount a volume from my host machine (Mac) into a container using a Deployment object file. Is this a straightforward thing to do?

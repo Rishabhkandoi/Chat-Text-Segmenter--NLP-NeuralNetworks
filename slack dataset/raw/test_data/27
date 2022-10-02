@@ -1,0 +1,60 @@
+U0PPMUTGR says -=*[1482510503.000614]-=*::: a quick reminder to everyone. please enable two-factor auth on github - <https://help.github.com/articles/about-two-factor-authentication/>
+U3J5PDG85 says -=*[1482519476.000616]-=*::: Hi <@U2U84B4BE> , I would not be able to give an authoritative response on this as this work is not out of the Nano Server team. I would start with the Windows Containers forums on Technet. Let me know if you don't get traction over there, I will connect you with someone who might be able to help!
+U3J5PDG85 says -=*[1482519584.000617]-=*::: Hi <@U0ALRFJH0> , great. Is there anyone from the MS SDN team you are currently engaging with so I can get more context from them, and determine where I can add value most?
+U3J5PDG85 says -=*[1482519631.000618]-=*::: <@U0PPMUTGR>: that's awesome, will do!
+U2U84B4BE says -=*[1482591572.000619]-=*::: <@U3J5PDG85>  Thanks a lot vyalla, I will try to find something on Technet.
+U0PPMUTGR says -=*[1482597631.000620]-=*::: <@U3J5PDG85> , we are talking to Jason Messer and his team.
+U2E3R65KK says -=*[1483014468.000621]-=*::: We have more then 300 Servers running only a few processes but one server per customer (our legacy software). We manage them on aws and our market team can press a button and update the release through a new server (everything in a build pipeline) - It is great but with kubernetes on windows we will save so much money and we do not have to wait till we have a new ami for a new release. Wow that will be fun - Thanks <@U3J5PDG85> and everyone working on it. And health checking and automatically repairing it will be a lot easier.
+U0ALRFJH0 says -=*[1483015654.000622]-=*::: thank you, <@U2E3R65KK> for your feedback. indeed, it is this SIG main goal to bring all the great Kubernetes features to Windows Server users! we're working hard for it.
+U0ALRFJH0 says -=*[1483027258.000623]-=*::: out of curiosity, has anyone around here used Network Controller?
+U0ALRFJH0 says -=*[1483027268.000624]-=*::: perhaps you <@U2E3R65KK>?
+U2E3R65KK says -=*[1483028362.000625]-=*::: Me not <@U0ALRFJH0>
+U2E3R65KK says -=*[1483028633.000626]-=*::: I will try to build dockerfiles for our software next months together with developers - I will connect to you as soon as we have some feedback :slightly_smiling_face: At the beginning our focus will be to remove our vagrant/powershell setup which every developer uses to set up the legacy software for local development and use a docker setup. We hope that these efforts will help us to get it production ready as soon as kubernetes is ready :slightly_smiling_face:
+U0ALRFJH0 says -=*[1483029106.000627]-=*::: :+1:
+U0PPMUTGR says -=*[1483035862.000628]-=*::: <@U0ALRFJH0>, when you mean network controller, you mean the multi-VM installation of the software defined networking solution from microsoft?
+U0ALRFJH0 says -=*[1483037418.000630]-=*::: <@U0PPMUTGR> yes. it seems it can be used for setting up overlay networks and containers can leverage on that.
+U3K38QC73 says -=*[1483037627.000631]-=*::: Hello everyone
+U3K38QC73 says -=*[1483037689.000633]-=*::: I have a question regarding the documentation for getting kubernetes running on windows
+U3K38QC73 says -=*[1483037769.000634]-=*::: it first says to download docker via the oneget package which i did. It then does on to say use a master build which includes dns support. What should be the steps to "upgrade" the docker installation? Kinda vague on how to do this
+U0ALRFJH0 says -=*[1483038720.000635]-=*::: <@U3K38QC73> i believe installing through oneget is enough, for as long as you're running a recent version of Windows Server. 
+U3K38QC73 says -=*[1483038768.000636]-=*::: <@U0ALRFJH0> i don't think it is thought. The build of docker in oneget doesn't seem to have the DNS support included
+U3K38QC73 says -=*[1483038845.000637]-=*::: It look's as though 1.13 has those changes but a build is not included in the oneget repo
+U3K38QC73 says -=*[1483038860.000638]-=*::: wondering whether i should switch it over to chocolatey
+U0ALRFJH0 says -=*[1483038953.000639]-=*::: Hmmm.. What's your problem with DNS, exactly? 
+U3K38QC73 says -=*[1483039155.000640]-=*::: It's not a problem exactly. The docs say to use a master built branch which will have the DNS changes included for windows support
+U3K38QC73 says -=*[1483039204.000641]-=*::: Just curious if anyone here has actually got a cluster on Windows going
+U0ALRFJH0 says -=*[1483040107.000642]-=*::: we do have a few, on GCP, Azure and private dc.
+U0PPMUTGR says -=*[1483041923.000644]-=*::: <@U0JFJ4KHS>  can you offer your thoughts on the issue above?
+U0JFJ4KHS says -=*[1483046100.000645]-=*::: <@U3K38QC73>, as <@U0ALRFJH0> mentioned installing through oneget is enough, you need to install from docker master only if you need DNS support, the changes for which are merged into docker but has not made to a release yet
+U3K38QC73 says -=*[1483046198.000646]-=*::: <@U0JFJ4KHS>  what's the best way of upgrading docker itself in that case?
+U0JFJ4KHS says -=*[1483046237.000647]-=*::: Stopping docker service and updating the docker binaries and starting back the service should work fine
+U0ALRFJH0 says -=*[1483048008.000649]-=*::: <@U0JFJ4KHS> what exactly is missing from DNS support?
+U0JFJ4KHS says -=*[1483048035.000650]-=*::: dns search doesn't work and it only works over tcp
+U0ALRFJH0 says -=*[1483049835.000652]-=*::: dns search should be fixed with newer versions of docker, but not the TCP part because of portproxy, correct?
+U0JFJ4KHS says -=*[1483049885.000653]-=*::: I don't think dns search changes have been merged yet
+U0ALRFJH0 says -=*[1483049995.000654]-=*::: so best choice is to use oneget, correct?
+U0JFJ4KHS says -=*[1483050043.000655]-=*::: right
+U3K38QC73 says -=*[1483056693.000656]-=*::: Actually it doesn't seem like it is. Docker 1.12 is broken due to the anniversary update from what I can see online. I couldnt run any containers this afternoon once I installed docker from oneget( docker 1.12). May have to install manually and try again
+U0JFJ4KHS says -=*[1483057648.000657]-=*::: can you try to manually installing 1.12.2-cs2-ws-beta, I have tested using this and it works great for me
+U3K38QC73 says -=*[1483062189.000659]-=*::: ya sure. Let me try now
+U2U84B4BE says -=*[1483078259.000660]-=*::: Dear all, dns-search has been fixed on MS side and  awaiting to be merged  <https://github.com/docker/docker/issues/29686>
+U2U84B4BE says -=*[1483078394.000662]-=*::: <@U3K38QC73> You can manually install Docker on Windows, you have you have control on your target Docker version
+U2U84B4BE says -=*[1483078418.000663]-=*::: <@U2U84B4BE|hongxima> uploaded a file: <https://kubernetes.slack.com/files/hongxima/F3KVBRWBE/powershell.powershell|powershell>
+U2U84B4BE says -=*[1483078632.000664]-=*::: 1-12 has dns bug that you may not have immediate host resolution in seconds after you start the container. You can upgrade to 1-14-dev to get it fixed, but 1-14-dev would not work with kubelet until PR#39005 is merged.
+U0ALRFJH0 says -=*[1483090482.000665]-=*::: nothing will be merged into Kubernetes until tuesday, when the 1.6 dev cycle starts.
+U0ALRFJH0 says -=*[1483090831.000666]-=*::: <@U2U84B4BE> question: you have told that setting up routes in the VMs on AWS is enough, and no AWS routes are needed. correct?
+U2U84B4BE says -=*[1483090844.000667]-=*::: That's true
+U0ALRFJH0 says -=*[1483090847.000668]-=*::: i know i've asked you this before but double checking never hurts.
+U0ALRFJH0 says -=*[1483090865.000669]-=*::: ok. can you confirm these VMs sit in the *same* availability zone?
+U2U84B4BE says -=*[1483090911.000670]-=*::: Yes,they're in same AZ
+U2U84B4BE says -=*[1483090946.000671]-=*::: <@U0ALRFJH0> , Have you or anyone in your team ever tried Docker in Docker (DinD) on Windows Server 2016?
+U0ALRFJH0 says -=*[1483091117.000673]-=*::: nop.
+U0ALRFJH0 says -=*[1483091148.000674]-=*::: <@U2U84B4BE> would you be so kind and confirm that the same recipe (routes in VMs) work for machines in different AZs? my suspicion is that it won't.
+U2U84B4BE says -=*[1483091584.000675]-=*::: <@U0ALRFJH0> I need to check with my customer if they allow us to do so , they own the AWS account :slightly_smiling_face:
+U0ALRFJH0 says -=*[1483092316.000676]-=*::: ah, i see. thanks <@U2U84B4BE>
+U0ALRFJH0 says -=*[1483092335.000677]-=*::: did you document the steps?
+U0ALRFJH0 says -=*[1483092358.000678]-=*::: i'd like to add/merge AWS steps to our GCP and Azure tutorials
+U0ALRFJH0 says -=*[1483092792.000679]-=*::: <@U0PPMUTGR> i want to perform some SDN experiments today on GCP. we should request a quota increase now that we have credits. <@U2B8R3SLQ> should be able to help in case we have issues - she's probably on vacation.
+U2U84B4BE says -=*[1483095393.000680]-=*::: <@U0ALRFJH0>, sorry but my documents are all in Chinese , I 'd like to contribute some English document if there is a need, please let me know
+U0ALRFJH0 says -=*[1483100546.000681]-=*::: <@U2U84B4BE> that would definitely help. we should do it!
+U0ALRFJH0 says -=*[1483101421.000682]-=*::: <@U0PPMUTGR> SDN seems a no-go. in principle, it would work on-prem, not cloud besides Azure.

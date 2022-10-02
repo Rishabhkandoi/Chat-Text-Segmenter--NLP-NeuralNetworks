@@ -1,0 +1,189 @@
+==========
+U0A8QHGBS says -=*[1476905674.000910]-=*::: so
+U0A8QHGBS says -=*[1476905768.000911]-=*::: I'm developing a JupyterHub spawner
+U0A8QHGBS says -=*[1476905775.000912]-=*::: and I want to be able to have a dev environment
+U0A8QHGBS says -=*[1476905781.000913]-=*::: where I can run a network service
+U0A8QHGBS says -=*[1476905785.000914]-=*::: that can reach pod / service IPs
+U0A8QHGBS says -=*[1476905795.000915]-=*::: and the pods can reach this network service as well
+U0A8QHGBS says -=*[1476905797.000916]-=*::: I'm not entirely sure how to do this
+U0A8QHGBS says -=*[1476905827.000917]-=*::: vague thought is to add the pod IP subnet route table manually to my host system, forward it to the minikube VM ip
+U0A8QHGBS says -=*[1476905861.000918]-=*::: not sure if that'll work
+U0A8QHGBS says -=*[1476906211.000919]-=*::: (this is with the virtualbox provider)
+U0ALQU0US says -=*[1476906849.000921]-=*::: Is it possible to enable custom metrics within minikube? I've tried `--extra-config=kubelet.ENABLE_CUSTOM_METRICS=true` but I dont believe that is working.
+U1FGYMJ6B says -=*[1476911173.000922]-=*::: Yes this should be possible now with the --extra-config flag.  I believe the issue is the case/value used, I believe the command should be: --extra-config=kubelet.EnableCustomMetrics=true
+U0A8QHGBS says -=*[1476914398.000923]-=*::: can I set virtualbox config?
+U0A8QHGBS says -=*[1476914406.000924]-=*::: I want a bridged network interface rather than a NAT
+U1TUWPL1M says -=*[1476914445.000925]-=*::: <@U0A8QHGBS> you could do it through VBoxManage or the virtualbox UI im sure
+U0A8QHGBS says -=*[1476914473.000926]-=*::: I tried it and it broke the box
+U0A8QHGBS says -=*[1476914480.000927]-=*::: I'm going to stop it and try it when it's stopped
+U1TUWPL1M says -=*[1476914512.000928]-=*::: yeah you should do a `minikube stop` before
+U1TUWPL1M says -=*[1476914563.000929]-=*::: let me know if that works, it might be cool to integrate that into minikube
+U0A8QHGBS says -=*[1476914616.000930]-=*::: yeah, it does!
+U0A8QHGBS says -=*[1476914621.000931]-=*::: I just added an extra network adapter
+U0A8QHGBS says -=*[1476914624.000932]-=*::: and set it to type bridged
+U0A8QHGBS says -=*[1476914637.000933]-=*::: and now things on my network can call into my vbox
+U0A8QHGBS says -=*[1476914641.000934]-=*::: and vice versa :slightly_smiling_face:
+U1TUWPL1M says -=*[1476914664.000935]-=*::: yeah thats good functionality to have
+U1TUWPL1M says -=*[1476914688.000936]-=*::: im not sure exactly how we would do it with the other drivers though
+U0A8QHGBS says -=*[1476914717.000937]-=*::: yeah
+U0A8QHGBS says -=*[1476914745.000938]-=*::: so that's one half of it - which is the pods being able to talk to the host
+U0A8QHGBS says -=*[1476914748.000939]-=*::: but I also want the reverse
+==========
+U0A8QHGBS says -=*[1476914752.000940]-=*::: which is my host being able to talk to the pod
+U0A8QHGBS says -=*[1476914754.000941]-=*::: pods
+U0A8QHGBS says -=*[1476914772.000942]-=*::: we do this in prod by basically installing flannel on the nodes that aren't part of the cluster but still want to talk to pods
+U0A8QHGBS says -=*[1476914779.000943]-=*::: (and kube-proxy so they can use service IPs)
+U0A8QHGBS says -=*[1476915601.000944]-=*::: I've found a way
+U0A8QHGBS says -=*[1476915612.000945]-=*::: which is prety much: sudo ip route add 172.17.0.0/16 via 192.168.99.101
+U0A8QHGBS says -=*[1476915622.000946]-=*::: where 172.17.0.01/16 is the pod ip network range
+U0A8QHGBS says -=*[1476915636.000947]-=*::: and 192.168.99.101 is the bridged IP of the minikube box :smile:
+U0A8QHGBS says -=*[1476915650.000948]-=*::: now let me see if I Can do it in a more contained way, without having to bridge network
+U0A8QHGBS says -=*[1476915790.000949]-=*::: possibly with a host only network
+U0A8QHGBS says -=*[1476915792.000950]-=*::: tries
+U1TUWPL1M says -=*[1476915908.000951]-=*::: <@U0A8QHGBS> this is the issue we've been using to brainstorm ideas around making the pods routable <https://github.com/kubernetes/minikube/issues/38>
+U0A8QHGBS says -=*[1476916029.000953]-=*::: oooh, I'll put the results of my experimenting on it :slightly_smiling_face:
+U0A8QHGBS says -=*[1476916059.000954]-=*::: I'm taking notes on <https://etherpad.wikimedia.org/p/setting-up-minikube> now, trying to recreate it from start
+U1TUWPL1M says -=*[1476916097.000955]-=*::: i was also thinking maybe we could do something with running ingress as an addon and adding dynamic ingress rules
+U0A8QHGBS says -=*[1476916141.000956]-=*::: could be, but that only works for a subset of cases
+U1TUWPL1M says -=*[1476916145.000957]-=*::: yeah
+U0A8QHGBS says -=*[1476916666.000958]-=*::: <@U1TUWPL1M> ok, I've a functional example at <https://etherpad.wikimedia.org/p/setting-up-minikube>
+U0A8QHGBS says -=*[1476916670.000959]-=*::: shall I just add it to the issue?
+U1TUWPL1M says -=*[1476916815.000960]-=*::: yeah definitely
+U1TUWPL1M says -=*[1476916828.000961]-=*::: i think the only thing to add to that is to figure out the corresponding vboxmanage command
+U1TUWPL1M says -=*[1476916843.000962]-=*::: so that someone could script it out or we could add the functionality to the virtualbox driver
+U0A8QHGBS says -=*[1476916873.000963]-=*::: yeah
+U0A8QHGBS says -=*[1476916876.000964]-=*::: that's true
+U0A8QHGBS says -=*[1476916881.000965]-=*::: I can probably find that out too
+U0A8QHGBS says -=*[1476917018.000966]-=*::: gotta jump into a meeting, I'll comment after!
+U1TUWPL1M says -=*[1476917042.000967]-=*::: alright thanks for trying this :thumbsup:
+U0A8QHGBS says -=*[1476917065.000968]-=*::: yw!
+U0A8QHGBS says -=*[1476917068.000969]-=*::: am glad I got it to work :slightly_smiling_face:
+U0A8QHGBS says -=*[1476917084.000970]-=*::: <@U1TUWPL1M> I've never used vboxmanage, so if you've I"ll appreciate help in converting those GUI steps to a command :slightly_smiling_face:
+U0A8QHGBS says -=*[1476917087.000971]-=*::: but no worries ifnot
+U1TUWPL1M says -=*[1476917102.000972]-=*::: yeah ill take a stab at it
+U0A8QHGBS says -=*[1476917220.000973]-=*::: \o/ awesome, ty
+U0A8QHGBS says -=*[1476917222.000974]-=*::: brb :slightly_smiling_face:
+U0A8QHGBS says -=*[1476929313.000975]-=*::: <@U1TUWPL1M> any luck? :slightly_smiling_face:
+U1TUWPL1M says -=*[1476929407.000976]-=*::: i think you can do VBoxManage modifyvm --cableconnected3 on
+U1TUWPL1M says -=*[1476929412.000977]-=*::: but i wouldnt worry about it too much
+U0A8QHGBS says -=*[1476929995.000978]-=*::: ok :slightly_smiling_face:
+U0A8QHGBS says -=*[1476983553.000980]-=*::: the default image doesn't have tcpdump :disappointed:
+U0A8QHGBS says -=*[1476983571.000981]-=*::: not having a package manager seems very limiting and I'm not really used to running a  priv'd container  I guess
+==========
+U1YEXGY77 says -=*[1476984358.000982]-=*::: <@U0DT660QM>: I saw minikube-iso become move to minikube core, Where is release the v0.0.6?(including virtio-blk config) I want to test with official iso <https://github.com/kubernetes/minikube/releases/download/v0.10.0/minikube-0.7.iso> its already including virtio-blk config?
+U1TUWPL1M says -=*[1476984399.000983]-=*::: <@U1YEXGY77> we should rename those, the iso releases on kubernetes/minikube are actually the boot2docker isos
+U1YEXGY77 says -=*[1476984457.000984]-=*::: <@U1TUWPL1M> ah, Hm
+U1TUWPL1M says -=*[1476984470.000985]-=*::: im trying to find the v0.0.6 minikube-iso for you
+U1YEXGY77 says -=*[1476984541.000986]-=*::: ah, thanks
+U1YEXGY77 says -=*[1476984547.000987]-=*::: just in case, I mean include <https://github.com/coreos/minikube-iso/commit/73ccecaeff4493a4d52a1041b82b8440c1c2ffca>
+U1YEXGY77 says -=*[1476984764.000989]-=*::: and sorry nitpick, but on <https://github.com/kubernetes/minikube/tree/master/deploy/iso/minikube-iso#configurations>, <https://github.com/coreos/minikube-iso/issues/17> is bad link
+U1YEXGY77 says -=*[1476985735.000991]-=*::: <@U1TUWPL1M> And, very sorry, if you have time, please add `driver/xhyve` label to <https://github.com/kubernetes/minikube/issues/708> add `platform/osx` label to <https://github.com/kubernetes/minikube/issues/706> because Im not collaborator, so use label filtering. I want to help you if possible :pray: but catch the issue is little hard..
+U1TUWPL1M says -=*[1476986510.000995]-=*::: done^
+U1TUWPL1M says -=*[1476986533.000996]-=*::: ill try to be better on tagging those
+U1YEXGY77 says -=*[1476986631.000997]-=*::: ah! thanks : )
+U1YEXGY77 says -=*[1476986919.000998]-=*::: I'm going to look at all of xhyve related issue as far as possible(on minikube)
+U1YEXGY77 says -=*[1476987183.001000]-=*::: so, please feel free to `@`(at) mention to me if need
+==========
+U0ALQU0US says -=*[1476988359.001003]-=*::: Anybody know how to view minikube's kubelet logs?
+U1TUWPL1M says -=*[1476988367.001004]-=*::: `minikube logs`
+U0ALQU0US says -=*[1476988377.001005]-=*::: ha ha. too easy :slightly_smiling_face:
+U1TUWPL1M says -=*[1476988399.001006]-=*::: granted its not the best because it just spits out all the logs to stdout
+U0ALQU0US says -=*[1476988399.001007]-=*::: thanks <@U1TUWPL1M>
+U0ALQU0US says -=*[1476988407.001008]-=*::: better than nothing :slightly_smiling_face:
+U1TUWPL1M says -=*[1476988417.001009]-=*::: if you need to see the logs themselves you can `minkube ssh` and they should in `/var/localkube`
+U0ALQU0US says -=*[1476988429.001010]-=*::: awesome.
+==========
+U1YEXGY77 says -=*[1476990452.001011]-=*::: <@U1TUWPL1M> are you there?
+U1TUWPL1M says -=*[1476990456.001012]-=*::: yup
+U1YEXGY77 says -=*[1476990485.001013]-=*::: what minikube version? build from latest source? <https://github.com/zchee/docker-machine-driver-xhyve/pull/140#issuecomment-254699265>
+U1TUWPL1M says -=*[1476990521.001015]-=*::: i think i might have used the latest release v0.11
+U1TUWPL1M says -=*[1476990526.001016]-=*::: are you able to reproduce?
+U1YEXGY77 says -=*[1476990529.001017]-=*::: ah
+U1YEXGY77 says -=*[1476990531.001018]-=*::: yes
+U1YEXGY77 says -=*[1476990540.001019]-=*::: but this PR needs this
+U1YEXGY77 says -=*[1476990543.001020]-=*::: <https://github.com/zchee/minikube/commit/b6461637f9a976477b99d59317bda0b3bc21c77a>
+U1YEXGY77 says -=*[1476990551.001021]-=*::: on minikube side
+U1TUWPL1M says -=*[1476990561.001022]-=*::: ahh gotcha
+U1YEXGY77 says -=*[1476990572.001023]-=*::: so, now not `bzImage`
+U1TUWPL1M says -=*[1476990595.001024]-=*::: i can try to retest with that
+U1YEXGY77 says -=*[1476990607.001025]-=*::: v0.0.7 is `initrd.img` and `vmlinuz64`
+U1TUWPL1M says -=*[1476990623.001026]-=*::: you mean v0.0.6?
+U1YEXGY77 says -=*[1476990624.001027]-=*::: :pray:
+U1YEXGY77 says -=*[1476990627.001028]-=*::: ah
+U1YEXGY77 says -=*[1476990628.001029]-=*::: yes
+U1YEXGY77 says -=*[1476990637.001030]-=*::: oh?
+U1YEXGY77 says -=*[1476990653.001031]-=*::: now try `rm -rf ~/.minikube`
+U1TUWPL1M says -=*[1476990664.001032]-=*::: ok ill make sure all those paths are correct, and i get the qcow fields in my driver struct
+U1YEXGY77 says -=*[1476990665.001033]-=*::: automatically downloaded `/Users/zchee/.minikube/cache/boot2docker.iso from file:///Users/zchee/.minikube/cache/iso/minikube-0.7.iso`
+U1YEXGY77 says -=*[1476990694.001034]-=*::: its v0.0.6?
+U1TUWPL1M says -=*[1476990708.001035]-=*::: 0.7 is the old boot2docker image
+U1TUWPL1M says -=*[1476990734.001036]-=*::: the minikube-iso (with rkt and systemd) is versioned with v0.0.6
+U1YEXGY77 says -=*[1476990747.001037]-=*::: ah, understand
+U1YEXGY77 says -=*[1476990797.001038]-=*::: if minikube-iso, `bzImage` and `initrd`
+U1YEXGY77 says -=*[1476990892.001040]-=*::: &gt; ok ill make sure all those paths are correct, and i get the qcow fields in my driver struct ok, thanks
+==========
+U0A8QHGBS says -=*[1476991281.001041]-=*::: <@U1TUWPL1M> do you know if there's a way to force minikube to have docker use a different ip allocation?
+U0A8QHGBS says -=*[1476991285.001042]-=*::: rather than the default?
+U0A8QHGBS says -=*[1476991373.001043]-=*::: mostly so I don't have to kill docker on the host to do my ip route thing
+U0A8QHGBS says -=*[1476991654.001044]-=*::: (I also commented on <https://github.com/kubernetes/minikube/issues/38>  with my proxy setup)
+U0ALQU0US says -=*[1477063307.001048]-=*::: Is it possible to compile my own kubelet used within minikube?
+U0ALQU0US says -=*[1477064008.001049]-=*::: <https://github.com/kubernetes/minikube/blob/master/UPDATE_KUBERNETES.md> appears to be what I'm looking for.
+U1TUWPL1M says -=*[1477067494.001051]-=*::: yeah <@U0ALQU0US> minikube runs another binary called localkube in the VM which just runs all the kubernetes components as goroutines
+U1TUWPL1M says -=*[1477067515.001052]-=*::: are you looking to do k8s development in minikube or just want a specific version?
+U0ALQU0US says -=*[1477067536.001053]-=*::: the former.
+U1TUWPL1M says -=*[1477067582.001054]-=*::: yeah that may be too slow of a process to iterate quickly
+U0ALQU0US says -=*[1477067614.001055]-=*::: definitely noticing that. But really, I just need a few debug lines in cadvisor, so hopefully I dont have to build too many times :slightly_smiling_face:
+U1TUWPL1M says -=*[1477067637.001056]-=*::: the quickest way would probably be to link your vendored k8s in minikube with your k8s repo
+U1TUWPL1M says -=*[1477067669.001057]-=*::: then you could just `make localkube` in minikube repo and then `minikube start`
+U0ALQU0US says -=*[1477067683.001058]-=*::: awesome. thanks!
+==========
+U0NEL7T4G says -=*[1477305168.001063]-=*::: Hi, quick question: Inside the minikube vm, is /mnt/sda1 always present? can I rely on it existing in general? I was doing some PVs on /opt which quickly filled /. I cannot do the PVs on /Users/myself/ since the app using the PV makes hard links, and these are not supported in shared folders on VirtualBox. Thanks!
+U0DTGC97Z says -=*[1477305723.001065]-=*::: <@U0NEL7T4G> <https://github.com/kubernetes/minikube#persistent-volumes>
+U0NEL7T4G says -=*[1477306059.001067]-=*::: thanks <@U0DTGC97Z>, that readme looks a lot more complete that last time I looked there! I should have re-tried looking before asking!
+==========
+U2QFJALG0 says -=*[1477328474.001070]-=*::: Hi all, I am looking for an easy way of deploying Kubernetes for CI, probably hosted on travis CI. Basically i want to install k8s in 1 node inside the travis CI VM. Looking at minikube it looks like it has the things that I need but i could not find the correct docs to not use a VM but instead do the setup locally? Is localkube what I should be using? I have been using kubeadm to deploy the cluster should I just use it to do the deployment of a single k8s node?
+U1TUWPL1M says -=*[1477329087.001071]-=*::: <@U2QFJALG0> yeah, localkube is the binary running inside the VM that spins up the single node cluster <https://github.com/kubernetes/minikube/tree/master/pkg/localkube>
+U1TUWPL1M says -=*[1477329146.001073]-=*::: this is the command that minkube generates to run localkube <https://github.com/kubernetes/minikube/blob/master/pkg/minikube/cluster/commands.go>
+U1TUWPL1M says -=*[1477329211.001075]-=*::: i think <@U0ZV4393M> has been doing some work on running localkube without minikube, he might be able to help if you get into trouble
+U2QFJALG0 says -=*[1477332980.001076]-=*::: Thats what I wanted to know I will give localkube a try. Thanks!
+==========
+U18JTHMDY says -=*[1477415357.001081]-=*::: Hey all - `docker ps` hangs after I run `minikube stop`. I know the minikube docker-env part of it sets something up. How do you recommend undoing it?
+U1TUWPL1M says -=*[1477415377.001082]-=*::: `eval $(minikube docker-env -u)`
+U1TUWPL1M says -=*[1477415389.001083]-=*::: that will unset the env vars
+U18JTHMDY says -=*[1477415390.001084]-=*::: Sorry if it's answered elsewhere - I didn't find a googable answer
+U18JTHMDY says -=*[1477415434.001085]-=*::: That's perfect - thank you!
+U18JTHMDY says -=*[1477415450.001086]-=*::: Writing up a blog on using minikube right now and didn't want to leave the user hanging at the end
+U1TUWPL1M says -=*[1477415473.001087]-=*::: awesome! be sure to post it here when you're finished
+U18JTHMDY says -=*[1477415482.001088]-=*::: happy to!
+U18JTHMDY says -=*[1477418757.001090]-=*::: <@U1TUWPL1M> we're live - the second half is running on top of minikube :raised_hands: <https://medium.com/intel-sdi/monitor-the-systems-you-love-on-kubernetes-6dcb256bd63c>
+==========
+U0ACRBLSV says -=*[1477423994.001092]-=*::: minikube .12 - and Kube 1.4.0
+U0ACRBLSV says -=*[1477424008.001093]-=*::: I am trying to get a petset working - but the PV wont provision
+U0ACRBLSV says -=*[1477424030.001094]-=*::: Is this something that needs to be enabled on minikube, or should it work by default?
+U0ACRBLSV says -=*[1477424325.001095]-=*::: i.e. does minikube support Persistent Volume Provisioning?
+U1TUWPL1M says -=*[1477425678.001096]-=*::: <@U0ACRBLSV> yeah it should <https://github.com/kubernetes/minikube#persistent-volumes>
+U0ACRBLSV says -=*[1477425710.001098]-=*::: I can create a PV - that is not my issue
+U0ACRBLSV says -=*[1477425725.001099]-=*::: I am expecting the pvc provisioner to do it for me
+U0ACRBLSV says -=*[1477425737.001100]-=*::: for a petset
+U1TUWPL1M says -=*[1477425757.001101]-=*::: oh gotcha
+U1TUWPL1M says -=*[1477425762.001102]-=*::: we have this issue open <https://github.com/kubernetes/minikube/issues/685>
+U0ACRBLSV says -=*[1477425764.001104]-=*::: i.e. if I have  pets web-1,web-2,  will it create me PVC
+U0ACRBLSV says -=*[1477425768.001105]-=*::: ahh ok
+U1TUWPL1M says -=*[1477425792.001106]-=*::: its only blocked on k8s releasing a new addon-manager
+U1TUWPL1M says -=*[1477425794.001107]-=*::: image
+U0ACRBLSV says -=*[1477425812.001108]-=*::: ok - Ill keep an eye on that issue
+==========
+U0ACRBLSV says -=*[1477426153.001109]-=*::: OK - on to next issue!
+U0ACRBLSV says -=*[1477426163.001110]-=*::: Petset dns - does not seem to resolve
+U0ACRBLSV says -=*[1477426168.001111]-=*::: known issue?
+==========
+U20L8GGUF says -=*[1477426714.001112]-=*::: anyone know how to get the kernel headers for minikube kernel 4.4.14-boot2docker?
+==========
+U0ACRBLSV says -=*[1477427191.001113]-=*::: dns issue resolved: PetSet service needs to be headless. ClusterIP: None
+==========
+U1TUWPL1M says -=*[1477427651.001114]-=*::: <@U20L8GGUF> you can see which headers are downloaded in the dockerfile for b2d <https://github.com/boot2docker/boot2docker/blob/master/Dockerfile>
+U1TUWPL1M says -=*[1477427835.001116]-=*::: im not sure if that answers your question
+==========
+U2UA5H59C says -=*[1477470398.001118]-=*::: hi! im trying to run minikube on macos using xhyve, but it seems i wasnt able to install the docker-machine xhyve driver properly ist here any guide/tutorial on how to do that?
+U2UA5H59C says -=*[1477470745.001119]-=*::: after following the instructions here: <https://github.com/zchee/docker-machine-driver-xhyve/releases> ```  minikube start --vm-driver xhyve Starting local Kubernetes cluster... E1026 10:31:40.797243   59266 start.go:90] Error starting host: Error creating host: Error with pre-create check: "Error detecting VBox version: exit status 126". Retrying. E1026 10:31:40.798344   59266 start.go:96] Error starting host:  Error creating host: Error with pre-create check: "Error detecting VBox version: exit status 126 ``` minikube version: v0.12.0
+==========

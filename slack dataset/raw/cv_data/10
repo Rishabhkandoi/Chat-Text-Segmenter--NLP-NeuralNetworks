@@ -1,0 +1,83 @@
+U25HB0UQJ says -=*[1473361472.000058]-=*::: Hey minikube!  Ive been struggling to get minikube working with a registry running locally - seems that docker uses https even with insecureregistry flag leading to problems - anyone have an idea? ``` ```
+U25HB0UQJ says -=*[1473361522.000061]-=*::: In general, if I want to build container images locally and run them on minikube, whats the easiest way?
+U0ACRBLSV says -=*[1473362890.000063]-=*::: Yep - that is what I usually d
+U0ACRBLSV says -=*[1473362911.000065]-=*::: It makes for a quick turn around cycle
+U25HB0UQJ says -=*[1473365122.000067]-=*::: <@U0ACRBLSV> thanks!
+U1XLRPD8B says -=*[1473382686.000070]-=*::: <@U25HB0UQJ> i use another approach, same as <@U0E408JSZ>, (thanks for your link) that does not have the issue you mentioned.  not necessary a good approach. basically start minikube with insecure-registry flag that point to itself, create a private registry in k8s, expose to outside, then push local build image to there. see <https://github.com/kubernetes/minikube/issues/461#issuecomment-238444842>
+U28CCA456 says -=*[1473412523.000073]-=*::: Did anyone make minikube working with <https://blog.jetbrains.com/pycharm/2015/10/announcing-pycharm-5-eap-143-165-docker-integration/> ?
+U226VQZ99 says -=*[1473419312.000074]-=*::: how do I specify the version of kubernetes in minikube?
+U226VQZ99 says -=*[1473419347.000075]-=*::: I have done: ``` minikube delete minikube start --cpus=2 --memory=8096 --kubernetes-version=v1.3.6 ``` still on 1.3.5 though
+U1X86991U says -=*[1473437468.000076]-=*::: <@U226VQZ99> did you try to clean up *.iso under .minikube of your home directory (e.g. find ~/.minikube/ -type f -iname *iso; make sure you stop/delete cluster first)
+U1TUWPL1M says -=*[1473437494.000077]-=*::: <@U226VQZ99> im also looking into this
+U226VQZ99 says -=*[1473437509.000078]-=*::: I removed both iso's
+U226VQZ99 says -=*[1473437517.000079]-=*::: basicly removed the whole cache directory
+U1TUWPL1M says -=*[1473437524.000080]-=*::: that worked for you?
+U226VQZ99 says -=*[1473437531.000081]-=*::: no, still on 1.3.5
+U1TUWPL1M says -=*[1473437542.000082]-=*::: yeah im seeing the same thing
+U226VQZ99 says -=*[1473437606.000083]-=*::: there exists an iso with 1.3.6 in it's name now, but minikube is still on the old version
+U1TUWPL1M says -=*[1473437617.000084]-=*::: thats ok
+U1TUWPL1M says -=*[1473437636.000085]-=*::: the kubernetes version is within the localkube image
+U226VQZ99 says -=*[1473437731.000086]-=*::: it might just download 1.3.5 and saves it as 1.3.6?
+U1X86991U says -=*[1473437862.000087]-=*::: why dont you verify yourself via `kubectl version`?
+U226VQZ99 says -=*[1473437903.000088]-=*::: <@U1X86991U> I know it is the wrong version
+U226VQZ99 says -=*[1473437914.000089]-=*::: it is just that I don't know how to get the actual write version
+U226VQZ99 says -=*[1473437921.000090]-=*::: but I might just need to raise a bug
+U1X86991U says -=*[1473437928.000091]-=*::: ok
+U226VQZ99 says -=*[1473437934.000092]-=*::: ``` Client Version: <http://version.Info|version.Info>{Major:"1", Minor:"3", GitVersion:"v1.3.6", GitCommit:"ae4550cc9c89a593bcda6678df201db1b208133b", GitTreeState:"clean", BuildDate:"2016-08-26T18:13:23Z", GoVersion:"go1.6.2", Compiler:"gc", Platform:"linux/amd64"} Server Version: <http://version.Info|version.Info>{Major:"1", Minor:"3", GitVersion:"v1.3.5", GitCommit:"b0deb2eb8f4037421077f77cb163dbb4c0a2a9f5", GitTreeState:"clean", BuildDate:"1970-01-01T00:00:00Z", GoVersion:"go1.6.2", Compiler:"gc", Platform:"linux/amd64"} ```
+U226VQZ99 says -=*[1473437951.000093]-=*::: specifying 1.3.6 get's you 1.3.5
+U1TUWPL1M says -=*[1473437954.000094]-=*::: yeah <@U226VQZ99> im seeing the same thing
+U226VQZ99 says -=*[1473438050.000095]-=*::: <@U1TUWPL1M> are you on the latest version of minikube btw? I was going to test it with minikube v0.8.0, Just didn't want to destroy+recreate the vm for the third time today :wink:
+U1TUWPL1M says -=*[1473438068.000097]-=*::: yup im on the latest
+U226VQZ99 says -=*[1473438078.000098]-=*::: ah ok, so that doesn't solve it
+U1TUWPL1M says -=*[1473438084.000099]-=*::: i think ive tracked down the issue
+U226VQZ99 says -=*[1473438178.000100]-=*::: what do you think it is?
+U1TUWPL1M says -=*[1473438367.000101]-=*::: i think it might actually just be the wrong uploaded file
+U1TUWPL1M says -=*[1473438377.000102]-=*::: trying it with kubernetes-version=v1.3.0 works properly
+U1TUWPL1M says -=*[1473438406.000103]-=*::: and we don't keep track of shasums so it definitely could have be incorrect
+U226VQZ99 says -=*[1473438411.000104]-=*::: that was my guess as well
+U1TUWPL1M says -=*[1473438561.000105]-=*::: we'll get the correct one uploaded ASAP
+U226VQZ99 says -=*[1473438686.000106]-=*::: thanks <@U1TUWPL1M>
+U1FGYMJ6B says -=*[1473440309.000107]-=*::: Hi <@U226VQZ99>, the correct version should now be uploaded for v1.3.6.  Sorry for the inconvenience and thanks for catching this.
+U226VQZ99 says -=*[1473440338.000108]-=*::: no worries. thanks
+U226VQZ99 says -=*[1473440368.000109]-=*::: is it possible to update without destroying the vm btw? I have some storage in there as well
+U1TUWPL1M says -=*[1473442786.000112]-=*::: yeah, you might have to delete ~/.minikube/cache/localkube/localkube-1.3.6 first though <@U226VQZ99>
+U226VQZ99 says -=*[1473442819.000113]-=*::: <@U1TUWPL1M> and then just do `minikube stop` and `minikube start`?
+U1TUWPL1M says -=*[1473442836.000114]-=*::: i think a minikube start will actually do it
+U1TUWPL1M says -=*[1473442897.000115]-=*::: we need to document which commands will take effect without a restart, without a deletion, etc.
+U1TUWPL1M says -=*[1473442925.000116]-=*::: for instance if you change the cpu or memory, the vm actually needs to be recreated.  but we can hot swap out k8s with just another "start"
+U226VQZ99 says -=*[1473442965.000117]-=*::: thanks, let me try
+U226VQZ99 says -=*[1473443119.000118]-=*::: thanks, that works perfectly now!
+U0CA12L6A says -=*[1473628121.000125]-=*::: the heapster service that im deploying to a minikube is disappearing instantly  it shows up under a get svc -w but doesnt stick around
+U0CA12L6A says -=*[1473628171.000126]-=*::: do I have to go through .minkube/addons?
+U0CA12L6A says -=*[1473628245.000127]-=*::: ah yeah: ``` INFO: == Kubernetes addon update completed successfully at 2016-09-11T21:04:53+0000 == INFO: Deleting Service kube-system/heapster service "heapster deleted ```
+U1TUWPL1M says -=*[1473639093.000129]-=*::: <@U0CA12L6A> heapster runs in the kube-system namespace, you'll need to add a --namespace=kube-system if you want to see it
+U1TUWPL1M says -=*[1473639117.000130]-=*::: also make sure if your taking the vanilla yml file from the heapster repo you've changed clusterIP to nodeport
+U2AEXRCUB says -=*[1473670538.000132]-=*::: I have run the eval $(minikube docker env) line but my containers still fail @ pulling the image from my local repo
+U2AEXRCUB says -=*[1473699273.000133]-=*::: Any ideas?
+U1TUWPL1M says -=*[1473699388.000134]-=*::: <@U2AEXRCUB> that will just share the docker daemon so that your host client will be talking to the VM's docker daemon
+U2AEXRCUB says -=*[1473699569.000136]-=*::: <@U1TUWPL1M> So there isn't a way to pull images from host docker repo built locally?
+U1TUWPL1M says -=*[1473699882.000137]-=*::: no that should work
+U1TUWPL1M says -=*[1473699895.000138]-=*::: did you make sure to turn off the  `imagePullPolicy:Always`
+U0ACRBLSV says -=*[1473787796.000141]-=*::: <@U2AEXRCUB> Just to clarify: If you use the eval trick, you want to docker build direct to the minikube instance
+U0ACRBLSV says -=*[1473787834.000142]-=*::: If you are running some other registry service, then you need to setup minikube docker to use that registry
+U2AEXRCUB says -=*[1473800570.000143]-=*::: <@U0ACRBLSV> Yeah, I'm using docker locally, but it didn't pull up images that i had built locally
+U0ACRBLSV says -=*[1473801569.000144]-=*::: yep - so the easiest thing for development is to not use docker locally (the docker machine on your desktop), but rather use the docker in minikube,
+U0ACRBLSV says -=*[1473801608.000145]-=*::: You can set  imagePullPolicy: IfNotPresent
+U0ACRBLSV says -=*[1473801610.000146]-=*::: or Never
+U29PVA5G9 says -=*[1473809905.000147]-=*::: eval $(minikube docker-env) will set your docker config to point to minikubes docker
+U2AEXRCUB says -=*[1473820655.000148]-=*::: How would I build images locally then? Will I still use `docker build` or..?
+U2AEXRCUB says -=*[1473844388.000150]-=*::: <@U29PVA5G9> <@U0ACRBLSV> <@U1TUWPL1M> ^
+U179VE6FR says -=*[1473859111.000151]-=*::: Hullo seem to be running into a small bug, can anyone else confirm?
+U179VE6FR says -=*[1473859130.000152]-=*::: `minikube service NAME` hangs when calling on a service not in the default namespace
+U179VE6FR says -=*[1473859245.000153]-=*::: <@U2AEXRCUB>: You've probably fiured it out by now but once you run the `eval` you can rebuild the image, and it appears in the registry minikube uses
+U179VE6FR says -=*[1473859261.000154]-=*::: `docker` commands now point to that one
+U0C6963R6 says -=*[1473859330.000155]-=*::: <@U179VE6FR> did you try using the `-n, --namespace="default": The service namespace` flag?
+U179VE6FR says -=*[1473859340.000157]-=*::: Haha actually no XD
+U179VE6FR says -=*[1473859363.000158]-=*::: There we go
+U179VE6FR says -=*[1473859396.000159]-=*::: I've been messing around with the k8s go client and go concurrency methods all morning, I'm forgetting my CLI basics
+U179VE6FR says -=*[1473859429.000160]-=*::: That being said, forgetting the namespace flag shouldnt make the command hang, it should exit with not found as if using an incorrect service name
+U1B8PHP0D says -=*[1473860752.000161]-=*::: hi! should there be a `kube-dns` running within minikube? i can't see that in my setup
+U179VE6FR says -=*[1473861669.000163]-=*::: <@U1B8PHP0D> even on `kube-system` namespace?
+U1B8PHP0D says -=*[1473861685.000164]-=*::: nope
+U179VE6FR says -=*[1473861716.000165]-=*::: I do, so something may be up
+U179VE6FR says -=*[1473861730.000166]-=*::: I take it you've noticed after one service couldnt find the other?

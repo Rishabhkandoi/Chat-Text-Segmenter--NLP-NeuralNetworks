@@ -1,0 +1,70 @@
+==========
+U0722SJ4A says -=*[1468967708.000158]-=*::: What do you guys think of GretaScript? <https://greta.io/>
+==========
+U0731R5T3 says -=*[1468973758.000160]-=*::: Thats amazing. I recently made an iOS and Android application that uses webRTC for video chat. I definitely will be checking it out.
+U0723KV7E says -=*[1468978573.000161]-=*::: Just on this alone I like it.. <https://greta.io/documentation/images/backgroundImages>
+U076LGFE0 says -=*[1469010919.000165]-=*::: gretascript: cool idea. implementation seems centralized. questions: what are privacy implications for visitors? bandwidth usage for those on metered connections?
+==========
+U076LGFE0 says -=*[1469057682.000168]-=*::: <http://arstechnica.com/information-technology/2016/07/skype-finalizes-its-move-to-the-cloud-ignores-the-elephant-in-the-room/> recentralization
+U076LGFE0 says -=*[1469195643.000173]-=*::: <https://www.larrysalibra.com/blockstack-in-asia-meetup-marathon-recap/>
+U076LGFE0 says -=*[1469195653.000175]-=*::: (also submitted to <http://blog.blockstack.org|blog.blockstack.org>)
+U0722SJ4A says -=*[1469196488.000177]-=*::: Awesome post Larry!
+U076LGFE0 says -=*[1469200567.000178]-=*::: <@U0722SJ4A>: thank!
+U071X9XPC says -=*[1469201418.000180]-=*::: Great post Larry! Just retweeted it!
+U071X9XPC says -=*[1469219636.000184]-=*::: Larrys new post is looking great on <http://blog.blockstack.org|blog.blockstack.org>
+U071X9XPC says -=*[1469219637.000185]-=*::: <https://blog.blockstack.org/>
+U071X9XPC says -=*[1469219642.000187]-=*::: loving that picture!
+==========
+U071X9XPC says -=*[1469480198.000198]-=*::: <https://twitter.com/alexisohanian/status/757676287603257344>
+U076LGFE0 says -=*[1469509762.000201]-=*::: <https://pages.nist.gov/800-63-3/>
+U076LGFE0 says -=*[1469523523.000203]-=*::: <http://eepurl.com/b-6K1D>
+U076LGFE0 says -=*[1469523589.000205]-=*::: bitmex is offering ethereum classic derivatives already <http://us3.campaign-archive2.com/?u=db45c09bdf20e1866bb32123f&amp;id=f15a87988e>
+==========
+U071X9XPC says -=*[1469543968.000208]-=*::: <http://arstechnica.com/information-technology/2016/07/skype-finalizes-its-move-to-the-cloud-ignores-the-elephant-in-the-room/>
+U071X9XPC says -=*[1469543979.000210]-=*::: This applies to P2P/DHT based storage as well
+==========
+U071X9XPC says -=*[1469548212.000213]-=*::: <https://bitflikz.com/blogs/news/the-theft-of-a-1-billion-dollar-blockchain-community-legal-action-begins>
+U071X9XPC says -=*[1469548239.000215]-=*::: :popcorn::popcorn::popcorn:
+U076LGFE0 says -=*[1469552854.000216]-=*::: A stunt to get people to sign up for an email service?
+U076LGFE0 says -=*[1469552867.000217]-=*::: <@U076LGFE0|larry> uploaded a file: <https://blockstack.slack.com/files/larry/F1V99NC6A/screen_shot_2016-07-27_at_1.06.10_am.png|Screen Shot 2016-07-27 at 1.06.10 AM.png>
+U076LGFE0 says -=*[1469553928.000218]-=*::: <https://blog.blockstack.org/blockchains-for-distributed-systems-ffd68e6341b5#.je0yxthnt>
+U076LGFE0 says -=*[1469553996.000220]-=*::: <@U074Q9Q3D>: what does the * in fork*-consistent mean? Meant to ask about that in the dccl2016 paper too.
+U071X9XPC says -=*[1469555431.000222]-=*::: Its a consistency model proposed by David Mazieres
+U071X9XPC says -=*[1469555551.000223]-=*::: <http://www.scs.stanford.edu/~jinyuan/bft2f.pdf>
+U071X9XPC says -=*[1469555599.000224]-=*::: Jude made the argument that you can use blockchains (more specifically Blockstack) to build fork*-consistent systems
+U071X9XPC says -=*[1469555618.000225]-=*::: interestingly there is a wide-variety of fork*-consistent systems already implemented and deployed in practice
+U071X9XPC says -=*[1469555626.000226]-=*::: so were making the case
+U071X9XPC says -=*[1469555651.000227]-=*::: that they can be implemented using blockstack as well, with a formal definition around why this will work (the underlying consistency model is the same)
+==========
+U071X9XPC says -=*[1469558977.000229]-=*::: <https://blog.blockstack.org/peeling-the-layers-of-blockchain-forks-d06b52340a3c#.yxa9f7vn0>
+U071X9XPC says -=*[1469558994.000232]-=*::: <https://twitter.com/muneeb/status/758009778912256000>
+U071X9XPC says -=*[1469559052.000234]-=*::: <https://twitter.com/muneeb/status/758010777945141249>
+U076LGFE0 says -=*[1469562212.000236]-=*::: <@U071X9XPC>: thanks! 
+U0723KV7E says -=*[1469564537.000237]-=*::: Great post <@U071X9XPC>
+U07C0TB6H says -=*[1469564630.000238]-=*::: @muneeb thoughts? <https://twitter.com/Datavetaren/status/758023070674259968>
+U071X9XPC says -=*[1469564702.000241]-=*::: Both chains are vulnerable to replay attacks.
+U071X9XPC says -=*[1469564707.000242]-=*::: But the fix is fairly simple
+U071X9XPC says -=*[1469564727.000243]-=*::: On ETH, send your coins to a new address.
+U071X9XPC says -=*[1469564736.000244]-=*::: On ETC, send your coins to a new address.
+U071X9XPC says -=*[1469564738.000245]-=*::: &lt;finish&gt;
+U0722SJ4A says -=*[1469564775.000248]-=*::: Damn! You said to move it to a new address
+U0722SJ4A says -=*[1469564780.000249]-=*::: Didnt realize it had to be mine
+U071X9XPC says -=*[1469564783.000250]-=*::: lol
+U0722SJ4A says -=*[1469564791.000251]-=*::: Aaand its gone
+U071X9XPC says -=*[1469564796.000252]-=*::: yeah pick a random address and send it there :wink:
+U0722SJ4A says -=*[1469564798.000253]-=*::: Reply attack solved though
+U071X9XPC says -=*[1469564806.000254]-=*::: let me help you with your random number generator ...
+U0722SJ4A says -=*[1469564812.000255]-=*::: haha
+U0722SJ4A says -=*[1469564826.000257]-=*::: weird it just keeps spitting out my own address"
+U07C0TB6H says -=*[1469564923.000258]-=*::: issue is will people get this memo
+U0722SJ4A says -=*[1469565076.000259]-=*::: what memo
+U07C0TB6H says -=*[1469569043.000260]-=*::: the memo to do that :stuck_out_tongue:
+U07C0TB6H says -=*[1469569050.000261]-=*::: eek, have you guys been following this? <https://twitter.com/sthenc/status/758049014675714049>
+==========
+U074Q9Q3D says -=*[1469641203.000266]-=*::: <http://www.coindesk.com/blockchain-research-ibm-distributed-cryptocurrencies-consensus-ledgers/>
+U0722SJ4A says -=*[1469647343.000268]-=*::: Great mention <@U074Q9Q3D> !
+U0722SJ4A says -=*[1469647349.000269]-=*::: ```Attendee Jude Nelson of New York City-based Blockstack Labs told CoinDesk the conference was established to serve as a way to galvanize interest in blockchain in the academic community.  According to Nelson, topics discussed included separating block rewards from the coinbases in blockchain systems and building a more efficient gossiping mechanism.```
+U074Q9Q3D says -=*[1469647468.000270]-=*::: thanks!
+U0723KV7E says -=*[1469647901.000271]-=*::: Very nice mention! <@U074Q9Q3D>
+U071X9XPC says -=*[1469648854.000272]-=*::: nice!
+==========

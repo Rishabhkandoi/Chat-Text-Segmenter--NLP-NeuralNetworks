@@ -1,0 +1,66 @@
+==========
+U0JFJ4KHS says -=*[1478096603.000676]-=*::: <@U0ALRFJH0> my CNCF CLA should be taken care of now
+U0ALRFJH0 says -=*[1478096611.000677]-=*::: cool
+U0PPMUTGR says -=*[1478098212.000678]-=*::: Brendan Burns will look at the PR today he said
+U0ALRFJH0 says -=*[1478098554.000679]-=*::: :+1:
+==========
+U0ALRFJH0 says -=*[1478102786.000680]-=*::: <@U0JFJ4KHS> so the feedback from sig-network is short: &gt;  it's going to be interesting figuring out what to do there and how to pass that in for the linux code but not Windows code, since ideally things that call NewProxier shouldn't care whether they are on Windows or Linux
+U0JFJ4KHS says -=*[1478102798.000681]-=*::: <@U0PPMUTGR> I was looking at creating kubelet and kube-proxy service on Windows using `sc.exe`, but feel a better approach would be to create a powershell script which uses `Start-Process` instead <https://technet.microsoft.com/en-us/library/hh849848.aspx>
+U0ALRFJH0 says -=*[1478102849.000682]-=*::: re: powershell, agreed. i was actually reading about it the other day and forgot to ask you if it was possible since my quick read on the PS features, it seems you can do stuff like with systemd.
+U0JFJ4KHS says -=*[1478103006.000683]-=*::: the only thing is Start-Process will not start the processes on restart, but I don't think we should bother about that as everyone would want to have their own mechanisms to handle that based on the policies that they might have in place
+U0ALRFJH0 says -=*[1478103400.000684]-=*::: <@U0JFJ4KHS> should the script run on boot?
+U0JFJ4KHS says -=*[1478103478.000685]-=*::: Not necessarily 
+U0ALRFJH0 says -=*[1478104990.000686]-=*::: i see. im ok with the user manually managing how the script runs.
+U0PPMUTGR says -=*[1478105564.000687]-=*::: i prefered to give the users a way to automate the startup of the kubelet and kubeproxy, that's why i suggested a windows service
+U0PPMUTGR says -=*[1478105597.000688]-=*::: powershell's start-process is no different than simply calling the kubelet executable directly with the proper arguments
+U0PPMUTGR says -=*[1478105637.000689]-=*::: the only advantage of powershell is that it can start the process in the background, which is advantageous of course
+U0ALRFJH0 says -=*[1478105761.000690]-=*::: <@U0PPMUTGR> also theres the advantage of templating PS, e.g. api server addresses.
+U0PPMUTGR says -=*[1478106578.000691]-=*::: given that this is alpha, this is fine to proceed for now with a powershell script
+U0ALRFJH0 says -=*[1478109956.000693]-=*::: <@U0JFJ4KHS> can i interrupt you for us to try a `kube-proxy` i built here?
+==========
+U0ALRFJH0 says -=*[1478109976.000694]-=*::: if it works as expected, i have a branch ready for opening the PR.
+U0JFJ4KHS says -=*[1478110004.000695]-=*::: sure
+==========
+U2X7ARA79 says -=*[1478110024.000696]-=*::: <@U0ALRFJH0> I'm getting the following error under windows
+U2X7ARA79 says -=*[1478110027.000697]-=*::: C:\Users\azureuser&gt;docker network create -d transport --gateway 10.244.245.254 --subnet 10.244.245.0/24 podnetwork Error response from daemon: plugin not found
+U0PT5KRHR says -=*[1478110050.000698]-=*::: should be `-d transparent` I believe
+U2X7ARA79 says -=*[1478110058.000699]-=*::: ahh
+U2X7ARA79 says -=*[1478110061.000700]-=*::: yes
+U0ALRFJH0 says -=*[1478110078.000701]-=*::: what <@U0PT5KRHR> said!
+U2X7ARA79 says -=*[1478110086.000702]-=*::: that worked! thanks!
+U0ALRFJH0 says -=*[1478110093.000703]-=*::: :confetti_ball:
+==========
+U0ALRFJH0 says -=*[1478110866.000704]-=*::: <@U0JFJ4KHS> `windows_kube_proxy` branch is ready for opening PR. allow me to remind that it refs #30278
+U0ALRFJH0 says -=*[1478110900.000705]-=*::: ccing <@U0BC5M36Y> and <@U15P41DRC> (sig-network) should help.
+==========
+U0G8JNZGF says -=*[1478110979.000706]-=*::: guys, just wondering, what is your opinion regarding something I just read from newstack <https://www.hyper.sh>
+U0G8JNZGF says -=*[1478111053.000708]-=*::: Looks like a Windows Hyper-v container for Linux.
+U0ALRFJH0 says -=*[1478111086.000709]-=*::: dong its just docker hosting on hardware hosted in LA :confused:
+U0G8JNZGF says -=*[1478111106.000710]-=*::: but they provide hardware isolation
+U0ALRFJH0 says -=*[1478111157.000711]-=*::: oh wait, they do have the technology OSSed.
+==========
+U2X7ARA79 says -=*[1478111222.000712]-=*::: for this command $env:CONTAINER_NETWORK="&lt;docker network&gt;" do I set "docker network" to the CIDR for the pod subnet on the machine, CIDR for pod subnet of cluster, or the transparent network name I created with the docker command?
+==========
+U0ALRFJH0 says -=*[1478111277.000713]-=*::: <@U0G8JNZGF> you should be looking at <https://www.hypercontainer.io/>. however, its not related to this sig, id say.
+==========
+U0JFJ4KHS says -=*[1478111279.000715]-=*::: <@U2X7ARA79> from your previous example, that should be set to `podnetwork`, the name for the transparent network
+U2X7ARA79 says -=*[1478111290.000717]-=*::: thanks
+==========
+U0G8JNZGF says -=*[1478111375.000719]-=*::: <@U0ALRFJH0> they use k8s underneath, I'd like to gather experts opinion before I jump on that with a trail account
+U0ALRFJH0 says -=*[1478111394.000720]-=*::: try <#C0BP8PW9G|sig-node>
+U0ALRFJH0 says -=*[1478111426.000721]-=*::: and the project is hypernetes (<https://github.com/hyperhq/hypernetes>)
+U0G8JNZGF says -=*[1478111539.000724]-=*::: <@U0ALRFJH0> thanks, will read that, just one last question, is there any other popular solution that is similar (or trying to solve the same problem).
+U0ALRFJH0 says -=*[1478111913.000725]-=*::: dont know
+==========
+U0JFJ4KHS says -=*[1478112600.000726]-=*::: Created kube-proxy PR <https://github.com/kubernetes/kubernetes/pull/36079>
+U0ALRFJH0 says -=*[1478112609.000728]-=*::: <@U0JFJ4KHS> :clap:
+U0PT5KRHR says -=*[1478112613.000729]-=*::: excellent!!!
+U0ALRFJH0 says -=*[1478112631.000730]-=*::: theyll probably ask us to rebase
+U0ALRFJH0 says -=*[1478112649.000731]-=*::: <@U0JFJ4KHS> are you ok if i rework the commit log?
+U0JFJ4KHS says -=*[1478112660.000732]-=*::: sure, please go ahead
+==========
+U0ALRFJH0 says -=*[1478113692.000733]-=*::: <@U0PPMUTGR> another one for BB :slightly_smiling_face:
+U0ALRFJH0 says -=*[1478113723.000734]-=*::: <@U2X7ARA79> in case you want to build `kube-proxy`, `KUBE_BUILD_PLATFORMS=windows/amd64 make WHAT=cmd/kube-proxy`
+U0ALRFJH0 says -=*[1478113735.000735]-=*::: the branch is `windows_kube_proxy`
+U0PPMUTGR says -=*[1478120462.000737]-=*::: i will send to BB the proxy PR as well
+==========

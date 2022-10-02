@@ -1,0 +1,248 @@
+U0PT5KRHR says -=*[1479918614.001386]-=*::: using kismatic was stupid as it uses Calico for networking :stuck_out_tongue:
+U0JFJ4KHS says -=*[1479918641.001387]-=*::: I use `hack/local-up-cluster.sh`
+U0PT5KRHR says -=*[1479918648.001388]-=*::: any modifications / env variables/
+U0JFJ4KHS says -=*[1479918701.001390]-=*::: I update cluster CIDR and enable DNS
+U0JFJ4KHS says -=*[1479918730.001391]-=*::: and run with `API_HOST="0.0.0.0" NET_PLUGIN=kubenet hack/local-up-cluster.sh &amp;`
+U0PT5KRHR says -=*[1479918781.001392]-=*::: I think we can expand the Linux section to include some of this... if people want to try it out quickly
+U0JFJ4KHS says -=*[1479918856.001393]-=*::: the reason I left it out was because, we said that one can use any of their preferred methods to standup the master
+U0PT5KRHR says -=*[1479918920.001394]-=*::: is that true though? will it work with other network plugins other than kubenet?
+U0JFJ4KHS says -=*[1479919002.001395]-=*::: we have included in the documentation that kubenet needs to be installed
+U0JFJ4KHS says -=*[1479919409.001396]-=*::: just went back and read the documentation and I don't see `kubenet` being mentioned there, I will update the docs
+U0PT5KRHR says -=*[1479919428.001397]-=*::: I am also getting an error trying to use netsh to set the ip address
+U0JFJ4KHS says -=*[1479919442.001398]-=*::: what error?
+U0PT5KRHR says -=*[1479919448.001399]-=*::: this worked: ``` netsh interface ipv4 set address "vEthernet (HNSTransparent)" static 192.168.0.1 ```
+U0PT5KRHR says -=*[1479919451.001400]-=*::: syntax error
+U0JFJ4KHS says -=*[1479919482.001401]-=*::: try this `netsh interface ipv4 set address "vEthernet (HNSTransparent)" addr=192.168.0.1
+U0PT5KRHR says -=*[1479919523.001403]-=*::: that worked now
+U0PT5KRHR says -=*[1479919529.001404]-=*::: but not initially
+U0PT5KRHR says -=*[1479919529.001405]-=*::: huh
+U0PT5KRHR says -=*[1479919545.001406]-=*::: ``` C:\code\src\<http://k8s.io|k8s.io>\kubernetes&gt;netsh interface ipv4 set address "vEthernet (HNSTransparent)" addr=192.168.0.1 The syntax supplied for this command is not valid. Check help for the correct syntax. ``
+U0JFJ4KHS says -=*[1479919581.001408]-=*::: confused, is it still failing
+U0PT5KRHR says -=*[1479919609.001409]-=*::: it failed initially, but worked after running ``` netsh interface ipv4 set address "vEthernet (HNSTransparent)" static 192.168.0.1 ```
+U0PT5KRHR says -=*[1479919631.001410]-=*::: I wonder if it's because I set the address to static
+U0JFJ4KHS says -=*[1479919667.001411]-=*::: may be
+U0PT5KRHR says -=*[1479920643.001412]-=*::: another thing that might be worth having is a sample pod manifest
+U0PT5KRHR says -=*[1479920653.001413]-=*::: (in the docs)
+U0JFJ4KHS says -=*[1479920753.001414]-=*::: sounds like a good idea
+U0PT5KRHR says -=*[1479921526.001415]-=*::: has anyone run into this? ``` C:\code\src\<http://k8s.io|k8s.io>\kubernetes&gt;docker pull microsoft/sample-nginx Using default tag: latest Error response from daemon: manifest unknown: manifest unknown ```
+U0JFJ4KHS says -=*[1479921559.001416]-=*::: what is the docker version?
+U0PT5KRHR says -=*[1479921569.001417]-=*::: `Version:      1.12.2-cs2-ws-beta`
+U0JFJ4KHS says -=*[1479921692.001418]-=*::: I don't see the image when I search for it `docker search microsoft`
+U0PT5KRHR says -=*[1479921716.001419]-=*::: that explains it :slightly_smiling_face:
+U0JFJ4KHS says -=*[1479921728.001420]-=*::: :slightly_smiling_face:
+U0PPMUTGR says -=*[1479922976.001421]-=*::: So Jitu, will you update the docs PR to include 2-3 things? 1. Build it on linux to be safe 2. a sample POD spec json file for an app 3.  kubenet requirements 4. anything else missing
+U0JFJ4KHS says -=*[1479923012.001422]-=*::: I don't think we need to update 1 after the PR gets merged
+U0JFJ4KHS says -=*[1479923021.001423]-=*::: I am updating 2 &amp; 3
+U0PPMUTGR says -=*[1479923078.001425]-=*::: got it
+U0PPMUTGR says -=*[1479923083.001426]-=*::: <@U0ALRFJH0> are you still around?
+U0ALRFJH0 says -=*[1479923089.001427]-=*::: <@U0PPMUTGR> yes
+U0ALRFJH0 says -=*[1479923097.001428]-=*::: just finished a meeting with ike
+U0PPMUTGR says -=*[1479923147.001429]-=*::: so on the privileged mode for windows side. why do we need to make chnages to the host NAT rules from inside the infra container
+U0ALRFJH0 says -=*[1479923149.001430]-=*::: and simultaneously trying to figure out why cmdlets cant access the internet from within containers, both `windowsservercore` and `nanoserver`.
+U0PPMUTGR says -=*[1479923152.001431]-=*::: can you explain the flow here?
+U0PPMUTGR says -=*[1479923185.001433]-=*::: i think Jitu tried that out and we were able to access the internet from inside a container
+U0ALRFJH0 says -=*[1479923219.001434]-=*::: <@U0PPMUTGR> sure. Docker needs access to a Transparent interface where all infra containers link to - basically what we do atm, but this time the infra container will connect to it (wed change the kubelet to do it.
+U0ALRFJH0 says -=*[1479923273.001435]-=*::: then a NAT interface needs to exist for all the containers to connect to. we were not sure if one per pod or one per host. Jitu told me one per host should suffice.
+U0ALRFJH0 says -=*[1479923319.001436]-=*::: now, how do we set NAT rules for traffic coming from outside to a pod, meaning reaching infra container and being redirected to the proper container?
+U0ALRFJH0 says -=*[1479923352.001437]-=*::: e.g. someone requests pod1 TCP 80. pod1 infra container will need to redirect traffic to container X, port Y.
+U0ALRFJH0 says -=*[1479923367.001438]-=*::: we were looking to do this from within the infra container *not* the kubelet.
+U0ALRFJH0 says -=*[1479923444.001439]-=*::: we could try a network plug-in but wed have to build our own. the kubelet will then rely on it to take care of this for us.
+U0PPMUTGR says -=*[1479923460.001440]-=*::: can you jump on a quick call?
+U0ALRFJH0 says -=*[1479923464.001441]-=*::: sure
+U0ALRFJH0 says -=*[1479923467.001442]-=*::: link?
+U0PPMUTGR says -=*[1479923467.001443]-=*::: <http://www.zoom.us/my/sigwindows>
+U0JFJ4KHS says -=*[1479923490.001444]-=*::: I will hop on as well
+U0ALRFJH0 says -=*[1479924784.001445]-=*::: <@U0JFJ4KHS> <@U0PT5KRHR> we can implement a `NetworkPlugin` that will do this. <https://github.com/kubernetes/kubernetes/blob/master/pkg/kubelet/network/plugins.go#L52>
+U0ALRFJH0 says -=*[1479924814.001448]-=*::: right now, were using a kubenet noop impl so it wouldnt matter.
+U0ALRFJH0 says -=*[1479924872.001449]-=*::: we could then run `kubelet --cni-plugin=apprenda-windows-net` and it should work.
+U0ALRFJH0 says -=*[1479924903.001451]-=*::: thoughts?
+U0PT5KRHR says -=*[1479924903.001452]-=*::: Nice! That should do it 
+U0JFJ4KHS says -=*[1479924941.001453]-=*::: yes that would work
+U0ALRFJH0 says -=*[1479924944.001454]-=*::: im ashamed. i shouldve come up with this sooner...
+U0ALRFJH0 says -=*[1479924988.001455]-=*::: anyway, <@U0JFJ4KHS> can you share a doc with all the commands youve run during your NAT tests? it doesnt matter if they dont make sense now but it will save me going through microsoft docs
+U0ALRFJH0 says -=*[1479924996.001456]-=*::: i will work on this over the next few days
+U0JFJ4KHS says -=*[1479925024.001457]-=*::: sure, will email it to you in 10 mins
+U0ALRFJH0 says -=*[1479925074.001458]-=*::: thanks
+U0PT5KRHR says -=*[1479925302.001459]-=*::: what's the architecture gonna look like? I guess you discussed it on the call?
+U0ALRFJH0 says -=*[1479925371.001460]-=*::: no, we didnt.
+U0ALRFJH0 says -=*[1479925451.001461]-=*::: it either will fall as a kubenet plug-in (which afaik needs to be part of the kubelet code) or a cni plug-in.
+U0ALRFJH0 says -=*[1479925472.001462]-=*::: a cni plug-in makes more sense and for that theres a fixed design we need to follow.
+U0ALRFJH0 says -=*[1479925487.001463]-=*::: <@U0PT5KRHR> if you have experience here, id love to have your insight.
+U0PT5KRHR says -=*[1479925497.001464]-=*::: I think the community wants to get rid of network plugins in core, so cni plugin would be best
+U0PT5KRHR says -=*[1479925543.001465]-=*::: months ago I hacked together a windows kubenet, but this was inside the kubelet
+U0ALRFJH0 says -=*[1479925561.001466]-=*::: interesting. is there a branch?
+U0PT5KRHR says -=*[1479925624.001467]-=*::: I do have a branch locally
+U0PT5KRHR says -=*[1479925646.001468]-=*::: last commit was Sept 2
+U0PT5KRHR says -=*[1479925722.001469]-=*::: would you like me to push it to <http://github.com/apprenda/kubernetes|github.com/apprenda/kubernetes>?
+U0PT5KRHR says -=*[1479926004.001470]-=*::: (my windows node ran out of disk space before I could deploy something :disappointed: )
+U0ALRFJH0 says -=*[1479926131.001471]-=*::: <@U0PT5KRHR> please, do!
+U0PT5KRHR says -=*[1479926165.001472]-=*::: <https://github.com/apprenda/kubernetes/tree/kubenet_windows>
+U0ALRFJH0 says -=*[1479926197.001474]-=*::: thanks!
+U0PT5KRHR says -=*[1479926223.001475]-=*::: was basically using the windows API to create the container network on kubelet startup
+U0PT5KRHR says -=*[1479926237.001476]-=*::: er, on CIDR change really
+U0ALRFJH0 says -=*[1479926240.001477]-=*::: <https://github.com/apprenda/kubernetes/commit/64d0899a1371ddea54991819c1fe2407f13b9105#diff-74c23a13e5f334e5ed1ddfa0b3392a0dR124>
+U0ALRFJH0 says -=*[1479926246.001478]-=*::: i think this is what i was looking for :smile:
+U0PT5KRHR says -=*[1479926253.001479]-=*::: hehe
+U0PT5KRHR says -=*[1479926265.001481]-=*::: yeah, initially I went with the windows API, but then used docker
+U0PT5KRHR says -=*[1479926270.001482]-=*::: to avoid picking up another dependency
+U0PT5KRHR says -=*[1479926277.001483]-=*::: I don't remember if it worked or not
+U0ALRFJH0 says -=*[1479926278.001484]-=*::: wise call
+U0ALRFJH0 says -=*[1479926286.001485]-=*::: ahhhhh :sweat_smile:
+U0PT5KRHR says -=*[1479926290.001486]-=*::: :smile:
+U0ALRFJH0 says -=*[1479926313.001487]-=*::: well, this seems enough to get me started.
+U0PT5KRHR says -=*[1479926346.001488]-=*::: we'll do a CNI plugin though, right?
+U0ALRFJH0 says -=*[1479926700.001489]-=*::: yes, yes! but the interface mgmt code was unknown to me :wink:
+U0PT5KRHR says -=*[1479926707.001490]-=*::: oh cool cool :slightly_smiling_face:
+U0ALRFJH0 says -=*[1479926721.001491]-=*::: that block of code i linked above is what i needed for a quick pass
+U0PT5KRHR says -=*[1479926728.001492]-=*::: :thumbsup:
+U0PT5KRHR says -=*[1479929170.001493]-=*::: let's huddle up after the meeting
+U0PT5KRHR says -=*[1479929175.001494]-=*::: <@U0ALRFJH0> you still around?
+U0JFJ4KHS says -=*[1479929180.001495]-=*::: sure
+U0JFJ4KHS says -=*[1479929189.001496]-=*::: we can use the same meeting
+U0PT5KRHR says -=*[1479929192.001497]-=*::: stay on
+U0PT5KRHR says -=*[1479929563.001498]-=*::: <@U0ALRFJH0> summary from the call: - MSFT recommended not to pursue the NAT inside infra container. They said they will have container networking soon - They also mentioned that privileged mode does not work today, and it's gonna take a while for that to work - MSFT also shared an alternative solution for kube-proxy that supports UDP
+U0ALRFJH0 says -=*[1479929590.001499]-=*::: mobile 
+U0ALRFJH0 says -=*[1479929627.001500]-=*::: But with the network plug-in we can do what we want.
+U0ALRFJH0 says -=*[1479929640.001501]-=*::: Please, define soon ;) 
+U0PT5KRHR says -=*[1479929673.001502]-=*::: I guess we can discuss if we want to pursue the network plug-in approach
+U0PPMUTGR says -=*[1479929842.001503]-=*::: is there any reason to pursue this ? what are the advantages over the native solution msft will provide msft said they will give us a release timeline in 2 weeks. i think we can afford to wait that
+U0PPMUTGR says -=*[1479930133.001504]-=*::: i think we can concentrate on other work for a few days and make progress in other fronts while waiting for msft to figure things out.
+U0PPMUTGR says -=*[1479930145.001505]-=*::: we can also try the things from Anthony's email
+U0ALRFJH0 says -=*[1479943100.001507]-=*::: &gt; msft said they will give us a release timeline in 2 weeks.
+U0ALRFJH0 says -=*[1479943149.001508]-=*::: <@U0PPMUTGR> so they will give us a release date in 2 weeks. this means its in the planning phase - as Jason Messer told us over video call when i was in NYC.
+U0ALRFJH0 says -=*[1479943215.001509]-=*::: if we are changing anything, we should do it in the time for 1.6 code freeze. if we can simplify/improve networking, we should do it by then. we need to make sure we have very clear goals when the time comes, and id rather have something that works without depending on anything else other than ourselves.
+U0ALRFJH0 says -=*[1479943260.001510]-=*::: when Microsoft releases a working (as in _working in K8s_) container networking, we will be testing it and making sure it works and prepare code for it. do you believe this will come until the code freeze for 1.6?
+U0ALRFJH0 says -=*[1479944289.001512]-=*::: 1) <https://github.com/Azure/acs-engine/pull/46/files#diff-80afcca0d59d2115fd34c423702f683eR131> - this seems to rely on pod CIDR announced by controller manager (running in master), while our solution relies on _manual_ (for now) assignment, meaning the creation of the transparent network. my idea for the plug-in is to automate this based on the controller manager as well with subtle differences, e.g. the kubelet and plug-in is running and the plug-in reconciles as soon as the controller manager announces the pod CIDR for the node.
+U0ALRFJH0 says -=*[1479944469.001515]-=*::: 2) <https://github.com/Azure/acs-engine/pull/46/files#diff-80afcca0d59d2115fd34c423702f683eR152> - this is using L2Bridge while we use Transparent, am i right <@U0JFJ4KHS>? `L2Bridge` shares the same network subnet as the host. Is this something we want <@U0PPMUTGR>?
+U0ALRFJH0 says -=*[1479944589.001518]-=*::: 3) whats the solution for `kube-proxy` that supports UDP?
+U0ALRFJH0 says -=*[1479944864.001519]-=*::: <@U0PT5KRHR> any hints on 3?
+U0PPMUTGR says -=*[1479948833.001520]-=*::: <@U0ALRFJH0> they actually have working code that Anthony might get to use soon from what i understood today. in 2 weeks, they will have an idea how this code can get to us, so we are not getting it in 2 weeks, but we will know when and how it will be released. we talked on the phone with Jitu and Alex, and if we get this by mid january, we can still integrate it in time for 1.6
+U0PPMUTGR says -=*[1479948903.001521]-=*::: i don't have more details on that. Anthony was going to email some stuff to Jitu to check them out
+U0ALRFJH0 says -=*[1479979818.001523]-=*::: <@U0PPMUTGR> The above is my analysis of what Anthony mailed to us. 
+U0PT5KRHR says -=*[1480338531.001525]-=*::: <@U0ALRFJH0> I don't see it in the email unfortunately 
+U0ALRFJH0 says -=*[1480338702.001526]-=*::: <@U0PT5KRHR> there's a lot that we're blind to, i'd say.
+U0ALRFJH0 says -=*[1480338955.001527]-=*::: anyway, i've looked into the CNI plug-in and the news are not good. 1) CNI driver on Kubernetes needs `nsenter`. we can workaround that or need to change the `kubelet`. 2) CNI plug-ins are called per pod just before the containers are created *and* they're supposed to act on an event and exit rather than running as a daemon
+U0ALRFJH0 says -=*[1480339025.001528]-=*::: i believe we were able to prove the concept we proposed but now we need to prove we can make it work.
+U0ALRFJH0 says -=*[1480339066.001529]-=*::: we should sync today.
+U0PT5KRHR says -=*[1480339190.001530]-=*::: Do we need a daemon?
+U0ALRFJH0 says -=*[1480339540.001531]-=*::: most probably, yes as we'd need to keep track of Kubernetes and Docker events, e.g. `container 1 of pod X is starting/ed`.
+U0PT5KRHR says -=*[1480339588.001532]-=*::: ah, the CNI plug-in gets called per pod, and not per container
+U0PT5KRHR says -=*[1480339593.001533]-=*::: read too fast :slightly_smiling_face:
+U0ALRFJH0 says -=*[1480339637.001534]-=*::: i have produced some code that is to prove the _daemon_ but i'm hitting a wall trying to get different containers have different network interfaces.
+U0ALRFJH0 says -=*[1480339696.001535]-=*::: as an example, say pod A has two containers, 1 and 2. `kubelet` starts the infra container and then proceeds to create 1 and 2. we need to make sure only the infra has access to the pod network interface.
+U0ALRFJH0 says -=*[1480339734.001536]-=*::: how one can do this without messing with the `kubelet`, is still unclear.
+U0ALRFJH0 says -=*[1480340114.001537]-=*::: ideas <@U0JFJ4KHS>?
+U0PT5KRHR says -=*[1480340564.001538]-=*::: we will most likely have to revert the changes we made to the kubelet, no?
+U0ALRFJH0 says -=*[1480341387.001539]-=*::: <@U0PT5KRHR> everything is up for grabs. personally, i just believe that if we want to keep pushing forward, we need to find ways to mitigate the current limitations.
+U0JFJ4KHS says -=*[1480343986.001540]-=*::: <@U0ALRFJH0> as <@U0PT5KRHR> mentioned, we will have to make `kubelet` code changes to accomplish the above
+U0ALRFJH0 says -=*[1480346355.001541]-=*::: <@U0JFJ4KHS> when can we sync?
+U0JFJ4KHS says -=*[1480346427.001542]-=*::: We can do now if <@U0PT5KRHR> and <@U0PPMUTGR> have some time
+U0PT5KRHR says -=*[1480346461.001543]-=*::: I can after 11 am EST
+U0ALRFJH0 says -=*[1480347103.001544]-=*::: <@U0JFJ4KHS> <@U0PT5KRHR> just some technical discussion between the 3 of us. 11am works for you <@U0JFJ4KHS>?
+U0JFJ4KHS says -=*[1480347119.001545]-=*::: works for me
+U0PT5KRHR says -=*[1480348282.001546]-=*::: :thumbsup:
+U0JFJ4KHS says -=*[1480349016.001547]-=*::: <@U0ALRFJH0> Sent you a zoom invite
+U0PPMUTGR says -=*[1480350733.001548]-=*::: you guys can meet
+U0PPMUTGR says -=*[1480350746.001549]-=*::: and we can discuss your findings/research at the stand up later on
+U0ALRFJH0 says -=*[1480354665.001550]-=*::: <@U0PPMUTGR> let's sync at 3pm
+U0PPMUTGR says -=*[1480419219.001551]-=*::: Did the documentation PR get merged for 1.5
+U0ALRFJH0 says -=*[1480423569.001552]-=*::: the script hasn't <https://github.com/kubernetes/kubernetes/pull/36250>
+U0ALRFJH0 says -=*[1480423696.001555]-=*::: <@U0PPMUTGR> no <https://github.com/kubernetes/kubernetes.github.io/pull/1771>
+U0PPMUTGR says -=*[1480426823.001558]-=*::: i knew about the script. i was asking about the doc PR. Jitu can you follow up either Eric that asked for some changes to see if we can get this greenlighted?
+U0ALRFJH0 says -=*[1480426922.001559]-=*::: <@U0JFJ4KHS> followed up 4 days ago and 18h ago. i think it's just a matter of pinging Eric.
+U0PPMUTGR says -=*[1480426968.001560]-=*::: yep. i think so
+U0JFJ4KHS says -=*[1480428276.001562]-=*::: <@U0PPMUTGR> <@U0ALRFJH0>: I will see if Eric is on slack and will ping him there
+U0ALRFJH0 says -=*[1480436383.001563]-=*::: <@U0PT5KRHR> <@U0JFJ4KHS> remember yesterday's convo when we agreed that proxying Docker calls would feel very hack'ish?
+U0ALRFJH0 says -=*[1480436417.001565]-=*::: think again, <https://www.weave.works/docs/net/latest/features/#docker>
+U0PT5KRHR says -=*[1480436544.001568]-=*::: docker plugin? :slightly_smiling_face:
+U0PT5KRHR says -=*[1480436626.001569]-=*::: so it seems like the plugin will need to understand the concept of a pod? and differentiate between infra vs app container?
+U0ALRFJH0 says -=*[1480436680.001570]-=*::: <@U0PT5KRHR> in this case it's actually a daemon that exposes Docker API. calls to the API are proxied to Docker. thing here is the daemon can do whatever it wants pre/post API call.
+U0ALRFJH0 says -=*[1480436735.001571]-=*::: so when you run `docker run ubuntu`, the daemon is where Docker client is asking for the container to be started. the daemon can then do a bunch of stuff and only then proceed to call the _real_ Docker API.
+U0PT5KRHR says -=*[1480436764.001572]-=*::: oooh
+U0PT5KRHR says -=*[1480436776.001573]-=*::: that is what I meant yesterday when I said proxy Docker calls :smile:
+U0PT5KRHR says -=*[1480436790.001574]-=*::: I didn't know people were doing it
+U0ALRFJH0 says -=*[1480436793.001575]-=*::: answering your last question, the `kubelet` already sets a bunch of labels in the containers, so the daemon could easily understand when it's an infra - and therefore needs two networks - vs when it's another container.
+U0ALRFJH0 says -=*[1480436800.001576]-=*::: <@U0PT5KRHR> i didn't know either.
+U0ALRFJH0 says -=*[1480436807.001577]-=*::: that's why i said _think again_
+U0PT5KRHR says -=*[1480436810.001578]-=*::: hehe
+U0PT5KRHR says -=*[1480436812.001579]-=*::: nice
+U0ALRFJH0 says -=*[1480436837.001580]-=*::: kubelet -&gt; daemon (do our stuff) -&gt; docker
+U0PT5KRHR says -=*[1480436906.001581]-=*::: yup
+U0PT5KRHR says -=*[1480436909.001582]-=*::: awesome
+U0ALRFJH0 says -=*[1480436938.001583]-=*::: also, <@U0JFJ4KHS> <https://docs.docker.com/engine/reference/commandline/network_connect/>
+U0ALRFJH0 says -=*[1480436954.001586]-=*::: `docker network connect --ip 10.10.36.122 multi-host-network container2`
+U0ALRFJH0 says -=*[1480436959.001587]-=*::: &gt; You can specify the IP address you want to be assigned to the containers interface.
+U0ALRFJH0 says -=*[1480436982.001588]-=*::: `docker network connect multi-host-network container1`
+U0ALRFJH0 says -=*[1480436988.001589]-=*::: &gt; Connects a container to a network. You can connect a container by name or by ID. Once connected, the container can communicate with other containers in the same network.
+U0ALRFJH0 says -=*[1480437006.001590]-=*::: is this what you were using?
+U0JFJ4KHS says -=*[1480437068.001591]-=*::: yes, but without specifying a custom ip
+U0ALRFJH0 says -=*[1480437309.001592]-=*::: <@U0JFJ4KHS> and this restarts the container?
+U0ALRFJH0 says -=*[1480437319.001593]-=*::: or you need to restart the container?
+U0JFJ4KHS says -=*[1480437367.001594]-=*::: the container is not running at this stage, I just have to start the container after I attach the second network
+U0ALRFJH0 says -=*[1480437476.001595]-=*::: ok i'm going to try something different
+U0JFJ4KHS says -=*[1480439535.001596]-=*::: <@U0ALRFJH0>, I have tried to make `*-NetNAT` work but so far I am not having any luck, either on the host or within containers. Anthony's email mentions about enabling IP Forwarding on the host, I tried that and that didn't work as well
+U0ALRFJH0 says -=*[1480439815.001597]-=*::: <@U0JFJ4KHS> what fails, running the rules or your tests?
+U0JFJ4KHS says -=*[1480440028.001598]-=*::: I added a static mapping `Add-NetNatStaticMapping` on container host to redirect traffic from pause container `transparent ip` to container 2 webserver and it is failing
+U0ALRFJH0 says -=*[1480440177.001599]-=*::: <@U0JFJ4KHS> but what fails, adding the mapping or when you try to access the container webserver through the transparent ip?
+U0JFJ4KHS says -=*[1480440229.001601]-=*::: Adding the mapping works
+U0JFJ4KHS says -=*[1480440234.001602]-=*::: as it is done from container host
+U0JFJ4KHS says -=*[1480440237.001603]-=*::: accessing it fails
+U0ALRFJH0 says -=*[1480440370.001604]-=*::: ok. can you look into the webserver request log?
+U0ALRFJH0 says -=*[1480440394.001605]-=*::: we want to make sure the request gets there.
+U0JFJ4KHS says -=*[1480440456.001606]-=*::: looking
+U0ALRFJH0 says -=*[1480440674.001607]-=*::: <@U0JFJ4KHS> i will be afk shortly but we can sync later today or early tomorrow. i am messing with Docker networking on Windows as we speak.
+U0PT5KRHR says -=*[1480444436.001608]-=*::: <https://developers.googleblog.com/2016/11/tensorflow-0-12-adds-support-for-windows.html>
+U0ALRFJH0 says -=*[1480449313.001610]-=*::: <@U0PT5KRHR> cool!
+U0PPMUTGR says -=*[1480453693.001611]-=*::: is tensorflow relevant to us?
+U0ALRFJH0 says -=*[1480454961.001612]-=*::: <@U0PPMUTGR> it's just an use-case for Windows Containers. TensorFlow is oriented at machine-learning.
+U0ALRFJH0 says -=*[1480455053.001613]-=*::: <@U0JFJ4KHS> i have created a VM on GCP. installing Windows Containers automatically created a NAT interface. should i remove it before creating the transparent one?
+U0JFJ4KHS says -=*[1480455315.001614]-=*::: Microsoft suggested the following: 1. Stop Docker Service 2. Remove default docker created nat by running `Get-NetNat | Remove-NetNat` 3. Create a new NAT using `New-NetNat` command 4. Start docker service 5. Create transparent network  Before stopping docker service run `docker network inspect nat`, and take a note at subnet, you can use the same values when creating new NAT
+U0ALRFJH0 says -=*[1480455768.001615]-=*::: <@U0JFJ4KHS> so if the new NAT has the same info as the previous NAT, what's the point?
+U0JFJ4KHS says -=*[1480455848.001616]-=*::: I don't remember exactly, but on the call they mentioned that docker uses some defaults which `New-NetNat` does not
+U0ALRFJH0 says -=*[1480456360.001617]-=*::: <@U0JFJ4KHS> how can i stop Docker service?
+U0ALRFJH0 says -=*[1480456375.001618]-=*::: also, those instructions don't seem to be in the doc PR.
+U0JFJ4KHS says -=*[1480456380.001619]-=*::: `Stop-Service docker`
+U0JFJ4KHS says -=*[1480456395.001620]-=*::: the above instructions are only for our POC
+U0ALRFJH0 says -=*[1480456403.001621]-=*::: makes sense :+1:
+U0ALRFJH0 says -=*[1480456521.001622]-=*::: ``` PS C:\&gt; docker inspect nat [     {         "Name": "nat",         "Id": "8aef2f2646df1760dd42fff3b0654000ee336232cd2487804d5c1fe81b00f4c2",         "Scope": "local",         "Driver": "nat",         "EnableIPv6": false,         "IPAM": {             "Driver": "default",             "Options": null,             "Config": [                 {                     "Subnet": "172.21.80.0/20",                     "Gateway": "172.21.80.1"                 }             ]         },         "Internal": false,         "Attachable": false,         "Containers": {},         "Options": {             "com.docker.network.windowsshim.hnsid": "3460eca4-8d54-4c92-90d8-5c4da4d6e381",             "com.docker.network.windowsshim.networkname": "nat"         },         "Labels": {}     } ] ```
+U0ALRFJH0 says -=*[1480456553.001623]-=*::: interesting, the `Get-NetNat` returned a NIC with ID `3460eca4-8d54-4c92-90d8-5c4da4d6e381`
+U0JFJ4KHS says -=*[1480456596.001624]-=*::: yes, I have noticed that as well
+U0ALRFJH0 says -=*[1480456625.001625]-=*::: <@U0JFJ4KHS> have you tried `New-VMSwitch` with type `Private` before?
+U0JFJ4KHS says -=*[1480456679.001626]-=*::: I tried once, when experimenting creating multiple NATs
+U0ALRFJH0 says -=*[1480456715.001627]-=*::: and?
+U0JFJ4KHS says -=*[1480456755.001628]-=*::: even though new vmswitch got created, couldn't take it any more further as I was having issues creating NAT
+U0ALRFJH0 says -=*[1480456976.001629]-=*::: i see
+U0ALRFJH0 says -=*[1480457001.001630]-=*::: right now, if i create the transparent network, a new NIC shows up, but the ip address is the one Google gave it.
+U0JFJ4KHS says -=*[1480457033.001631]-=*::: you can update the ip using `netsh interface ipv4 add address` command
+U0ALRFJH0 says -=*[1480457059.001632]-=*::: i'm afraid i'll lose connectivity to the machine
+U0JFJ4KHS says -=*[1480457078.001633]-=*::: did you only had 1 nic
+U0JFJ4KHS says -=*[1480457080.001634]-=*::: or 2
+U0JFJ4KHS says -=*[1480457135.001635]-=*::: Also, you can create docker network and attach to a specific nic using `docker network create -d transparent -o com.docker.network.windowsshim.interface="Ethernet 2" TransparentNet2`
+U0ALRFJH0 says -=*[1480457295.001636]-=*::: initially i have two, one HNS Internal NIC (NAT) and a Ethernet (the google NIC)
+U0ALRFJH0 says -=*[1480457329.001637]-=*::: if i create a transparent network with `docker network create -d transparent`, a new HNS Transparent NIC shows up, but it _steals_ the IP from the google NIC.
+U0JFJ4KHS says -=*[1480457350.001638]-=*::: in this case, you should have had 3
+U0ALRFJH0 says -=*[1480457360.001639]-=*::: after the last step, there are 3
+U0ALRFJH0 says -=*[1480457383.001640]-=*::: but the transparent shows the IP from Google, not the IP i set when creating transparent.
+U0ALRFJH0 says -=*[1480457408.001641]-=*::: when you create a NAT NIC, what's the device name it gets?
+U0ALRFJH0 says -=*[1480457422.001642]-=*::: `vEthernet (HNS Internal NIC)`?
+U0JFJ4KHS says -=*[1480457426.001643]-=*::: yes
+U0JFJ4KHS says -=*[1480457501.001644]-=*::: so you now have 3 NICs `vEthernet (HNS Internal NIC)`, `vEthernet (HNS Transparent)` and `Ethernet`
+U0ALRFJH0 says -=*[1480457563.001646]-=*::: yes
+U0ALRFJH0 says -=*[1480457579.001647]-=*::: and HNS Transparent status now shows the IP that used to be in `Ethernet`
+U0JFJ4KHS says -=*[1480457626.001648]-=*::: I have not created a Windows VM in GCP, but on Azure I started with 3 NICs
+U0JFJ4KHS says -=*[1480457652.001649]-=*::: and when creating transparent network, used the NIC which was using a private IP
+U0JFJ4KHS says -=*[1480457657.001650]-=*::: and not Azure one
+U0JFJ4KHS says -=*[1480457677.001651]-=*::: In your case, you are right you might lose the connectivity
+U0JFJ4KHS says -=*[1480457720.001652]-=*::: For Azure, I created the VM with 2 NICs, and when I installed docker I had 3 NICs
+U0ALRFJH0 says -=*[1480457774.001653]-=*::: yeah, that's what i'm trying now
+U0ALRFJH0 says -=*[1480457781.001654]-=*::: what's the cmdlet to create a new transparent nic?
+U0JFJ4KHS says -=*[1480457800.001655]-=*::: sorry, didn't get your question
+U0ALRFJH0 says -=*[1480458002.001656]-=*::: `New-NetNat` is a cmdlet that creates a NAT interface. is there something similar for creating Transparent ones?
+U0JFJ4KHS says -=*[1480458019.001657]-=*::: nope, just use `docker network create`
+U0JFJ4KHS says -=*[1480458043.001658]-=*::: I will be logging off now, but will be checking messages on phone
+U0ALRFJH0 says -=*[1480458060.001659]-=*::: ok no problem. i was just curious because you say you started the VM with 3 NICs
+U0JFJ4KHS says -=*[1480458093.001660]-=*::: I configured Windows VM with 2 NICs, one with internal ip and one with Azure provided
+U0JFJ4KHS says -=*[1480458105.001661]-=*::: when I installed docker it adds the third NIC (nat)
+U0ALRFJH0 says -=*[1480459659.001664]-=*::: <@U0JFJ4KHS> :+1:
+U0ALRFJH0 says -=*[1480506942.001665]-=*::: <@U0JFJ4KHS> do you have an hour for me today? want to do an hangout an clarify a few things. 9/10 am works fine for me
+U0JFJ4KHS says -=*[1480512666.001666]-=*::: Sure, 9:00 am sounds good

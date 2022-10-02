@@ -1,0 +1,113 @@
+U381HQQ1K says -=*[1483982327.001005]-=*::: <@U3G3J59DW> trying to figure out how I'm going to point a wildcard domain at development Minikubes
+U3G3J59DW says -=*[1483982341.001006]-=*::: <@U381HQQ1K> you and us both. :slightly_smiling_face:
+U3G3J59DW says -=*[1483982349.001007]-=*::: local dev proxy?
+U381HQQ1K says -=*[1483982376.001008]-=*::: more layers to mess with but that might work
+U3G3J59DW says -=*[1483982392.001009]-=*::: `minikube service list | grep -E SERVICENAME" | awk -F'|' '{print $4}` isnt half bad
+U381HQQ1K says -=*[1483982395.001010]-=*::: I just wish minikube would always start with the same IP
+U3G3J59DW says -=*[1483982417.001011]-=*::: im using that ina  launch script
+U3NUNUS06 says -=*[1483983624.001012]-=*::: <@U3G3J59DW> why are you not using the `--format` switch for `minikube service`?
+U3NUNUS06 says -=*[1483983714.001013]-=*::: (as in `minikube service --url --format 'whatever://{{.IP}}' SERVICENAME`)
+U1TUWPL1M says -=*[1483983794.001014]-=*::: <@U0A3SN4DA> you can run `$ VBoxManage list hostonlyifs` to see all the host only interfaces that virtualbox creates
+U1TUWPL1M says -=*[1483983810.001015]-=*::: ive seen in a few cases where vbox creates new ones when they shouldnt
+U1TUWPL1M says -=*[1483983871.001016]-=*::: <@U381HQQ1K> you can use something like traefik <https://docs.traefik.io/user-guide/kubernetes/>
+U1TUWPL1M says -=*[1483983929.001017]-=*::: <@U3G3J59DW> i dont think theres a good way to specify an IP with any of the drivers yet
+U0A3SN4DA says -=*[1483983989.001018]-=*::: <@U1TUWPL1M> Here are my interfaces currently: ``` steve:~/ $ VBoxManage list hostonlyifs                                                                                                                                         [12:46:03] Name:            vboxnet0 GUID:            786f6276-656e-4074-8000-0a0027000000 DHCP:            Disabled IPAddress:       172.18.8.1 NetworkMask:     255.255.255.0 IPV6Address:     fe80:0000:0000:0000:0800:27ff:fe00:0000 IPV6NetworkMaskPrefixLength: 64 HardwareAddress: 0a:00:27:00:00:00 MediumType:      Ethernet Status:          Up VBoxNetworkName: HostInterfaceNetworking-vboxnet0  Name:            vboxnet1 GUID:            786f6276-656e-4174-8000-0a0027000001 DHCP:            Disabled IPAddress:       172.17.8.1 NetworkMask:     255.255.255.0 IPV6Address:     fe80:0000:0000:0000:0800:27ff:fe00:0001 IPV6NetworkMaskPrefixLength: 64 HardwareAddress: 0a:00:27:00:00:01 MediumType:      Ethernet Status:          Up VBoxNetworkName: HostInterfaceNetworking-vboxnet1 ```
+U1TUWPL1M says -=*[1483984033.001019]-=*::: i think that looks fine, are you still having issues?
+U0A3SN4DA says -=*[1483984051.001020]-=*::: yeah, unless I specify the cidr then it fails for me.
+U0A3SN4DA says -=*[1483984057.001021]-=*::: I just trashed all of the interfaces, same error
+U0A3SN4DA says -=*[1483984291.001022]-=*::: ahh I think I know what it is
+U0A3SN4DA says -=*[1483984300.001023]-=*::: VMWare workstation has a network with that same ip
+U0A3SN4DA says -=*[1483984491.001024]-=*::: yup that was it, sorry for the run around. Must be different than on my mac
+U381HQQ1K says -=*[1483987948.001025]-=*::: <@U1TUWPL1M> yep I'm using Traefik already
+U381HQQ1K says -=*[1483987969.001026]-=*::: but every time minikube comes up I have a new IP
+U381HQQ1K says -=*[1483987980.001027]-=*::: it seems to increment -- I'm on xhyve
+U381HQQ1K says -=*[1483992327.001028]-=*::: <@U381HQQ1K|tmirks> uploaded a file: <https://kubernetes.slack.com/files/tmirks/F3P5ZCZMG/pasted_image_at_2017_01_09_03_05_pm.png|Blackfire Profile> and commented: <@U3G3J59DW>
+U381HQQ1K says -=*[1483992350.001029]-=*::: yeah that's production-level performance right there :slightly_smiling_face:
+U381HQQ1K says -=*[1483992382.001030]-=*::: definitely seems like a volume issue
+U381HQQ1K says -=*[1483992392.001031]-=*::: filesystem performance I mean
+U3L9MSRK4 says -=*[1484037394.001032]-=*::: <@U381HQQ1K> the issue the IP is a known one with the xhyve driver, looks like the author is working on a fix <https://github.com/zchee/docker-machine-driver-xhyve#known-isuue> until its fixed you may want to switch to virtualbox if you need a static IP
+U381HQQ1K says -=*[1484060466.001037]-=*::: <@U3L9MSRK4> ah thanks for the heads up, I may need to switch to vb anyway if I can't get the shared filesystem to perform :disappointed:
+U381HQQ1K says -=*[1484068809.001038]-=*::: <@U3G3J59DW> are you running symfony?
+U0GH3G77T says -=*[1484073802.001040]-=*::: Hello all.
+U0GH3G77T says -=*[1484074010.001041]-=*::: Is anyone here using minkube to build/run Kubernetes from source?  I found <https://github.com/kubernetes/minikube/issues/558> but there's been no progress.  I also found documentation on _updating Kubernetes_ _(<https://github.com/kubernetes/minikube/blob/master/UPDATE_KUBERNETES.md>)_ but last I tried that didn't work either.
+U0GH3G77T says -=*[1484074046.001045]-=*::: I just want be able to run Kubernetes locally as part of my contribution process.  Running Linux in a VM seems to be the only option right now.
+U1TUWPL1M says -=*[1484074244.001046]-=*::: I replied to that issue, theres <https://github.com/kubernetes/kubernetes/pull/38975>
+U1TUWPL1M says -=*[1484074259.001048]-=*::: In the future, we might move the localkube component into the k8s codebase itself
+U0GH3G77T says -=*[1484074276.001049]-=*::: Cool.  I'll check that out.
+U1TUWPL1M says -=*[1484074296.001050]-=*::: if localkube is in k8s itself, then running against local changes becomes pretty easy
+U1TUWPL1M says -=*[1484074310.001051]-=*::: minikube just becomes the component to manage the vm
+U0GH3G77T says -=*[1484074607.001052]-=*::: What are people doing now?  It seems like the simple answer is to do k8s contribution work on a Linux box where `hack/local-up-cluster.sh` would work just fine.  But there has to be a better way.  Running locally instead of pushing to a cloud provider seems so much simpler.
+U12U3NGMT says -=*[1484082122.001053]-=*::: I need to do some changes in the nginx ingress controller container. I noticed that minikube is using a custom version tagged 0.8.4 (<http://gcr.io/k8s-minikube/nginx-ingress-controller:0.8.4|gcr.io/k8s-minikube/nginx-ingress-controller:0.8.4>). Any idea where I could find the code for this to see the changes that were made to make it run on minikube?
+U12U3NGMT says -=*[1484082230.001055]-=*::: Also I might be wrong, but it looks like disabling the ingress addon does not remove the files from the /etc/kubernetes/addons. Anyone already seen this?
+U1TUWPL1M says -=*[1484082261.001056]-=*::: <@U12U3NGMT> it comes from <https://github.com/kubernetes/minikube/issues/611#issuecomment-265870770>
+U1TUWPL1M says -=*[1484082312.001058]-=*::: not sure about the `addons disable` command
+U1TUWPL1M says -=*[1484082326.001059]-=*::: feel free to open an issue if its happening
+U12U3NGMT says -=*[1484082670.001060]-=*::: <@U1TUWPL1M> Thanks! If I understand, there are no changes other that the version.
+U1TUWPL1M says -=*[1484082948.001061]-=*::: Yeah i dont think there are any differences. I just uploaded a version to ours because the maintainers of contrib/ingress didn't want to release for some reason
+U1TUWPL1M says -=*[1484082973.001062]-=*::: I dont think there has been an official release yet
+U1TUWPL1M says -=*[1484082989.001063]-=*::: but when there is I'm happy to move our addon to point to that
+U0PRC9KPY says -=*[1484084779.001065]-=*::: can anyone attest to the performance of the /Users directory shared from the host? or say what technology it uses to connect with that dir?
+U1TUWPL1M says -=*[1484084799.001066]-=*::: <@U0PRC9KPY> its a 9p fs
+U0PRC9KPY says -=*[1484084809.001067]-=*::: oh yeah!
+U0PRC9KPY says -=*[1484084815.001068]-=*::: someone mentioned that, it might have been you
+U1TUWPL1M says -=*[1484084830.001069]-=*::: this is the code thats vendored in the xhyve driver <https://github.com/freenas/lib9p/tree/7be3e0b914fbb2d2ecfe2984d02bacfd8e762eae>
+U0PRC9KPY says -=*[1484084832.001071]-=*::: im asking because I have been using vagrant for my apps development and the /vagrant directory is created using some kind of VirtualBox builtin thing
+U1TUWPL1M says -=*[1484084856.001072]-=*::: yeah virtualbox creates their own proprietary fs
+U0PRC9KPY says -=*[1484084857.001073]-=*::: and I have just learned that its performance is completely abysmal and I can get about 500% speed boost by not using it
+U1TUWPL1M says -=*[1484084865.001074]-=*::: im not exactly sure what the implementation is like with that
+U0PRC9KPY says -=*[1484084882.001075]-=*::: I cant use nfs which requires a private network for some reasons (vpn)
+U0PRC9KPY says -=*[1484084899.001076]-=*::: i have been able to use minikube in spite of this by setting up careful port forwarding rules on the NAT interface
+U0PRC9KPY says -=*[1484084969.001077]-=*::: so, i was going to try to get that feature (my apps code is resident on both sides of the virtualization) using this 9p fs provided by minikube
+U0PRC9KPY says -=*[1484084977.001078]-=*::: and a manually configured PV
+U0PRC9KPY says -=*[1484085003.001079]-=*::: was hoping someone can tell me if the performance is good before I try it
+U0PRC9KPY says -=*[1484085049.001080]-=*::: since my app is not kube-ready by any means and it will be some investment to put it on there
+U0PRC9KPY says -=*[1484085092.001081]-=*::: well, as long as its not using that same VirtualBox filesystem I guess its worth a shot!
+U0PRC9KPY says -=*[1484085228.001082]-=*::: hm I think you just said though that VirtualBox does use the VirtualBox filesystem
+U0PRC9KPY says -=*[1484085371.001083]-=*::: where is xhyve networking configured?  are there any options
+U1TUWPL1M says -=*[1484085410.001084]-=*::: unfortunately i dont think theres much to configure
+U1TUWPL1M says -=*[1484085422.001085]-=*::: it uses mac's built in vmnet api
+U0PRC9KPY says -=*[1484085435.001086]-=*::: well, by default its going to use what amounts to a private network right
+U1TUWPL1M says -=*[1484085445.001087]-=*::: yeah
+U0PRC9KPY says -=*[1484085462.001088]-=*::: is there a NAT interface as well?
+U0PRC9KPY says -=*[1484085492.001089]-=*::: and might there be some way to add port forwards so for example minikubes localhost:8080 is available on localhost:8081
+U0PRC9KPY says -=*[1484085512.001090]-=*::: thats what I need, my VPN configuration forbids any kind of split tunnel operation
+U0PRC9KPY says -=*[1484085532.001091]-=*::: so if its not on 127.0.0.1 or on the other end of the tunnel, Im not talking to it while Im connected
+U1TUWPL1M says -=*[1484085611.001092]-=*::: you could port forward through ssh
+U0PRC9KPY says -=*[1484085613.001093]-=*::: it must be configured somewhere in the source of minikube
+U1TUWPL1M says -=*[1484085613.001094]-=*::: a little hacky
+U0PRC9KPY says -=*[1484085643.001095]-=*::: That might work
+U0PRC9KPY says -=*[1484085660.001096]-=*::: thanks!
+U1TUWPL1M says -=*[1484085700.001097]-=*::: `ssh -L 8080:$(minikube ip):8080 docker@$(minikube ip)` or something
+U0PRC9KPY says -=*[1484097793.001098]-=*::: I've been forwarding Postgres into vagrant and minikube via ssh forwarding as needed, using exactly that
+U0PRC9KPY says -=*[1484097815.001099]-=*::: Though the sidecar method has also proved effective for disposable test databases
+U0PRC9KPY says -=*[1484097840.001100]-=*::: <https://bitbucket.org/kingdonb/helm-jenkins-chart>
+U0PRC9KPY says -=*[1484097998.001102]-=*::: commits on top of helm stable/jenkins to give it a dedicated PV, get the latest (jenkins-)master tip, and add that postgres side-car rather than forwarding it
+U0PRC9KPY says -=*[1484098026.001103]-=*::: I have to show someone how to deploy Jenkins and kubernetes tomorrow :smile:
+U0PRC9KPY says -=*[1484098050.001104]-=*::: we don't have any kubes, so I'm expecting to describe a single node deployment (using kubeadm)
+U0PRC9KPY says -=*[1484098220.001105]-=*::: i'm orchestrating chrome via Cucumber-rails and Selenium Driver (it works on minikube, too) <https://github.com/yebyen/rails_test>
+U0VDD7H3R says -=*[1484120581.001108]-=*::: Has anyone had any success using rsync to get files into the minikube vm?
+U0VDD7H3R says -=*[1484122773.001109]-=*::: Looks like the rsync package is missing
+U0VDD7H3R says -=*[1484122890.001110]-=*::: looking around I found this <https://github.com/boot2docker/boot2docker/issues/936> the `tce-load` command doesn't seem to exist in my minikube vm
+U0VDD7H3R says -=*[1484125711.001112]-=*::: ah I figured it out.... Looks like the packaging tools are stripped out of the default iso I was able to get it working by specifying a custom boot2docker iso
+U3DD905JM says -=*[1484149803.001116]-=*::: hi, is anyone working on making minikube operate without need for a hypervisor on linux?
+U3DD905JM says -=*[1484149875.001118]-=*::: I see it's on the roadmap for december 2016 but I assume it didn't happen in last release
+U3DD905JM says -=*[1484150265.001119]-=*::: use case, in particular, is things like CI without having to spin up whole new VM for each test run. but also reducing pain on linux machines, where e.g. sometimes you need bios setting changes
+U2UTX3ABU says -=*[1484158546.001121]-=*::: Hello friends. I'm playing with the heapster addon. I have a problem with this <https://github.com/kubernetes/minikube/blob/master/deploy/addons/heapster/heapster-rc.yaml#L29>. My heapster pods cannot talk to the influx DB. The host `monitoring-influxdb` does not resolve by `$MONITORING_INFLUXDB_SERVICE_HOST` does. kube-dns is running. Anyone have any ideas?
+U20L8GGUF says -=*[1484160546.001123]-=*::: <@U2UTX3ABU> what is the state of the pods for the monitoring-influxdb service?
+U2UTX3ABU says -=*[1484160745.001124]-=*::: <@U20L8GGUF> actually the heapster stuff was created before the kube-dns pods so that would explain that :slightly_smiling_face:
+U3M9N51FF says -=*[1484173057.001126]-=*::: Hello everyone. I'm trying to start minikube and enable the `awsecr-creds` addon.  The pod fails to start and I always get this error: ``` RequestError: send request failed caused by: Post <https://ecr.us-east-1.amazonaws.com/>: net/http: invalid header field value "AWS4-HMAC-SHA256 Credential=api-key\n/20170111/us-east-1/ecr/aws4_request, SignedHeaders=content-length;content-type;host;x-amz-date;x-amz-target, Signature=some-signature" for key Authorization ```  What am I doing wrong?
+U3M9N51FF says -=*[1484173181.001127]-=*::: Is the issue the `\n` in the url?
+U3M9N51FF says -=*[1484176246.001128]-=*::: my command line was adding a \n in the end
+U0W95BXUG says -=*[1484241299.001132]-=*::: Hi guys ]
+U0W95BXUG says -=*[1484241318.001133]-=*::: how's fs performace looking compared to docker-compose?
+U1TUWPL1M says -=*[1484244398.001134]-=*::: <@U0W95BXUG> not sure what you mean?
+U0W95BXUG says -=*[1484244505.001135]-=*::: Docker for mac leverages osxfs: <https://docs.docker.com/docker-for-mac/osxfs/#namespaces>
+U0W95BXUG says -=*[1484244517.001138]-=*::: which is not that performant
+U0W95BXUG says -=*[1484244526.001139]-=*::: for it's volumes
+U0W95BXUG says -=*[1484244624.001140]-=*::: I want to know how well does minikube performs
+U0W95BXUG says -=*[1484244955.001141]-=*::: with docker for mac (osxfs) I was able to reach 15MB/s at most
+U20L8GGUF says -=*[1484246935.001142]-=*::: <@U0W95BXUG> Most of the performance is based on the storage driver if i recall correctly.  if you do a ```docker info``` you will see a blob like this:  ```Storage Driver: aufs  Root Dir: /var/lib/docker/aufs  Backing Filesystem: extfs  Dirs: 1  Dirperm1 Supported: true```
+U20L8GGUF says -=*[1484247019.001143]-=*::: union filesystems have overhead associated with them.   docker works around this overhead with --volumes-from which bypasses the driver  (not to be confused with a volume mapping: ie -v /foo/bar:/home/bar)
+U20L8GGUF says -=*[1484247214.001144]-=*::: minikube (or perhaps its a k8s issue) doesn't have this ability quite yet.  <https://github.com/kubernetes/minikube/issues/419>
+U0W95BXUG says -=*[1484247308.001146]-=*::: hmm ok
+U20L8GGUF says -=*[1484247480.001147]-=*::: to be snarky:  never go to disk.  its slow.

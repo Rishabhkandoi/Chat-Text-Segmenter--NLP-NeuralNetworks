@@ -1,0 +1,59 @@
+==========
+U09R2FFHP says -=*[1475841361.000818]-=*::: flawlessly gave a demo of rkt + kubernetes with most of the room using it on their own laptops today using minikube! Nice work everyone! <https://twitter.com/BrandonPhilips/status/784360985993895936>
+U28SK7XUJ says -=*[1475851437.000821]-=*::: <@U09R2FFHP> Very cool!  Im gonna check it out.  Ive been looking for something like this to forward to colleagues as well for them to self-educate..
+==========
+U1F1BLB50 says -=*[1475939586.000825]-=*::: hello!  i'm starting with minikube in my osx, i'm trying to do kubectl proxy , but it doesn't work fine
+U1F1BLB50 says -=*[1475939804.000826]-=*::: ```  ~  kubectl proxy Starting to serve on 127.0.0.1:8001```
+U1F1BLB50 says -=*[1475939830.000827]-=*::: what im doing bad?
+U1F1BLB50 says -=*[1475939933.000828]-=*::: lol! forget this message...
+U1F1BLB50 says -=*[1475939942.000829]-=*::: i saw my mistake
+==========
+U0ALE41D3 says -=*[1476291717.000840]-=*::: someone know the kvm package dependancies for minikube on centos? Instructions say `sudo apt install libvirt-bin qemu-kvm` and I have qemu-kvm and libvirt-client installed but the vm still doesn't start
+U0ALE41D3 says -=*[1476291737.000841]-=*::: error message on `minikube start --vm-driver kvm` Error creating new host: %s: dial tcp: missing address
+U1TUWPL1M says -=*[1476291918.000842]-=*::: <@U0ALE41D3> add yourself to the libvirtd group
+U1TUWPL1M says -=*[1476291950.000843]-=*::: if that doesn't work this thread might help <https://github.com/dhiltgen/docker-machine-kvm/issues/13>
+U0ALE41D3 says -=*[1476292202.000845]-=*::: <@U1TUWPL1M> I get the same error when running with sudo
+U0ALE41D3 says -=*[1476292280.000846]-=*::: I'm working on an install that is much broader than just my system so I'm trying to find a solution that'll work when people don't have/need sudo access or new user groups
+U0ALE41D3 says -=*[1476292311.000847]-=*::: maybe I should require virtualbox as that doesn't seem to require sudo but that seems like a lot of overkill when the hosts are already linux and have kvm built in
+==========
+U0ABVEXT3 says -=*[1476710261.000858]-=*::: Hi. Im trying to use minikube with xhyve driver in macOS. But I have a different behavior concerning networking compared to minikube with virtualbox.
+U0ABVEXT3 says -=*[1476710312.000859]-=*::: It seems that my traffic that go out of minikube is masqueraded with virtualbox but not with xhyve
+U0ABVEXT3 says -=*[1476710327.000860]-=*::: This give me some troubles due tu VPN / Firewalling policies
+U0ABVEXT3 says -=*[1476710356.000861]-=*::: Any clue how to setup minikube / xhyve with masquerading like with virtualbox ?
+U1TUWPL1M says -=*[1476725977.000862]-=*::: hey <@U0ABVEXT3> , I'm not an expert on that kind of stuff, but you might find some luck opening an issue or reaching out on <https://github.com/zchee/docker-machine-driver-xhyve>
+==========
+U1FS364MV says -=*[1476748485.000866]-=*::: This is probably a common question, but I cant seem to find the docs. If i build an image locally how can i deploy it using the minikube dashboard? If i try to use something like:  ```       containers:         - name: submit-job           imagePullPolicy: Always           image: home/twit-peer   ```  after building a local image home/twit-peer. The dashboard complains that it cannot find the image when i upload the Job.
+U1FS364MV says -=*[1476749782.000867]-=*::: seems like the answer is to change it from imagePullPolcy: Always -&gt; Never
+==========
+U1YEXGY77 says -=*[1476750806.000868]-=*::: <@U0ABVEXT3> Hi, Im xhyve-driver author. Yeah, xhyve-driver, also xhyve(hyperkit) has some issue on networking.(e.g. if host(macOS) have custom network setting from `system preferences`, sometimes not works `docker pull` or etc.) and (maybe) virtualbox has sandboxing network interface, but xhyve use host network directly. so sometimes has different behavior. I also not expert for network interface, but will debug and try to be in the same behavior as those
+U0ABVEXT3 says -=*[1476768519.000870]-=*::: <@U1TUWPL1M> <@U1YEXGY77> thank you for your answers. For information we opened <https://github.com/kubernetes/minikube/issues/706>
+U0ABVEXT3 says -=*[1476768537.000872]-=*::: Feel free to ask to open it on <https://github.com/zchee/docker-machine-driver-xhyve> if needed
+U1YEXGY77 says -=*[1476768621.000874]-=*::: <@U0ABVEXT3> Thanks! Ill see it
+==========
+U1YEXGY77 says -=*[1476768840.000875]-=*::: <@U0ABVEXT3> just in case, `we opened`, so `@sbadia` is not you?
+U0ABVEXT3 says -=*[1476768874.000877]-=*::: <@U1YEXGY77> no its a coworker
+U1YEXGY77 says -=*[1476768898.000878]-=*::: <@U0ABVEXT3>  oh! I see. thanks : )
+==========
+U2479JGE4 says -=*[1476830223.000882]-=*::: Can someone help me figure out what minikube uses as default cluster/service ip range? I'm getting this error when launching my service: ``` The Service "calico-etcd" is invalid: spec.clusterIP: Invalid value: "100.78.232.136": provided IP is not in the valid range ``` Can't figure out how to override it, or what address to change to
+U1TUWPL1M says -=*[1476830247.000883]-=*::: are you using virtualbox?
+U2479JGE4 says -=*[1476830250.000884]-=*::: yes
+U1TUWPL1M says -=*[1476830277.000885]-=*::: i think this is what you want? `--host-only-cidr string       The CIDR to be used for the minikube VM (only supported with Virtualbox driver) (default "192.168.99.1/24")`
+U1TUWPL1M says -=*[1476830299.000887]-=*::: its a flag for `minikube start`
+U1TUWPL1M says -=*[1476830327.000888]-=*::: sorry that default is specific for me but its /24
+U2479JGE4 says -=*[1476830407.000889]-=*::: hmm. so minikube detects its host-only address and sets the cluster ip range to that?
+U1TUWPL1M says -=*[1476830466.000890]-=*::: virtualbox is the only driver that respects it i believe
+U2479JGE4 says -=*[1476831009.000891]-=*::: <@U1TUWPL1M> I tried changing my service IP to fit in that range, no dice. Then also tried explictly setting `minikube config set host-only-cidr 192.168.99.1/24` (since it was otherwise unset), still no dice.  My vbox0 host-only interface *does* definitely have that IP to start though
+U2479JGE4 says -=*[1476831145.000892]-=*::: Is there a way to see what kubernetes was configured to use as its range?
+U1TUWPL1M says -=*[1476831196.000893]-=*::: im not sure.  maybe try exposing your service as a nodeport?
+U2479JGE4 says -=*[1476831410.000894]-=*::: phew well, I managed to see in the kube dashboard that there was an existing Cluster IP set to 10.0.0.1. I used 10.0.0.2 and it was accepted
+U2479JGE4 says -=*[1476831430.000895]-=*::: pretty roundabout but I'll take it. thanks for the time <@U1TUWPL1M>
+==========
+U0YJ7JGQP says -=*[1476881248.000896]-=*::: Morning all I have a weird issue with minikube (V 0.11), when creating new containers - I get a command not found error ``` Error response from daemon: Container command 'sh' not found or does not exist ``` I've set using these instructions <https://github.com/kubernetes/minikube/releases>  and additionally created a registry container on port 5000 to store all my images locally. When i build the image via docker and then run with docker it works When I build the image using build tools such as maven,grunt and etc (which ends storing the image in mu local registry) and then run with docker it works When I let the maven deploy it to minikube, i get the error When i try to run the kubectl create command myself i get the same error It seems that each command I put in the CMD portion (dockerfile)  or command portion (k8s deployment yaml) fails When I run a basic public nginx image via k8s and it works though
+U0FHJL19C says -=*[1476889514.000899]-=*::: I get a `ErrImageNeverPull` when i set `imagePullPolicy: "Never"`
+U0FHJL19C says -=*[1476889550.000900]-=*::: and I have tried `ifNotPresent` but I cant get minikube to find it from my local docker cache
+U0FHJL19C says -=*[1476890522.000901]-=*::: looks like running `eval $(minikube docker-env)` in my shell and building the image in that shell fixed it (turning ifNotPresent back on too )
+U20L8GGUF says -=*[1476898273.000903]-=*::: <@U0YJ7JGQP> is your kube env setup to use an insecure registry?   [rational  =&gt; public via k8s works :: private via k8s does not]
+U0YJ7JGQP says -=*[1476900101.000904]-=*::: <@U20L8GGUF>:  I thought about that but I can pull the images successfully 
+U20L8GGUF says -=*[1476903908.000906]-=*::: <@U0YJ7JGQP> what is the imagePullPolicy?
+U0YJ7JGQP says -=*[1476903950.000908]-=*::: It pulls each time
+==========

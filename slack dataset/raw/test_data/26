@@ -1,0 +1,131 @@
+U0P8XQYVD says -=*[1481825952.000464]-=*::: Hi all, what's the timeline for Kubernetes support on windows?
+U0JFJ4KHS says -=*[1481826015.000465]-=*::: Hi Rasheed, Kubernetes for windows server containers is supported as a alpha feature in release 1.5
+U0P8XQYVD says -=*[1481826032.000466]-=*::: wow!
+U0P8XQYVD says -=*[1481826047.000467]-=*::: I am glad to know. When is 1.5 out?
+U0JFJ4KHS says -=*[1481826093.000468]-=*::: Its already out, it was released on Monday
+U0P8XQYVD says -=*[1481826107.000469]-=*::: Nice!
+U0P8XQYVD says -=*[1481826137.000470]-=*::: Could you please please provide a link to the documentation for the windows support? I wanna get on it right away! :slightly_smiling_face:
+U0JFJ4KHS says -=*[1481826214.000471]-=*::: here you go <http://kubernetes.io/docs/getting-started-guides/windows/>
+U0P8XQYVD says -=*[1481826322.000473]-=*::: thanks so much!
+U0P8XQYVD says -=*[1481826327.000474]-=*::: Excited!
+U0JFJ4KHS says -=*[1481826363.000475]-=*::: np
+U2YL40JL8 says -=*[1481889320.000477]-=*::: Am I crazy to try 1.5.0 with an acs-engine deployment ?
+U2YL40JL8 says -=*[1481889368.000478]-=*::: desperate to get some persistent volumes and haven't managed to so far
+U0ALRFJH0 says -=*[1481890661.000479]-=*::: <@U2YL40JL8> i don't fully grasp the Azure terminology but i believe <@U2X7ARA79> did that.
+U2YL40JL8 says -=*[1481890740.000480]-=*::: there's a distribution of k8s using terraform to deploy on azure , among some other managed container solutions in there
+U2YL40JL8 says -=*[1481890752.000481]-=*::: well I tried it, and it came up
+U2YL40JL8 says -=*[1481890758.000482]-=*::: but without the usual add ons
+U2YL40JL8 says -=*[1481890762.000483]-=*::: as I'm new
+U2YL40JL8 says -=*[1481890783.000484]-=*::: just figuring out how to install heapster and dashboard and what nto
+U0ALRFJH0 says -=*[1481899014.000486]-=*::: <@U2YL40JL8> sorry, but this channel is meant for bringing Windows Server Containers support to Kubernetes and not support Azure.
+U2YL40JL8 says -=*[1481899101.000487]-=*::: ok, I haven't found  any channel for k8s in azure , is there somewhere?
+U0ALRFJH0 says -=*[1481899683.000488]-=*::: <@U0BMY7D2Q> should create one, i guess.
+U0PPMUTGR says -=*[1481903848.000489]-=*::: <@U2YL40JL8>  a few folks talked about a sig-azure, but it has not been created yet
+U0PPMUTGR says -=*[1481903877.000490]-=*::: this was the thread if you want to chime in - <https://github.com/kubernetes/community/pull/36>
+U2HR3B24A says -=*[1481911914.000493]-=*::: Im pretty windows ignorant these days, if a mixed cluster of windows/linux hosts in the same cluster ( a feature thats already a thing? ) .. whats the solution if the linux hosts are using flannel?
+U0JFJ4KHS says -=*[1481913837.000494]-=*::: <@U2HR3B24A>, yes windows/linux hosts in the same cluster is possible. k8s 1.5 release added windows support as an alpha feature
+U0JFJ4KHS says -=*[1481913862.000495]-=*::: For now, the k8s control plane needs to be on linux
+U2HR3B24A says -=*[1481913877.000496]-=*::: yeah i knew windows w/1.5 i was 99% sure mixed clusters
+U2HR3B24A says -=*[1481913902.000497]-=*::: hmm have to label up some nodes, (were about a day away from self-hosted)
+U0JFJ4KHS says -=*[1481913932.000498]-=*::: we have tested with linux hosts using kubenet, haven't tested it with flannel yet
+U2HR3B24A says -=*[1481914011.000500]-=*::: yeah were using the 25.0.0.0/8 on the overlay network, Im just wondering how I get the windows boxes to participate
+U0JFJ4KHS says -=*[1481914173.000501]-=*::: when you create the transparent network on windows nodes, can you provide the subnet from the above network
+U2HR3B24A says -=*[1481915753.000502]-=*::: yeah its not clear to me how that would work at all
+U2HR3B24A says -=*[1481915949.000503]-=*::: but my networking fu is also not strong, i came to kube through dev, not through ops
+U0JFJ4KHS says -=*[1481916149.000504]-=*::: same with me :slightly_smiling_face:
+U0JFJ4KHS says -=*[1481916167.000505]-=*::: what subnet it assigns to linux nodes
+U0JFJ4KHS says -=*[1481916380.000506]-=*::: I might be wrong here..if 1st linux node gets assigned 25.0.1.0/24, you could use for example 25.0.2.0/24 when creating transparent network on Windows..Also, 25.0.0.0/8 doesn't appear to be a private subnet range
+U0JFJ4KHS says -=*[1481916465.000507]-=*::: May be <@U0ALRFJH0>  have more insights on this
+U2HR3B24A says -=*[1481916796.000509]-=*::: each node gets a class b...
+U2HR3B24A says -=*[1481916815.000510]-=*::: so 25.1.0.0 25.2.0.0 to assign to pods
+U2HR3B24A says -=*[1481916819.000511]-=*::: currently
+U2HR3B24A says -=*[1481916839.000512]-=*::: but flannel does encasulation between the nodes
+U2HR3B24A says -=*[1481916865.000513]-=*::: youd have to have a decoder on the windows nodes to decapsule those network packets
+U2HR3B24A says -=*[1481916881.000514]-=*::: i think well have to reconsider the whole approach for a hybrid cluster
+U0JFJ4KHS says -=*[1481918769.000515]-=*::: true, looks like unless there is a windows agent for flannel, this won't work
+U2HR3B24A says -=*[1481919686.000516]-=*::: yeah im not sure coreos is super interested in working on something like that
+U2HR3B24A says -=*[1481919725.000517]-=*::: we may have to go to something something something.. bgp?
+U0BMY7D2Q says -=*[1481923466.000518]-=*::: Yes, we need to make a sig-azure, but I just haven't had the chance. Maybe next week.
+U0BMY7D2Q says -=*[1481923474.000519]-=*::: Or at least ask for a one-off #azure here.
+U0BMY7D2Q says -=*[1481923481.000520]-=*::: Anyway <@U2YL40JL8> you can PM me here if you like.
+U0BMY7D2Q says -=*[1481923496.000521]-=*::: Or file issues on GitHub, it's really the best way, there will be 8x as many people looking at it.
+U0BMY7D2Q says -=*[1481923717.000522]-=*::: (feature request for #azure here: <https://github.com/kubernetes/community/issues/188>)
+U2U84B4BE says -=*[1481983382.000525]-=*::: <@U2HR3B24A>  we have been gone thru the similar discussion last week in my team. I think it's better to have separate clusters for Linux and Windows at this moment.
+U2U84B4BE says -=*[1481983422.000526]-=*::: Regarding the networking , I believe L3 routing is doable no matter you have a mixed or separated clusters.
+U2U84B4BE says -=*[1481983496.000527]-=*::: you could even possible to have a L2 network across Linux/Windows hosts, for Linux you go for macvlan, for Windows you go for transparent net driver.
+U2U84B4BE says -=*[1482116134.000529]-=*::: Dear <@U0ALRFJH0> <@U0JFJ4KHS> ,  I was trying to upgrade Windows docker version to 1.14.0-dev but it doesn't start any container at all due to this issue: <https://github.com/kubernetes/kubernetes/issues/7294>, hereby I think in the guide we'd better offer a statement, I think quite a few uses may use 1.14.0-dev because some articles from Microsoft pointing to this verison for the installation.
+U2U84B4BE says -=*[1482116464.000531]-=*::: I left a comment in that thread to detail this use case.
+U0ALRFJH0 says -=*[1482159430.000532]-=*::: interesting 
+U0ALRFJH0 says -=*[1482159437.000533]-=*::: thanks for bringing this up 
+U2U84B4BE says -=*[1482159637.000534]-=*::: It's all about to get round the DNS issue ~
+U0ALRFJH0 says -=*[1482160860.000535]-=*::: <@U0JFJ4KHS> <@U0PPMUTGR> @abrand later today I'll meet with the GCP guys and will go through the steps of building the k8s cluster and showing them our current limitations. 
+U0PT5KRHR says -=*[1482160896.000536]-=*::: cool!
+U0JFJ4KHS says -=*[1482160916.000537]-=*::: sounds good
+U0PPMUTGR says -=*[1482162307.000538]-=*::: thanks <@U0ALRFJH0>
+U0PPMUTGR says -=*[1482162322.000539]-=*::: <@U0W97EA1W> , fyi on the issue <@U2U84B4BE>  outlined above
+U0PPMUTGR says -=*[1482162354.000540]-=*::: Jitu will you take care updating the documentation for the issue hongxima found?
+U0JFJ4KHS says -=*[1482162546.000541]-=*::: do we update the documentation? I think the solution should be disabling swap by default
+U0PPMUTGR says -=*[1482162607.000542]-=*::: whatever you think is best
+U2U84B4BE says -=*[1482162755.000543]-=*::: I used a private dirty fix on Kubelet to make it pass-in MemorySwap=0 for Windows.
+U0JFJ4KHS says -=*[1482163083.000545]-=*::: <@U2U84B4BE>, is it possible to create a PR, to push the changes upstream
+U2U84B4BE says -=*[1482163477.000546]-=*::: <@U0JFJ4KHS> Given the debate in that thread,  I would not expect they accept this dirty PR, but I will try to push them fix this showstopper for Windows docker    Dev version
+U0ALRFJH0 says -=*[1482175361.000547]-=*::: <@U0JFJ4KHS> <@U0PPMUTGR> <@U0PT5KRHR> GCP meeting is over. they will be looking into the issue. meanwhile, i will provide them with documentation on how to run IIS on top of Kubernetes and expose it to the outside world - this will include how to set-up a master node without using the official bash scripts.
+U2U84B4BE says -=*[1482214794.000548]-=*::: <@U0JFJ4KHS> I've created an issue <https://github.com/kubernetes/kubernetes/issues/39003> for MemorySwap, <@U0BC5M36Y> created the PR , I think it will be merged very soon
+U0ALRFJH0 says -=*[1482225656.000550]-=*::: great
+U0ALRFJH0 says -=*[1482231999.000551]-=*::: <@U2U84B4BE> you around?
+U2U84B4BE says -=*[1482232124.000552]-=*::: hi <@U0ALRFJH0>
+U0ALRFJH0 says -=*[1482232168.000553]-=*::: hello <@U2U84B4BE> :slightly_smiling_face: i want to review a few AWS steps with you. do you have the time right now?
+U2U84B4BE says -=*[1482232185.000554]-=*::: sure, glad to help :slightly_smiling_face:
+U0ALRFJH0 says -=*[1482232606.000555]-=*::: <@U2U84B4BE> you have RRAS enabled (LAN Routing and NAT), correct?
+U2U84B4BE says -=*[1482232628.000556]-=*::: Correct.
+U0ALRFJH0 says -=*[1482232686.000557]-=*::: <@U2U84B4BE> you have `N-1` routes set on each VM, `N` being the total number of VMs in your Kubernetes cluster, correct?
+U2U84B4BE says -=*[1482232765.000558]-=*::: Yes. true
+U0ALRFJH0 says -=*[1482232818.000559]-=*::: <@U2U84B4BE> can you point me to AWS documentation related to adding additional NICs to a VM?
+U2U84B4BE says -=*[1482232896.000560]-=*::: I try to locate some but if there is nothing can I share some screenshots?
+U0ALRFJH0 says -=*[1482233869.000561]-=*::: please
+U0ALRFJH0 says -=*[1482233887.000562]-=*::: <@U2U84B4BE> please, can you mail the screenshots over to <mailto:pires@apprenda.com|pires@apprenda.com>?
+U0ALRFJH0 says -=*[1482233900.000563]-=*::: it may get too heavy over slack
+U0ALRFJH0 says -=*[1482233904.000564]-=*::: thank you!
+U2U84B4BE says -=*[1482233914.000565]-=*::: Sure thing :slightly_smiling_face:
+U0ALRFJH0 says -=*[1482234603.000566]-=*::: thanks mate!
+U2U84B4BE says -=*[1482234832.000567]-=*::: <@U0ALRFJH0>  here is the HOWTO for adding 2nd NIC: <http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html#create_eni>
+U0ALRFJH0 says -=*[1482245141.000569]-=*::: thanks <@U2U84B4BE>!
+U0ALRFJH0 says -=*[1482248111.000570]-=*::: <@U0JFJ4KHS> from what i get from those instructions, we'll still have two networks per container.
+U0JFJ4KHS says -=*[1482248133.000571]-=*::: right, but both are transparent network
+U0ALRFJH0 says -=*[1482248157.000572]-=*::: <@U0JFJ4KHS> correct. why did they do that? just to mimic two nodes in just one?
+U0JFJ4KHS says -=*[1482248171.000573]-=*::: I was wondering about that too
+U0JFJ4KHS says -=*[1482248185.000574]-=*::: We didn't talk to Anthony after that exchange
+U0ALRFJH0 says -=*[1482248236.000575]-=*::: wait a second...
+U0ALRFJH0 says -=*[1482248245.000576]-=*::: <@U0JFJ4KHS> can you confirm the default gw on Azure is `10.240.0.1`?
+U0JFJ4KHS says -=*[1482248255.000577]-=*::: let me check
+U0JFJ4KHS says -=*[1482248656.000578]-=*::: the acs documentation uses `10.240.0.1` as gateway, but I don't think it is the default gateway for all Azure VMs
+U0ALRFJH0 says -=*[1482250141.000579]-=*::: i don't understand why the _forwarder_ subnet exists then.
+U0ALRFJH0 says -=*[1482251821.000580]-=*::: <@U0JFJ4KHS> ah, it seems one transparent network is used solely for k8s service routing.
+U0JFJ4KHS says -=*[1482251864.000581]-=*::: if that is the case, it won't resolve network access issue
+U0ALRFJH0 says -=*[1482253688.000582]-=*::: correct!
+U0ALRFJH0 says -=*[1482312789.000583]-=*::: great news, we should have automated releases for 1.5.2 :slightly_smiling_face:
+U0PPMUTGR says -=*[1482331179.000584]-=*::: that's awesome <@U0ALRFJH0>!!!!
+U0PPMUTGR says -=*[1482331223.000585]-=*::: does this mean that our binaries will be automatically built by the k8s build process so that customers don't have to run a build to use windows?
+U0PPMUTGR says -=*[1482340680.000586]-=*::: guys, i doubt we will get much traction on the msft front end. It looks like Anthony and Jason are both on vacation until the new year
+U0PPMUTGR says -=*[1482340697.000587]-=*::: maybe we should concentrate on other things in order to avoid spinning our wheels
+U3HQWJKB7 says -=*[1482350704.000589]-=*::: hi everyone,  is there any place where I can find Azure provision script to automatically setup a resource group, VMs, NICs, etc like in this video: <https://www.youtube.com/watch?v=1TYtnClktr0> ?
+U0PT5KRHR says -=*[1482350806.000591]-=*::: <@U0JFJ4KHS> might have more information, but I think this is where had the ARM template
+U0PT5KRHR says -=*[1482350808.000592]-=*::: <https://github.com/jbhurat/dotnetes/tree/master/cluster/azure>
+U3HQWJKB7 says -=*[1482350956.000594]-=*::: That's exactly what I need for now, thanks!
+U0ALRFJH0 says -=*[1482404106.000595]-=*::: 
+U0ALRFJH0 says -=*[1482404112.000596]-=*::: <@U0PPMUTGR> ^ yes!
+U0ALRFJH0 says -=*[1482404167.000597]-=*::: <@U0PPMUTGR> i also agree we should be looking into other things since GCP guys are also going on vacation and haven't been able to figure out the SNAT issue.
+U0PPMUTGR says -=*[1482419229.000598]-=*::: everyone is on vacation but us :slightly_smiling_face:
+U0PPMUTGR says -=*[1482419251.000599]-=*::: <@U0ALRFJH0>  do you have any ideas for other things to work on? I think Jitu will take on some activities outside of sig-windows
+U0ALRFJH0 says -=*[1482419537.000600]-=*::: yes, i'm following Jitu's steps and i'm picking up some stuff not related to this SIG.
+U0PPMUTGR says -=*[1482420720.000601]-=*::: :slightly_smiling_face:
+U0PPMUTGR says -=*[1482420730.000602]-=*::: Merry Christmas everyone!
+U0ALRFJH0 says -=*[1482420903.000603]-=*::: enjoy your holidays! :wave:
+U0PPMUTGR says -=*[1482421452.000604]-=*::: :dancing-penguin:
+U0PPMUTGR says -=*[1482423116.000605]-=*::: FYI - this blog was published yesterday on the amazing work this SIG is doing - <http://blog.kubernetes.io/2016/12/windows-server-support-kubernetes.html>
+U3J5PDG85 says -=*[1482433735.000608]-=*::: Hi everyone, congrats on 1.5 alpha release (and cool blogpost)!
+U3J5PDG85 says -=*[1482435408.000609]-=*::: Quick intro: I am a PM on the Nano Server team at Microsoft. Just getting started with k8s, and would like to see how I can help in getting Nano Server to work great on k8s!
+U2U84B4BE says -=*[1482468877.000610]-=*::: <@U3J5PDG85> Hi vyalla, I run a startup in China focus on container-powered cloud solution. Windows is a big focus in our current product roadmap. May I know: 1. Possible to run Docker in Docker (DinD) on Windows platform? 2. Plan to support RDP within Windows Docker? Thanks
+U0ALRFJH0 says -=*[1482497457.000611]-=*::: <@U3J5PDG85> that's awesome. We definitely need help with networking. 
+U0PPMUTGR says -=*[1482510452.000612]-=*::: thanks vyalla!
+U0PPMUTGR says -=*[1482510483.000613]-=*::: vyalla, say hi to Jeff Snover! we used to work together for about 12 years at msft

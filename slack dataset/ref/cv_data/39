@@ -1,0 +1,90 @@
+==========
+U20L8GGUF says -=*[1483745407.000907]-=*::: there looks to be some problems in the calico-node:
+U20L8GGUF says -=*[1483745415.000908]-=*::: ``` 2017-01-06T23:29:12.412900121Z 2017-01-06 23:29:12,410 [ERROR][15636/7] calico.felix.actor 395: _finish_msg_batch failed. 2017-01-06T23:29:12.412902722Z Traceback (most recent call last): 2017-01-06T23:29:12.412905114Z   File "site-packages/calico/felix/actor.py", line 382, in _step 2017-01-06T23:29:12.412907583Z   File "site-packages/calico/felix/masq.py", line 86, in _finish_msg_batch 2017-01-06T23:29:12.412910100Z   File "site-packages/calico/felix/ipsets.py", line 511, in replace_members 2017-01-06T23:29:12.412912716Z   File "site-packages/calico/felix/ipsets.py", line 461, in exists 2017-01-06T23:29:12.412915199Z   File "site-packages/calico/felix/futils.py", line 355, in check_call 2017-01-06T23:29:12.412917774Z FailedSystemCall: Failed system call (retcode : 1, args : ('ipset', 'list', 'felix-all-ipam-pools-tmp')) 2017-01-06T23:29:12.412920349Z   stdout  :  2017-01-06T23:29:12.412922645Z   stderr  : ipset v6.29: Kernel error received: Invalid argument 2017-01-06T23:29:12.412925007Z  2017-01-06T23:29:12.412927232Z   input  : None 2017-01-06T23:29:12.412929506Z  2017-01-06T23:29:12.412932239Z TrackedAsyncResult ('&lt;disabled&gt;', '&lt;disabled&gt;', 'MasqueradeManager(IPv4)', 'on_ipam_pool_updated') was leaked with exception FailedSystemCall('ipset', 'list', 'felix-all-ipam-pools-tmp').  Dying. 2017-01-06T23:29:12.413013978Z 2017-01-06 23:29:12.412 [ERROR][15624] felix.go 476: Failed to read from front-end socket error=EOF 2017-01-06T23:29:12.413071950Z 2017-01-06 23:29:12.412 [WARNING][15624] felix.go 321: Felix is shutting down reason=Failed to read from front-end socket 2017-01-06T23:29:12.413077716Z 2017-01-06 23:29:12.413 [INFO][15624] felix.go 335: Driver still running, trying to shut it down... 2017-01-06T23:29:12.419281664Z 2017-01-06 23:29:12.419 [WARNING][15624] felix.go 304: Driver process stopped error=exit status 1 2017-01-06T23:29:12.419292352Z 2017-01-06 23:29:12.419 [INFO][15624] felix.go 347: Driver shut down after SIGTERM 2017-01-06T23:29:12.419329455Z 2017-01-06 23:29:12.419 [INFO][15624] felix.go 361: Shutdown wasn't cause by signal, pausing to avoid tight restart loop ```
+U20L8GGUF says -=*[1483745465.000909]-=*::: whoops, copy paste truncated the top: ``` 2017-01-06T23:29:12.412819915Z 2017-01-06 23:29:12,409 [ERROR][15636/7] calico.felix.ipsets 467: Failed to check if ipset exists 2017-01-06T23:29:12.412823678Z Traceback (most recent call last): 2017-01-06T23:29:12.412826318Z   File "site-packages/calico/felix/ipsets.py", line 461, in exists 2017-01-06T23:29:12.412839121Z   File "site-packages/calico/felix/futils.py", line 355, in check_call 2017-01-06T23:29:12.412841739Z FailedSystemCall: Failed system call (retcode : 1, args : ('ipset', 'list', 'felix-all-ipam-pools-tmp')) 2017-01-06T23:29:12.412885664Z   stdout  :  2017-01-06T23:29:12.412889933Z   stderr  : ipset v6.29: Kernel error received: Invalid argument 2017-01-06T23:29:12.412892454Z  2017-01-06T23:29:12.412894776Z   input  : None ```
+U33PPMEBH says -=*[1483745483.000910]-=*::: <@U20L8GGUF> good catch - same here and would explain why service ips are not working
+U1TUWPL1M says -=*[1483745506.000911]-=*::: is ipset a util that k8s expects on its nodes?
+U20L8GGUF says -=*[1483745559.000912]-=*::: i think its a calico specific thing.  but you would need to ask them.   I know its fairly new, and is a performance optimization
+U20L8GGUF says -=*[1483745579.000913]-=*::: <http://conntrack-tools.netfilter.org/>
+U0A2R9WVA says -=*[1483745639.000914]-=*::: if you guys have your minikube up, can you run `calicoctl node checksystem`?
+U1TUWPL1M says -=*[1483745677.000915]-=*::: maybe we need CONFIG_IP_SET
+U20L8GGUF says -=*[1483745689.000916]-=*::: yeah
+U1TUWPL1M says -=*[1483745729.000917]-=*::: ``` $ cat /proc/config.gz | gunzip | grep CONFIG_IP_SET # CONFIG_IP_SET is not set ```
+U20L8GGUF says -=*[1483745734.000918]-=*::: is there a way to check the kernel config in the iso?
+U33PPMEBH says -=*[1483745737.000920]-=*::: if thats not enabled in the kernel then calico, romana and a bunch of other CNI plugins are unlikley to work
+U1TUWPL1M says -=*[1483745745.000921]-=*::: inside the minikube vm
+U20L8GGUF says -=*[1483745747.000922]-=*::: <@U1TUWPL1M> i think thats it
+U1TUWPL1M says -=*[1483745814.000924]-=*::: ill add it and make a new iso
+U1TUWPL1M says -=*[1483745824.000925]-=*::: anything else we might need?
+U1TUWPL1M says -=*[1483745832.000926]-=*::: the list of enabled configs is <https://github.com/kubernetes/minikube/blob/master/deploy/iso/minikube-iso/board/coreos/minikube/linux-4.7_defconfig>
+U33PPMEBH says -=*[1483745838.000928]-=*::: whoop! thanks <@U1TUWPL1M>
+U20L8GGUF says -=*[1483745878.000929]-=*::: cool!  good work guys
+==========
+U33PPMEBH says -=*[1483745922.000930]-=*::: <@U1TUWPL1M> I'll double check - I'm using OVN on a few of my clusters - but that's not really suitable for minikube!
+U33PPMEBH says -=*[1483746185.000932]-=*::: <@U1TUWPL1M> I think that `CONFIG_IP_SET` should get us unblocked the rest looks fine at first pass
+U1TUWPL1M says -=*[1483746693.000933]-=*::: <https://storage.googleapis.com/minikube/iso/minikube-v1.0.2.iso>
+U1TUWPL1M says -=*[1483746697.000934]-=*::: <https://github.com/kubernetes/minikube/pull/972>
+U1TUWPL1M says -=*[1483746725.000936]-=*::: let me know if that helps
+U1TUWPL1M says -=*[1483746741.000937]-=*::: i dont have a calico install handy right now but i confirmed that the kernel config was set
+U33PPMEBH says -=*[1483746767.000938]-=*::: whoop - you finished that literally as i finished filing a bug! will test asap
+U1TUWPL1M says -=*[1483746824.000939]-=*::: thanks for helping to document the issue
+==========
+U20L8GGUF says -=*[1483746972.000940]-=*::: i hate re-downloading images. i need to find or create a shared local mirror / registry
+U33PPMEBH says -=*[1483746994.000941]-=*::: <@U1TUWPL1M> seems to work :slightly_smiling_face:
+U1TUWPL1M says -=*[1483747038.000944]-=*::: cool
+U33PPMEBH says -=*[1483747057.000945]-=*::: yeah helm&amp;tiller are back up as well
+U33PPMEBH says -=*[1483747078.000946]-=*::: thanks so much - thats the fastest turn around on a bug I've ever seen ;D
+U1TUWPL1M says -=*[1483747092.000947]-=*::: haha -5 seconds
+U20L8GGUF says -=*[1483747174.000948]-=*::: im still downloading images ;/   i hate this network.
+U1TUWPL1M says -=*[1483747220.000949]-=*::: we did sacrifice some size of the ISO to include rkt and systemd
+U33PPMEBH says -=*[1483747331.000950]-=*::: :confused: though they are both really good (and worthwhile) additions - I really want to get my teeth into rkt - for the work we are doing with packaging OpenStack for k8s deployment I think it has huge potential.
+==========
+U0A2R9WVA says -=*[1483749447.000951]-=*::: BTW, I also raised an issue with Calico repo to make sure we check all the kernel modules required are loaded
+U0A2R9WVA says -=*[1483749449.000952]-=*::: <https://github.com/projectcalico/calicoctl/issues/1444>
+U0A2R9WVA says -=*[1483749497.000954]-=*::: shouldve been caught by `calicoctl node checksystem` but it doesnt check for the `ip_set` module atm
+U20L8GGUF says -=*[1483749602.000955]-=*::: yeah; i thought that the daemonset that failed should probably have a better healthcheck... it showed it was up and running, although only looking at the logs showed that it was in a bad state.
+U20L8GGUF says -=*[1483749631.000956]-=*::: ``` 2017-01-06T23:29:12.419329455Z 2017-01-06 23:29:12.419 [INFO][15624] felix.go 361: Shutdown wasn't cause by signal, pausing to avoid tight restart loop ```
+U20L8GGUF says -=*[1483749646.000957]-=*::: apparently  that means its still running correctly ;/
+==========
+U15PMDQ2E says -=*[1483967983.000965]-=*::: <@U0PRC9KPY>, I've had the exact same problem with the Jenkins helm chart, which I believe is what you're testing :slightly_smiling_face: Please let me know if you've solved it. One thing that I've noticed is that this chart specifies a storage class of `generic`, but <http://kubernetes.io/docs/user-guide/persistent-volumes/#writing-portable-configuration> says to either use `default` or leave it blank
+U0PRC9KPY says -=*[1483968021.000967]-=*::: Well, that might be the problem
+U0PRC9KPY says -=*[1483968041.000968]-=*::: I did not have a problem binding a PV when I removed the annotation
+U15PMDQ2E says -=*[1483968047.000969]-=*::: Same here
+U15PMDQ2E says -=*[1483968086.000970]-=*::: StorageClass is alpha/beta thou, maybe `default` is what should be used when the helm chart was written?
+U0PRC9KPY says -=*[1483968105.000971]-=*::: Do you know if you should or shouldn't be able to match storageclass annotations on PVCs to PV when you are not on one of the cloud providers that officialy is supposed to support PVC and StorageClass?
+U15PMDQ2E says -=*[1483968130.000972]-=*::: I don't know, I'm still struggling with PV/PVCs
+U0PRC9KPY says -=*[1483968133.000974]-=*::: I think it's meant to work similarly to a selector
+U0PRC9KPY says -=*[1483968177.000975]-=*::: So I don't know why I shouldn't be able to use whatever label I want, except that it seems like I should be creating a StorageClass resource
+U0PRC9KPY says -=*[1483968220.000976]-=*::: And those are explicitly required to select one of AWS ebs, or GCE whatever it's called on GCE
+U0PRC9KPY says -=*[1483968238.000977]-=*::: It's a required field
+U0PRC9KPY says -=*[1483968262.000978]-=*::: So I got the idea that StorageClass is for those for now, only
+U15PMDQ2E says -=*[1483968603.000979]-=*::: Yeah, I think you need to create a StorageClass before specifying one to use
+U15PMDQ2E says -=*[1483968772.000980]-=*::: Both our base metal (CoreOS) cluster and minikube return nothing for `kubectl get storageclass`
+==========
+U0A3SN4DA says -=*[1483973782.000981]-=*::: I'm trying to get Minikube running as my provider on a linux box, but keep getting `host-only cidr conflicts with the network address of a host interface`, looks like it was resolved here (<https://github.com/kubernetes/minikube/issues/510>) but I'm seeing now on latest minikube. Any thoughts?
+==========
+U381HQQ1K says -=*[1483976843.000983]-=*::: <@U3G3J59DW> <@U20L8GGUF> 130s to load a page seems a bit excessive :slightly_smiling_face:
+U381HQQ1K says -=*[1483976923.000984]-=*::: I am indeed using aufs
+U3G3J59DW says -=*[1483979409.000985]-=*::: <@U381HQQ1K> blackfire it to see where the time is spent
+==========
+U3G3J59DW says -=*[1483981284.000986]-=*::: <@U0A3SN4DA> what is your CIDR?
+U3G3J59DW says -=*[1483981290.000987]-=*::: if it is above 29 youll get that msg
+U3G3J59DW says -=*[1483981345.000988]-=*::: <@U1TUWPL1M> do you by chance know if there is a way to specify xhyve or virtualbox ip with a specific ip address? the limitation of the /29 CIDR renders it kind of useless for most usecases of a dependable local IP that people can use for proxying traffic via a FQDN
+U0A3SN4DA says -=*[1483981515.000989]-=*::: <@U3G3J59DW> Not sure, where do I check? I just did a `minikube start`
+U3G3J59DW says -=*[1483981533.000990]-=*::: <@U0A3SN4DA> you specified a CIDR for host-only right?
+U3G3J59DW says -=*[1483981541.000991]-=*::: or an ip?
+U3G3J59DW says -=*[1483981557.000992]-=*::: seeing as hous an ip == /32 that would be the sam eproblem
+U0A3SN4DA says -=*[1483981584.000993]-=*::: No didn't specify anything, should I be?
+U3G3J59DW says -=*[1483981630.000994]-=*::: <@U0A3SN4DA> apologies. i thought you were tyring to specify a cidr. i just realized that the defualt one isnt working for you.
+U0A3SN4DA says -=*[1483981688.000995]-=*::: No worries. I just swtiched to linux for my main machine, so trying to get evrything running. When I use KVM it all works fine, but virtualbox gives that error.
+==========
+U381HQQ1K says -=*[1483981925.000996]-=*::: <@U3G3J59DW> can you specify a specific IP for minikube on start?
+U3G3J59DW says -=*[1483981935.000997]-=*::: yes. -ish
+U381HQQ1K says -=*[1483981942.000998]-=*::: explain
+U3G3J59DW says -=*[1483981964.000999]-=*::: --host-only-cidr string           The CIDR to be used for the minikube VM (only supported with Virtualbox driver) (default "192.168.99.1/24")
+U3G3J59DW says -=*[1483981986.001000]-=*::: the caveat is that the cidr cant be north of /29 either which limits it to 6 ips
+U3G3J59DW says -=*[1483982001.001001]-=*::: and the error you get when you do that is mystic as hell :slightly_smiling_face:
+U3G3J59DW says -=*[1483982024.001002]-=*::: as soon as i can figure out how to build this thing locally in a reliabl efashion ill change the error reporting
+U0A3SN4DA says -=*[1483982266.001003]-=*::: Ok sweet, specifying that worked.
+U0A3SN4DA says -=*[1483982273.001004]-=*::: Thanks <@U3G3J59DW>
+==========

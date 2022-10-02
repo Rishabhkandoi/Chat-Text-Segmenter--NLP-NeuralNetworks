@@ -1,0 +1,116 @@
+==========
+U0JFJ4KHS says -=*[1481723637.000348]-=*::: Hi <@U2U84B4BE>, can you paste `docker network inspect &lt;transparent-network&gt;` output from your local environment
+U2U84B4BE says -=*[1481723672.000349]-=*::: <@U0JFJ4KHS> I will paste it out after I back home ~
+U2U84B4BE says -=*[1481729500.000350]-=*::: <@U2U84B4BE|hongxima> uploaded a file: <https://kubernetes.slack.com/files/hongxima/F3FCLCQFQ/docker_network_inspect_on__local_setup_.txt|docker network inspect on *local setup*>
+U0JFJ4KHS says -=*[1481729660.000351]-=*::: thanks <@U2U84B4BE>, I have the similar setup, other than promiscuous mode that you mentioned above
+U2U84B4BE says -=*[1481729808.000352]-=*::: I reproduced the issue with same symptom in AWS cloud....
+U2U84B4BE says -=*[1481729829.000353]-=*::: having the same issue on AWS and I understood why it happened, working on it ~
+U0ALRFJH0 says -=*[1481729853.000354]-=*::: <@U2U84B4BE> you mean the same symptoms as in GCP?
+U2U84B4BE says -=*[1481729915.000355]-=*::: <@U0ALRFJH0> I think so.
+U0ALRFJH0 says -=*[1481730057.000356]-=*::: cool. let me know how it goes.
+U0ALRFJH0 says -=*[1481730075.000357]-=*::: i will go for a break in the next hour but i'll be around shortly.
+U2U84B4BE says -=*[1481730186.000358]-=*::: Sure, I will try to fix this issue on the daytime tomorrow, it's late night here,  need to go bed ~ talk to you guys tmr
+U0ALRFJH0 says -=*[1481730197.000359]-=*::: :+1:
+==========
+U0ALRFJH0 says -=*[1481748096.000360]-=*::: <@U0PPMUTGR> <@U0JFJ4KHS> Kubernetes release process is not building Windows binaries, is it?
+U0ALRFJH0 says -=*[1481748104.000361]-=*::: i tried <http://storage.googleapis.com/kubernetes-release/release/v1.5.1/bin/windows/amd64/kube-proxy.exe> to no avail
+U0ALRFJH0 says -=*[1481752123.000362]-=*::: <@U0JFJ4KHS> do you run an unsecure apiserver? by looking at the instructions is not clear.
+U0ALRFJH0 says -=*[1481752135.000363]-=*::: what `--api_servers` do you pass to the `kubelet` on Windows?
+U0JFJ4KHS says -=*[1481752274.000364]-=*::: In my tests I am passing `&lt;Master IP&gt;:8080`
+U0ALRFJH0 says -=*[1481752352.000365]-=*::: so it's insecure :+1:
+U0JFJ4KHS says -=*[1481752370.000366]-=*::: right
+U0ALRFJH0 says -=*[1481752870.000367]-=*::: i'm writing a bunch of instructions for GCP people to get this working so they can analyze deeper the issues we're facing.
+U0JFJ4KHS says -=*[1481752946.000368]-=*::: Regarding windows binaries I thought they would have been generated, any idea whom do we reach out
+U0ALRFJH0 says -=*[1481752999.000369]-=*::: i can check
+U0ALRFJH0 says -=*[1481753786.000370]-=*::: <@U0JFJ4KHS> we created a new kube-proxy mode, however instructions still point to `--proxy-mode=userspace`
+U0JFJ4KHS says -=*[1481753813.000371]-=*::: Nope, we decided against that
+U0JFJ4KHS says -=*[1481753848.000372]-=*::: it is in a different package in the code, but still called `userspace` mode
+U0ALRFJH0 says -=*[1481753867.000373]-=*::: ah, yes, correct!
+U0ALRFJH0 says -=*[1481753876.000374]-=*::: guess it's getting late around here and i should sleep :slightly_smiling_face:
+U0JFJ4KHS says -=*[1481753883.000375]-=*::: :slightly_smiling_face:
+==========
+U0ALRFJH0 says -=*[1481754041.000376]-=*::: <@U0JFJ4KHS> any updates on the azure front?
+U0JFJ4KHS says -=*[1481754080.000377]-=*::: nope, didn't get to it today..was busy with the other analysis stuff that I am doing
+U0JFJ4KHS says -=*[1481754163.000378]-=*::: will take a look at it tomorrow morning
+U0ALRFJH0 says -=*[1481754505.000379]-=*::: ok thanks
+==========
+U0PPMUTGR says -=*[1481756515.000380]-=*::: <@U0JFJ4KHS>  you should look into this issue that pires filed tomorrow AM if possible <https://github.com/kubernetes/kubernetes/issues/38785>
+U0ALRFJH0 says -=*[1481756998.000382]-=*::: i can take a look at it if <@U0JFJ4KHS> is busy with his analysis stuff. and i'd really like for him to test the Azure stuff.
+U0PPMUTGR says -=*[1481760500.000383]-=*::: you guys can load balance if u like :slightly_smiling_face:
+==========
+U2U84B4BE says -=*[1481770707.000386]-=*::: Dear guys,  we have fixed the networking issue on AWS and I'd like to share my thoughts on the root cause of the symptom and the way we fixed it.
+U2U84B4BE says -=*[1481770803.000387]-=*::: <@U2V9AS83D> and I was trying to build a Windows Container cluster on AWS Japan, and we finally hit the same issue you guys have been talking in last few days :   POD ping POD is fine, but POD can not reach Internet.
+U2U84B4BE says -=*[1481770885.000388]-=*::: OK, a bit on the setup:  Windows Host 1 - IP 172.16.1.92,  Windows Host 2 - IP 172.16.1.93.  The CIDR for Containers are 172.31.2.x, 172.31.1.x on to the two Windows Hosts, RRAS was configured,  AWS 'Source/Dest. Check' disabled.
+U2U84B4BE says -=*[1481770907.000389]-=*::: the Pod to pod ping is fine, and verified there was no NAT thing.
+U2U84B4BE says -=*[1481770919.000390]-=*::: but we FAILED to ping 8.8.8.8 within the PODS.
+U2U84B4BE says -=*[1481771039.000391]-=*::: here is the root cause:  when ping between PODs, there is no NAT within the communication chain, just pure L3 routing. Hereby the source IP of POD1 is unchanged and visible to POD#2.
+U2U84B4BE says -=*[1481771132.000392]-=*::: But when you ping 8.8.8.8 within the POD, the IP packet needs to go thru the AWS subnet gateway (in this case 172.16.1.1)  with exact the unchanged POD source IP (say 172.31.2.115), which will be either dropped by AWS immediate gateway or next hops.
+U2U84B4BE says -=*[1481771220.000393]-=*::: Hereby to make it work, we need such policy within Windows Host: if (packet.destip within other pod subnets) then    Just do the routing else     Do SNAT and routing endif
+U2U84B4BE says -=*[1481771254.000394]-=*::: Within Linux host, it could be done by iptables. But I don't see Windows RRAS supports policy-based NAT
+U2U84B4BE says -=*[1481771286.000395]-=*::: Hereby as a workaround, we added another subnet to Windows hosts as the Inter-Pod communication path.
+U2U84B4BE says -=*[1481771368.000396]-=*::: within RRAS, we have below configurations: static route -  target subnet: other pod subnets ; gateway : host IP of the new added Nic on the other hosts; NAT - the primary NIC as the 'Internet facing' interface.
+U2U84B4BE says -=*[1481771391.000397]-=*::: with the above steps done, we verified the PODs network behaviors are all expected.
+U2U84B4BE says -=*[1481772031.000398]-=*::: If only one NIC is the case in Google cloud, I would suggest to try tune Google network policy see if possible to do SNAT for the pod subnets within the cloud gateways.
+U2U84B4BE says -=*[1481772081.000399]-=*::: Meanwhile, I still don't think MAC spoofing play a role in our L3 routing case. it may be useful when all the pods share a single subnet
+U0ALRFJH0 says -=*[1481792073.000400]-=*::: <@U2U84B4BE> we tried that as well, RRAS shouldn't be needed. Problem is the container will sometimes communicate with other containers (in other nodes) through the NAT interface. 
+U0ALRFJH0 says -=*[1481792093.000401]-=*::: That's something worse than having no internet, at this point. 
+U2U84B4BE says -=*[1481796085.000402]-=*::: Hi <@U0ALRFJH0> ,  do you mean you have done tests with two NICs per host and still there were cases POD to POD get NATted? so was it an always behavior or just occasional case ?
+U0ALRFJH0 says -=*[1481796518.000403]-=*::: occasional because the container would have two gateways, the NAT and the Transparent.
+U0ALRFJH0 says -=*[1481796555.000404]-=*::: also, we were told by MSFT people that RRAS shouldn't be needed. we manage routes at the cloud provider level, not the hosts.
+U2U84B4BE says -=*[1481797315.000405]-=*::: I understood it's surely possible to manage routes on the cloud provider side (would technically cause a lot ICMP Redirect but should be fine),  but the thing is that, the cloud provider gateway would not do NAT for IP packets from PODs, due to unknown source IP, unless that is configurable on cloud provider gateway to support those *unknown* subnets.
+U2U84B4BE says -=*[1481797443.000406]-=*::: I didn't see such a configuration on AWS side,  I could design all the pods subnets within the VPC CIDR (right now it's not),  but I don't think there will be great chance to *cheat* AWS gateways.
+U2U84B4BE says -=*[1481797500.000407]-=*::: Could you please elaborate you analysis why NAT occasionally happen to "Two Nic" case ?
+U2U84B4BE says -=*[1481797565.000408]-=*::: I prefer RRAS (though it's ugly and poor) ,  because I could control it as compare to VPC gateways
+U2U84B4BE says -=*[1481797625.000409]-=*::: and "two nics" is easy for a local/private setup as compare to asking network admin to add routes
+U2U84B4BE says -=*[1481797826.000410]-=*::: <@U2U84B4BE|hongxima> uploaded a file: <https://kubernetes.slack.com/files/hongxima/F3EEPPD8R/pasted_image_at_2016_12_15_06_29_pm.png|RRAS - Static Route>
+U2U84B4BE says -=*[1481797840.000411]-=*::: <@U2U84B4BE|hongxima> uploaded a file: <https://kubernetes.slack.com/files/hongxima/F3EDVJZ0Q/pasted_image_at_2016_12_15_06_30_pm.png|RRAS - NAT>
+U2U84B4BE says -=*[1481797890.000412]-=*::: Above is my configuration on RRAS, I don't think it will cause NAT for inter-PODs communcations
+U0ALRFJH0 says -=*[1481798168.000413]-=*::: why do you use RRAS and not `route add`?
+U0ALRFJH0 says -=*[1481798200.000414]-=*::: also, i'm not sure what the static route above means.
+U0ALRFJH0 says -=*[1481798421.000415]-=*::: 
+U0ALRFJH0 says -=*[1481798446.000416]-=*::: ^ this is basically IP masquerading. and yes, i tried to get this to work before :wink:
+U0ALRFJH0 says -=*[1481801377.000417]-=*::: <@U0PPMUTGR> <@U0JFJ4KHS> having some progress on the windows release issue ``` $ KUBE_BUILD_PLATFORMS=windows/amd64 make +++ [1215 11:28:44] Building the toolchain targets:     <http://k8s.io/kubernetes/hack/cmd/teststale|k8s.io/kubernetes/hack/cmd/teststale>     <http://k8s.io/kubernetes/vendor/github.com/jteeuwen/go-bindata/go-bindata|k8s.io/kubernetes/vendor/github.com/jteeuwen/go-bindata/go-bindata> +++ [1215 11:28:44] Generating bindata:     test/e2e/generated/gobindata_util.go +++ [1215 11:28:45] Building go targets for windows/amd64:     cmd/kube-proxy     cmd/kube-apiserver     cmd/kube-controller-manager     cmd/kubelet     plugin/cmd/kube-scheduler     cmd/kubectl ```
+U2U84B4BE says -=*[1481810998.000419]-=*::: <@U0ALRFJH0> I understand  IP masquerading is a bit different , it should like: if (packet.destip within my direct subnets) then   Do L2 forwarding else    Do SNAT and routing endif  But that doesn't matter too much~
+U2U84B4BE says -=*[1481811057.000420]-=*::: So "two nics" seems to be a good solution for my scenarios, but you may need alternatives to make it work on GCP
+U0ALRFJH0 says -=*[1481811071.000421]-=*::: what you call SNAT is masquerading :slightly_smiling_face:
+U2U84B4BE says -=*[1481811091.000422]-=*::: yes, that's true :slightly_smiling_face:
+U0ALRFJH0 says -=*[1481811098.000423]-=*::: how many NICs do you have in a container?
+U2U84B4BE says -=*[1481811111.000425]-=*::: one
+U0ALRFJH0 says -=*[1481811116.000426]-=*::: the transparent or the NAT?
+U2U84B4BE says -=*[1481811133.000427]-=*::: transparent
+U0ALRFJH0 says -=*[1481811509.000428]-=*::: so, how again did you route from the transparent network to the outside world through NAT interface? :face_with_rolling_eyes:
+U2U84B4BE says -=*[1481812451.000429]-=*::: I am working on something to make it more clear ~
+U0ALRFJH0 says -=*[1481812590.000430]-=*::: :+1:
+U2U84B4BE says -=*[1481813492.000431]-=*::: <@U2U84B4BE|hongxima> uploaded a file: <https://kubernetes.slack.com/files/hongxima/F3FAVUYMT/pasted_image_at_2016_12_15_10_51_pm.png|A working Two NICs solution for Windows Server Docker network>
+U2U84B4BE says -=*[1481813519.000432]-=*::: <@U0ALRFJH0> please check out the above diagrams , that's my setup in AWS Japan
+U0JFJ4KHS says -=*[1481817575.000433]-=*::: <@U0ALRFJH0> I did some tests on Azure environment, and it requires RRAS to be enabled, just enabling forwarding doesn't work
+U0ALRFJH0 says -=*[1481817646.000434]-=*::: <@U0JFJ4KHS> but you still need UDRs, right?
+U0ALRFJH0 says -=*[1481817674.000435]-=*::: also, you still can't ping public routable addresses, e.g. 8.8.8.8, right?
+U0JFJ4KHS says -=*[1481817677.000436]-=*::: yes, I am still using UDRs, will now test by taking out UDRs and moving them to static Routes under RRAS
+U0ALRFJH0 says -=*[1481817707.000437]-=*::: <@U2U84B4BE> that looks a lot like a LAN. i didn't know AWS would allow you to do that. our experience with Azure and GCP says we can't.
+U0JFJ4KHS says -=*[1481817761.000438]-=*::: yes, still unable to ping 8.8.8.8
+U0ALRFJH0 says -=*[1481817783.000439]-=*::: thank you for putting the effort into the diagram but i don't understand why split podnet and vmnet into two different networks that different switches
+U0ALRFJH0 says -=*[1481817797.000440]-=*::: at least, tom the diagram i get that those networks are somehow separated
+U0ALRFJH0 says -=*[1481818739.000441]-=*::: <@U0JFJ4KHS> did you reboot after enabling IP fwd?
+U0JFJ4KHS says -=*[1481818753.000442]-=*::: yes I did
+U0ALRFJH0 says -=*[1481818768.000443]-=*::: i don't know what RRAS does differently from `route add/delete` :-S
+U0ALRFJH0 says -=*[1481818783.000444]-=*::: having to go through the step of enabling RRAS on every VM seems overkill
+U0ALRFJH0 says -=*[1481818789.000445]-=*::: not to mention it installs and runs stuff like IIS, etc.
+U0JFJ4KHS says -=*[1481818803.000446]-=*::: I used `netsh interface ipv4 set interface &lt;id&gt; forwarding=enabled`
+U0ALRFJH0 says -=*[1481818843.000447]-=*::: and you had the UDRs in place, right?
+U0JFJ4KHS says -=*[1481818853.000448]-=*::: yes
+U2U84B4BE says -=*[1481819246.000449]-=*::: <@U0ALRFJH0> , We had two subnets attaching to VMs just to workaround the fact that Windows does NOT support policy-based NAT
+U2U84B4BE says -=*[1481819278.000450]-=*::: technically , one network should be enough to bring all kind of communications
+U2U84B4BE says -=*[1481819345.000451]-=*::: but if we attach only one network, we should have either a)  non-NAT inter-pod communication but no Internet;  or b) Internet connected, but NAT for inter-Pods as well.
+U2U84B4BE says -=*[1481819410.000452]-=*::: RRAS is required if want NAT for Internet communication at least; it MAY also play a role like ipv4_foward=1 in Linux
+U2U84B4BE says -=*[1481819450.000453]-=*::: In other words, define rules by 'route add' does NOT necessarily enable the global routing switch for the OS
+U0ALRFJH0 says -=*[1481819529.000454]-=*::: <@U2U84B4BE> correct. i've chosen *a* for GCP
+U2U84B4BE says -=*[1481819727.000456]-=*::: I am confident to make it work for private setup with only one subnet WHEN I have control to the subnet gateway
+U0ALRFJH0 says -=*[1481819771.000457]-=*::: yeah, i was thinking about using an _external_ linux VM to do this.
+U0ALRFJH0 says -=*[1481819802.000458]-=*::: &lt;default cloud gw&gt; ---- &lt;our gw&gt; ----- &lt;k8s cluster&gt;
+U2U84B4BE says -=*[1481819822.000459]-=*::: I was thinking on that too :slightly_smiling_face:
+U2U84B4BE says -=*[1481819824.000460]-=*::: should work
+U0ALRFJH0 says -=*[1481819863.000461]-=*::: honestly, i'm trying to avoid doing that. seems hackish.. but i'm running out of options here.
+U2U84B4BE says -=*[1481819960.000462]-=*::: Deeply understand, I don't see other options unless your cloud provider supports some *uncommon* feature, but it may get changed without prior notice, that's too bad
+U0ALRFJH0 says -=*[1481820621.000463]-=*::: :sweat:
+==========

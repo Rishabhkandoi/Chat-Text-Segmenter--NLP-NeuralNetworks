@@ -1,0 +1,148 @@
+U0PPMUTGR says -=*[1477504241.000271]-=*::: welcome <@U0ALRFJH0>  and <@U0DRV5E1Z>
+U0DRV5E1Z says -=*[1477504250.000272]-=*::: thank you!
+U0PT5KRHR says -=*[1477508331.000273]-=*::: <@U0ALRFJH0>, <@U0DRV5E1Z> do you guys want to talk sometime to give you an overview of what we've done?
+U0DRV5E1Z says -=*[1477508344.000274]-=*::: i would really like that
+U0ALRFJH0 says -=*[1477508454.000275]-=*::: <@U0PT5KRHR> definitely!
+U0ALRFJH0 says -=*[1477508509.000276]-=*::: <@U0JFJ4KHS> was meant to ping us when you guys become available. are you available now?
+U0PT5KRHR says -=*[1477508613.000277]-=*::: I'm sure he's busy hehe
+U0PT5KRHR says -=*[1477508615.000278]-=*::: so we can wait for him
+U0JFJ4KHS says -=*[1477508670.000279]-=*::: <@U0PPMUTGR> and I are still stuck in a meeting
+U0PPMUTGR says -=*[1477508751.000280]-=*::: we might be done soon, but i have another meeting at 4pm EST. You guys and Jitu can talk
+U0ALRFJH0 says -=*[1477509620.000281]-=*::: cool. im busy between 4.30m/6pm EDT too.
+U0PPMUTGR says -=*[1477509764.000282]-=*::: ready now?
+U0PPMUTGR says -=*[1477516357.000283]-=*::: hey all, here's some notes from our meeting today. did  i miss anything?
+U0PPMUTGR says -=*[1477516364.000284]-=*::: <@U0PPMUTGR|mmichael> uploaded a file: <https://kubernetes.slack.com/files/mmichael/F2UMX0RN3/-.txt|Untitled>
+U0ALRFJH0 says -=*[1477517961.000285]-=*::: <@U0PPMUTGR> do you guys maintain a SIG meeting agenda/notes on gdocs?
+U0ALRFJH0 says -=*[1477517982.000286]-=*::: i dont see anything missing.
+U0PPMUTGR says -=*[1477518000.000287]-=*::: we started doing that lately using <https://docs.google.com/document/d/1Tjxzjjuy4SQsFSUVXZbvqVb64hjNAG5CQX8bK7Yda9w/edit#heading=h.kbz22d1yc431>
+U0ALRFJH0 says -=*[1477518710.000289]-=*::: :+1:
+U0PPMUTGR says -=*[1477520517.000290]-=*::: Jitu, i wonder if the command "SC create" is the best option for you to create the windows service for the kubelet
+U0PPMUTGR says -=*[1477520530.000291]-=*::: do you have an environment  i can try this without having to startup the azure environment
+U0PPMUTGR says -=*[1477531130.000292]-=*::: GCE looks to have an image of win2k16 that was built recently, so there is a good chance this is the RTM build
+U0PPMUTGR says -=*[1477531134.000293]-=*::: <@U0PPMUTGR|mmichael> uploaded a file: <https://kubernetes.slack.com/files/mmichael/F2UNE6A3V/pasted_image_at_2016_10_26_09_18_pm.png|Pasted image at 2016-10-26, 9:18 PM>
+U0ALRFJH0 says -=*[1477532192.000294]-=*::: Ah cool! I'll be picking this up next week. 
+U0ALRFJH0 says -=*[1477532334.000295]-=*::: And BTW, one can run Windows on top of kvm/qemu
+U0PPMUTGR says -=*[1477588302.000297]-=*::: <@U0ALRFJH0>  that's awesome. i didn't know that
+U0ALRFJH0 says -=*[1477588717.000298]-=*::: <@U0PPMUTGR> not sure if there are any issues with the version we need to run, though. 
+U0PPMUTGR says -=*[1477588742.000299]-=*::: we would not know until we try. we know for sure that windows server 2016 RTM has issues with pulling down Docker containers
+U0PPMUTGR says -=*[1477589205.000300]-=*::: Jitu you might want to join kubernetes-dev channel as well if you are not a member
+U0JFJ4KHS says -=*[1477589250.000301]-=*::: thanks Michael, I just joined it
+U0PT5KRHR says -=*[1477593337.000304]-=*::: Docs on setting up K8s for windows
+U0PT5KRHR says -=*[1477593338.000305]-=*::: <https://docs.google.com/document/d/1IjwqpwuRdwcuWXuPSxP-uIz0eoJNfAJ9MWwfY20uH3Q>
+U0PPMUTGR says -=*[1477594491.000308]-=*::: to the folks that attend the standup, let's meet in <@U0K61JBKJ>'s office
+U0PPMUTGR says -=*[1477664180.000310]-=*::: <@U0PPMUTGR|mmichael> uploaded a file: <https://kubernetes.slack.com/files/mmichael/F2VHH3QUX/working_session_on_k8s.ics|working session on K8s.ics> and commented: hi everyone, with the road towards 1.5, we are now having bi-weekly standups  for sig-windows. Feel free to import this ics file to attend the meetings
+U0PPMUTGR says -=*[1477668263.000312]-=*::: hey Jitu, for some reason in the azure environment, and i only have  1 windows node up and connected yet, my containers are stuck in container creating
+U0PPMUTGR says -=*[1477668268.000313]-=*::: can you take a look <@U0JFJ4KHS>
+U0JFJ4KHS says -=*[1477668279.000314]-=*::: sure
+U0JFJ4KHS says -=*[1477668282.000315]-=*::: looking
+U0PPMUTGR says -=*[1477668306.000316]-=*::: i wonder if i hit a bug :slightly_smiling_face:
+U0JFJ4KHS says -=*[1477668391.000317]-=*::: which node are you using
+U0JFJ4KHS says -=*[1477668409.000318]-=*::: KubeWin01 or KubeWin02
+U0PPMUTGR says -=*[1477668423.000319]-=*::: win01 right now
+U0PPMUTGR says -=*[1477668429.000320]-=*::: on purpose i only added one node so far
+U0JFJ4KHS says -=*[1477668431.000321]-=*::: ok, let me rdp to it
+U0PPMUTGR says -=*[1477668441.000322]-=*::: 40.76.31.7
+U0JFJ4KHS says -=*[1477668790.000324]-=*::: docker seems to be unresponsive..how many pods where you creating?
+U0PPMUTGR says -=*[1477668851.000325]-=*::: i started with 1 and then 4 more :slightly_smiling_face:
+U0PPMUTGR says -=*[1477668870.000326]-=*::: when the 1 was not working, i tried to see if somehting was wrong iwth that one
+U0PPMUTGR says -=*[1477668881.000327]-=*::: can you restart the docker service just in case?
+U0JFJ4KHS says -=*[1477668905.000328]-=*::: let me do that
+U0JFJ4KHS says -=*[1477668981.000329]-=*::: `docker ps` returns 15 running `apprenda/pause` images
+U0PPMUTGR says -=*[1477669008.000330]-=*::: that's a lot
+U0PPMUTGR says -=*[1477669018.000331]-=*::: something is happening where we are trying to create more of them then?
+U0JFJ4KHS says -=*[1477669051.000332]-=*::: shouldn't be the case, what does kubectl get pods return
+U0PPMUTGR says -=*[1477669075.000333]-=*::: <@U0PPMUTGR|mmichael> uploaded a file: <https://kubernetes.slack.com/files/mmichael/F2VJDPTNY/pasted_image_at_2016_10_28_11_37_am.png|Pasted image at 2016-10-28, 11:37 AM>
+U0PPMUTGR says -=*[1477669092.000334]-=*::: i am in a meeting as well, so i can't do any advacned debugging
+U0PPMUTGR says -=*[1477669322.000335]-=*::: i started a second windows node to see if the issue persists
+U0JFJ4KHS says -=*[1477669617.000336]-=*::: can you delete the pods that you created
+U0ALRFJH0 says -=*[1477669726.000337]-=*::: 15 pause containers? thats not right.
+U0JFJ4KHS says -=*[1477669739.000338]-=*::: yes, thats not right
+U0PPMUTGR says -=*[1477669743.000339]-=*::: gone
+U0JFJ4KHS says -=*[1477669859.000340]-=*::: I am seeing hcsshim error messages
+U0JFJ4KHS says -=*[1477669868.000341]-=*::: <@U0JFJ4KHS|jbhurat> uploaded a file: <https://kubernetes.slack.com/files/jbhurat/F2VK376AV/-.txt|Untitled>
+U0PPMUTGR says -=*[1477669870.000342]-=*::: should i kill win01 and try win02?
+U0PPMUTGR says -=*[1477669887.000343]-=*::: i will reboot win01 if you give me green light,..unless u want to investigate
+U0JFJ4KHS says -=*[1477669966.000344]-=*::: yes, reboot win01, if possible grab the kubelet logs
+U0PPMUTGR says -=*[1477669985.000345]-=*::: can you grab them?
+U0PPMUTGR says -=*[1477669988.000346]-=*::: my time is a little limited now
+U0JFJ4KHS says -=*[1477669996.000347]-=*::: sure, let me grab them
+U0PPMUTGR says -=*[1477670000.000348]-=*::: thanks
+U0ALRFJH0 says -=*[1477670048.000349]-=*::: <@U0JFJ4KHS> what build of Windows are you people running?
+U0JFJ4KHS says -=*[1477670079.000350]-=*::: In Azure, we are using TP5
+U0ALRFJH0 says -=*[1477670081.000351]-=*::: if its &lt;=TP5 its a know bug.
+U0ALRFJH0 says -=*[1477670086.000352]-=*::: ok, so its a bug.
+U0JFJ4KHS says -=*[1477670097.000353]-=*::: locally I am using the RTM
+U0JFJ4KHS says -=*[1477670110.000354]-=*::: <@U0PPMUTGR>, you can reboot the node
+U0JFJ4KHS says -=*[1477670115.000355]-=*::: I have grabbed the logs
+U0JFJ4KHS says -=*[1477670137.000356]-=*::: also, try to use both the nodes for your demo
+U0ALRFJH0 says -=*[1477670162.000357]-=*::: <https://github.com/Microsoft/docker/blob/master/integration-cli/docker_cli_run_test.go#L362-L363>
+U0ALRFJH0 says -=*[1477670191.000360]-=*::: &gt; Windows does not support symlinks inside a volume path
+U0ALRFJH0 says -=*[1477670259.000361]-=*::: <https://github.com/docker/docker/pull/21806>
+U0ALRFJH0 says -=*[1477670274.000363]-=*::: so this was the Docker solution: skip the tests :sweat_smile:
+U0PPMUTGR says -=*[1477670329.000364]-=*::: i restarted the node, restarted the kubelet/proxy and creating a new container again
+U0JFJ4KHS says -=*[1477670365.000365]-=*::: <@U0ALRFJH0> is this the reason why host volumes are not working as expected
+U0PPMUTGR says -=*[1477670409.000366]-=*::: Jitu, appears to be stuck again
+U0ALRFJH0 says -=*[1477670423.000367]-=*::: cant tell exactly but it is whats causing `csshim::DestroyLayer failed in Win32: The process cannot access the file because it is being used by another process`
+U0JFJ4KHS says -=*[1477670453.000368]-=*::: <@U0PPMUTGR>, did the host got an update?
+U0ALRFJH0 says -=*[1477670474.000369]-=*::: im just closing an unrelated bugfix here and after that im all windows :slightly_smiling_face:
+U0PPMUTGR says -=*[1477670474.000370]-=*::: i hope it didn't
+U0PPMUTGR says -=*[1477670479.000371]-=*::: i never updated, that's for sure
+U0PPMUTGR says -=*[1477670535.000372]-=*::: <@U0PPMUTGR|mmichael> uploaded a file: <https://kubernetes.slack.com/files/mmichael/F2VK9PALR/pasted_image_at_2016_10_28_12_02_pm.png|Pasted image at 2016-10-28, 12:02 PM>
+U0PPMUTGR says -=*[1477670565.000373]-=*::: looks like an adobe update was applied today on win02, but nothing else it seems
+U0PPMUTGR says -=*[1477670628.000374]-=*::: rats, win01 did get a windows update. win02 did not
+U0PPMUTGR says -=*[1477671127.000377]-=*::: ok so something happened on the nodes...both of them are stuck, specifically docker on those nodes...grrr
+U0PPMUTGR says -=*[1477671129.000378]-=*::: that sucks
+U0PPMUTGR says -=*[1477671140.000379]-=*::: Jitu, please don't update your nodes, otherwise we are toast for any demos
+U0PPMUTGR says -=*[1477671407.000380]-=*::: i hate this. i uninstalled the update and rebooted..guess what. Azure instlaled it automatically again
+U0PPMUTGR says -=*[1477671410.000381]-=*::: <@U0PPMUTGR|mmichael> uploaded a file: <https://kubernetes.slack.com/files/mmichael/F2VK6539U/pasted_image_at_2016_10_28_12_16_pm.png|Pasted image at 2016-10-28, 12:16 PM>
+U0JFJ4KHS says -=*[1477671508.000382]-=*::: oh..man this is not good
+U0ALRFJH0 says -=*[1477671535.000383]-=*::: perhaps now is the time to drop this here <https://www.gcppodcast.com/post/episode-49-windows-and-dot-net-with-chris-and-amruta/>
+U0ALRFJH0 says -=*[1477671551.000385]-=*::: :joy:
+U0ALRFJH0 says -=*[1477671625.000386]-=*::: ok, PR open. now, to boot a windows machine on GCP. and so my windows adventure begins.
+U0ALRFJH0 says -=*[1477672091.000387]-=*::: any recommendations on hw requirements?
+U0JFJ4KHS says -=*[1477672152.000388]-=*::: On Azure we are running Standard D2 image (2 cores, 7GB memory) something similar on GCE should suffice
+U0ALRFJH0 says -=*[1477672832.000389]-=*::: thanks
+U0ALRFJH0 says -=*[1477672865.000390]-=*::: <@U2B8R3SLQ> ping
+U0PPMUTGR says -=*[1477675156.000392]-=*::: BB from msft will send us a workaround for docker. i will notify you all when we have it
+U0JFJ4KHS says -=*[1477675752.000393]-=*::: I installed docker from <https://download.docker.com/components/engine/windows-server/cs-1.12/docker-1.12.2.zip> and was able to pull windowsservercore image
+U0JFJ4KHS says -=*[1477675757.000394]-=*::: this was failing earlier
+U0ALRFJH0 says -=*[1477675776.000395]-=*::: <@U0PPMUTGR> BB as in Brendan Burns?
+U0ALRFJH0 says -=*[1477675804.000396]-=*::: why are we not building Docker as well? im feeling so adventurous :sweat_smile:
+U0JFJ4KHS says -=*[1477675816.000397]-=*::: In the description here <https://hub.docker.com/r/microsoft/windowsservercore/>, it says to use that specific version
+U0JFJ4KHS says -=*[1477675829.000398]-=*::: <@U0ALRFJH0> I am running docker from the master
+U0ALRFJH0 says -=*[1477675850.000399]-=*::: cool!
+U0PPMUTGR says -=*[1477675915.000400]-=*::: <@U0ALRFJH0>, yes BB = Brendan Burns
+U0ALRFJH0 says -=*[1477676021.000401]-=*::: <@U0PPMUTGR> nice
+U0PPMUTGR says -=*[1477676130.000402]-=*::: Jitu just in case this is not resolved, i might need to use your servers on tuersday afternoon and thursday of next week
+U0PPMUTGR says -=*[1477676871.000403]-=*::: Jitu, do you have a full description of the issue we hit with microsoft and docker on RTM build?
+U0JFJ4KHS says -=*[1477677663.000404]-=*::: I was getting this error when pulling down base windowsservercore image
+U0JFJ4KHS says -=*[1477677672.000405]-=*::: <@U0JFJ4KHS|jbhurat> uploaded a file: <https://kubernetes.slack.com/files/jbhurat/F2VKAJ8HZ/-.txt|Untitled>
+U0JFJ4KHS says -=*[1477677825.000406]-=*::: I am able to pull down images now with `1.12.2-cs2-ws-beta` version
+U0JFJ4KHS says -=*[1477677874.000408]-=*::: this version might not have DNS changes, will confirm now
+U0PPMUTGR says -=*[1477679120.000409]-=*::: update from msft
+U0PPMUTGR says -=*[1477679127.000410]-=*::: <@U0PPMUTGR|mmichael> uploaded a file: <https://kubernetes.slack.com/files/mmichael/F2VMCU4GM/-.txt|Untitled>
+U0PPMUTGR says -=*[1477679144.000411]-=*::: i hope this works Jitu
+U0JFJ4KHS says -=*[1477679259.000412]-=*::: this is for Azure
+U0JFJ4KHS says -=*[1477679268.000413]-=*::: do you want me to update our environment to use this
+U0JFJ4KHS says -=*[1477679271.000414]-=*::: and see if it works?
+U0PPMUTGR says -=*[1477682455.000415]-=*::: Taylor from msft also gave me this link for troubleshooting windows server containers <https://msdn.microsoft.com/en-us/virtualization/windowscontainers/troubleshooting>
+U0JFJ4KHS says -=*[1477683330.000416]-=*::: I am getting this error when running docker containers directly
+U0JFJ4KHS says -=*[1477683336.000417]-=*::: <@U0JFJ4KHS|jbhurat> uploaded a file: <https://kubernetes.slack.com/files/jbhurat/F2VNECV2R/-.txt|Untitled>
+U0JFJ4KHS says -=*[1477683358.000418]-=*::: so looks like the issue <@U0PPMUTGR> faced is docker/windows related and not k8s
+U0PPMUTGR says -=*[1477683387.000419]-=*::: were u able to resolve it?
+U0ALRFJH0 says -=*[1477683548.000420]-=*::: <@U0JFJ4KHS> was there still a doubt? i mean, the errors youve been sharing are all related to docker.
+U0JFJ4KHS says -=*[1477683751.000421]-=*::: :slightly_smiling_face:
+U0JFJ4KHS says -=*[1477683770.000422]-=*::: <@U0PPMUTGR>, not yet I am looking into it
+U0JFJ4KHS says -=*[1477684922.000423]-=*::: <@U0PPMUTGR>, I think we might have to update the demo environment in Azure from TP5 to Windows Server 2016 GA
+U0PPMUTGR says -=*[1477687192.000424]-=*::: i assume you want to create two new VMs, but don't delete the existing ones until everything is up and running smoothly?
+U0JFJ4KHS says -=*[1477687203.000425]-=*::: right
+U0PPMUTGR says -=*[1477687204.000426]-=*::: do you want me to create the VMs? if yes, give me the docker release you want me to use
+U0PPMUTGR says -=*[1477687212.000427]-=*::: and i will set all up today
+U0JFJ4KHS says -=*[1477687221.000428]-=*::: I have the script that we used last time to create VMs
+U0JFJ4KHS says -=*[1477687247.000429]-=*::: will just update the sku, offer and other information from above and create the VMs
+U0PPMUTGR says -=*[1477687745.000430]-=*::: got it and thanks!
+U0ALRFJH0 says -=*[1477690552.000431]-=*::: got feedback from the sig-testing people <https://groups.google.com/forum/#!topic/kubernetes-sig-testing/E-5nEDVoSCU>
+U0ALRFJH0 says -=*[1477690588.000432]-=*::: i will come back to Aaron soon.
+U0JFJ4KHS says -=*[1477708021.000433]-=*::: <@U0PPMUTGR>, Azure demo environment is updated, there are 2 new windows nodes kubewin03 and kubewin04 which you can use
+U0JFJ4KHS says -=*[1477708036.000434]-=*::: I have tested the guestbook-go application and it is working fine
+U0PPMUTGR says -=*[1477760824.000435]-=*::: great work Jitu. thanks! i will give this a try

@@ -1,0 +1,167 @@
+==========
+U0ALRFJH0 says -=*[1481027002.000011]-=*::: <@U0JFJ4KHS> <@U0PPMUTGR> i am able to get internet access in the container. we need to add a NAT interface.
+U0ALRFJH0 says -=*[1481027077.000012]-=*::: in cloud environments i think it may not be needed but i'm not yet sure how to use VM default gateway for containers
+U0ALRFJH0 says -=*[1481027084.000013]-=*::: investigating that now
+==========
+U0PTURH63 says -=*[1481033109.000015]-=*::: I'm going to attempt a setup this morning using the documentation here.  Anything else I should be looking at? <https://github.com/kubernetes/kubernetes.github.io/pull/1771>
+U0ALRFJH0 says -=*[1481033930.000017]-=*::: <@U0PTURH63> where will you be setting this up, on-prem or cloud?
+U0PTURH63 says -=*[1481033986.000018]-=*::: Was going to attempt a multi virtual box on my laptop if possible
+U0PTURH63 says -=*[1481033990.000019]-=*::: But I'm good with suggestions
+U0ALRFJH0 says -=*[1481033991.000020]-=*::: your feedback is much appreciated so we can improve docs.
+U0PTURH63 says -=*[1481034009.000022]-=*::: I've got an azure account with lots of credit
+U0ALRFJH0 says -=*[1481034443.000024]-=*::: jvb i'm almost done with instructions on how to run this on GCP. it always takes some experimentation, particularly with Windows networking specifics, etc.
+U0PTURH63 says -=*[1481034615.000025]-=*::: Yes.  Windows Networking is a special :snowflake:
+U0PPMUTGR says -=*[1481035112.000026]-=*::: <@U0PTURH63> in azure it works great so far
+U0PPMUTGR says -=*[1481035129.000027]-=*::: <@U0ALRFJH0> great news on internet access
+U0PTURH63 says -=*[1481035304.000028]-=*::: Ok.  I'll parallel path vbox and azure then :slightly_smiling_face: How up to date are the RM templates that <@U0JFJ4KHS> created?
+U0ALRFJH0 says -=*[1481035434.000029]-=*::: <@U0PPMUTGR> didn't <@U0JFJ4KHS> confirm containers on Azure don't have internet access, just yesterday?
+U0JFJ4KHS says -=*[1481035805.000031]-=*::: <@U0ALRFJH0>, yes I was unable to `ping 8.8.8.8` from within containers on Azure
+U0JFJ4KHS says -=*[1481035827.000032]-=*::: the same worked fine from the host
+U0PPMUTGR says -=*[1481035850.000033]-=*::: wouldn't adding the NAT interface that pires mentioned above fix this for azure as well
+U0JFJ4KHS says -=*[1481035901.000034]-=*::: <@U0ALRFJH0>, is this the default NAT network that docker creates or creating a new NAT using `New-NetNAT`
+U0ALRFJH0 says -=*[1481036029.000036]-=*::: <@U0JFJ4KHS> you can use whatever you want, for as long as subnet doesn't clash
+U0ALRFJH0 says -=*[1481036075.000037]-=*::: ``` docker network create -d transparent --attachable -o com.docker.network.windowsshim.interface="Ethernet 2" --gateway 192.168.1.1 --subnet 192.168.1.0/24 podnet netsh int ipv4 set address "vEthernet (HNSTransparent)" static 192.168.1.1 255.255.255.0 netsh interface ipv4 set interface "vEthernet (HNSTransparent)" forwarding=enabled  docker network create -d nat --subnet=172.17.8.0/24 --gateway=172.17.8.1 podnat  docker create --name container -it --network=podnet --dns 10.142.0.1 microsoft/nanoserver powershell docker network connect podnat container docker start -i container ```
+U0ALRFJH0 says -=*[1481036100.000038]-=*::: `10.142.0.1` - GCP default gateway
+U0JFJ4KHS says -=*[1481036123.000039]-=*::: thanks, let me give that a try and will confirm in few minutes
+U0ALRFJH0 says -=*[1481036134.000040]-=*::: i think we can scrap the NAT interface if the container can route with this IP. however, since the container doesn't know this CIDR (`10.142.0.x`), it can't add it as gw.
+U0ALRFJH0 says -=*[1481036171.000041]-=*::: <@U0JFJ4KHS> <@U0PPMUTGR> i'm not saying that it fully solves things. we need to make sure pod-to-pod communication isn't NAT'ed.
+U0JFJ4KHS says -=*[1481039502.000042]-=*::: <@U0ALRFJH0>, I tried the above instructions on my local environment and I am able to ping outside network
+U0JFJ4KHS says -=*[1481039544.000043]-=*::: I am still scratching my head as my previous configuration was the same..when I deleted the existing networks and recreated using the above instructions it worked
+U0JFJ4KHS says -=*[1481039622.000044]-=*::: Also, I have noticed in my local env that `--dns` is not required
+U0ALRFJH0 says -=*[1481039907.000046]-=*::: <@U0JFJ4KHS> with the NAT interface, correct, the `--dns` is not needed.
+U0ALRFJH0 says -=*[1481040233.000047]-=*::: downloading IIS container image takes like forever. that's a huge problem with dockerhub :confused:
+U0JFJ4KHS says -=*[1481040277.000048]-=*::: if it is based on `windowsservercore`, then it will be around 8+ gb
+U0ALRFJH0 says -=*[1481040302.000049]-=*::: :face_with_rolling_eyes:
+U0ALRFJH0 says -=*[1481040319.000050]-=*::: it needs to download around 5GB at least
+U0ALRFJH0 says -=*[1481040328.000051]-=*::: that's ridiculous
+U0JFJ4KHS says -=*[1481040825.000052]-=*::: Worked on Azure as well
+==========
+U0JFJ4KHS says -=*[1481042040.000053]-=*::: <@U0ALRFJH0>, do you have few minutes for a quick call
+U0ALRFJH0 says -=*[1481042111.000054]-=*::: <@U0JFJ4KHS> sure
+U0JFJ4KHS says -=*[1481042120.000055]-=*::: let me send you the invite
+U0ALRFJH0 says -=*[1481046564.000056]-=*::: <@U0JFJ4KHS> please extend the limitations we've identified to the team/sig
+U0ALRFJH0 says -=*[1481046573.000057]-=*::: i won't be able to attend
+U0ALRFJH0 says -=*[1481046576.000058]-=*::: thank you
+U0JFJ4KHS says -=*[1481046579.000059]-=*::: sure
+U0PPMUTGR says -=*[1481048123.000060]-=*::: that's great!
+==========
+U0PPMUTGR says -=*[1481048296.000061]-=*::: <@U0ALRFJH0> do you have a draft ready for viewing of the first pass of instructions on running k8s cluster with windows on GCE
+U0ALRFJH0 says -=*[1481051057.000062]-=*::: <@U0PPMUTGR> yes. I'll share it tomorrow. Still, no Internet in the containers without breaking rule of no NAT in inter-pod communications
+U0ALRFJH0 says -=*[1481051080.000063]-=*::: Last step I'm missing is how to use NAT solely for networks not known to Kubernetes 
+U0ALRFJH0 says -=*[1481051112.000064]-=*::: This is an issue that spans not just GCE but Azure and on-premises, as well. 
+U0PPMUTGR says -=*[1481055594.000065]-=*::: sounds good
+==========
+U0PPMUTGR says -=*[1481056644.000066]-=*::: hey Jitu is our apprenda slack down? <@U0JFJ4KHS>
+U0JFJ4KHS says -=*[1481056678.000068]-=*::: yes, I am unable to connect
+U0PPMUTGR says -=*[1481056696.000069]-=*::: ok cool
+U0DRV5E1Z says -=*[1481056709.000070]-=*::: i just restarted my client and it seemed to have fixed the issue...
+U0PPMUTGR says -=*[1481056713.000071]-=*::: i wanted to make sure it was not just me
+U0PPMUTGR says -=*[1481056724.000072]-=*::: i tried that Derek and it did not help me
+U0DRV5E1Z says -=*[1481056743.000073]-=*::: hmmm weird yeah It is being pretty slow but at least the channels are showing up on my end
+U0PPMUTGR says -=*[1481056778.000074]-=*::: ok its back now
+U0PPMUTGR says -=*[1481056780.000075]-=*::: :slightly_smiling_face:
+U0JFJ4KHS says -=*[1481056781.000076]-=*::: restarting client worked for me
+==========
+U356KP22X says -=*[1481105169.000077]-=*::: Hi, please help to configure Azure storage class 0:-) or give a link to examples
+U0ALRFJH0 says -=*[1481105719.000078]-=*::: <@U356KP22X> this SIG is focused on bringing Windows Containers support to Kubernetes, not support Azure.
+U356KP22X says -=*[1481106210.000079]-=*::: Sorry :slightly_smiling_face:
+==========
+U0ALRFJH0 says -=*[1481108742.000080]-=*::: <@U0PPMUTGR> for kubernetes repo, we have a fork in apprenda org, but not for docs?
+U0ALRFJH0 says -=*[1481108795.000082]-=*::: nevermind, we do. we're just not using it.
+U0ALRFJH0 says -=*[1481108812.000083]-=*::: it's recommended to use apprenda forks
+U0ALRFJH0 says -=*[1481108816.000084]-=*::: <@U0JFJ4KHS> ^
+U0JFJ4KHS says -=*[1481122669.000085]-=*::: My bad, will use it going forward
+U0JFJ4KHS says -=*[1481122690.000086]-=*::: <@U0ALRFJH0> were you able to access outside network when using transparent mode
+U0ALRFJH0 says -=*[1481122729.000087]-=*::: i can access host (GCE) network and container network. i can't access the internet, yet.
+U0ALRFJH0 says -=*[1481122775.000088]-=*::: my best guess still is the `transparent` network can't masquerade (NAT), like the `bridge` does on Linux.
+U0PPMUTGR says -=*[1481125091.000089]-=*::: <@U0ALRFJH0> i confirmed today that we got the GCE credit
+U0PPMUTGR says -=*[1481125120.000090]-=*::: Pires, Alex, or Jitu, do you want accounts on our GCE environment to start using this credit for R&amp;D
+==========
+U0JFJ4KHS says -=*[1481125160.000091]-=*::: yes please
+U0ALRFJH0 says -=*[1481125175.000092]-=*::: can we do it next week? i'm finishing up GCP doc, tomorrow's holiday here and i'll be travelling to Amsterdam for x-mas dinner.
+U0ALRFJH0 says -=*[1481125184.000093]-=*::: oh, nevermind!
+U0PPMUTGR says -=*[1481125189.000094]-=*::: lol
+U0ALRFJH0 says -=*[1481125193.000095]-=*::: i already have an account in `apprenda-project-one`
+U0PPMUTGR says -=*[1481125199.000096]-=*::: excellent!
+U0ALRFJH0 says -=*[1481125218.000097]-=*::: brb
+U0PPMUTGR says -=*[1481125295.000098]-=*::: <mailto:jbhurat@gmail.com|jbhurat@gmail.com> right Jitu?
+U0PPMUTGR says -=*[1481125303.000099]-=*::: yes, i see that you have an account Pires
+U0JFJ4KHS says -=*[1481125370.000100]-=*::: right
+U0ALRFJH0 says -=*[1481125415.000101]-=*::: you don't need to add gmail accounts.
+U0ALRFJH0 says -=*[1481125432.000102]-=*::: in gmail, one can add @apprenda.com addresses. then GCP will recognize this.
+U0PPMUTGR says -=*[1481125435.000103]-=*::: make sure you turn off VMs when not needing them :slightly_smiling_face:
+U0PPMUTGR says -=*[1481125451.000104]-=*::: i think Jitu already did add his apprenda email to his google account
+U0JFJ4KHS says -=*[1481125460.000105]-=*::: yes, I did that sometime back
+U0PPMUTGR says -=*[1481125550.000106]-=*::: all set Jitu
+U0PPMUTGR says -=*[1481125557.000107]-=*::: you must have gotten an email on this
+U0JFJ4KHS says -=*[1481125660.000108]-=*::: still waiting
+U0PPMUTGR says -=*[1481125731.000109]-=*::: try this link and login using your google account
+U0PPMUTGR says -=*[1481125732.000110]-=*::: <https://console.cloud.google.com/home/dashboard?project=apprenda-project-one>
+U0JFJ4KHS says -=*[1481125959.000112]-=*::: I can access `apprenda-project-one` project
+U0JFJ4KHS says -=*[1481125972.000113]-=*::: but trying to do anything int it I get `You don't have permission to view the instances in this project`
+U0ALRFJH0 says -=*[1481127021.000114]-=*::: <@U0PPMUTGR> if you need help, ask Ike or set me as owner and I'll take care of permissions 
+==========
+U0ALRFJH0 says -=*[1481127062.000115]-=*::: <@U0JFJ4KHS> `new-containernetwork` creates NAT interface, right? 
+U0ALRFJH0 says -=*[1481127075.000116]-=*::: I'm mobile so I can't test it now. 
+U0JFJ4KHS says -=*[1481127086.000117]-=*::: you can create any type of network
+U0JFJ4KHS says -=*[1481127092.000118]-=*::: I am trying that as we chat
+U0ALRFJH0 says -=*[1481127115.000119]-=*::: If we're able to set the provider gateway, that would work alright! 
+U0ALRFJH0 says -=*[1481127336.000120]-=*::: I have destroyed my testing environment as I want to review the steps I've documented before I open a PR to Kubernetes docs. 
+U0JFJ4KHS says -=*[1481127394.000121]-=*::: As Vikrant suggested, I am able to create a `transparent` network
+U0JFJ4KHS says -=*[1481127405.000122]-=*::: but I can't ping the gateway from within the container
+U0JFJ4KHS says -=*[1481127506.000123]-=*::: this is on prem
+U0ALRFJH0 says -=*[1481127506.000124]-=*::: <@U0JFJ4KHS> share here the result of `ipconfig /all` from within the container
+U0JFJ4KHS says -=*[1481127550.000125]-=*::: <@U0JFJ4KHS|jbhurat> uploaded a file: <https://kubernetes.slack.com/files/jbhurat/F3CF6LF0E/ipconfig__all.txt|ipconfig /all>
+U0ALRFJH0 says -=*[1481128356.000126]-=*::: show routes 
+U0JFJ4KHS says -=*[1481128386.000127]-=*::: <@U0JFJ4KHS|jbhurat> uploaded a file: <https://kubernetes.slack.com/files/jbhurat/F3BP0DLR1/route_print.txt|route print>
+U0ALRFJH0 says -=*[1481128564.000128]-=*::: Set 192.168.3.1 as gw to 10.5.4.1/32
+U0ALRFJH0 says -=*[1481128570.000129]-=*::: And try again. 
+U0ALRFJH0 says -=*[1481128596.000131]-=*::: I'll be at the computer in 10m
+U0JFJ4KHS says -=*[1481129009.000132]-=*::: you mean add a route?
+U0ALRFJH0 says -=*[1481129073.000133]-=*::: yes
+U0ALRFJH0 says -=*[1481129111.000134]-=*::: `route add 192.168.3.1/32 10.5.4.1 METRIC 1`
+U0ALRFJH0 says -=*[1481129128.000135]-=*::: this way you should be able to ping 10.5.4.1 from within the container and have internet access
+U0ALRFJH0 says -=*[1481129134.000136]-=*::: i'm rebuilding my cluster as we speak
+U0JFJ4KHS says -=*[1481129172.000137]-=*::: Still the same result, unable to ping 8.8.8.8
+U0ALRFJH0 says -=*[1481129202.000138]-=*::: i think i know why it happens on-prem.
+U0ALRFJH0 says -=*[1481129214.000139]-=*::: let me try in GCP.
+U0JFJ4KHS says -=*[1481129224.000140]-=*::: ok
+U0JFJ4KHS says -=*[1481129224.000141]-=*::: brb
+==========
+U0ALRFJH0 says -=*[1481131158.000142]-=*::: <@U0JFJ4KHS> can you share the `New-ContainerNetwork` you ran to create the transparent network?
+U0JFJ4KHS says -=*[1481131658.000143]-=*::: `New-ContainerNetwork -Name myNet -SubnetPrefix 192.168.3.0/24 -GatewayAddress 10.5.4.1 -Mode Transparent -NetworkAdapterName "Ethernet 2"`
+U0ALRFJH0 says -=*[1481131686.000144]-=*::: :+1:
+==========
+U0ALRFJH0 says -=*[1481134991.000145]-=*::: still no luck :face_with_rolling_eyes:
+U0JFJ4KHS says -=*[1481135031.000146]-=*::: same on my end
+U0ALRFJH0 says -=*[1481139392.000147]-=*::: <@U0PPMUTGR> <@U0JFJ4KHS> <https://github.com/apprenda/kubernetes.github.io/commit/f1e70d673705a5b63aefc498deee1442e0cfa22f>
+U0ALRFJH0 says -=*[1481139414.000149]-=*::: limitation still is the fact that containers can't access the internet.
+U0ALRFJH0 says -=*[1481139430.000150]-=*::: again, if we set-up NAT interface, inter-pod communication is NAT'ed.
+U0ALRFJH0 says -=*[1481140831.000151]-=*::: just pinged GCP guys to take a look and asked for guidance on the limitation described above
+==========
+U0ALRFJH0 says -=*[1481140852.000152]-=*::: tomorrow is an holiday here in Portugal and i'll be flying to Amsterdam. i'll be back on monday.
+U0JFJ4KHS says -=*[1481140882.000154]-=*::: Sounds good. Enjoy your day off :wave:
+==========
+U0PPMUTGR says -=*[1481142758.000155]-=*::: <@U0PPMUTGR|mmichael> uploaded a file: <https://kubernetes.slack.com/files/mmichael/F3C1U041J/working_session_on_k8s.ics|working session on K8s.ics>
+U0PPMUTGR says -=*[1481142786.000156]-=*::: i attached the invite to our twice-a-week standups
+U0PPMUTGR says -=*[1481143779.000159]-=*::: can someone update the doc here to point to our new documentation for k8s v.15? <https://docs.google.com/document/d/1IjwqpwuRdwcuWXuPSxP-uIz0eoJNfAJ9MWwfY20uH3Q/edit#heading=h.96mbls2u62j1>
+U0PPMUTGR says -=*[1481143876.000161]-=*::: <@U0JFJ4KHS>  maybe you are the best person to do that
+U0JFJ4KHS says -=*[1481143892.000162]-=*::: sure, will take care of it :slightly_smiling_face:
+U0PPMUTGR says -=*[1481143907.000163]-=*::: thanks!
+U0JFJ4KHS says -=*[1481144267.000164]-=*::: <@U0PPMUTGR>: do we need the google doc, most of the information there is duplicate of <https://github.com/kubernetes/kubernetes.github.io/tree/release-1.5/docs/getting-started-guides/windows>
+U0PPMUTGR says -=*[1481180590.000167]-=*::: you can nix the google doc <@U0JFJ4KHS>
+U0ALRFJH0 says -=*[1481191255.000168]-=*::: <@U0JFJ4KHS> no, please don't add that to the official docs. it's not ready! this is just a draft.
+U0PPMUTGR says -=*[1481208550.000169]-=*::: <@U0JFJ4KHS>  can you make a small but significant correction to the docs. where it says #4 Docker Version 1.12.2-cs2-ws-beta or later for prerequisites. Make it clear that this is a docker version requirement for Windows Server nodes. the rest of the Kubernetes Linux nodes AND the kubernetes master components can run any Docker version supported by k8s...
+U0PPMUTGR says -=*[1481208563.000170]-=*::: would you be able to make this update right now after the fact&gt;
+U0JFJ4KHS says -=*[1481208576.000171]-=*::: sure
+U0PPMUTGR says -=*[1481208582.000172]-=*::: thanks!
+U0JFJ4KHS says -=*[1481208716.000173]-=*::: I will make the change and submit a new PR
+==========
+U0PPMUTGR says -=*[1481209518.000174]-=*::: FYI folks - Kubernetes release date was moved by a couple of business days today: *We are moving the scheduled release date for 1.5 from Thursday, Dec 8 to Monday, Dec 12.*
+U0PTURH63 says -=*[1481211497.000175]-=*::: The next Kubernetes Philly meetup is on 1/9.  I'm doing a Microsoft Night as it will be hosted at the MTC in Malvern (Philly burbs).  Would anyone be able to come demo the progress so far?
+U0PTURH63 says -=*[1481211512.000176]-=*::: I could do it, but it would have a lot more weight coming from someone here.
+==========
+U0JFJ4KHS says -=*[1481211942.000177]-=*::: <@U0PPMUTGR>, created documentation PR <https://github.com/kubernetes/kubernetes.github.io/pull/1890> for the changes we discussed
+U0PPMUTGR says -=*[1481219379.000179]-=*::: thanks Jitu!
+U0PPMUTGR says -=*[1481219436.000180]-=*::: <@U0PTURH63>, we can coach you to do the presentation if you like. let's talk offline. i am traveling on that day
+==========

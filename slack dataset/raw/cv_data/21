@@ -1,0 +1,19 @@
+U0PT5KRHR says -=*[1472577606.000014]-=*::: first PR is here: <https://github.com/kubernetes/kubernetes/pull/31707>
+U0JFJ4KHS says -=*[1472577711.000016]-=*::: Instructions on how to setup the cluster <https://docs.google.com/document/d/1IjwqpwuRdwcuWXuPSxP-uIz0eoJNfAJ9MWwfY20uH3Q/edit>
+U2AHU3M41 says -=*[1473670312.000006]-=*::: hey guys, is there any update blog post or information regarding kubernetes + windows server? I do not see chat history in this channel ;]
+U0PT5KRHR says -=*[1473688372.000007]-=*::: Hey <@U2AHU3M41> - our sig meeting is tomorrow. Come join us!
+U2AHU3M41 says -=*[1473688640.000008]-=*::: hey <@U0PT5KRHR> how to join?
+U0PT5KRHR says -=*[1473689262.000009]-=*::: Hey - I've opened a PR to setup our sig space in <http://github.com/kubernetes/community|github.com/kubernetes/community>, which will include meeting info.
+U0PT5KRHR says -=*[1473689297.000010]-=*::: but for now, we are meeting tomorrow at 1 PM EST at <https://zoom.us/my/sigwindows>
+U2AHU3M41 says -=*[1473689367.000011]-=*::: cool <@U0PT5KRHR> , I will try to join tommorow! thanks a lot!
+U0PT5KRHR says -=*[1473689385.000012]-=*::: no problem! If you have any specific questions now I can also try to answer
+U2AHU3M41 says -=*[1473689409.000013]-=*::: just curious if kubernetes is able to manage windows containers already, see status etc.
+U0PT5KRHR says -=*[1473689451.000014]-=*::: there is an open PR that adds support for a very basic experience:  <https://github.com/kubernetes/kubernetes/pull/31707>
+U0PT5KRHR says -=*[1473689464.000016]-=*::: feel free to chime in!
+U2AHU3M41 says -=*[1473689744.000017]-=*::: p.s. guys , You here work 100% as opensource community , for free, or at least microsoft funds the project?
+U0PT5KRHR says -=*[1473689894.000018]-=*::: We are working as an open source community
+U2AHU3M41 says -=*[1473690012.000019]-=*::: good, but microsoft could support You, because it really requires a lot of work :confused:
+U0HSNPGLC says -=*[1473696449.000020]-=*::: Is their an invite for the sig-windows meeting?
+U0PPMUTGR says -=*[1473696669.000021]-=*::: You can get the invite from this page - <https://groups.google.com/forum/#!topic/kubernetes-sig-windows/OICMZKQG78w> (or you can PM me your email address and i will add you to the invite) This page includes all the SIGs and their meeting times - <https://github.com/kubernetes/community/blob/master/README.md#special-interest-groups-sig>
+U0PT5KRHR says -=*[1473700780.000023]-=*::: and our community page is up! thanks <@U0AGW7007>
+U0PT5KRHR says -=*[1473700782.000024]-=*::: <https://github.com/kubernetes/community/blob/master/sig-windows/README.md>

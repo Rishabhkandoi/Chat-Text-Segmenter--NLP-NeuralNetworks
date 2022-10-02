@@ -1,0 +1,52 @@
+==========
+U0722SJ4A says -=*[1462913473.000241]-=*::: <http://www.coindesk.com/11-times-speakers-stole-show-consensus-2016/>
+U0722SJ4A says -=*[1462913479.000243]-=*::: Nice quote from <@U071X9XPC> in this article!
+U0722SJ4A says -=*[1462913487.000244]-=*::: ```Until you solve decentralized identity, you cant really build other services off of that. This is the first problem that needs to get addressed. But doing a simulation or a proof of concept is very different from running a production system.```
+U0722SJ4A says -=*[1462913502.000245]-=*::: ```During the same panel with Allen, Blockstack Labs co-founder Muneeb Ali explained the technical limitations of building an identity platform on the blockchain, using firsthand experience from the creation of Onename.  Ali added that developers shouldnt think of blockchain as a one-size-fits-all solution, but rather one that should only be applied thoughtfully as part of a larger plan. He warned that not all blockchains provide equal identity control and should be selected carefully.```
+U071X9XPC says -=*[1462913626.000246]-=*::: ha, cool  didnt realize there were Coindesk reporters in the room
+==========
+U075BH6M7 says -=*[1463030319.000252]-=*::: Cache-control: immutable <http://bitsup.blogspot.com/2016/05/cache-control-immutable.html>
+U0722SJ4A says -=*[1463152703.000262]-=*::: <https://etherscan.io/token/TheDAO>
+U0722SJ4A says -=*[1463152712.000264]-=*::: <http://www.coindesk.com/the-dao-just-raised-50-million-but-what-is-it/>?
+U0722SJ4A says -=*[1463152720.000266]-=*::: Looks like the DAO raised $66M so far
+U071X9XPC says -=*[1463153343.000268]-=*::: wow
+U0723KV7E says -=*[1463153759.000269]-=*::: &gt;wow +1
+==========
+U0P7ZKPDY says -=*[1463157979.000271]-=*::: <http://www.nytimes.com/2016/04/14/opinion/in-paris-a-protest-movement-awakens.html>
+U0P7ZKPDY says -=*[1463157998.000273]-=*::: <http://www.theguardian.com/world/2016/apr/12/ive-never-felt-so-involved-in-democracy-nuit-debout-protesters-france-belgium-on-their-cause>
+U0P7ZKPDY says -=*[1463158046.000275]-=*::: <http://www.counterpunch.org/2016/05/06/media-blackout-on-nuit-debout/>
+U0P7ZKPDY says -=*[1463158133.000277]-=*::: <https://www.jacobinmag.com/2016/05/nuit-debout-france-el-khomri-labor-law/>
+U0722SJ4A says -=*[1463169504.000280]-=*::: <@U0P7ZKPDY>: looks like the french could really use the blockchain
+==========
+U071X9XPC says -=*[1463175580.000282]-=*::: Just wrote up a submission for the Web of Trust event that provides more details about Blockstack rules and support for multiple blockchains: <https://github.com/WebOfTrustInfo/ID2020DesignWorkshop/blob/master/topics-and-advance-readings/blockstack-rules-and-multiple-blockchains.md>
+U0P7ZKPDY says -=*[1463191202.000284]-=*::: The French an everyone else :)
+U0P7ZKPDY says -=*[1463191223.000285]-=*::: /giphy trump
+U09BK9SMD says -=*[1463372985.000292]-=*::: #snowcrash
+U0722SJ4A says -=*[1463373937.000293]-=*::: <@U09BK9SMD>: what's that?
+U09BK9SMD says -=*[1463374847.000294]-=*::: Its a book by Neal Stephenson (also wrote cryptonomicon). The fuzzy screen/snow on that GIF reminded me of it. Just being silly :simple_smile:
+U0722SJ4A says -=*[1463375029.000295]-=*::: Oh right! <@U074Q9Q3D> was telling me about it. I'm reading Cryptonomicon now.
+U09BK9SMD says -=*[1463375243.000296]-=*::: Nice! Yeah, its a good one. I hope the new meetup and everything is going well.
+==========
+U071X9XPC says -=*[1463411320.000297]-=*::: <http://blog.onename.com/onename-is-now-blockstack-labs/>
+U071X9XPC says -=*[1463496820.000300]-=*::: <https://steemit.com/crypto-news/@dan/is-the-dao-going-to-be-doa>
+U071X9XPC says -=*[1463496825.000302]-=*::: Hat tip: <@U0722SJ4A>
+U0722SJ4A says -=*[1463519785.000305]-=*::: <https://twitter.com/spencerchen/status/725114098107609089?ref_src=twsrc%5Etfw>
+U0722SJ4A says -=*[1463528680.000308]-=*::: <https://twitter.com/ibm/status/732385453135945729>
+U0723KV7E says -=*[1463927366.000330]-=*::: <http://techcrunch.com/2016/05/22/all-the-cool-kids-are-doing-ethereum-now/>
+U074Q9Q3D says -=*[1464029574.000336]-=*::: <http://techcrunch.com/2016/05/23/google-plans-to-bring-password-free-logins-to-android-apps-by-year-end/>
+U0723KV7E says -=*[1464109307.000343]-=*::: <http://techcrunch.com/2016/05/11/the-blockchain-is-the-new-google/>
+==========
+U0722SJ4A says -=*[1464122672.000345]-=*::: Nice post <@U0BTC3MM1>! <https://medium.com/the-coinbase-blog/ethereum-is-the-forefront-of-digital-currency-5300298f6c75#.e59tmk91l>
+U0722SJ4A says -=*[1464123198.000348]-=*::: Thinking back to our conversation when I presented a view that aligns with this quote: ```There is a decent argument (best articulated by Gavin Andresen in his article Bit-thereum) that its better to keep the base transaction layer dumb for scaling reasons with advanced logic in higher layers. Its possible we come full circle and end up back there, but this isnt how interesting things are being created at the moment because its harder to 1) create and 2) get decent adoption of multiple layers in the stack than it is to have it all out of the box in Ethereum.```
+U0722SJ4A says -=*[1464123366.000349]-=*::: Ethereum is the platform to build decentralized apps directly on the chain. Blockstack is the platform to build decentralized apps on a layer above the chain.
+U074Q9Q3D says -=*[1464123380.000350]-=*::: and with Blockstack, your apps aren't tied to the fate of the blockchain
+U074Q9Q3D says -=*[1464123397.000351]-=*::: heck, apps don't even need to be aware of the fact that the blockchain exists
+U0722SJ4A says -=*[1464123401.000352]-=*::: chain mobility
+U0722SJ4A says -=*[1464123410.000353]-=*::: also, you can build apps across chains
+U0722SJ4A says -=*[1464123419.000354]-=*::: utilizing TLDs and directories on multiple chains
+U0722SJ4A says -=*[1464123448.000356]-=*::: Our challenge and focus is to make our platform easier to use and our documentation easy to follow
+U0722SJ4A says -=*[1464123468.000358]-=*::: With some great articles, videos and tutorials
+U0722SJ4A says -=*[1464123481.000359]-=*::: And were making lots of great progress there
+U0722SJ4A says -=*[1464123539.000360]-=*::: Pretty sure with our next wave of documentation and our next release of the blockstack server and CLI, developers will be blown away by the experience of building apps on blockstack
+U0722SJ4A says -=*[1464123841.000361]-=*::: Nice article by <@U08UB2ENM> - Blockstack is mentioned! <https://medium.com/@delitzer/a-framework-for-identity-f7f072829cbb#.4g013yrs3>
+==========

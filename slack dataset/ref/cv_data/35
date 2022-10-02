@@ -1,0 +1,55 @@
+==========
+U0JFJ4KHS says -=*[1479744767.001217]-=*::: <@U0PPMUTGR> I moved the documentation to <https://github.com/apprenda/kubernetes.github.io/tree/windows_docs/docs/getting-started-guides/windows> as the guidelines say to create PR against `kubernetes/kubernetes.github.io` repository
+U0JFJ4KHS says -=*[1479744782.001219]-=*::: Once you review the changes, I will create a PR
+U0PPMUTGR says -=*[1479745770.001220]-=*::: it is happening today :slightly_smiling_face:
+U0JFJ4KHS says -=*[1479745781.001221]-=*::: :slightly_smiling_face:
+U0ALRFJH0 says -=*[1479746223.001222]-=*::: <@U0JFJ4KHS> is there anything i can help with the windows networking stuff? are there any blockers?
+U0JFJ4KHS says -=*[1479746262.001223]-=*::: I am going through NAT documentation to add rules
+U0JFJ4KHS says -=*[1479746268.001224]-=*::: will ping if I get stuck
+U0ALRFJH0 says -=*[1479746376.001225]-=*::: :+1:
+==========
+U0PPMUTGR says -=*[1479753408.001226]-=*::: Jitu, can you run the k8s meeting tomorrow? i can't attend it unfortunately. Just provide folks with an update on the documentation front and the POC on networking.
+U0PPMUTGR says -=*[1479753462.001227]-=*::: Everyone, here's the networking proposal document if you want to read it ahead of time <https://docs.google.com/document/d/1Us9nGywGviZR1C8huojcdyKxXKgKr4LVehKDqsDzg6o/edit>
+==========
+U0ALRFJH0 says -=*[1479757645.001231]-=*::: Sorry guys, will miss the meeting today. 
+U0PT5KRHR says -=*[1479757657.001232]-=*::: I'm also unable to join today
+U0PPMUTGR says -=*[1479757728.001233]-=*::: no worries
+==========
+U0JFJ4KHS says -=*[1479760406.001234]-=*::: <@U0PPMUTGR> I just verified that both the `kube-proxy` and `kubelet` PR changes are present in tag `v1.5.0-beta.1`
+U0PPMUTGR says -=*[1479760417.001235]-=*::: :thumbsup: excellent!
+U0PPMUTGR says -=*[1479763439.001237]-=*::: the documentation with my edits :slightly_smiling_face: thanks Jitu for taking care of this
+U0PPMUTGR says -=*[1479763452.001238]-=*::: <@U0PPMUTGR|mmichael> uploaded a file: <https://kubernetes.slack.com/files/mmichael/F35CNLS83/running_windows_server_containers_using_kubernetes.docx|Running Windows Server Containers using Kubernetes.docx>
+U0PPMUTGR says -=*[1479763457.001239]-=*::: i used track changes to easily find my edits
+U0JFJ4KHS says -=*[1479763468.001240]-=*::: thanks Michael
+U0PPMUTGR says -=*[1479763882.001241]-=*::: anytime
+U0PPMUTGR says -=*[1479763906.001242]-=*::: i know it will be a pain to convert that back to markup language..... :disappointed:
+U0PPMUTGR says -=*[1479763913.001243]-=*::: there has to be a better way to edit such documents
+U0JFJ4KHS says -=*[1479764417.001244]-=*::: yep, I don't know if there is any other better way other than making changes directly to `.md` file
+==========
+U0PPMUTGR says -=*[1479767647.001245]-=*::: fyi to everyone, the latest documentation is here. Jitu will file the PR right now so that it makes it in by the Nov 25 documentation deadline <https://github.com/apprenda/kubernetes.github.io/blob/windows_docs/docs/getting-started-guides/windows/README.md>
+U0JFJ4KHS says -=*[1479768242.001247]-=*::: Created PR <https://github.com/kubernetes/kubernetes.github.io/pull/1754>
+U0PPMUTGR says -=*[1479768426.001249]-=*::: :thumbsup:
+U0PPMUTGR says -=*[1479768545.001250]-=*::: I updated the spreadsheet at <https://docs.google.com/spreadsheets/d/1g9JU-67ncE4MHMeKnmslm-JO_aKeltv2kg_Dd6VFmKs/edit#gid=0> with our PR link and indicated that the tech review is complete
+U0ALRFJH0 says -=*[1479769889.001252]-=*::: I am still missing the pause image push. <@U0JFJ4KHS> make sure to let me know I suck over out meeting first thing in your morning! 
+U0PPMUTGR says -=*[1479770079.001253]-=*::: lol..i guess we should push it soon :slightly_smiling_face: so that <https://hub.docker.com/r/apprenda/pause> does not give you 404
+==========
+U0ALRFJH0 says -=*[1479831251.001254]-=*::: ``` netsh netkvm setparam 0 *RscIPv4 0 netsh netkvm restart 0 ```
+U0ALRFJH0 says -=*[1479831262.001255]-=*::: ^ fixed issues with GCP Windows Server
+U0ALRFJH0 says -=*[1479831308.001256]-=*::: <@U0JFJ4KHS> no advances, yet?
+U0JFJ4KHS says -=*[1479831338.001257]-=*::: nope, I am having issues starting docker after I created a NAT interface using New-NetNAT
+U0ALRFJH0 says -=*[1479831373.001258]-=*::: :sweat: good luck, mate
+U0ALRFJH0 says -=*[1479831390.001259]-=*::: if you dont get lucky today, ill jump in tomorrow.
+U0ALRFJH0 says -=*[1479831421.001260]-=*::: im taking thursday and friday to get up to speed with how Windows does networking and ill be able to help more.
+==========
+U0ALRFJH0 says -=*[1479832995.001261]-=*::: `apprenda/pause:0.1` and `apprenda/pause:latest` are up, 918MB uncompressed (`FROM windows/nanoserver`)
+U0ALRFJH0 says -=*[1479833123.001262]-=*::: <@U0PT5KRHR> would you have time/will to make sure our latest instructions work with this image?
+U0ALRFJH0 says -=*[1479833169.001263]-=*::: i will be leaving shortly and <@U0JFJ4KHS> is already having a hard time with Windows networking. :pray:
+U0PT5KRHR says -=*[1479833210.001264]-=*::: I can definitely take a look at it tomorrow. Does that work?
+U0ALRFJH0 says -=*[1479833471.001265]-=*::: <@U0PT5KRHR> i should be able to do it as well on GCP and update the docs. thanks nonetheless
+U0ALRFJH0 says -=*[1479833574.001266]-=*::: bbl :wave:
+==========
+U0JFJ4KHS says -=*[1479848120.001267]-=*::: <@U0PPMUTGR> I updated the google xls doc with the new PR # <https://github.com/kubernetes/kubernetes.github.io/pull/1771>
+U0JFJ4KHS says -=*[1479848223.001269]-=*::: I had to close the old one and open a new one because the old changes was not based off release-1.5 branch and I was having issues rebasing it
+U0PPMUTGR says -=*[1479852247.001270]-=*::: ah got it. thanks Jitu
+U0PPMUTGR says -=*[1479852257.001271]-=*::: I am glad you had your issues fixed with GCP Pires
+==========

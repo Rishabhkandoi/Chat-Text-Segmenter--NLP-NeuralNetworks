@@ -1,0 +1,90 @@
+U1K1A2TFC says -=*[1474650254.000533]-=*::: im using minikube behind a proxy and i get this error `E0923 10:01:24.308729    2435 notify.go:55] Error getting json from minikube version url: Error getting minikube version url via http: Get <https://storage.googleapis.com/minikube/releases.json>: dial tcp 216.58.219.48:443: i/o timeout` on most commands even though the command succeeds
+U1TUWPL1M says -=*[1474650421.000534]-=*::: <@U1K1A2TFC> set WantUpdateNotification to false in ~/.minikube/config/config.json
+U1TUWPL1M says -=*[1474650438.000535]-=*::: I think that should stop minikube from making that call
+U1TUWPL1M says -=*[1474650455.000536]-=*::: not sure where that documented
+U1TUWPL1M says -=*[1474650459.000537]-=*::: it was around somewhere before
+U1K1A2TFC says -=*[1474650532.000538]-=*::: yeah that worked, thanks
+U1TUWPL1M says -=*[1474650549.000539]-=*::: you also might be able to run `minikube config set WantUpdateNotification false` if you have v0.10
+U261Y5ENR says -=*[1474835981.000544]-=*::: When doing `minikube service &lt;SERVICE&gt; url` I get `Waiting, endpoint for service is not ready yet`. What does this usually mean?
+U0ARNNR9P says -=*[1474885710.000545]-=*::: Has anyone managed to run Heapster as well as Prometheus in minikube ? Could you share your manifests ?
+U1XLRPD8B says -=*[1474886261.000546]-=*::: <@U0ARNNR9P>: my shameless plug <https://github.com/zanhsieh/efk-k8s>
+U0ARNNR9P says -=*[1474886489.000548]-=*::: <@U1XLRPD8B> do you have a blog post about it.
+U0ARNNR9P says -=*[1474886511.000549]-=*::: I love your Makefile, but it would be nice to have a step by step walkthrough
+U1XLRPD8B says -=*[1474887218.000550]-=*::: nay. you could peek charts/{heapster,prometheus}/templates/*.yaml to get what you want
+U1XLRPD8B says -=*[1474887261.000551]-=*::: heapster required to expose service in order to work on kubernetes-dashboard
+U1TUWPL1M says -=*[1474906261.000555]-=*::: thanks <@U1XLRPD8B> thats really cool
+U1FGYMJ6B says -=*[1474907666.000556]-=*::: <@U261Y5ENR> `minikube service` uses the Kubernetes Endpoint API to monitor the Endpoint associated with the specified service.  This message is printed either when the Endpoint has nothing associated yet (Kubernetes has not initialized the Endpoint w/ subsets yet), or when there are service-addresses associated with the service that are not available (the pods associated with them aren't running yet).  The code for checking whether a service endpoint is ready is here:   <https://github.com/kubernetes/minikube/blob/master/cmd/minikube/cmd/service.go#L104>
+U261Y5ENR says -=*[1474907754.000558]-=*::: <@U1FGYMJ6B> thanks i got it :slightly_smiling_face:
+U261Y5ENR says -=*[1474926765.000560]-=*::: how do we upgrade minikube to k8s 1.4?
+U1TUWPL1M says -=*[1474931447.000561]-=*::: right now you can run the beta.10 with `minikube start --kubernetes-version=v1.4.0-beta.10`
+U1TUWPL1M says -=*[1474931458.000562]-=*::: we'll be publishing the v1.4.0 later today <@U261Y5ENR>
+U261Y5ENR says -=*[1474931527.000563]-=*::: <@U1TUWPL1M> nice, how do we know what versions are available?
+U1TUWPL1M says -=*[1474931580.000564]-=*::: `minikube get-k8s-versions`
+U261Y5ENR says -=*[1474931639.000565]-=*::: <@U1TUWPL1M> dope, thank you
+U261Y5ENR says -=*[1474931677.000566]-=*::: <@U1TUWPL1M> if we switch versions, does the cluster start with a blank slate?
+U2G5XJM4P says -=*[1474962822.000567]-=*::: Im having trouble starting minikube on my yosemite mac, it just times out
+U2G5XJM4P says -=*[1474962857.000568]-=*::: trying to run with --v=99, all I get is Starting local Kubernetes cluster"
+U2G5XJM4P says -=*[1474962915.000569]-=*::: have VirtualBox 5.0.26 and docker-machine-driver-xhyve 0.2.3 installed
+U2G5XJM4P says -=*[1474962929.000570]-=*::: (and Docker for Mac, but not running)
+U2G5XJM4P says -=*[1474962969.000571]-=*::: any ideas?
+U1JCA8TGB says -=*[1474969390.000573]-=*::: Hi there, anyone here using minikube with fabric8?
+U2CQH424F says -=*[1475007938.000575]-=*::: <@U1TUWPL1M> any ETA for the final 1.4.0?
+U1TUWPL1M says -=*[1475008182.000576]-=*::: <@U2CQH424F> we haven't merged the changes into master yet but we've pushed the binary.  Should work with `--kubernetes-version=v1.4.0`
+U2CQH424F says -=*[1475008217.000578]-=*::: :smile:
+U2CQH424F says -=*[1475008233.000579]-=*::: is a new minikube needed or is that sufficient?
+U2CQH424F says -=*[1475008236.000580]-=*::: i see <https://github.com/kubernetes/minikube/pull/629>
+U1TUWPL1M says -=*[1475008239.000582]-=*::: nope thats sufficient
+U2CQH424F says -=*[1475008242.000583]-=*::: sweet
+U2CQH424F says -=*[1475008246.000584]-=*::: thanks
+U1TUWPL1M says -=*[1475008256.000585]-=*::: np
+U1VL8H66Q says -=*[1475008318.000586]-=*::: <@U2CQH424F> if youre about to try that now, can you let me know if it works for you? Didnt work for me earlier but I am not sure if I just did something wrong
+U2CQH424F says -=*[1475008333.000587]-=*::: will do
+U1TUWPL1M says -=*[1475008336.000588]-=*::: <@U1VL8H66Q> i pushed it maybe an hour or two ago
+U2CQH424F says -=*[1475008337.000589]-=*::: running a start now
+U1VL8H66Q says -=*[1475008356.000590]-=*::: Ah that might be it <@U1TUWPL1M> and thanks <@U2CQH424F>
+U1TUWPL1M says -=*[1475008399.000591]-=*::: yeah the automation is about 7/10 there.  we have minikube-bot actually doing the upgrades and running tests but the pr and "release" are still manual
+U1TUWPL1M says -=*[1475008415.000592]-=*::: <@U1VL8H66Q>  you might need to `rm ~/.minikube/cache/localkube`
+U1VL8H66Q says -=*[1475008421.000593]-=*::: Yeah
+U1TUWPL1M says -=*[1475008429.000594]-=*::: we have a PR open to do SHA checking for everything in the cache
+U1TUWPL1M says -=*[1475008437.000595]-=*::: haven't gotten around to addressing some of the comment tho
+U1VL8H66Q says -=*[1475008442.000596]-=*::: Yeah, when in doubt, I manually delete the vm and that dir.
+U1TUWPL1M says -=*[1475008450.000597]-=*::: yeah we need to get better about that
+U1TUWPL1M says -=*[1475008464.000598]-=*::: usually nuking the cache directory is sufficient
+U1VL8H66Q says -=*[1475008476.000599]-=*::: Ive been having other issues related to go 1.6 and macos sierra so I dont even know how many of my issues are caused by that heh
+U1TUWPL1M says -=*[1475008502.000600]-=*::: we're now building with go 1.7 so the macos issues should be fixed in the next release
+U1TUWPL1M says -=*[1475008519.000601]-=*::: that kind of caught us off guard
+U2CQH424F says -=*[1475008524.000602]-=*::: i don't remember - does one need to install kubectl separately? it seems so
+U1TUWPL1M says -=*[1475008531.000603]-=*::: yep <@U2CQH424F>
+U1VL8H66Q says -=*[1475008542.000604]-=*::: Whats the expected behavior if you try to start minikube with a version it doesnt understand? For me, it starts up and says that kubectl is configured, but when I try do kubectl version, kubectl reports that it cannot connect
+U1TUWPL1M says -=*[1475008555.000605]-=*::: <@U1VL8H66Q> i just opened up an issue about that today
+U1TUWPL1M says -=*[1475008570.000606]-=*::: it fails silently
+U1VL8H66Q says -=*[1475008604.000607]-=*::: Ah, ok. I also see the same issue if I initially create the VM with 1.4.0-beta.10 specified and then later do minikube start with no args (i.e. it works when I specify the version but then fails later when I dont)
+U1TUWPL1M says -=*[1475008605.000608]-=*::: should be an easy fix <https://github.com/kubernetes/minikube/issues/634>
+U1TUWPL1M says -=*[1475008629.000610]-=*::: a good way to pin the kubernetes version is `minikube config set kubernetes-version v1.4.0`
+U1VL8H66Q says -=*[1475008639.000612]-=*::: Ah, cool, thanks
+U1TUWPL1M says -=*[1475008645.000613]-=*::: you can always overwrite it with flags, but that way you dont forget
+U1VL8H66Q says -=*[1475008687.000614]-=*::: I made the mistake of trying latest mac os, latest minikube and latest kubernetes all on the same day and its been biting me :smile:
+U1TUWPL1M says -=*[1475008710.000615]-=*::: haha usually i always try the beta mac os but this time i didnt
+U2CQH424F says -=*[1475008723.000616]-=*::: downloads the full release tarball just to get kubectl...
+U1TUWPL1M says -=*[1475008745.000617]-=*::: <@U2CQH424F> `curl -O <https://storage.googleapis.com/kubernetes-release/release/v1.3.6/bin/linux/amd64/kubectl>`
+U2CQH424F says -=*[1475008760.000619]-=*::: or v1.4.0?
+U1TUWPL1M says -=*[1475008777.000620]-=*::: yeah any version works
+U1TUWPL1M says -=*[1475008778.000621]-=*::: <https://coreos.com/kubernetes/docs/latest/configure-kubectl.html>
+U2CQH424F says -=*[1475008837.000623]-=*::: that should be put in the main kubernetes release docs somewhere
+U1VL8H66Q says -=*[1475008844.000624]-=*::: When you said next release would be compiled with Go 1.7.1 did you mean minikube, kubernetes, or both?
+U2CQH424F says -=*[1475008851.000625]-=*::: given you're likely to want to install kubectl on many clients
+U1TUWPL1M says -=*[1475008871.000626]-=*::: yeah <@U2CQH424F>  i agree, the only place i could find it is on the k8s minikube docs <http://kubernetes.io/docs/getting-started-guides/minikube/#download-kubectl>
+U2CQH424F says -=*[1475008902.000627]-=*::: ``` Client Version: <http://version.Info|version.Info>{Major:"1", Minor:"4", GitVersion:"v1.4.0", GitCommit:"a16c0a7f71a6f93c7e0f222d961f4675cd97a46b", GitTreeState:"clean", BuildDate:"2016-09-26T18:16:57Z", GoVersion:"go1.6.3", Compiler:"gc", Platform:"darwin/amd64"} Server Version: <http://version.Info|version.Info>{Major:"1", Minor:"4", GitVersion:"v1.4.0", GitCommit:"a16c0a7f71a6f93c7e0f222d961f4675cd97a46b", GitTreeState:"dirty", BuildDate:"1970-01-01T00:00:00Z", GoVersion:"go1.7.1", Compiler:"gc", Platform:"linux/amd64"} ```
+U2CQH424F says -=*[1475008906.000628]-=*::: bewm
+U2CQH424F says -=*[1475008907.000629]-=*::: worked
+U1VL8H66Q says -=*[1475008925.000630]-=*::: Awesome thanks for reporting back on that
+U1TUWPL1M says -=*[1475008946.000631]-=*::: <@U1VL8H66Q> i meant minikube, i _think_ k8s is moving or has moved to 1.7 also
+U2CQH424F says -=*[1475008950.000632]-=*::: i don't get why the server timestamp is the beginning of the epoch though
+U1TUWPL1M says -=*[1475008952.000633]-=*::: not sure tbh
+U1TUWPL1M says -=*[1475008959.000634]-=*::: yeah that might be our doing <@U2CQH424F>
+U1VL8H66Q says -=*[1475008970.000635]-=*::: Theres an outstanding PR for the move to 1.7.1, but its got milestone as 1.5
+U1TUWPL1M says -=*[1475008971.000636]-=*::: also the GitTreeState
+U1VL8H66Q says -=*[1475008989.000637]-=*::: I dont know if that means it wont be in before 1.5 or is targeted to be in before 1.5
+U1TUWPL1M says -=*[1475008992.000638]-=*::: we've already updated our build servers to 1.7
+U1TUWPL1M says -=*[1475009000.000639]-=*::: for minikube
+U1VL8H66Q says -=*[1475009023.000640]-=*::: Cool

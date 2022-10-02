@@ -1,0 +1,98 @@
+==========
+U0ALRFJH0 says -=*[1478036620.000582]-=*::: hi <@U2X7ARA79>, nice to meet you. Pires from Apprenda!
+==========
+U0JFJ4KHS says -=*[1478037059.000583]-=*::: <@U0PPMUTGR>: do we have an Apprenda CNCF CLA, I am getting this
+U0JFJ4KHS says -=*[1478037064.000584]-=*::: <@U0JFJ4KHS|jbhurat> uploaded a file: <https://kubernetes.slack.com/files/jbhurat/F2X7F357Y/slack_for_ios_upload._null_|Slack for iOS Upload>
+U0ALRFJH0 says -=*[1478037214.000585]-=*::: yeah, you need to register with the @apprenda.com email
+U0ALRFJH0 says -=*[1478037233.000586]-=*::: you may ping <@U0DRV5E1Z> cause he has gone through it too and he helped me.
+U0ALRFJH0 says -=*[1478037243.000587]-=*::: i also think hes adding this to our dev ramp-up doc
+U0JFJ4KHS says -=*[1478037313.000588]-=*::: I did sign up using Apprenda email, let me ping <@U0DRV5E1Z> 
+U0PPMUTGR says -=*[1478037574.000589]-=*::: whenever you figure out what to do Jitu, work with Derek to let Ike know as well for others
+U0JFJ4KHS says -=*[1478037617.000590]-=*::: Sure
+==========
+U2X7ARA79 says -=*[1478037746.000591]-=*::: <@U0ALRFJH0> nice to meet you
+U2X7ARA79 says -=*[1478037762.000592]-=*::: what is the best branch for me to be working on at the moment?
+U2X7ARA79 says -=*[1478037775.000593]-=*::: and do you compile the windows binaries from Windows or Linux?
+U0ALRFJH0 says -=*[1478037848.000594]-=*::: <@U2X7ARA79> Linux and copy to Windows. im not sure building with `GOOS=windows go build cmd/kubelet` can cut it, or if it can, if we should do it at all.
+U0ALRFJH0 says -=*[1478037878.000595]-=*::: `KUBE_BUILD_PLATFORMS=windows/amd64 make WHAT=cmd/kubelet`
+U0ALRFJH0 says -=*[1478037898.000596]-=*::: there are two branches right now, one for `kubelet` and another for `kube-proxy`.
+U0ALRFJH0 says -=*[1478037910.000597]-=*::: this is the working version of `kubelet` as of today: <https://github.com/kubernetes/kubernetes/pull/31707>
+U0ALRFJH0 says -=*[1478037957.000600]-=*::: for `kube-proxy` theres <https://github.com/apprenda/kubernetes/commits/windows_kube_proxy>. i will pick this up tomorrow and do the same thing i did for `kubelet`.
+U0ALRFJH0 says -=*[1478037969.000603]-=*::: we need both PRs in in the coming days!
+U2X7ARA79 says -=*[1478038008.000604]-=*::: thanks!
+U0ALRFJH0 says -=*[1478038180.000605]-=*::: <@U2X7ARA79> ill be afk until tomorrow. do you need anything else?
+U2X7ARA79 says -=*[1478039386.000606]-=*::: I think this will be good, I'm just trying to build this now on Linux with your settings above, so will ping right away if I get blocked
+==========
+U2X7ARA79 says -=*[1478042463.000607]-=*::: <@U0ALRFJH0> I keep getting the following error : ./hack/run-in-gopath.sh: line 33: _output/bin/deepcopy-gen: Permission denied
+U2X7ARA79 says -=*[1478042478.000608]-=*::: I can set +x on the file, but are there any other workarounds?
+U0ALRFJH0 says -=*[1478042512.000609]-=*::: <@U2X7ARA79> run `make WHAT=cmd/kubelet`
+U2X7ARA79 says -=*[1478042536.000610]-=*::: I'm running "KUBE_BUILD_PLATFORMS=windows/amd64 make WHAT=cmd/kubelet"
+U2X7ARA79 says -=*[1478042548.000611]-=*::: and I've also tried make WHAT=cmd/kubelet
+U0ALRFJH0 says -=*[1478042553.000612]-=*::: For some reason I have yet to identify, that may happen of you never compiled Kubernetes before. Or after running `make clean`
+U2X7ARA79 says -=*[1478042575.000613]-=*::: I'm on a clean VM
+U2X7ARA79 says -=*[1478042583.000614]-=*::: I can build kubernetes first on that vm
+U0ALRFJH0 says -=*[1478042606.000615]-=*::: <@U2X7ARA79> I know but trust me. If you build without the environment variable and then with the environment variable it will work. 
+U0ALRFJH0 says -=*[1478042627.000616]-=*::: run `make WHAT=cmd/kubelet`
+U2X7ARA79 says -=*[1478042633.000617]-=*::: got it
+U2X7ARA79 says -=*[1478042638.000618]-=*::: I'll try that
+U0ALRFJH0 says -=*[1478042642.000619]-=*::: Then, run `KUBE_BUILD_PLATFORMS=windows/amd64 make WHAT=cmd/kubelet`
+U2X7ARA79 says -=*[1478042653.000620]-=*::: thanks, trying now
+U0ALRFJH0 says -=*[1478042665.000621]-=*::: From that point, that issue will go away 
+U2X7ARA79 says -=*[1478042851.000622]-=*::: it worked! thanks
+U0ALRFJH0 says -=*[1478043588.000623]-=*::: Awesome! 
+==========
+U0ALRFJH0 says -=*[1478044722.000625]-=*::: <@U2X7ARA79> how's it going? 
+U2X7ARA79 says -=*[1478045523.000626]-=*::: thanks for checking, I have now have both binaries compiled, I've deployed a new cluster with two windows machines and two nics, and now just working through the instructions
+U2X7ARA79 says -=*[1478045543.000627]-=*::: for your workload "apprenda/pause" is that on docker hub
+U2X7ARA79 says -=*[1478045550.000628]-=*::: or did you use a private repo?
+U2X7ARA79 says -=*[1478045582.000629]-=*::: (I didn't see it on docker hub, so I was going to proceed with private repo)
+U0ALRFJH0 says -=*[1478046538.000630]-=*::: Good question. <@U0PT5KRHR> <@U0JFJ4KHS> ^?
+U0PPMUTGR says -=*[1478046654.000631]-=*::: <@U2X7ARA79> , the apprenda pause container is located in this github repo  -<https://github.com/jbhurat/dotnetes>
+==========
+U0PPMUTGR says -=*[1478046664.000633]-=*::: <@U0JFJ4KHS>  we should update our documentation to include this link as well
+U0ALRFJH0 says -=*[1478046709.000634]-=*::: <@U0PPMUTGR> I can try to automate the container build, if you guys think it would help. 
+U0PPMUTGR says -=*[1478046711.000635]-=*::: We should also move the images to the official repo for the SIG as well so that they are all build and bundled together
+U0ALRFJH0 says -=*[1478046745.000637]-=*::: <@U0PPMUTGR> I can try to automate the container build, if you guys think it would help.
+U0ALRFJH0 says -=*[1478046808.000638]-=*::: Even if it's just build (our side), publish on dockerhub so it's accessible, plus adding doc on how we built the image. 
+U0ALRFJH0 says -=*[1478046843.000639]-=*::: Should be a couple hours thing - if necromancy is not involved in the process. 
+U0PPMUTGR says -=*[1478046930.000640]-=*::: chat with Jitu tomorrow to see what he thinks as well.  i think we don't nede to build the image all the time as most of the things on it are static, so it might just be a publish thing. Alex created that image
+==========
+U2X7ARA79 says -=*[1478046994.000641]-=*::: thanks for the link, I'll be able to work with the dotnetes projects
+U2X7ARA79 says -=*[1478047060.000642]-=*::: for RRAS on windows, once you added the feature, do you have to further configure it through the "Routing and Remote Access Server Setup Wizard"?
+U0PPMUTGR says -=*[1478047113.000643]-=*::: <@U2X7ARA79>  from the documentation it seems you only have to enable it.
+U0PPMUTGR says -=*[1478047124.000644]-=*::: if it does not work, Alex can give us further clarity tomorrow
+U2X7ARA79 says -=*[1478047128.000645]-=*::: perfect, thanks, that's what I figured
+==========
+U0ALRFJH0 says -=*[1478047773.000646]-=*::: great news, besides the lacks of CLA and the lgtm, #31707 passes all checks.
+==========
+U0JFJ4KHS says -=*[1478047984.000648]-=*::: <@U2X7ARA79>: that's correct, you just have to enable RRAS, which involves starting the Service 
+==========
+U0PPMUTGR says -=*[1478048274.000649]-=*::: :thumbsup:
+U0ALRFJH0 says -=*[1478053927.000650]-=*::: <@U0PPMUTGR> ping <@U0BC5M36Y> if you can for review. its the only thing blocking the PR.
+U0ALRFJH0 says -=*[1478054023.000651]-=*::: cya tomorrow
+U0PPMUTGR says -=*[1478066119.000652]-=*::: sending him an email now
+U0PPMUTGR says -=*[1478066278.000653]-=*::: I assume we are using the same <https://github.com/kubernetes/kubernetes/pull/31707> PR
+U0ALRFJH0 says -=*[1478084158.000655]-=*::: <@U0PPMUTGR> but of course :) 
+U0PPMUTGR says -=*[1478088012.000656]-=*::: cool
+==========
+U0PPMUTGR says -=*[1478088148.000657]-=*::: quick sync on the networking priorities for the msft chat tomorrow (in priority order) 1. fix portproxy to support UDP 2. container mode networking to be supported (network namespace sharing support) 3. DNS search support 4. native overlay support  Do you guys agree on priority and asks?
+U0ALRFJH0 says -=*[1478090916.000658]-=*::: <@U0PPMUTGR> i dont have an answer. I do understand each of the bullets but just not in the context of Windows. but im eager to have someone from the team bringing me up to speed and be part of said meeting. wdyt?
+U0PPMUTGR says -=*[1478091002.000659]-=*::: i sent you the meeting invite. we can discuss the bullets in our standup tomorrow, which is prior to the msft meeting
+U0ALRFJH0 says -=*[1478091100.000660]-=*::: :+1:
+U0PT5KRHR says -=*[1478091641.000661]-=*::: I might say container mode networking is more important to support the pod abstraction
+U0PT5KRHR says -=*[1478091651.000662]-=*::: wdyt?
+U0PT5KRHR says -=*[1478091667.000663]-=*::: welcome <@U2X7ARA79>
+U0ALRFJH0 says -=*[1478092690.000664]-=*::: my order would be, 2, 1, 3, 4. without 1 theres no 3 because one cant expose cluster DNS service UDP 53 and most clients wont retry TCP 53 (which should be used only for queries/responses above 512 bytes - well, some extension now allows for UDP up to 4096 bytes)
+==========
+U0ALRFJH0 says -=*[1478093937.000665]-=*::: <@U0JFJ4KHS> did anyone test `kube-proxy` from `windows_kube_proxy` branch on a Linux machine and made sure nothing broke?
+U0JFJ4KHS says -=*[1478094243.000666]-=*::: No, I don't think anyone tested `kube-proxy` from `windows_kube_proxy` branch on a Linux machine, the changes to the existing code are very minimal and have `runtime.GOOS == "windows` condition
+U0JFJ4KHS says -=*[1478094257.000667]-=*::: I agree we need to test it to confirm we didn't break anything
+U0JFJ4KHS says -=*[1478094260.000668]-=*::: I will do that now
+U0ALRFJH0 says -=*[1478094934.000669]-=*::: <@U0JFJ4KHS> im not sure sig-nework people will be happy to add `netsh` argument to proxier methods.
+U0ALRFJH0 says -=*[1478094986.000670]-=*::: to me its like having two params, one per OS. that should be hidden by some interface, much like `container_manager`, etc.
+U0ALRFJH0 says -=*[1478095047.000671]-=*::: unfortunately, the upstream code is too biased - or it seems biased to linux.
+U0JFJ4KHS says -=*[1478095074.000672]-=*::: I thought about it when I was adding it, but as it was in userspace proxy mode, which is no longer the preferred mode, I decided to add it
+U0JFJ4KHS says -=*[1478095077.000673]-=*::: but can rework it
+U0ALRFJH0 says -=*[1478095392.000674]-=*::: <@U0JFJ4KHS> im pinging sig-network. lets see whats their feedback.
+U0JFJ4KHS says -=*[1478095407.000675]-=*::: ok
+==========

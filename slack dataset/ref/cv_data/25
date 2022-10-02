@@ -1,0 +1,28 @@
+==========
+U0PPMUTGR says -=*[1476884436.000241]-=*::: hey all, FYI on the code freeze coming up for v1.5
+U0PPMUTGR says -=*[1476884439.000242]-=*::: This is a reminder that code freeze for features in the Kubernetes v1.5 release is approaching fast--less than 3 weeks away: Monday, November 7, 2016 - Last day of 1.5 coding period Tuesday, November, 8, 2016 - Code freeze begins What is Code Freeze? During code freeze only bug fixes with the v1.5 milestone will be merged to HEAD. Any code for 1.5 features or refactors must be merged before this date (leave time for code reviews). All non-bug fix changes after this date must go through the exception process. No "planned bug fixes" - bug fixes should not add new features or "complete" a feature.
+U0PPMUTGR says -=*[1476884457.000244]-=*::: ```This is a reminder that code freeze for features in the Kubernetes v1.5 release is approaching fast--less than 3 weeks away:  --Monday, November 7, 2016 - Last day of 1.5 coding period --Tuesday, November, 8, 2016 - Code freeze begins  What is Code Freeze? During code freeze only bug fixes with the v1.5 milestone will be merged to HEAD. Any code for 1.5 features or refactors must be merged before this date (leave time for code reviews). All non-bug fix changes after this date must go through the exception process. No "planned bug fixes" - bug fixes should not add new features or "complete" a feature.```
+==========
+U0JFJ4KHS says -=*[1476889840.000246]-=*::: Found another instance where <https://github.com/golang/go/issues/14527> is causing issues on Windows
+U0JFJ4KHS says -=*[1476889912.000248]-=*::: writing secrets is failing as `atomic_writer.Write()` returns an error while renaming directories
+==========
+U0PPMUTGR says -=*[1477416343.000251]-=*::: hi everyone, here's the update from the SIG meeting today
+U0PPMUTGR says -=*[1477416358.000252]-=*::: <@U0PPMUTGR|mmichael> uploaded a file: <https://kubernetes.slack.com/files/mmichael/F2U02G7DH/pasted_image_at_2016_10_25_01_25_pm.png|Pasted image at 2016-10-25, 1:25 PM>
+U0PPMUTGR says -=*[1477416362.000253]-=*::: Also available here - <https://docs.google.com/document/d/1Tjxzjjuy4SQsFSUVXZbvqVb64hjNAG5CQX8bK7Yda9w/edit#>
+==========
+U0PPMUTGR says -=*[1477416397.000255]-=*::: <@U0JFJ4KHS> , when you made the DNS changes, which app did you try as the guest workload to test DNS resolution?
+==========
+U0PPMUTGR says -=*[1477421574.000256]-=*::: hey all, did anyone have an issue with windows server 2016 GA release and setting it up for Docker?
+U0PPMUTGR says -=*[1477421599.000257]-=*::: <@U0JFJ4KHS>  did you hit any bugs? i remember you had an image issue
+U0JFJ4KHS says -=*[1477421617.000258]-=*::: yes, I was able to install docker and pull images on one
+U0JFJ4KHS says -=*[1477421660.000259]-=*::: and it failed to pull image on another host, where I installed Windows Server 2016 GA a few days later
+U0JFJ4KHS says -=*[1477421677.000260]-=*::: last I tried couple of days back, it was still failing to pull images
+U0PPMUTGR says -=*[1477422022.000261]-=*::: is this an issue with Docker specifically, or windows?
+U0PPMUTGR says -=*[1477422024.000262]-=*::: if you know
+U0JFJ4KHS says -=*[1477422082.000263]-=*::: I think it is an issue with windows host build and container image version mismatch
+U0PPMUTGR says -=*[1477428243.000264]-=*::: thanks Jitu
+U0PPMUTGR says -=*[1477428252.000265]-=*::: Brendan Burns and team also hit some of the same issues
+U0PPMUTGR says -=*[1477428259.000266]-=*::: he will let us know of any remediation
+U0JFJ4KHS says -=*[1477429696.000267]-=*::: Sounds good 
+U0ALRFJH0 says -=*[1477491928.000269]-=*::: :wave:
+==========

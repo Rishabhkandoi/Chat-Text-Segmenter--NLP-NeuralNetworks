@@ -1,0 +1,79 @@
+U0A30SM33 says -=*[1469113064.000075]-=*::: <@U1TKQHL3E>: so you can't connect or you can't ping?
+U1TKQHL3E says -=*[1469113085.000076]-=*::: my new issue right now is related to not mounting the volumes <@U0A30SM33>
+U1TKQHL3E says -=*[1469113089.000077]-=*::: I got minikube running
+U1TKQHL3E says -=*[1469113096.000078]-=*::: using Linux at the moment
+U0NEL7T4G says -=*[1469113109.000079]-=*::: thanks <@U0A30SM33>! well, I dont use windows myself, it is for a collaborator, but I can ask him to try it if you leave the binary somewhere
+U0NEL7T4G says -=*[1469113148.000080]-=*::: (I dont have access to a windows machine either to try it myself)
+U1TKQHL3E says -=*[1469113236.000081]-=*::: <@U0A30SM33>: maybe a virtual box issue i nLinux ?
+U0A30SM33 says -=*[1469113297.000082]-=*::: <@U1TKQHL3E>: mount what volumes? i prefer to use kvm on linux (`--vm-driver=kvm`) which i hope will become the default some time
+U1TKQHL3E says -=*[1469113331.000083]-=*::: <@U0A30SM33>: how can I change the vm driver for minikube ?
+U0A30SM33 says -=*[1469113420.000084]-=*::: <@U1TKQHL3E>: `minikube start --vm-driver=kvm` with version &gt;= 0.5.0 (0.6.0 is latest if possible)
+U1TKQHL3E says -=*[1469113442.000085]-=*::: using latest 0.6.0
+U1TKQHL3E says -=*[1469113443.000086]-=*::: trying now
+U1TKQHL3E says -=*[1469113580.000087]-=*::: running again with kvm but still can't see my files the directory is in the image though <@U0A30SM33>
+U0A30SM33 says -=*[1469113934.000088]-=*::: ah i see what you're trying to do - there is no automounting of host dirs at the moment i'm afraid
+U1TKQHL3E says -=*[1469114004.000089]-=*::: ok
+U1TKQHL3E says -=*[1469114019.000090]-=*::: so I need to mount then manually? <@U0A30SM33>
+U1TKQHL3E says -=*[1469114038.000091]-=*::: well I did that, I mounted them manually with virtualbox but the content of the directory is empty in virtualbox
+U0A30SM33 says -=*[1469114040.000092]-=*::: what are you trying to do? what do you need to mount in the vm?
+U1TKQHL3E says -=*[1469114045.000093]-=*::: I'm installing docker-machine kvm driver to try with that
+U1TKQHL3E says -=*[1469114065.000094]-=*::: my project's files because I'm using a dockerized app
+U1TKQHL3E says -=*[1469114073.000095]-=*::: so I need to mount my projects files in it
+U0A30SM33 says -=*[1469114087.000096]-=*::: you can access the docker socket from your host
+U0A30SM33 says -=*[1469114099.000097]-=*::: `eval $(minikube docker-env)`
+U0A30SM33 says -=*[1469114109.000098]-=*::: &amp; then `docker ps`, `docker build`, etc will all work
+U0A30SM33 says -=*[1469114117.000099]-=*::: _should_ all work
+U0A30SM33 says -=*[1469114223.000100]-=*::: <@U0NEL7T4G>: try <https://drive.google.com/file/d/0Bwh8JL7_QZKxVlc3aV9SNkVKSjQ/view> - can you comment on <https://github.com/kubernetes/minikube/issues/28> once you give it a try?
+U0NEL7T4G says -=*[1469114283.000101]-=*::: thanks <@U0A30SM33>, will forward this to the person that can try it!
+U1TKQHL3E says -=*[1469114334.000102]-=*::: <@U0A30SM33>: yes I tried it but with virtualbox which was not working, right now I'm installing the kvm driver
+U0A30SM33 says -=*[1469114478.000104]-=*::: <@U0NEL7T4G>: i have a minikube fork for openshift (minishift) that i have users running on windows fine so hopefully minikube is not too far away, if at all
+U0A30SM33 says -=*[1469114484.000105]-=*::: <@U1TKQHL3E>
+U1TKQHL3E says -=*[1469114546.000107]-=*::: <@U0A30SM33>: how can I know if minikube is running in the specified vm ?
+U1TKQHL3E says -=*[1469114552.000108]-=*::: I installed kvm driver
+U1TKQHL3E says -=*[1469114566.000109]-=*::: but still see the image in virtualbox running
+U0A30SM33 says -=*[1469114587.000110]-=*::: <@U1TKQHL3E>: you need to specify `--vm-driver=kvm` for it to use the kvm driver
+U1TKQHL3E says -=*[1469114599.000111]-=*::: sure, I did that
+U0A30SM33 says -=*[1469114602.000112]-=*::: <@U1TKQHL3E>: of course you first need to `minikube delete`
+U1TKQHL3E says -=*[1469114608.000113]-=*::: oh got it
+U0A30SM33 says -=*[1469114612.000114]-=*::: sorry!
+U1TKQHL3E says -=*[1469114615.000115]-=*::: so minikube stop and then delete
+U0A30SM33 says -=*[1469114631.000116]-=*::: minikube delete will stop it too so that should be enough
+U1TKQHL3E says -=*[1469114636.000117]-=*::: good
+U1TKQHL3E says -=*[1469114672.000118]-=*::: Starting local Kubernetes cluster... E0721 11:24:17.604212   26410 start.go:74] Error starting host:  Error creating new host: dial tcp: missing address
+U1TKQHL3E says -=*[1469114677.000119]-=*::: after deleting the image from virtual box
+U1TKQHL3E says -=*[1469114681.000120]-=*::: using --vm-driver=kvm
+U1TKQHL3E says -=*[1469115136.000121]-=*::: I did not have the libvirtd daemon running
+U1TKQHL3E says -=*[1469115140.000122]-=*::: <@U0A30SM33>:
+U1TKQHL3E says -=*[1469115144.000123]-=*::: testing again
+U0NEL7T4G says -=*[1469115576.000124]-=*::: <@U0A30SM33>: I presume that you need virtualbox on windows, any other requirement?
+U0A30SM33 says -=*[1469115758.000125]-=*::: <@U0NEL7T4G>: virtualbox, yeah, that should be it
+U1TKQHL3E says -=*[1469116251.000126]-=*::: <@U0A30SM33>: so after a lot of work, is running now on kvm. You mention that there is no auto mount; in that case how can I mount a directory inside minikube image ?
+U0A30SM33 says -=*[1469116349.000127]-=*::: <@U1TKQHL3E>: out of interest, what did a lot of work entail? want to make this easy for people
+U1TKQHL3E says -=*[1469116361.000128]-=*::: it wasn't related to minikube
+U1TKQHL3E says -=*[1469116381.000129]-=*::: I had to install libvirt and load the daemons
+U0A30SM33 says -=*[1469116382.000130]-=*::: <@U1TKQHL3E>: right now you'll have to mount dirs manually, but really we'd prefer it if you didn't have to &amp; can just talk to docker daemon directly
+U0A30SM33 says -=*[1469116386.000131]-=*::: ah ok
+U1TKQHL3E says -=*[1469116406.000132]-=*::: well not exactly work but time, I had also to restart my machine it was distro specific seems I'm using Arch
+U1TKQHL3E says -=*[1469116424.000133]-=*::: <@U0A30SM33>: so the idea is to use docker to mount my directories ?
+U1TKQHL3E says -=*[1469116441.000134]-=*::: I need to share my local files with the image so I can use docker-compose up and run the application
+U0A30SM33 says -=*[1469116518.000135]-=*::: i'm not familiar with docker compose &amp; where it fits in your workflow with kubernetes - don't you want kubernetes to manage your docker containers?
+U1TKQHL3E says -=*[1469116585.000136]-=*::: sure, but this is for development so that's why we opted to use minikube
+U1TKQHL3E says -=*[1469116638.000137]-=*::: docker volume ls is empty
+U1TKQHL3E says -=*[1469116644.000138]-=*::: so I guess I need to mount the volumes
+U0A30SM33 says -=*[1469116774.000139]-=*::: minikube is a simple way to run a single kubernetes all-in-one master/node. if you want to just manage docker containers for dev without kubernetes then it might not be the right option for you. personally i use it for dev so i can see how kubernetes manages &amp; runs my docker images. i'm not sure how docker compose can fit into the workflow
+U0A30SM33 says -=*[1469116811.000140]-=*::: `docker build` will tar up the local dir, send it to the docker daemon &amp; build docker images from there on the vm. that should be enough?
+U1TKQHL3E says -=*[1469116821.000141]-=*::: well, docker-compose is just for running another container with etcd which is the data store that we are using right now for saving some information
+U1TKQHL3E says -=*[1469116836.000142]-=*::: <http://github.com/namely/broadway>
+U1TKQHL3E says -=*[1469116838.000144]-=*::: that's the project
+U0A30SM33 says -=*[1469117534.000145]-=*::: i guess this is still to be worked out but i think if you're using minikube we'd recommend you use kubernetes manifests &amp; `docker build` against the minikube docker daemon
+U1TKQHL3E says -=*[1469117568.000146]-=*::: I see
+U1TKQHL3E says -=*[1469117580.000147]-=*::: yes, I'm doing that right now <@U0A30SM33>
+U1TKQHL3E says -=*[1469117587.000148]-=*::: eval $(minikube docker-env)
+U1TKQHL3E says -=*[1469117600.000149]-=*::: to use minikube's docker daemon
+U1TKQHL3E says -=*[1469117609.000150]-=*::: I hve docker locally but I'm not using it right now
+U0C4WM54Y says -=*[1469122647.000152]-=*::: could also run a registry in minikube/locally and deploy manifests with images referring to your registry
+U1JVDGD1S says -=*[1469217152.000154]-=*::: how do you use the kubernetes REST API with minikube?
+U1JVDGD1S says -=*[1469217201.000155]-=*::: I'm replacing a vagrant installation with minikube on my local dev system. With the vagrant provider all I had to do was use `kubectl proxy &lt;..&gt;` to serve the API without any tokens or credentials. The same approach doesn't seem compatible with minikube
+U10AE1F99 says -=*[1469221669.000156]-=*::: kubectl proxy should work
+U10AE1F99 says -=*[1469221685.000157]-=*::: i can run kubectl proxy, then "curl localhost:8001/api/v1/pods" works fine
+U10AE1F99 says -=*[1469221697.000158]-=*::: what are you seeing <@U1JVDGD1S>

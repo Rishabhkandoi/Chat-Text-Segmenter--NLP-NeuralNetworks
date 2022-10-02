@@ -1,0 +1,215 @@
+==========
+U1B51TCUW says -=*[1483467502.000726]-=*::: goal for the next OVS Windows release is to add S-NAT and D-NAT to be able to have OVN running on Windows k8s pods
+U1B51TCUW says -=*[1483467705.000727]-=*::: <@U0JFJ4KHS> did you get any progress with the native Network Controller?
+U0JFJ4KHS says -=*[1483467759.000728]-=*::: You mean to use an internal NIC for kubeproxy
+U1B51TCUW says -=*[1483467780.000729]-=*::: yes
+U0JFJ4KHS says -=*[1483467881.000730]-=*::: yes, it is recommended to use internal NIC for kubeproxy, but we still require two external NICs with the current approach and still working with Microsoft to resolve external network access issue
+U1B51TCUW says -=*[1483467977.000731]-=*::: we're working with Jason and the rest of the MSFT team, things look pretty good for the OVS approach
+U1B51TCUW says -=*[1483468013.000732]-=*::: once we have the OVN L3 side sorted out, we're done
+U0JFJ4KHS says -=*[1483468034.000733]-=*::: thats great :+1:
+U0ALRFJH0 says -=*[1483468084.000734]-=*::: <@U1B51TCUW> i was the one looking at Network Controller.
+U0ALRFJH0 says -=*[1483468096.000735]-=*::: unfortunately, it doesn't seem to work on cloud providers.
+U1B51TCUW says -=*[1483468142.000736]-=*::: <@U0ALRFJH0> do you know what's the issue with the NC for cloud providers? :slightly_smiling_face:
+U0ALRFJH0 says -=*[1483468166.000737]-=*::: well, i need to correct myself: it doesn't seem to work on cloud providers that provide you VMs without virtualization support.
+U1B51TCUW says -=*[1483468185.000738]-=*::: got it, you need nested virtualization
+U1B51TCUW says -=*[1483468227.000739]-=*::: good news for OVS, is that even if it's a VMswitch forwarding extension (the same used by Hyper-V), it dos not need VT-x features
+U0ALRFJH0 says -=*[1483468236.000740]-=*::: OVS leverages Windows SDN, does it not?
+U1B51TCUW says -=*[1483468261.000741]-=*::: yes, it's a VMswitch forwarding extension
+U0ALRFJH0 says -=*[1483468304.000742]-=*::: <@U1B51TCUW> if it doesn't need virtualization features, will it work on nodes with a single physical NIC?
+U1B51TCUW says -=*[1483468324.000743]-=*::: yes
+U0ALRFJH0 says -=*[1483468362.000744]-=*::: i'm pretty new to Windows SDN but it seems that it enables overlay networking, and that's what i was trying to achieve for easier networking.
+U0ALRFJH0 says -=*[1483468388.000745]-=*::: one docker network plug-in that would automate the overlay network setup is my end goal.
+U1B51TCUW says -=*[1483468406.000746]-=*::: just to be clear, OVS is not not using the Windows SDN overlays
+U0ALRFJH0 says -=*[1483468410.000747]-=*::: 
+U0ALRFJH0 says -=*[1483468417.000748]-=*::: this would be great!
+U0ALRFJH0 says -=*[1483468452.000749]-=*::: <@U1B51TCUW> thanks for clarifying. do you implement your own stuff or is there something blocking WSDN overlay network adoption?
+U0ALRFJH0 says -=*[1483468495.000750]-=*::: anyway, S-NAT is what's needed in order to resolve external network access issue <@U0JFJ4KHS>.
+U1B51TCUW says -=*[1483468500.000751]-=*::: OVS consists in a kernel driver and userspace tools (ovs-vsctl.exe, etc)
+U1B51TCUW says -=*[1483468515.000752]-=*::: the kernel driver is a vmswitch forwarding extension, which loads in place of the one coming with Windows Server 2016
+U1B51TCUW says -=*[1483468542.000753]-=*::: the userspace tools and services are the same that you find on linux, just ported and compiled for Windows
+U1B51TCUW says -=*[1483468562.000754]-=*::: <@U0ALRFJH0> are you familiar with OVS on Linux by any chance?
+U1B51TCUW says -=*[1483468639.000755]-=*::: OVS uses OVSDB and OpenFlow to configure overlays (VXLAN, GRE, GENEVE, MPLS, etc) and other flow rules
+U0ALRFJH0 says -=*[1483468672.000756]-=*::: <@U1B51TCUW> i'd have to refresh my memory but i've used it before for GRE tunnels.
+U1B51TCUW says -=*[1483468689.000757]-=*::: it supports one or more nics, including LACP bonding
+U1B51TCUW says -=*[1483468732.000758]-=*::: the great side, is that once the containers are attached to the switch, all the networking configuration is done with the same OVSDB commands that are used on Linux
+U1B51TCUW says -=*[1483468764.000759]-=*::: this means that the same code used by k8s on Linux OVS networking works on Windows out of the box
+U0ALRFJH0 says -=*[1483468780.000760]-=*::: i need to refresh my OVS know-how then because GRE tunnelling is something I was looking at in Windows SDN.
+U1B51TCUW says -=*[1483468785.000761]-=*::: additionally, you can have Linux and Windows pods sharing the same networking overlays
+U0ALRFJH0 says -=*[1483468793.000762]-=*::: ^ exactly!!!!!
+U1B51TCUW says -=*[1483468812.000763]-=*::: :slightly_smiling_face:
+U0ALRFJH0 says -=*[1483468842.000764]-=*::: can you point me to your work? is this open-source?
+U1B51TCUW says -=*[1483468865.000765]-=*::: it's part of the upstream OVS, getting you all the links
+U3L4RE1UG says -=*[1483468884.000766]-=*::: <https://github.com/openvswitch/ovs/>
+U0ALRFJH0 says -=*[1483468925.000768]-=*::: awesome
+U1B51TCUW says -=*[1483468930.000769]-=*::: Binary download link: <https://cloudbase.it/ovs>
+U0ALRFJH0 says -=*[1483468957.000771]-=*::: even vxlan mode would work for what i'm looking for.
+U1B51TCUW says -=*[1483468963.000772]-=*::: Blog post series: <https://cloudbase.it/open-vswitch-2-5-hyper-v-part-1/>
+U1B51TCUW says -=*[1483468994.000774]-=*::: yes, tons of overlay options: VXLAN, GRE, GENEVE, MPLS, etc
+U1B51TCUW says -=*[1483469014.000775]-=*::: and most important: fully interoperable with Linux :slightly_smiling_face:
+U0ALRFJH0 says -=*[1483469057.000776]-=*::: is there a roadmap for Windows support, i.e. any ETA for NAT?
+U1B51TCUW says -=*[1483469093.000777]-=*::: Windows support is already there for all L2 stuff, overlays etc
+U1B51TCUW says -=*[1483469101.000778]-=*::: for both VMs and containers
+U1B51TCUW says -=*[1483469119.000779]-=*::: firewalling (conntrack) is also there
+U1B51TCUW says -=*[1483469136.000780]-=*::: whats missing is only the NAT for L3, which is planned for 2.7
+U1B51TCUW says -=*[1483469152.000781]-=*::: so in the next couple of months, to give a rough roadmap
+U0ALRFJH0 says -=*[1483469160.000782]-=*::: great!
+==========
+U0ALRFJH0 says -=*[1483469193.000783]-=*::: when you say there's support for L2 stuff in containers, do you mean you were able to use OVS in Windows Containers?
+U1B51TCUW says -=*[1483469200.000784]-=*::: yes
+U0ALRFJH0 says -=*[1483469208.000785]-=*::: i'm wondering what type of network is used and how it was created.
+U1B51TCUW says -=*[1483469224.000786]-=*::: <@U3L4RE1UG>, do you think we can do a quick demo?
+U0ALRFJH0 says -=*[1483469226.000787]-=*::: `docker network create -d &lt;type&gt;..`
+U0ALRFJH0 says -=*[1483469257.000788]-=*::: i'm based in Portugal so it should be easy for us to set-up a demo. eager to take a look!
+==========
+U3L4RE1UG says -=*[1483469315.000789]-=*::: this is part of our talk at OVS conference from 2016
+U3L4RE1UG says -=*[1483469317.000790]-=*::: <https://youtu.be/12BSDqqIxkI?t=1084>
+U3L4RE1UG says -=*[1483469363.000792]-=*::: it uses the default network created while installing/setting up docker
+U3L4RE1UG says -=*[1483469403.000793]-=*::: its purpose is more to just show that integration is there, but can be extended for every type of network
+U3L4RE1UG says -=*[1483469494.000794]-=*::: ofc we can setup a demo :slightly_smiling_face:
+U1B51TCUW says -=*[1483469546.000795]-=*::: <@U0ALRFJH0> the final goal is to get this working on Windows too: <https://github.com/openvswitch/ovn-kubernetes>
+U1B51TCUW says -=*[1483469603.000797]-=*::: OVN is a controller that sits on top of OVS
+U0ALRFJH0 says -=*[1483469712.000798]-=*::: so right now, and forgetting about NAT, i can have two nodes, A is Linux and B is Windows and just by running OVS in overlay mode, i can have them communicating seamlessly?
+U0ALRFJH0 says -=*[1483470009.000800]-=*::: <@U1B51TCUW> ^
+U1B51TCUW says -=*[1483470080.000801]-=*::: sorry, got absorbed in a meeting :slightly_smiling_face:
+U1B51TCUW says -=*[1483470103.000802]-=*::: <@U0ALRFJH0> the answer is definitely yes!
+U0ALRFJH0 says -=*[1483470229.000803]-=*::: <@U1B51TCUW> we're looking into revamping kubelet support for Windows Containers by adopting CRI. i believe implementing a CRI network plug-in for OVS would make sense.
+U1B51TCUW says -=*[1483470244.000804]-=*::: you can have two (or more containers) on Linux or Windows and get them to communicate over VXLAN (or GRE, or...)
+U0ALRFJH0 says -=*[1483470287.000805]-=*::: <@U1B51TCUW> exactly. again, that's why i was looking at Windows SDN. but it was getting a little too complicated, really fast.
+U0ALRFJH0 says -=*[1483470495.000806]-=*::: ah, it seems someone worked on a CNI plug-in for OVN.
+U0ALRFJH0 says -=*[1483470655.000807]-=*::: AH, you're actually using that!
+U0ALRFJH0 says -=*[1483470794.000808]-=*::: but not for Windows, as i suspected.
+U3L4RE1UG says -=*[1483470916.000810]-=*::: <@U0ALRFJH0> that will be the final goal :slightly_smiling_face:
+==========
+U3L4RE1UG says -=*[1483470996.000811]-=*::: we could set up a demo in the mean time if you want
+U0ALRFJH0 says -=*[1483471554.000812]-=*::: <@U3L4RE1UG> i am definitely interested in that. when does it work for you?
+U0ALRFJH0 says -=*[1483471585.000813]-=*::: also, i'm interested in picking up that plug-in and making it Windows capable.
+U0PPMUTGR says -=*[1483477540.000814]-=*::: <@U0JFJ4KHS> , the msft networking team is available today 2:30  5:00pm PST  if you want to meet and continue the intvestigation to get unblocked. would this work for you?
+U0JFJ4KHS says -=*[1483477704.000816]-=*::: <@U0PPMUTGR> I will schedule something for tomorrow
+U0PPMUTGR says -=*[1483477749.000817]-=*::: ok got it. thanks!
+==========
+U3J5PDG85 says -=*[1483486065.000819]-=*::: <@U3F0QN1MW> - I am checking internally about RRAS support on Nano, but initial cursory checks point to it not being supported. <@U0JFJ4KHS> -  Curious to know RRAS usage that makes it a dependency.
+U0ALRFJH0 says -=*[1483523505.000820]-=*::: <@U3J5PDG85>, <@U0JFJ4KHS> is not able to have routing working without RRAS enabled.
+U0ALRFJH0 says -=*[1483523539.000821]-=*::: my setup on Google Cloud Platform (GCP) doesn't require RRAS but cloud routes need to be in place for mult-VM routing.
+U1B51TCUW says -=*[1483539769.000822]-=*::: <@U3J5PDG85> RRAS sould not be a dependency
+U1B51TCUW says -=*[1483539793.000823]-=*::: it should be just another CNI plugin, in case
+U1B51TCUW says -=*[1483539862.000824]-=*::: <@U0JFJ4KHS> do you have a CNI plugin that uses RRAS?
+U0JFJ4KHS says -=*[1483540753.000825]-=*::: We are not using CNI plugins
+U0ALRFJH0 says -=*[1483540759.000826]-=*::: <@U1B51TCUW> we're not using CNI but manual subnet/route setup
+U0JFJ4KHS says -=*[1483540767.000827]-=*::: are there any for Windows, I am not aware of any
+U0ALRFJH0 says -=*[1483540799.000828]-=*::: i was investigating how we could automate networking setup but requirements seem to change from on-prem to each cloud-provider, e.g. GCP is different than Azure.
+U0ALRFJH0 says -=*[1483540835.000829]-=*::: <@U0JFJ4KHS> i don't think so. CNI is very specific to Linux containers. but CNI is also very limited and external daemon is mostly needed, e.g. Weave or Calico
+U0ALRFJH0 says -=*[1483540853.000830]-=*::: i believe the same applies to OVS CNI plug-in
+U1B51TCUW says -=*[1483541059.000831]-=*::: <@U0ALRFJH0> <@U0JFJ4KHS> cool thanks, were now doing a new deployment with OVS / OVN, Ill post our findings ASAP
+U0ALRFJH0 says -=*[1483541491.000832]-=*::: <@U1B51TCUW> cool! i'll be waiting on the demo :slightly_smiling_face:
+==========
+U3LMBA1BP says -=*[1483550277.000833]-=*::: <@U0JFJ4KHS>  Thanks for the link. Can i try Kubernetes for Windows  Server 2016 in Virtualbox. If yes then could you please help me how can i do that.
+U3J5PDG85 says -=*[1483552860.000834]-=*::: <@U0ALRFJH0> <@U0JFJ4KHS> Thanks for the clarifications. Presume the "route add .. " commands from the Getting Started guide are not working correctly on-prem without RRAS?
+U0JFJ4KHS says -=*[1483552989.000835]-=*::: thats right `route add` didn't had any effect unless RRAS was enabled
+==========
+U3J5PDG85 says -=*[1483553022.000836]-=*::: <@U0PPMUTGR> can you please send the MS SDN contact name again? You replied when I was on vacation, and apparently I can't view history that far back on this channel.
+U3J5PDG85 says -=*[1483553078.000837]-=*::: <@U0JFJ4KHS> ok I'll try to investigate why this is the case.
+U0PPMUTGR says -=*[1483554056.000838]-=*::: @vyall, Jason Messer
+U0PPMUTGR says -=*[1483554097.000839]-=*::: if anyone wants to see the history of this channel, look at one of the pinned items on how to go back
+U3J5PDG85 says -=*[1483568628.000840]-=*::: Thanks <@U0PPMUTGR> !
+==========
+U0ALRFJH0 says -=*[1483615136.000841]-=*::: <@U0PPMUTGR> <@U0JFJ4KHS> i won't be attending today's meeting. couple items: * had a working session with GCP earlier this morning (late PT time) and we may have found a solution that would fix container external connectivity for GCP and possibly for all other environments where it doesn't work. needs confirmation and i hope to do it tomorrow. * i'm waiting on OVS demo to better understand if it would work to fix our issues.
+U0PPMUTGR says -=*[1483630103.000842]-=*::: i would be very interested in that Pires. Jitu also had a meeting with the msft folks  and the results were not as promising
+U0ALRFJH0 says -=*[1483630316.000843]-=*::: :+1: i'll keep you guys posted
+==========
+U0PPMUTGR says -=*[1483635446.000844]-=*::: Announcement: if you all have not gotten the new SIG-Windows meeting invite, let me know
+U0ALRFJH0 says -=*[1483635853.000845]-=*::: <@U0PPMUTGR> i didn't.
+U0ALRFJH0 says -=*[1483635910.000846]-=*::: i have our bi-weekly event but that's it
+U0PPMUTGR says -=*[1483635946.000847]-=*::: the current bi-weekly had expired
+U0PPMUTGR says -=*[1483635949.000848]-=*::: this is an update to that
+U0PPMUTGR says -=*[1483635956.000849]-=*::: i forwarded it to you again
+U0ALRFJH0 says -=*[1483635973.000850]-=*::: hmmmm by bi-weekly i mean mondays and thursdays
+U0ALRFJH0 says -=*[1483636016.000851]-=*::: done :+1:
+U0ALRFJH0 says -=*[1483636018.000852]-=*::: thanks
+U1B51TCUW says -=*[1483638764.000854]-=*::: <@U0PPMUTGR> I didn't receive it (yet)
+U3L4RE1UG says -=*[1483639830.000855]-=*::: <@U0PPMUTGR> please add me to the meeting as well
+U0PPMUTGR says -=*[1483640064.000856]-=*::: anyone that has not gotten it, please PM your email address and i will send it by EOD
+U2U84B4BE says -=*[1483669819.000857]-=*::: <@U0PPMUTGR> , what's the time and timezone of the planed meeting? I would try to attend if fits me  , thanks!  <mailto:hongxi@cloudtogo.cn|hongxi@cloudtogo.cn>
+U0PPMUTGR says -=*[1483714245.000858]-=*::: it is 10am PST every 2 weeks
+U0PPMUTGR says -=*[1483714517.000859]-=*::: in order for everyone to get the invites to meetings, etc, make sure to join/follow the sig-windows group. <https://groups.google.com/forum/#!forum/kubernetes-sig-windows>
+U1B51TCUW says -=*[1483726298.000861]-=*::: <@U0PPMUTGR> did you receive my PM about the meeting invitation? Thanks
+U0PPMUTGR says -=*[1483726877.000862]-=*::: i did forward it
+U0PPMUTGR says -=*[1483726880.000863]-=*::: check your email
+U1B51TCUW says -=*[1483728652.000864]-=*::: I got it forwarded from my colleagues now, so all good, thanks
+U0ALRFJH0 says -=*[1484070700.000869]-=*::: <https://github.com/kubernetes/kubernetes/pull/39005> has been lgtm'ed
+U0PPMUTGR says -=*[1484075188.000872]-=*::: hi all you can find, the sig-windows youtube playlist with all our recorded meetings here <https://www.youtube.com/playlist?list=PL69nYSiGNLP2OH9InCcNkWNu2bl-gmIU4>
+U0ALRFJH0 says -=*[1484075520.000874]-=*::: cool
+U0ALRFJH0 says -=*[1484075534.000875]-=*::: i always like to watch myself on tv!
+==========
+U2U84B4BE says -=*[1484118375.000877]-=*::: Dear all, cluster dns in 'short-name' format still and will NOT work until Windows Server side patch to fix the --dns-search issue
+U0ALRFJH0 says -=*[1484129517.000878]-=*::: shit, i totally screwed up Brendan's PR review.
+U0ALRFJH0 says -=*[1484129525.000879]-=*::: Windows and Mac builds are now broken. fixing..
+U0ALRFJH0 says -=*[1484131435.000880]-=*::: <https://github.com/kubernetes/kubernetes/pull/39731>
+U0JFJ4KHS says -=*[1484144632.000882]-=*::: <@U2U84B4BE> that's right
+U0ALRFJH0 says -=*[1484217109.000883]-=*::: bad news everyone, Windows binaries are not available for 1.5.2.
+U0ALRFJH0 says -=*[1484217186.000884]-=*::: for the ones that want to keep track of this, <https://github.com/kubernetes/kubernetes/issues/38785>
+==========
+U0ALRFJH0 says -=*[1484232713.000886]-=*::: guys I'm a little slow today so nothing new to report <@U0PPMUTGR> <@U0JFJ4KHS> 
+U0PPMUTGR says -=*[1484232745.000887]-=*::: got it. i also might not be able to make it either
+U0PPMUTGR says -=*[1484232749.000888]-=*::: we can cancel the standup
+U0PPMUTGR says -=*[1484232754.000889]-=*::: unless someone wants to have it
+U0JFJ4KHS says -=*[1484232788.000890]-=*::: ok, <@U0PPMUTGR> we spoke yesterday evening, so nothing new from my end as well
+U0PPMUTGR says -=*[1484233514.000891]-=*::: sounds good
+U0PPMUTGR says -=*[1484244971.000893]-=*::: bummer on 1.5.2 pires :disappointed:
+==========
+U1XLRPD8B says -=*[1482303724.000325]-=*::: Hi, could somebody point me to some article (please be very detail on each steps) regarding to RBAC on minikube? I tried the official one: <http://kubernetes.io/docs/admin/authorization/> Not even succeeded. I am sure `<http://rbac.authorization.k8s.io/v1alpha1|rbac.authorization.k8s.io/v1alpha1>` has been enabled, e.g.  ``` minikube start --memory 4096 \ --extra-config apiserver.RuntimeConfig="api/all=true,extensions/v1beta1/networkpolicies=true,<http://rbac.authorization.k8s.io/v1alpha1=true|rbac.authorization.k8s.io/v1alpha1=true>" \ --extra-config apiserver.AuthorizationMode=RBAC \ --extra-config apiserver.AuthorizationRbacSuperUser=admin \ --extra-config kubelet.Username=admin \ --extra-config kubelet.Password=admin ``` When I try to create the role as first yaml, it always failed. The error message mentioned I cannot escalate the right I don't have. Then I tried to impersonate with `--username=admin --password=admin` it asked me username and password twice then failed.
+==========
+U3J6R92NB says -=*[1482441352.000336]-=*::: hi, trying to run latest downloaded `minikube start` in windows got the error about virtual box
+U1TUWPL1M says -=*[1482441375.000337]-=*::: <@U3J6R92NB> do you have virtualbox installed
+U3J6R92NB says -=*[1482441383.000338]-=*::: Error starting host:  Error creating host: Error with pre-create check: "This computer is running Hyper-V. VirtualBox won't boot a 64bits VM when Hyper-V is activated. Either use Hyper-V as a driver, or disable the Hyper-V hypervisor. (To skip this check, use --virtualbox-no-vtx-check)"
+U3J6R92NB says -=*[1482441389.000339]-=*::: I want to use Hyper-V
+U3J6R92NB says -=*[1482441397.000340]-=*::: what should I do in this case?
+U1TUWPL1M says -=*[1482441404.000341]-=*::: you should `minikube start --vm-driver=hyperv`
+U1TUWPL1M says -=*[1482441417.000343]-=*::: you may need to run a `minikube delete` first
+U3J6R92NB says -=*[1482441461.000344]-=*::: ah ok there is just now this option in the help
+U3J6R92NB says -=*[1482441466.000345]-=*::: `--vm-driver`
+U3J6R92NB says -=*[1482441518.000346]-=*::: ``` Starting local Kubernetes cluster... E1223 02:18:26.839369   12428 start.go:94] Error starting host: Error creating host: Error creating machine: Error in driver during machine creation: exit status 1. ```
+U3J6R92NB says -=*[1482441535.000347]-=*::: any advice?
+U1TUWPL1M says -=*[1482441563.000348]-=*::: did you run a delete first
+U3J6R92NB says -=*[1482441573.000349]-=*::: I run
+U3J6R92NB says -=*[1482441593.000351]-=*::: ``` minikube-windows-amd64 delete Deleting local Kubernetes cluster... Errors occurred deleting machine:  exit status 1 ```
+U1TUWPL1M says -=*[1482441608.000352]-=*::: i think thats fine to ignore, you can try a start now
+U3J6R92NB says -=*[1482441620.000353]-=*::: I've got the error
+U3J6R92NB says -=*[1482441744.000354]-=*::: The same error I posted above
+U1TUWPL1M says -=*[1482441816.000355]-=*::: can you try a `minikube start --vm-driver=hyperv --show-libmachine-logs --v=7`
+U1TUWPL1M says -=*[1482441822.000356]-=*::: that will give more verbose logs
+U3J6R92NB says -=*[1482441855.000357]-=*::: ``` Starting local Kubernetes cluster... Found binary path at minikube.exe Launching plugin server for driver hyperv Plugin server listening at address 127.0.0.1:55117 () Calling .GetVersion Using API Version  1 () Calling .SetConfigRaw () Calling .GetMachineName (minikube) Calling .GetState (minikube) DBG | [executing ==&gt;] : C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -NonInteractive ( Get-VM minikube ).state (minikube) DBG | [stdout =====&gt;] : (minikube) DBG | [stderr =====&gt;] : Get-VM : Hyper-V no pudo encontrar una maquina virtual con el nombre "minikube". (minikube) DBG | En linea: 1 Caracter: 3 (minikube) DBG | + ( Get-VM minikube ).state (minikube) DBG | +   ~~~~~~~~~~~~~~~ (minikube) DBG |     + CategoryInfo          : InvalidArgument: (minikube:String) [Get-VM], VirtualizationException (minikube) DBG |     + FullyQualifiedErrorId : InvalidParameter,Microsoft.HyperV.PowerShell.Commands.GetVM (minikube) DBG | (minikube) DBG | (minikube) Calling .Start (minikube) DBG | [executing ==&gt;] : C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -NonInteractive Start-VM minikube (minikube) DBG | [stdout =====&gt;] : (minikube) DBG | [stderr =====&gt;] : Start-VM : Hyper-V no pudo encontrar una maquina virtual con el nombre "minikube". E1223 02:23:51.275712    4432 start.go:94] Error starting host: Error starting stopped host: exit status 1.   Retrying. (minikube) DBG | En linea: 1 Caracter: 1 (minikube) DBG | + Start-VM minikube E1223 02:23:51.318713    4432 start.go:100] Error starting host:  Error starting stopped host: exit status 1 (minikube) DBG | + ~~~~~~~~~~~~~~~~~ (minikube) DBG |     + CategoryInfo          : ObjectNotFound: (:) [Start-VM], VirtualizationException (minikube) DBG |     + FullyQualifiedErrorId : ObjectNotFound,Microsoft.HyperV.PowerShell.Commands.StartVM (minikube) DBG | (minikube) DBG | ```
+U3J6R92NB says -=*[1482441890.000358]-=*::: oh spanish)
+U1TUWPL1M says -=*[1482441932.000359]-=*::: hmm im not actually super familar with the hyper-v driver
+U3J6R92NB says -=*[1482441976.000360]-=*::: there is some recommendation <https://github.com/kubernetes/minikube/blob/master/DRIVERS.md#hyperv-driver>
+U3J6R92NB says -=*[1482441992.000362]-=*::: need to do this?
+U3J6R92NB says -=*[1482442036.000363]-=*::: `Start-VM : Hyper-V no pudo encontrar una maquina virtual con el nombre "minikube".`
+U1TUWPL1M says -=*[1482442068.000364]-=*::: yeah you might need to try that recommendation
+U3J6R92NB says -=*[1482442558.000366]-=*::: seems needed <https://github.com/kubernetes/minikube/pull/860/files>
+U3J6R92NB says -=*[1482442593.000368]-=*::: a no, just "may need"
+U3J6R92NB says -=*[1482442961.000369]-=*::: Yes it seem to worki with this
+U3J6R92NB says -=*[1482445930.000370]-=*::: I have got an error `schedulerPredicates failed due to PersistentVolumeClaim is not bound`
+U3J6R92NB says -=*[1482445956.000371]-=*::: Should I do something to make persistent volumes work?
+U1TUWPL1M says -=*[1482446138.000372]-=*::: PVs of type hostpath should work
+U3J6R92NB says -=*[1482446190.000373]-=*::: <https://github.com/kubernetes/minikube#persistent-volumes>
+U3J6R92NB says -=*[1482446200.000375]-=*::: I just don't get what action should take
+U3J6R92NB says -=*[1482446234.000376]-=*::: should I `kubectl apply` this config?
+U3J6R92NB says -=*[1482446250.000377]-=*::: ``` apiVersion: v1 kind: PersistentVolume metadata:   name: pv0001 spec:   accessModes:     - ReadWriteOnce   capacity:     storage: 5Gi   hostPath:     path: /data/pv0001/ ```
+U1TUWPL1M says -=*[1482446298.000378]-=*::: probably the easiest way is to save that to a file and kubectl create -f
+U3J6R92NB says -=*[1482446362.000379]-=*::: and on windows how should path look like?
+U1TUWPL1M says -=*[1482446392.000380]-=*::: path could be anything
+U3J6R92NB says -=*[1482446405.000381]-=*::: is this a windows host path?
+U1TUWPL1M says -=*[1482446412.000382]-=*::: no
+U1TUWPL1M says -=*[1482446415.000383]-=*::: this is a path inside the VM
+U3J6R92NB says -=*[1482446568.000384]-=*::: Thanks, seem to work)
+==========
+U3J6R92NB says -=*[1482446800.000385]-=*::: how does minikube gives external IPs to services?
+U3J6R92NB says -=*[1482447575.000386]-=*::: Is it possible that minikube give to LoadBalancer service type IP?
+U15PMDQ2E says -=*[1482522088.000391]-=*::: No <@U3J6R92NB>, minikube can only create NodePort for Services
+U15PMDQ2E says -=*[1482522106.000392]-=*::: LoadBalancer is only for Google or AWS clouds
+U0PRC9KPY says -=*[1482600366.000395]-=*::: <@U3J6R92NB> what Ive been doing is basically ``` kubectl expose service $DEPLOYMENT --name=jenkins --port=80   --target-port=8080 external-ip=10.0.2.15 ``` where 80 is the port that you see the Deployment trying to expose via a pending service, and 10.0.2.15:8080 is the port that VirtualBox exposes on its NAT interface (I have a strange circumstance so I cant use the host-only interface)
+U0PRC9KPY says -=*[1482600395.000396]-=*::: so, for hyperV its sure to be somewhat different, with regard to addresses at least
+U0PRC9KPY says -=*[1482600472.000397]-=*::: VirtualBox seems to run as unprivileged user so its not possible to expose a privileged port on its port forwarding config to the localhost
+U0PRC9KPY says -=*[1482600500.000398]-=*::: but Ill use macs pf to provide a forward from 80 to 8080 in that case so the app is more naturally exposed as <http://localhost> or some more realistic public interface
+U0PRC9KPY says -=*[1482600526.000399]-=*::: this is a great contortion you can use so that you dont have to invest in proper load balancers or cloud services that provide them
+U0PRC9KPY says -=*[1482600547.000400]-=*::: it may also be a good idea to do that instead (real load balancers)
+==========

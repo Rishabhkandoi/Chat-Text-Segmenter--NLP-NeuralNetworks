@@ -1,0 +1,9 @@
+This dataset contains annotated chat text for segmentation which is drawn from 4 large threads of https://slackarchive.io. This data was futher divided 
+into 73 documents where each document contains 5-15 segments. 
+
+In all, there are around 9000 posts and 900 segments.
+
+The folder /raw contains raw text without annotation and the folder /ref contains the annotated version of the same and is used as ground truth.
+Each of these folders have subfolder:
+	/cv_data	------>  This contains 41 documents which were used for optimizing hyperparameters.
+	/test_data	------>  This contains 32 documents which were used for testing our hypothesis.

@@ -1,0 +1,53 @@
+U0A333J23 says -=*[1482613800.000405]-=*::: hey all. i have what could be a really dumb question, but looking for guidance. minikube uses boot2docker by default, but im wondering if the custom iso means that i can build it with ubuntu or some other OS?
+U0A333J23 says -=*[1482613880.000406]-=*::: couple of reasons for thisone may not be needed, i just have to dig in more. our project uses a custom kube-controller-managerso i would like to find an easy solution for this.
+U0A333J23 says -=*[1482614076.000407]-=*::: the other part that i just need to play around with is with volumes. we use ceph as a PV for our project. i may not need to do with what minikube provides today, but it may be useful to test this out with a custom image. i just hope that im not overcomplicating or misunderstanding this custom image concept, but it would be really helpful to have a good development solution, other than having to use hardware.
+U0A333J23 says -=*[1482614128.000408]-=*::: our project is very resource intense, since its openstack installed on top of kubernetes using ceph PVCs and helm as the install/upgrade mechanism.
+U0A333J23 says -=*[1482615634.000409]-=*::: is there an `--extra-config` option for controller-manager to use another kube-controller-manager image? nothing is really jumping out at me looking at the componentconfig.
+U1TUWPL1M says -=*[1482631288.000410]-=*::: <@U0A333J23>: the "custom Image" is just a systemd based Image that we built to run instead of b2d. You can try to use your own custom image but we don't really support that
+U0A333J23 says -=*[1482631540.000411]-=*::: makes sense. i thought i might be overshooting on that one. :slightly_smiling_face:
+U3J6R92NB says -=*[1482636651.000412]-=*::: <@U0PRC9KPY> thanks I thought about such method I will try
+U2YP0FMB7 says -=*[1482963614.000416]-=*::: in a minikube environment, i'd like processes in my pods to be able to use an internal dns server to look up some internal names, like a private docker registry and pip proxy.  so i'm looking for the clean way of adding an additional nameserver to the boot2docker resolv.conf.  docker-machine apparently has an option to add dns [e.g --engine-opt dns=8.8.8.8], but it seems like minikube doesn't use that option.  the nameservers are not configured in the host resolv.conf because of the way the osx ipsec vpn client manages dns, so the default is just whatever is DHCP provided.
+U2YP0FMB7 says -=*[1482963670.000417]-=*::: does anyone have a similar use case about needing to add a specific dns server address to the minikube vm?
+U2YP0FMB7 says -=*[1482964249.000418]-=*::: i might have been confused about what engine-opt does
+U2YP0FMB7 says -=*[1482964420.000419]-=*::: (it doesn't changes resolv.conf but just modifies the engineoptions for the docker service. which would still work fine for pip but not for resolving an internal registry.  so might need both resolv.conf and engineoptions)
+U1TUWPL1M says -=*[1483045986.000426]-=*::: <@U2YP0FMB7> why not use kube-dns?
+U2YP0FMB7 says -=*[1483046010.000427]-=*::: well i'll level with you, i have not wrapped my head around what is going on with dns in minikube
+U1TUWPL1M says -=*[1483046032.000428]-=*::: well the cluster dns in k8s is no different than if you ran it anywhere else
+U1TUWPL1M says -=*[1483046056.000429]-=*::: you can call services with servicename.default.svc.cluster.local
+U1TUWPL1M says -=*[1483046088.000430]-=*::: <http://kubernetes.io/docs/admin/dns/>
+U2YP0FMB7 says -=*[1483046090.000432]-=*::: yeah, i'm definitely using that at the app level, for things that i'm running in the minikube cluster.  and it's great.
+U1TUWPL1M says -=*[1483046130.000433]-=*::: we could probably add that option to configure dns servers though
+U2YP0FMB7 says -=*[1483046140.000434]-=*::: but we have the constraint in our environment of needing to use a registry on our internal network
+U1TUWPL1M says -=*[1483046142.000435]-=*::: i see what you mean though
+U2YP0FMB7 says -=*[1483046159.000436]-=*::: ... which i'm accessing over the default osx ipsec vpn client
+U1TUWPL1M says -=*[1483046168.000437]-=*::: honestly it should be as easy as adding that flag to `minikube start` and populating the engineOpts
+U2YP0FMB7 says -=*[1483046260.000438]-=*::: so by accident i found that this works differently between virtualbox and xhyve
+U1TUWPL1M says -=*[1483046311.000439]-=*::: does xhyve work?
+U2YP0FMB7 says -=*[1483046319.000440]-=*::: xhyve does work, virtualbox does not work :slightly_smiling_face:
+U2YP0FMB7 says -=*[1483046331.000441]-=*::: which i think is kind of cool because i prefer xhyve on general principle...
+U1TUWPL1M says -=*[1483046339.000442]-=*::: xhyve internally uses vmnet, which is the networking used by macOS
+U1TUWPL1M says -=*[1483046343.000443]-=*::: virtualbox does it own thing
+U2YP0FMB7 says -=*[1483046410.000444]-=*::: i thought maybe it was because they were using different host-only-cidr ip ranges and virtualbox's default is in a range that should be routed out via the vpn, but i tried a different range that shouldn't have been routed via the vpn and it didn't change.  so that tracks with vmnet vs not-vmnet
+U2YP0FMB7 says -=*[1483046488.000445]-=*::: i wonder if it's a little bit like how kubectl (and other golang apps) only use resolv.conf nameservers, but other apps use the macos thing and get names resolved via the vpn.
+U2YP0FMB7 says -=*[1483046523.000446]-=*::: anyway, the minikube vm in both cases ends up with a nameserver in resolv.conf that points at the host.. and i didn't know this before yesterday but apparently mDNSresponder is acting as a dns server (makes sense i guess)
+U1TUWPL1M says -=*[1483046611.000447]-=*::: might be worth opening up an issue with what you've found out so far
+U1TUWPL1M says -=*[1483046629.000448]-=*::: we might have to add the dns flag anyways to fix the virtualbox/hyper-v cases
+U2YP0FMB7 says -=*[1483046639.000449]-=*::: it might be, but i'm not sure how to really sum it up
+U2YP0FMB7 says -=*[1483046698.000450]-=*::: it must be kind of annoying to work on because vpn configurations tend to be highly diverse
+U2YP0FMB7 says -=*[1483046837.000451]-=*::: i guess if i really wanted it to work in virtualbox, i'd have to point at the dns server inside the vpn's network.  but i don't want to have to keep track of that address in a config file or anything, but would prefer for the OS to handle things normally
+U1TUWPL1M says -=*[1483047032.000452]-=*::: yeah, well for the OSX case we are planning to make xhyve the default hypervisor soon
+U1TUWPL1M says -=*[1483047037.000453]-=*::: i wonder how hyper-v handles it on windows
+U1TUWPL1M says -=*[1483047069.000454]-=*::: the OS should handle it though
+U3K3EN0G0 says -=*[1483052853.000455]-=*::: Hi guys; can anyone tell me which distro of linux does minikube use for the linux vm used to host containers?
+U1XLRPD8B says -=*[1483065381.000456]-=*::: <@U3K3EN0G0> `minikube ssh -- cat /etc/*-release` ??
+U1TUWPL1M says -=*[1483123889.000458]-=*::: We use a custom image that's built with buildroot <https://buildroot.org> <@U3K3EN0G0> 
+U1TUWPL1M says -=*[1483123898.000459]-=*::: Probably most similar to busybox
+U27RXB90F says -=*[1483132682.000461]-=*::: Hello
+U27RXB90F says -=*[1483132700.000462]-=*::: is there a way to use images from the docker deamon
+U27RXB90F says -=*[1483132710.000463]-=*::: not trying to pull from a repository
+U27RXB90F says -=*[1483132732.000464]-=*::: I can see a newly built image using docker build
+U27RXB90F says -=*[1483132738.000465]-=*::: in docker image
+U27RXB90F says -=*[1483132753.000466]-=*::: but minikube is still trying to pull from dockerhub
+U1FGYMJ6B says -=*[1483222027.000468]-=*::: <@U27RXB90F> minkube has documentation regarding using local images from the docker daemon here: <https://github.com/kubernetes/minikube#reusing-the-docker-daemon>
+U1FGYMJ6B says -=*[1483222102.000470]-=*::: most important points are: To be able to work with the docker daemon on your mac/linux host use the docker-env command in your shell: `eval $(minikube docker-env)`  Remember to turn off the `imagePullPolicy:Always`, as otherwise kubernetes won't use images you built locally.
+U371K2XC1 says -=*[1483301147.000473]-=*::: Hello, is it possible to run minikube with cni (flannel or weave)? when I tried with network-plugin cni and deploy weave, nothing works

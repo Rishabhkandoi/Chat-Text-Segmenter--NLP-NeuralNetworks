@@ -1,0 +1,99 @@
+U0PPMUTGR says -=*[1481646353.000241]-=*::: <@U0ALRFJH0>  yes, that's his ID
+U0PPMUTGR says -=*[1481646406.000242]-=*::: <@U2YMCCZGQ> , maybe the cluster ops SIG is a better place to discuss this as we are purely a Windows Server Containers sig
+U0ALRFJH0 says -=*[1481646475.000243]-=*::: <@U0ALRFJH0|pires> set the channel topic: Bringing Windows Server Containers to Kubernetes.
+U2U84B4BE says -=*[1481646637.000244]-=*::: <@U0ALRFJH0> My team will do the K8S+Windows Container setup in AWS JP in the day time, anything you want me to test on the network part? beside making a ping to 8.8.8.8?  -
+U0ALRFJH0 says -=*[1481646725.000246]-=*::: <@U2U84B4BE> that should suffice.
+U2YMCCZGQ says -=*[1481646732.000247]-=*::: <@U0PPMUTGR> ok, got it.
+U2U84B4BE says -=*[1481646759.000248]-=*::: OK, will update to you then
+U0ALRFJH0 says -=*[1481646818.000249]-=*::: <@U2U84B4BE> even if you have internet access, one needs to make sure the intra-cluster traffic is not being NAT'ed.
+U2U84B4BE says -=*[1481646848.000250]-=*::: OK
+U0ALRFJH0 says -=*[1481646886.000251]-=*::: that's the issue with my GCP tests. the NAT interface does NAT inter-pod communication and that's a big issue for me. bigger than not having internet access from the pod container.
+U2U84B4BE says -=*[1481647228.000252]-=*::: I am checking it out in my local setup (Vmware workstation)
+U2U84B4BE says -=*[1481647640.000253]-=*::: confirmed all good on my local setup, will check it out on AWS setup in the daytime
+U0ALRFJH0 says -=*[1481648080.000254]-=*::: <@U2U84B4BE> in your local setup, can you run one test for me?
+U2U84B4BE says -=*[1481648141.000255]-=*::: sure
+U0ALRFJH0 says -=*[1481648219.000256]-=*::: are you still running the IIS pod?
+U2U84B4BE says -=*[1481648241.000257]-=*::: Please leave me the message and I will update to you in the daytime, it's 1:00am already I need get to bed , there is a morning meeting :slightly_smiling_face:
+U2U84B4BE says -=*[1481648274.000258]-=*::: I run aspnet pod
+U0ALRFJH0 says -=*[1481648283.000259]-=*::: oh sorry. i'd like to have you run another pod with an interactive container where you could reach the pod running IIS.
+U0ALRFJH0 says -=*[1481648298.000260]-=*::: that should work as well. basically, a client that performs REST requests to IIS.
+U0ALRFJH0 says -=*[1481648328.000261]-=*::: and then check IIS container logs in order to make sure the source IP is the other pod IP and not the node (or any other) IP.
+U2U84B4BE says -=*[1481648343.000262]-=*::: Yes, I was in the interactive mode, and I did ping to another pod (on another host)
+U2U84B4BE says -=*[1481648385.000263]-=*::: meanwhile, I wireshark the real Ethernet on the 2nd host witnessed the SRC/DST IP were good
+U2U84B4BE says -=*[1481648404.000264]-=*::: from 172.31.1.x to 172.31.2.x
+U0ALRFJH0 says -=*[1481648421.000265]-=*::: <@U2U84B4BE> just to confirm, you don't have any NAT interface, right?
+U0ALRFJH0 says -=*[1481648447.000266]-=*::: also, no need to disable Windows Firewall?
+U2U84B4BE says -=*[1481648456.000267]-=*::: I left the default docker NAT virtual interface untouched
+U2U84B4BE says -=*[1481648483.000268]-=*::: new-containernetwork based on the loopback adaptor than
+U2U84B4BE says -=*[1481648522.000269]-=*::: I disabled the firewall,  I need to disable FW anyway because the nodePort will be used to expose services
+U2U84B4BE says -=*[1481648636.000271]-=*::: I will run the IIS log test the daytime and let you know the results
+U0ALRFJH0 says -=*[1481648650.000272]-=*::: :+1: thank you <@U2U84B4BE> have a good night!
+U2U84B4BE says -=*[1481648674.000274]-=*::: Thanks Pires! Talk to you soon
+U0ALRFJH0 says -=*[1481656372.000275]-=*::: anyone around experienced with Windows networking compartments?
+U0PPMUTGR says -=*[1481657430.000276]-=*::: FYI - <https://groups.google.com/forum/#!topic/kubernetes-announce/iclRj-6Nfsg>
+U0PPMUTGR says -=*[1481660335.000277]-=*::: team, how did the meeting with msft go today?
+U0JFJ4KHS says -=*[1481660726.000278]-=*::: We tried few things, - We need to enable Mac Address Spoofing for Transparent mode - Created a new transparent network with a routable subnet and we were able to access outside network from within the container - In our case, we need to make it work with a private subnet. We need to fix routing to make it work. On Azure, that can be done using UDRs - Trying to figure out how to enable Mac Address Spoofing on Azure - On Bare metal, evaluating how to add routes
+U0JFJ4KHS says -=*[1481660753.000279]-=*::: Pires is trying the same on GCP
+U0PPMUTGR says -=*[1481661738.000280]-=*::: ah cool
+U0PPMUTGR says -=*[1481661745.000281]-=*::: so some progress was made at least on this
+U0PPMUTGR says -=*[1481661752.000282]-=*::: we need to document as well what we are doing here
+U0ALRFJH0 says -=*[1481666300.000283]-=*::: <@U0JFJ4KHS> usually, without RAS (as Onur mentioned) it's just a matter of enabling IP forwarding and adding routes (`route add ...`)
+U0ALRFJH0 says -=*[1481666347.000284]-=*::: i'm not sure how our VM environment is set-up but i'm sure the IT department knows how to set-up those routes.
+U0ALRFJH0 says -=*[1481666393.000285]-=*::: usually, what you call UDR in Azure and I call GCP rules, are simple routes added in the GW, e.g. in `10.5.4.1`
+U0ALRFJH0 says -=*[1481666436.000286]-=*::: then our VMs need not have routes to all subnets but rather rely on default gw, e.g. `10.5.4.1`, to route them properly.
+U0ALRFJH0 says -=*[1481666481.000287]-=*::: but i doubt we can enable MAC spoofing in any of the cloud environments!
+U0JFJ4KHS says -=*[1481666566.000288]-=*::: I will play with Azure environment by disabling RRAS and see if it will work, last time I tried I don't think I restarted the machine after disabling RRAS
+U0ALRFJH0 says -=*[1481666972.000289]-=*::: <@U0PPMUTGR> bold statement <https://github.com/kubernetes/features/issues/116#issuecomment-266832955>
+U0ALRFJH0 says -=*[1481667266.000292]-=*::: :sweat_smile:
+U0PPMUTGR says -=*[1481679576.000293]-=*::: :slightly_smiling_face: no pressure
+U2U84B4BE says -=*[1481697514.000294]-=*::: Dear guys, IIS log verification was GOOD.
+U2U84B4BE says -=*[1481697576.000295]-=*::: <@U2U84B4BE|hongxima> uploaded a file: <https://kubernetes.slack.com/files/hongxima/F3EJZFQBF/running_within_pod_2__curl_pod_1_.txt|running within POD#2 (curl POD#1)>
+U2U84B4BE says -=*[1481697650.000296]-=*::: <@U2U84B4BE|hongxima> uploaded a file: <https://kubernetes.slack.com/files/hongxima/F3EJZN91B/iis_log_output_says_c-ip_is_good.txt|IIS log output says c-ip is good>
+U0ALRFJH0 says -=*[1481713733.000297]-=*::: <@U2U84B4BE> cool. can you ping 8.8.8.8 from within the containers?
+U2U84B4BE says -=*[1481713838.000298]-=*::: <@U0ALRFJH0> Yes, it's pingable, but still all tests were done in my private lab. NOT the public clouds, setup of which is still ongoing ...
+U0ALRFJH0 says -=*[1481714509.000299]-=*::: <@U2U84B4BE> did you enable MAC spoofing on your private lab?
+U2U84B4BE says -=*[1481714541.000300]-=*::: No, I didn't.
+U2U84B4BE says -=*[1481714571.000301]-=*::: But, I need to disable 'Source/Dest. Check' for AWS instances.
+U2U84B4BE says -=*[1481714657.000302]-=*::: It's a L3 routing , I don't see a reason MAC spoofing should be used.
+U0ALRFJH0 says -=*[1481714698.000303]-=*::: <@U2U84B4BE> let's keep local separate from AWS. <@U0JFJ4KHS> is working on private lab tests and he was instructed to enable MAC spoofing by the Microsoft networking team.
+U2U84B4BE says -=*[1481714742.000304]-=*::: I ran my instances atop Vmware workstation, nothing need to be set.
+U2U84B4BE says -=*[1481714770.000306]-=*::: But if you are ESXi , you need to enable promiscuous mode
+U0ALRFJH0 says -=*[1481714778.000307]-=*::: ok, i leave it up to <@U0JFJ4KHS> to sync with you on the private lab tests.
+U2U84B4BE says -=*[1481714785.000308]-=*::: srue
+U0ALRFJH0 says -=*[1481714811.000310]-=*::: i am working on getting this to work on top of GCP and i have everything working *but* containers reaching the internet.
+U0ALRFJH0 says -=*[1481714844.000311]-=*::: on GCP you're not allowed to add NICs as one can do in Azure so i'm relying on adding a Loopback adapter.
+U2U84B4BE says -=*[1481714852.000312]-=*::: do you have overlap routing rules?
+U0ALRFJH0 says -=*[1481714868.000313]-=*::: the pod network (transparent) sits on top of this loopback NIC.
+U2U84B4BE says -=*[1481714887.000314]-=*::: Yes, we are doing the samething in AWS
+U0ALRFJH0 says -=*[1481714914.000315]-=*::: the routing rules are configured in GCP Routes, e.g. `192.168.3.0` is routed through `10.142.0.3`
+U0ALRFJH0 says -=*[1481714931.000316]-=*::: this works well for inter-node pod communication. it's internet that i can't access.
+U0ALRFJH0 says -=*[1481714989.000317]-=*::: a container in the `192.168.3.0/24` subnet uses `192.168.3.1` as default gw. `192.168.3.1` is the IP for the transparent NIC.
+U0ALRFJH0 says -=*[1481715146.000318]-=*::: i'm here wondering what `disable 'Source/Dest. Check'` looks like in GCP. can't find anything resembling of it.
+U2U84B4BE says -=*[1481715215.000319]-=*::: Yes. we use the same approach, but all the route definitions are within Windows instances. I have zero experience for GCP, Google is not granted here :sweat:
+U0ALRFJH0 says -=*[1481715277.000320]-=*::: it's still a public cloud so it should work.
+U2U84B4BE says -=*[1481715332.000322]-=*::: before disabling 'Source/Dest. Check' ,  we could not ping each other private gateway
+U0ALRFJH0 says -=*[1481715346.000323]-=*::: initially, i tried to create N-1 routes per node, one per pod subnet available. so if i have 3 nodes and subsequently 3 pod subnets, each node has 2 routes to the subnets available in the remaining nodes.
+U2U84B4BE says -=*[1481715374.000324]-=*::: Yes, that's the way we adopted
+U0ALRFJH0 says -=*[1481715594.000325]-=*::: that doesn't work on GCP and i am to believe on Azure as well.
+U2U84B4BE says -=*[1481715654.000326]-=*::: I will update to you in a few hours for AWS, I am optimistic
+U0ALRFJH0 says -=*[1481715816.000327]-=*::: thank you <@U2U84B4BE>
+U0ALRFJH0 says -=*[1481715835.000328]-=*::: if i may ask, what is the default gateway for the nodes?
+U2U84B4BE says -=*[1481715957.000329]-=*::: my local hosts are in 192.168.180.0/24, gateway is 192.168.180.2
+U0ALRFJH0 says -=*[1481716035.000330]-=*::: sorry, i'm asking about AWS. i don't have a local set-up. that's <@U0JFJ4KHS>'s playground :slightly_smiling_face:
+U2U84B4BE says -=*[1481716046.000331]-=*::: <@U2U84B4BE|hongxima> uploaded a file: <https://kubernetes.slack.com/files/hongxima/F3DUMJ83B/route_print_in_pod_1.txt|route print in POD#1>
+U2U84B4BE says -=*[1481716079.000332]-=*::: I am cheking it out
+U2U84B4BE says -=*[1481716176.000333]-=*::: AWS Windows Hosts are in 172.16.1.0/24, gateway = 172.16.1.1
+U2U84B4BE says -=*[1481716512.000334]-=*::: <@U0ALRFJH0> 192.168.3.0  is your private subnet atop host 10.142.0.3?
+U0ALRFJH0 says -=*[1481716663.000335]-=*::: yes
+U0ALRFJH0 says -=*[1481716735.000336]-=*::: looking at the routes above, `172.31.1.1` is the default gateway for that node. is that an AWS node?
+U2U84B4BE says -=*[1481717182.000337]-=*::: that's the local setup, and 172.31.1.1 is the loopback adaptor
+U2U84B4BE says -=*[1481717204.000338]-=*::: <@U0ALRFJH0> did you try ping 8.8.8.8 wihin the WIndows host (but not the Pod), does it work?
+U0ALRFJH0 says -=*[1481717378.000339]-=*::: yes, i did. yes, it works.
+U0ALRFJH0 says -=*[1481717398.000340]-=*::: please, <@U2U84B4BE> don't share more local lab stuff as it confuses me. i talk GCP and you talk AWS, deal?
+U2U84B4BE says -=*[1481717424.000341]-=*::: :slightly_smiling_face: deal
+U0ALRFJH0 says -=*[1481717552.000342]-=*::: on AWS, can you run `docker network inspect &lt;POD_NET_NAME&gt;`
+U0ALRFJH0 says -=*[1481717566.000343]-=*::: replace `&lt;POD_NET_NAME&gt;` with whatever name you gave the transparent network.
+U0ALRFJH0 says -=*[1481717603.000344]-=*::: also, ` Get-ContainerNetwork -Name &lt;POD_NET_NAME&gt;`
+U0ALRFJH0 says -=*[1481717607.000345]-=*::: and paste the results here.
+U2U84B4BE says -=*[1481717935.000346]-=*::: Sure, I will paste the output when we reach there (still building ...)
+U0ALRFJH0 says -=*[1481718179.000347]-=*::: :+1:

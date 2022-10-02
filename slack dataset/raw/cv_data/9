@@ -1,0 +1,106 @@
+U0CA12L6A says -=*[1472526365.000052]-=*::: whats the feasibility of a hostPath auto-PVC provisioner?
+U1899Q222 says -=*[1472550556.000053]-=*::: <@U0CA12L6A> <https://github.com/kubernetes/minikube/issues/524>
+U1X86991U says -=*[1472566417.000056]-=*::: hi guys, how should i put extra argument (e.g. enable-custom-metrics on each kubelet) during minikube startup?
+U0CA12L6A says -=*[1472575839.000059]-=*::: thanks
+U226VQZ99 says -=*[1472655043.000063]-=*::: Hi, I'm trying to get a persistent storage working on minikube with hostpath, but I get permission denied,
+U226VQZ99 says -=*[1472655051.000064]-=*::: anyone knows how to solve this?
+U0C6963R6 says -=*[1472657156.000066]-=*::: paultjuh: how are you running minikube? windows/mac/linux? virtualbox/xhyve?
+U226VQZ99 says -=*[1472657197.000067]-=*::: <@U0C6963R6> minikube on linux with virtualbox
+U226VQZ99 says -=*[1472657230.000068]-=*::: seems like volumes only work with the user in the container being `root`
+U226VQZ99 says -=*[1472657242.000069]-=*::: what I understood that is bad practise?
+U0C6963R6 says -=*[1472657285.000070]-=*::: hrm. Im on mac using virtualbox atm. The host fs is mounted in and owned by the `docker` user, not root.
+U0C6963R6 says -=*[1472657517.000071]-=*::: I see this on my machine: ```
+U0C6963R6 says -=*[1472657519.000072]-=*::: 11:31 $ VBoxManage showvminfo minikubeVM | grep -e Shared -A 3 Shared folders:  Name: 'Users', Host path: '/Users' (machine mapping), writable ```
+U226VQZ99 says -=*[1472657577.000074]-=*::: it is something similair here
+U226VQZ99 says -=*[1472657596.000075]-=*::: but it is actually a volume attached to the vm which is getting used I think
+U0C6963R6 says -=*[1472657599.000076]-=*::: and if I `minikube ssh` I see the following: ```docker@minikubeVM:~$ mount | grep Users Users on /Users type vboxsf (rw,nodev,relatime) ```
+U0C6963R6 says -=*[1472657694.000077]-=*::: what do you see if you run `ls -la /Users`?
+U0C6963R6 says -=*[1472657727.000078]-=*::: In my case, everything is owned by docker/staff
+U226VQZ99 says -=*[1472657783.000079]-=*::: on my minikube that is actually not mount
+U0C6963R6 says -=*[1472657812.000080]-=*::: Oh, I think maybe I misunderstood your question/issue
+U1VL8H66Q says -=*[1472657828.000081]-=*::: /users is the /Users from the mac, there is no such folder if your host is linux I would think
+U0C6963R6 says -=*[1472657836.000082]-=*::: ^ good point
+U0C6963R6 says -=*[1472657848.000083]-=*::: or /home, depending on distro
+U226VQZ99 says -=*[1472657911.000084]-=*::: seems like someone have found the issue in the kubernetes-users, it has to do with how I was setting the user
+U0C6963R6 says -=*[1472658033.000085]-=*::: yeah, sorry about that, misunderstood your original question.
+U226VQZ99 says -=*[1472658067.000086]-=*::: no worries
+U1VL8H66Q says -=*[1472755500.000090]-=*::: Is there any documentation for what configuration is available for minikube. I notice occasionally minikube will warn about a new version of minikube and that you can supress messages with config, but is pretty ambiguous about where that config goes, and I also would like to know what configuration options exist
+U0C6963R6 says -=*[1472756848.000091]-=*::: got a question about serviceAccounts, just wanting to make sure Im not missing something obvious
+U0C6963R6 says -=*[1472756877.000092]-=*::: so, when I create a serviceAccount resource in the cluster, thats internal to the cluster, for purposes of the k8s API access.
+U0C6963R6 says -=*[1472756918.000093]-=*::: if I want to do something like create a GCP serviceAccount and set that up in the cluster, I should just create a generic secret with the json token as data
+U0C6963R6 says -=*[1472756924.000094]-=*::: correct?
+U0C6963R6 says -=*[1472757034.000095]-=*::: (for example, so that I can test my container running in minikube locally and dumping data to a private GCS bucket)
+U0C6963R6 says -=*[1472757093.000096]-=*::: Was thinking in reference to this issue: <https://github.com/kubernetes/minikube/issues/321>
+U0C6963R6 says -=*[1472757125.000098]-=*::: except in my case its not GCR, its just GCS.
+U1TUWPL1M says -=*[1472761074.000099]-=*::: <@U1VL8H66Q> you can drop a config.json or yml file in ~/.minikube/config/
+U1TUWPL1M says -=*[1472761116.000100]-=*::: we're added a lot more configuration options and a minikube config get/set/unset command in the next version (not today's) and we'll make sure to have good documentation and maybe an example config
+U1TUWPL1M says -=*[1472761190.000101]-=*::: we're using <https://github.com/spf13/viper> for this, so that you'll still be able to pass around flags, envs, and use this config file
+U1TUWPL1M says -=*[1472761266.000103]-=*::: but for now you can set "WantUpdateNotification" : false in that file
+U0C6963R6 says -=*[1472761267.000104]-=*::: woah woah woah
+U0C6963R6 says -=*[1472761271.000105]-=*::: not containerbuddy?
+U1VL8H66Q says -=*[1472761275.000106]-=*::: Thanks <@U1TUWPL1M>
+U0C6963R6 says -=*[1472761281.000107]-=*::: j/k
+U20L8GGUF says -=*[1472762547.000108]-=*::: after ```eval $(minikube docker-env)```  are folks able to issue a ```docker run -it --rm -v /Users/fooUser/:/mnt -w /mnt busybox sh``` and see data in mnt?
+U0C6963R6 says -=*[1472762615.000109]-=*::: what version of minikube are you running?
+U20L8GGUF says -=*[1472762626.000110]-=*::: minikube version: v0.8.0
+U20L8GGUF says -=*[1472762642.000111]-=*::: with xhyve driver
+U0C6963R6 says -=*[1472762668.000112]-=*::: I just ran your stmt above and I see my home dir contents (replaced `fooUser` with my uname)
+U20L8GGUF says -=*[1472762694.000113]-=*::: I don't :confused:  not sure why
+U0C6963R6 says -=*[1472762695.000114]-=*::: and reconfirmed that I was talking to the minikube docker daemon
+U0C6963R6 says -=*[1472762741.000115]-=*::: oh
+U0C6963R6 says -=*[1472762760.000116]-=*::: bah, sorry, I switched over to vbox the other night because xhyve is borked on my machine and I havent fixed it just yet
+U0C6963R6 says -=*[1472762767.000117]-=*::: so probably not a valid comparison
+U20L8GGUF says -=*[1472762836.000118]-=*::: false alarm i figured out why.   for whatever reason my laptop crashed and i had to restart minikube.   but i forgot to reapply ```minikube ssh -- sudo /usr/local/etc/init.d/nfs-client start minikube ssh -- sudo mkdir /Users minikube ssh -- sudo mount 192.168.64.1:/Users /Users -o rw,async,noatime,rsize=32768,wsize=32768,proto=tcp ```
+U1TUWPL1M says -=*[1472762895.000119]-=*::: why are you mounting with nfs? it should mount your /Users directory automatically with the xhyve driver
+U1TUWPL1M says -=*[1472762967.000120]-=*::: <@U20L8GGUF>
+U20L8GGUF says -=*[1472763019.000121]-=*::: good question.  <https://github.com/kubernetes/minikube/issues/2>
+U20L8GGUF says -=*[1472763040.000123]-=*::: is what i followed, but then i see this: <https://github.com/kubernetes/minikube/issues/423>
+U1TUWPL1M says -=*[1472763115.000125]-=*::: yeah sorry i think the reason why #2 is still open is because we are still working on mounting a host directory for hyperv
+U1TUWPL1M says -=*[1472763124.000126]-=*::: it is unclear though
+U20L8GGUF says -=*[1472763343.000127]-=*::: yeah, there are some strange permissions / performance issues.  I tried virtualbox at first, but the aufs filesystem overhead was too much (<https://github.com/kubernetes/minikube/issues/419>)   so instead i tried xhyve which seems to perform better in my use case.  then i wanted to try some nfs persistentVolumes
+U1TUWPL1M says -=*[1472763374.000129]-=*::: oh gotcha, i saw that issue
+U1TUWPL1M says -=*[1472763401.000130]-=*::: i meant to run some benchmarks
+U1TUWPL1M says -=*[1472763433.000131]-=*::: if you collect any data on what would be best, please share it
+U1TUWPL1M says -=*[1472763450.000132]-=*::: :slightly_smiling_face:
+U20L8GGUF says -=*[1472763465.000133]-=*::: will do
+U1WESG4F8 says -=*[1472823323.000135]-=*::: Hello guys, does anyone know if it's possible to test RBAC authorization on minikube? thanks
+U0C6963R6 says -=*[1472825926.000136]-=*::: sounds like its a WIP: <https://github.com/kubernetes/minikube/issues/499>
+U1WESG4F8 says -=*[1473075465.000004]-=*::: <@U0C6963R6>: yep indeed - since I need this to be tested asap, I will have my system team to spin up a K8s clusters in AWS. Thanks anyway for your help
+U28CCA456 says -=*[1473106340.000007]-=*::: Adding warning to not use PullAlways policy in <https://github.com/kubernetes/minikube#reusing-the-docker-daemon> would save someone some debugging. I had PullAlways policy since I was previously developing on the GKE cluster.
+U28CCA456 says -=*[1473125902.000009]-=*::: Is there some way of reloading pod image without restarting the pod, for quicker minikube development?
+U0LF94V9C says -=*[1473131303.000010]-=*::: I will rebuild the image, then just delete the pod and it will be restarted with the new image.
+U0LF94V9C says -=*[1473131390.000011]-=*::: Re: Pull Always, you can specify a tag other than `latest` and it will use the local version if it exists.
+U0ACRBLSV says -=*[1473177202.000012]-=*::: <@U28CCA456> I think you have to restart the pod.  I setup docker to build directly to the minikube instance. The turnaround cycle is fairly fast
+U0ACRBLSV says -=*[1473177228.000013]-=*::: You can use deployments - assuming the new docker image has a different tag
+U0LF94V9C says -=*[1473177422.000014]-=*::: <@U28CCA456>  does that mean you only want to restart a container in the pod while leaving the pod (and other containers) intact ?
+U0CA12L6A says -=*[1473185335.000015]-=*::: <@U28CCA456> exec in and kill pid 1?
+U1XLRPD8B says -=*[1473235807.000017]-=*::: hi guys, how do i pass EXTRA_DOCKER_OPTS into minikube before docker daemon start?
+U1XLRPD8B says -=*[1473241498.000018]-=*::: :q!
+U25ERB8VA says -=*[1473264924.000020]-=*::: Hey everyone...I am pretty sure this is a silly question, but I am running minikube on a windows machine (so I am not sure if this should work or not) and trying to run the kubectl commands, but neither the vm or the windwos machine knows about the command.  I though minikube configured that when it ran.  AM I missing something?
+U1TUWPL1M says -=*[1473264955.000021]-=*::: <@U25ERB8VA> you'll also need to install kubectl on your windows machine
+U1TUWPL1M says -=*[1473264962.000022]-=*::: it doesn't come packaged with minikube yet
+U25ERB8VA says -=*[1473264973.000023]-=*::: ok cool...thanks I will give that a go
+U1TUWPL1M says -=*[1473265203.000024]-=*::: <@U25ERB8VA> the best way to install kubectl is probably through the google cloud sdk, but you could probably install it by running it in cygwin or something also
+U1TUWPL1M says -=*[1473265233.000025]-=*::: <https://cloud.google.com/sdk/docs/quickstart-windows>
+U28SK7XUJ says -=*[1473275964.000028]-=*::: <@U25ERB8VA> I'm also trying out minikube on Windows.  We might be the only ones :wink:
+U25ERB8VA says -=*[1473277501.000029]-=*::: I am having issues getting my service exposed externally
+U28SK7XUJ says -=*[1473277880.000030]-=*::: <@U25ERB8VA> I'm new to this setup, but I've run docker in VMs like this in the past, and it's usually a missing port forwarding from VirtualBox.  I just enabled it for the kube dashboard, because before it wasn't working
+U0LF94V9C says -=*[1473278322.000031]-=*::: <@U28V5GYV8> what does `minikube service &lt;service_name&gt; url` gives you ?
+U0LF94V9C says -=*[1473278364.000034]-=*::: <@U25ERB8VA> what does `minikube service &lt;service_name&gt; url` gives you ?
+U25ERB8VA says -=*[1473279478.000036]-=*::: &gt; minikube service hello2 -url Please specify a service name.
+U1TUWPL1M says -=*[1473279521.000037]-=*::: <@U25ERB8VA> make sure your service is up with kubernetes `kubectl get service`
+U1TUWPL1M says -=*[1473279538.000038]-=*::: oh and its --url
+U1TUWPL1M says -=*[1473279541.000039]-=*::: two dashes
+U0LF94V9C says -=*[1473279571.000041]-=*::: yeah, slack somehow combined them together.
+U25ERB8VA says -=*[1473279613.000042]-=*::: &gt;minikube service hello2 --url <http://192.168.99.100:31221>
+U1TUWPL1M says -=*[1473279630.000043]-=*::: yup, and if you don't include the url flag, it will open up straight in your browser
+U25ERB8VA says -=*[1473279665.000044]-=*::: so where did that port come from?
+U0LF94V9C says -=*[1473279680.000045]-=*::: haha, it a random assigned port on the node.
+U1TUWPL1M says -=*[1473279690.000046]-=*::: since you can have multiple pods running on the same node, it picks a randomly assigned one
+U25ERB8VA says -=*[1473279714.000048]-=*::: so if I open a virtualbox port will it get the external IP?
+U1TUWPL1M says -=*[1473279716.000049]-=*::: the great part about the `minikube service` command is that it allows you to inspect it right away without running a bunch of kubectl commands
+U10AE1F99 says -=*[1473285339.000051]-=*::: <@U1XLRPD8B> i don't think we have a way to pass in extra docker opts right now
+U10AE1F99 says -=*[1473285344.000052]-=*::: what do you need to pass in?
+U1X86991U says -=*[1473288780.000053]-=*::: `log-driver=fluentd`
+U1X86991U says -=*[1473288823.000055]-=*::: cluster-wise log destination change
+U1X86991U says -=*[1473288950.000056]-=*::: if that doesnt work, how to specify `enable-custom-metrics` for each kubelet?

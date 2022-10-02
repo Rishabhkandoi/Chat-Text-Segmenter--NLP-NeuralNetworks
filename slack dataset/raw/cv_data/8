@@ -1,0 +1,79 @@
+U21PD486R says -=*[1471421519.000514]-=*::: How do I choose the version of minikube to be installed?
+U21PD486R says -=*[1471421577.000515]-=*::: I found `minikube get-k8s-versions` but there doesnt seem to be an option for `start` to select a specific version
+U0ARNNR9P says -=*[1471433661.000517]-=*::: is cadvisor running in localkube ?
+U21PD486R says -=*[1471435539.000518]-=*::: Ive resolved my problem - I built minikube from the head of master, and start now has a `kubernetes-version` option.
+U0ARNNR9P says -=*[1471455573.000519]-=*::: any thoughts on cadvisor. is that running in minikube ?
+U0ARNNR9P says -=*[1471456263.000520]-=*::: How can I enable RBAC ?
+U0U052HCM says -=*[1471457716.000521]-=*::: <@U0ARNNR9P>: i dont think you can because you need to enable the options in the api server startup.  Ive been using CoreOS single node vagrant image for testing.  works great.
+U0ARNNR9P says -=*[1471458673.000522]-=*::: yeah, thats what it looks like, it does not seem setup by default.
+U0ARNNR9P says -=*[1471469629.000523]-=*::: has anyone tried to use ThirdPartyResource as well in minikube ?
+U11H6PJUB says -=*[1471471422.000524]-=*::: TPR's aren't going to work right until a 1.4 based release.
+U10AE1F99 says -=*[1471545708.000525]-=*::: <@U11H6PJUB> could you comment more on what we'd need to enable TBRs?
+U11H6PJUB says -=*[1471545728.000526]-=*::: They're enabled, they just don't work in 1.3
+U10AE1F99 says -=*[1471545746.000527]-=*::: ah thanks
+U10AE1F99 says -=*[1471545753.000528]-=*::: we're working on a 1.4 alpha build now
+U10AE1F99 says -=*[1471545757.000529]-=*::: hopefully they'll work there :slightly_smiling_face:
+U11H6PJUB says -=*[1471545851.000530]-=*::: <https://github.com/kubernetes/kubernetes/pull/28414> that's the latest fix. I think it fully works now.
+U11H6PJUB says -=*[1471545875.000532]-=*::: Was very disappointing, even for a 'beta' resource.
+U10AE1F99 says -=*[1471546243.000533]-=*::: :disappointed:
+U11H6PJUB says -=*[1471547225.000534]-=*::: Sorry, didn't mean to hurt any feelings.
+U10AE1F99 says -=*[1471554312.000535]-=*::: haha none hurt
+U1V8KAALC says -=*[1471628397.000537]-=*::: Hi, can anyone confirm my theory. I'm running Postgres locally on my machine, and using the virtual box host IP (10.0.2.2) to have apps running in minikube access it. I'm seeing large network latency/response times from API calls to these services and I'm wondering if it's the fact that I'm calling out to Postgres outside of the minikube VM
+U1V8KAALC says -=*[1471628430.000538]-=*::: Working on a local dev story for my team
+U0KRS6P0U says -=*[1471948813.000545]-=*::: Hi guys. I'm trying to use minikube on my laptop. If I try to build it simply clonig git repo and using *make* I get e lot of errors. I try to set GOPATH environment variable with no success. If I try to use instruction showed in "Adding a new Dependency" in <https://github.com/kubernetes/minikube> I am able to stget e minikube command ...
+U0KRS6P0U says -=*[1471948852.000547]-=*::: but if I try to run "minikube start" I have no apiserver running so I not able to anything
+U0KRS6P0U says -=*[1471948992.000548]-=*::: have someone a suggestion?
+U0ACRBLSV says -=*[1471961211.000549]-=*::: Do you want to build it, or just run it?
+U0ACRBLSV says -=*[1471961263.000550]-=*::: If the latter, Id suggest the binary builds, or homebrew if on a mac
+U0KRS6P0U says -=*[1471961647.000551]-=*::: Simply run it ... but if I can build it it's a must :smile:
+U1TUWPL1M says -=*[1471970657.000552]-=*::: <@U0KRS6P0U> what are the errors?  you shouldn't be using the `Adding a new dependency` to simply make the binary
+U0KRS6P0U says -=*[1471971007.000553]-=*::: @mrich if I try simply to clone the git repo and make using make I get a lot of errors like: can't load package: package <http://k8s.io/minikube/cmd/localkube/cmd|k8s.io/minikube/cmd/localkube/cmd>: cannot find package "<http://k8s.io/minikube/cmd/localkube/cmd|k8s.io/minikube/cmd/localkube/cmd>" in any of:  /usr/lib/go-1.6/src/k8s.io/minikube/cmd/localkube/cmd (from $GOROOT)  ($GOPATH not set)
+U1TUWPL1M says -=*[1471971198.000554]-=*::: have you set up your go workspace correctly? <https://golang.org/doc/code.html#Workspaces>
+U1TUWPL1M says -=*[1471971247.000555]-=*::: if you're just want to try minikube out, you can grab a binary for linux, mac, or windows here <https://github.com/kubernetes/minikube/releases>
+U0KRS6P0U says -=*[1471971464.000557]-=*::: <@U1TUWPL1M> no ....
+U0KRS6P0U says -=*[1471971483.000558]-=*::: I simply tried to clone repo and built it ....
+U0KRS6P0U says -=*[1471972187.000559]-=*::: <@U1TUWPL1M> I just tried to download the binary and start using *minikube start* and *minikube dashboard* Unfortunately I receive this error message: Could not find finalized endpoint being pointed to by %s: %s kubernetes-dashboard Get <https://192.168.99.100:8443/api/v1/namespaces/kube-system/endpoints/kubernetes-dashboard>: dial tcp 192.168.99.100:8443: getsockopt: connection refused
+U0KRS6P0U says -=*[1471972269.000560]-=*::: The full output is:  minikube start Starting local Kubernetes cluster... Kubectl is now configured to use the cluster.  minikube  status Running  minikube  dashboard Could not find finalized endpoint being pointed to by %s: %s kubernetes-dashboard Get <https://192.168.99.100:8443/api/v1/namespaces/kube-system/endpoints/kubernetes-dashboard>: dial tcp 192.168.99.100:8443: getsockopt: connection refused Get <https://192.168.99.100:8443/api/v1/namespaces/kube-system/endpoints/kubernetes-dashboard>: dial tcp 192.168.99.100:8443: getsockopt: connection refused Get <https://192.168.99.100:8443/api/v1/namespaces/kube-system/endpoints/kubernetes-dashboard>: dial tcp 192.168.99.100:8443: getsockopt: connection refused ....
+U0KRS6P0U says -=*[1471972426.000561]-=*::: This are the same errors I get using my build
+U1899Q222 says -=*[1472132393.000565]-=*::: Has anyone used petsets with minikube? I'm wondering if the `dynamic volume provisioning` is working on that?
+U25DYVB3R says -=*[1472233784.000570]-=*::: HellO!
+U25DYVB3R says -=*[1472233799.000571]-=*::: I'm currently using minikube for some prototyping
+U25DYVB3R says -=*[1472233808.000572]-=*::: and I was wondering if anyone has used calico with it
+U0FUBG9B3 says -=*[1472495346.000007]-=*::: <@U0FUBG9B3|ryanj> set the channel topic: SIG for <https://github.com/kubernetes/minikube>
+U0FUBG9B3 says -=*[1472496102.000009]-=*::: CoreOS has an experimental minikube iso available that includes rkt support:  <https://github.com/coreos/minikube-iso>
+U0XDUM3FZ says -=*[1472496268.000011]-=*::: Though for the rkt support bit to work, you need an unmerged PR as well (which adds the container-runtime flag needed)
+U0XDUM3FZ says -=*[1472496270.000012]-=*::: Soon!
+U261Y5ENR says -=*[1472501796.000013]-=*::: do any of you guys use minikube for development (and not just testing?)
+U1TUWPL1M says -=*[1472501999.000014]-=*::: i think the main use case is mainly testing, although there are ways to run kubernetes e2e
+U1TUWPL1M says -=*[1472502020.000015]-=*::: its not that trivial to run with your own branch of k8s, although there are instructions in the readme
+U1TUWPL1M says -=*[1472502078.000016]-=*::: right now only the release versions of k8s are supported out of the box, but in the future we hope to also have downloads for alphas
+U261Y5ENR says -=*[1472502173.000017]-=*::: but couldnt you just use `hostPath` in development?
+U1TUWPL1M says -=*[1472502236.000018]-=*::: let me clarify, are you talking about kubernetes development itself or general development of some app that runs on kubernetes?
+U261Y5ENR says -=*[1472502248.000019]-=*::: sorry, i mean general development of some app
+U1TUWPL1M says -=*[1472502265.000020]-=*::: oh sorry :slightly_smiling_face: there was just a discussion in kuberenetes-dev about the former
+U1TUWPL1M says -=*[1472502276.000021]-=*::: minikube is what you're looking for the latter
+U1TUWPL1M says -=*[1472502296.000022]-=*::: mac and linux drivers support mounting host folders
+U261Y5ENR says -=*[1472502299.000023]-=*::: its just that I read
+U261Y5ENR says -=*[1472502301.000024]-=*::: &gt;&gt;&gt; Now, dont confuse testing your cluster locally with local development. Minikube isnt yet a development tool, but a tool for testing your clusters configuration before shipping it to production. You still need to use Docker and Docker Compose or any other tool you use daily to work on your code.
+U261Y5ENR says -=*[1472502313.000025]-=*::: is this wrong?
+U1TUWPL1M says -=*[1472502355.000026]-=*::: was that on <http://kuberenetes.io|kuberenetes.io>?
+U261Y5ENR says -=*[1472502472.000027]-=*::: nope :slightly_smiling_face: it was from some ebook I purchased on deploying rails + kubernetes
+U261Y5ENR says -=*[1472502483.000028]-=*::: more specifically, <https://leanpub.com/deploying-rails-with-kubernetes>
+U261Y5ENR says -=*[1472502522.000030]-=*::: right now we use vagrant+chef deploy workflow but looking to go the route of docker+k8s
+U261Y5ENR says -=*[1472502572.000031]-=*::: what are your thoughts on that that excerpt?
+U1TUWPL1M says -=*[1472502770.000033]-=*::: i suppose its true you'll actually need docker for creating the images themselves, but as far as kubernetes goes, minikube is a great place to start and test out deploying an app on kubernetes
+U1TUWPL1M says -=*[1472502936.000034]-=*::: <@U261Y5ENR> for a little more context you can check out the project goals and non-goals here <https://github.com/kubernetes/minikube/blob/master/ROADMAP.md>
+U261Y5ENR says -=*[1472502964.000036]-=*::: ok great, its just that docker-compose seems kind of not the right way to go if were going to be using k8s in production
+U261Y5ENR says -=*[1472502982.000037]-=*::: seeing how were going to have to maintain both a docker-compose AND a k8s config
+U1TUWPL1M says -=*[1472502986.000038]-=*::: yeah docker compose isn't part of this workflow lol
+U261Y5ENR says -=*[1472502998.000039]-=*::: great, thanks for your help
+U261Y5ENR says -=*[1472502999.000040]-=*::: :slightly_smiling_face:
+U10AE1F99 says -=*[1472503179.000041]-=*::: Hey <@U261Y5ENR> , you can definitely use minikube for local development of k8s today
+U10AE1F99 says -=*[1472503187.000042]-=*::: we'd recommend using standard docker files and k8s configs
+U10AE1F99 says -=*[1472503206.000043]-=*::: the book is probably referring to the fact that we're still adding more features to minikube to make it even better for local development
+U261Y5ENR says -=*[1472503272.000044]-=*::: ah ok, great to hear :slightly_smiling_face:
+U266JDVUP says -=*[1472513253.000047]-=*::: stupid question: does minikube support having multiple pods binding to the same port and/or replication controller and service? Im getting `PodFitsHostPorts` on my spark workers `Error starting userland proxy: listen tcp 0.0.0.0:8080: bind: address already in use` in spark master repl. controller. the service and first worker both work ok
+U266JDVUP says -=*[1472513271.000048]-=*::: I looked around but couldnt find any documentation on this.
+U10AE1F99 says -=*[1472517714.000049]-=*::: Hey, <@U266JDVUP> , that probably won't work in minikube
+U10AE1F99 says -=*[1472517723.000050]-=*::: minikube just runs one node, so you won't be able to have two pods use the same hostport
+U266JDVUP says -=*[1472518142.000051]-=*::: <@U10AE1F99> thanks for the confirmation. Thats what I figured

@@ -1,0 +1,79 @@
+==========
+U074Q9Q3D says -=*[1473971563.000254]-=*::: Salient quote from the economist:  <http://www.economist.com/news/leaders/21707210-rise-corporate-colossus-threatens-both-competition-and-legitimacy-business> ``` Prudent policymakers must reinvent antitrust for the digital age...It means making it easier for consumers to move their data from one company to another, and preventing tech firms from unfairly privileging their own services on platforms they control (an area where the commission, in its pursuit of Google, deserves credit). And it means making sure that people have a choice of ways of authenticating their identity online. ```
+U0722SJ4A says -=*[1473971811.000256]-=*::: <@U074Q9Q3D> whoa great find!
+U0DAU9JT1 says -=*[1473998599.000258]-=*::: Re anti-trust, I am of the Ayn Rand school: National Anti-Trust laws are pushed by large corporations because they are adept at compliance, with resources focused just on that.  Innovators are the ones who pay the price by becoming bogged down and held back by regulation and compliance costs.
+U0DAU9JT1 says -=*[1473998646.000259]-=*::: Further, enabling people to move from one centralized service to another is not a solution.
+U0DAU9JT1 says -=*[1473998770.000260]-=*::: Enabling self-hosted distributed and human-friendly is the solution.  Further, the paradigm change is for personal information shared with a company to be specifically crafted for a limited and specific business transaction - outside of which the information is unauthorized and would be great if one could have an automatic key revocation that could be set to match the tx.
+U0DAU9JT1 says -=*[1473998819.000261]-=*::: Where law will help us is to somehow deem it illegal to use data without cryptographic proof of permission to use the data.
+U0DAU9JT1 says -=*[1473998942.000262]-=*::: Lastly, I believe that distributed systems will level the playing field in business transactions - no longer with the size (e.g. # of employees/people/resources) of a company determine who sets the rules - for example no longer will we all just click "ok" accept the unreasonable terms of vendors who have legal muscle to continue to sell with a take or leave it in-elastic market advantage.
+U0DAU9JT1 says -=*[1473999049.000263]-=*::: <http://siliconangle.com/blog/2016/09/08/yahoo-open-sources-pulsar-a-low-latency-alternative-to-apache-kafka/>
+U076J2XV5 says -=*[1474008492.000265]-=*::: James that sounds very similar to VRM, are you familiar? <https://cyber.harvard.edu/projectvrm/Main_Page>
+U0DAU9JT1 says -=*[1474031432.000266]-=*::: <@U076J2XV5> Yes, I read the intention economy by @dsearls (Doc Searls) - and read into this also.
+U0DAU9JT1 says -=*[1474031539.000267]-=*::: It is very similar, and I think it is feasible as perhaps a layer on top of a firm distributed foundation - e.g. distributed identity and payments - perhaps even openbazaar is enough of a shift that VRM would not be necessary, but could be a useful user-friendly layer on top.
+U0723KV7E says -=*[1474041552.000268]-=*::: <https://about.gitlab.com/2016/09/13/gitlab-master-plan/>
+U0731R5T3 says -=*[1474041814.000270]-=*::: GGs GitHub
+==========
+U07D44N65 says -=*[1474044320.000272]-=*::: Hey all, we published the Mediachain Phase II roadmap! Feedback appreciated :smile: <https://twitter.com/mediachain_/status/776820421266210820>
+U0722SJ4A says -=*[1474045362.000274]-=*::: awesome, great work <@U07D44N65> !
+==========
+U134MSRFG says -=*[1474069039.000275]-=*::: Saw this brief intro and immediately thought of Blockstacks (and blockchain techs) potential. Also, Blockstack is mentioned by name: <https://www.fastcoexist.com/3063079/the-radical-plan-for-a-global-identity-system-for-a-world-with-shifting-borders>
+U071X9XPC says -=*[1474247603.000289]-=*::: <http://www.coinwarz.com/network-hashrate-charts/ethereum-network-hashrate-chart>
+U071X9XPC says -=*[1474247621.000291]-=*::: Interesting chart to watch, in relation with <https://blog.ethereum.org/2016/09/18/security-alert-geth-nodes-crash-due-memory-bug/>
+U071X9XPC says -=*[1474247651.000293]-=*::: Lessons here for treating blockchain as a dumb layer vs. putting complexity/logic in the blockchain.
+U071X9XPC says -=*[1474247670.000294]-=*::: The latter scares me.
+U0722SJ4A says -=*[1474247924.000295]-=*::: Some interesting relevant tweets:
+U0722SJ4A says -=*[1474247927.000296]-=*::: <https://twitter.com/muneeb/status/777661786346708992>
+U0722SJ4A says -=*[1474247944.000298]-=*::: <https://twitter.com/petertoddbtc/status/777646543956484096>
+U0722SJ4A says -=*[1474247947.000300]-=*::: <https://twitter.com/lopp/status/777661267540574208>
+==========
+U074Q9Q3D says -=*[1474265901.000302]-=*::: Might as well add my tweetstorm to this: <https://twitter.com/JudeCNelson/status/777751731551756288> <https://twitter.com/JudeCNelson/status/777751855384432640> <https://twitter.com/JudeCNelson/status/777751929267036160> <https://twitter.com/JudeCNelson/status/777752032518209536> <https://twitter.com/JudeCNelson/status/777752211845677056> <https://twitter.com/JudeCNelson/status/777752291306864640> <https://twitter.com/JudeCNelson/status/777752440548515840> <https://twitter.com/JudeCNelson/status/777752677245677568>
+U0722SJ4A says -=*[1474289748.000305]-=*::: <@U074Q9Q3D>: nice storm! Though I recommend replying to each one in a chain, easier to follow.
+U0723KV7E says -=*[1474367239.000311]-=*::: <https://twitter.com/techcrunch/status/778145981099544577>
+U0722SJ4A says -=*[1474371130.000314]-=*::: Nice!
+U0723KV7E says -=*[1474460878.000329]-=*::: <http://www.ibtimes.co.uk/microsoft-marches-further-into-ethereum-blockchain-service-cryplets-enclaves-1582440>
+U0723KV7E says -=*[1474473763.000335]-=*::: <http://need-bitcoin.com/category/blockstack/>
+==========
+U0723KV7E says -=*[1474475065.000336]-=*::: <@U0722SJ4A> for some reason the thumbnails for this channel are no longer working. Can we resolve it as I feel this is the only channel where Id like to see a thumbnail. I doubt Id click on any of the links otherwise.
+U0722SJ4A says -=*[1474475144.000337]-=*::: <@U0723KV7E> what do you mean
+U0723KV7E says -=*[1474477175.000339]-=*::: There are no article thumbnails here anymore
+U0723KV7E says -=*[1474477225.000340]-=*::: <@U0723KV7E|guy_blockstack> uploaded a file: <https://blockstack.slack.com/files/guy_blockstack/F2E9R8MDE/screenshot_2016-09-21_13.00.07.png|Screenshot 2016-09-21 13.00.07.png>
+U0723KV7E says -=*[1474477270.000341]-=*::: The above thumbnail/description should have appeared along with this link. <http://www.ibtimes.co.uk/microsoft-marches-further-into-ethereum-blockchain-service-cryplets-enclaves-1582440>
+U0723KV7E says -=*[1474477287.000343]-=*::: Ah.. theyre working again. perfect.
+U0723KV7E says -=*[1474477290.000344]-=*::: thank you sir.
+U0722SJ4A says -=*[1474477551.000345]-=*::: <@U0723KV7E> it depends on the link
+U0722SJ4A says -=*[1474477575.000346]-=*::: slack pulls the metadata from the page
+U0722SJ4A says -=*[1474477581.000347]-=*::: it has nothing to do with us
+U0723KV7E says -=*[1474478901.000348]-=*::: Hmm. I have the same link above and it did not come through. none of the others did either.
+U0722SJ4A says -=*[1474480706.000349]-=*::: it might have been a single api call fail
+U0722SJ4A says -=*[1474480720.000350]-=*::: could have been an internet connection or something on slacks end
+==========
+U075BH6M7 says -=*[1474918589.000371]-=*::: *Misconceptions About Majority Rule* <https://groupincome.org/2016/09/misconceptions-about-majority-rule/>
+U075BH6M7 says -=*[1474918610.000372]-=*::: also, we're hiring: <https://groupincome.org/positions/> if you're interested in Basic Income, check it out :slightly_smiling_face:
+U0723KV7E says -=*[1475166973.000405]-=*::: <https://medium.com/the-coinbase-blog/on-phone-numbers-and-identity-423db8577e58#.mol5f34ut>
+U0722SJ4A says -=*[1475167356.000407]-=*::: yeah very good read
+==========
+U071X9XPC says -=*[1475196719.000465]-=*::: So Blockstack is featured on Brietbart and a lot of Trump bots are tweeting about it
+U071X9XPC says -=*[1475196720.000466]-=*::: <http://www.breitbart.com/tech/2016/09/29/second-internet-coming-soon-courtesy-blockchain/>
+U071X9XPC says -=*[1475197012.000468]-=*::: here is the tweet:
+U071X9XPC says -=*[1475197013.000469]-=*::: <https://twitter.com/BreitbartNews/status/781543887496151041>
+U074Q9Q3D says -=*[1475207531.000488]-=*::: great :confused:
+U1DPY7CSE says -=*[1475246648.000521]-=*::: No such thing as bad press??? :confused:
+U1DPY7CSE says -=*[1475246653.000522]-=*::: :slightly_smiling_face:
+U0723KV7E says -=*[1475254960.000528]-=*::: <http://continuations.com/post/151151124480/we-need-a-new-ipo-process-asap>
+U075BH6M7 says -=*[1475378365.000603]-=*::: congrats on being featured on breitbart! :smile:
+U0722SJ4A says -=*[1475434668.000616]-=*::: <https://twitter.com/LefterisJP/status/782571944487030784>
+U0722SJ4A says -=*[1475434676.000618]-=*::: Thats pretty crazy
+==========
+U0723KV7E says -=*[1475606186.000658]-=*::: <https://www.wired.com/2016/10/internet-finally-belongs-everyone/>
+U08BDV693 says -=*[1475697983.000673]-=*::: <https://twitter.com/newsyc20/status/783753653224083456>
+U0722SJ4A says -=*[1475698060.000675]-=*::: nice <@U08BDV693>!
+U0722SJ4A says -=*[1475698070.000676]-=*::: pssst post it on <http://reddit.com/r/blockstack|reddit.com/r/blockstack>
+U08BDV693 says -=*[1475699103.000677]-=*::: will do
+U0722SJ4A says -=*[1475699324.000679]-=*::: awesome
+U08BDV693 says -=*[1475713961.000684]-=*::: <@U0722SJ4A>: sorry it took so long, but I posted the article on r/Blockstack. <https://www.reddit.com/r/blockstack/comments/562rhm/blockchain_healthcare_2016_report_a_sober_look_at/?st=ITXLY5U9&amp;sh=4e1ce6ec>
+==========
+U2015TGLE says -=*[1475768364.000696]-=*::: Hey guys, you are not alone with the idea to build a new "internet". Have you heared from them? They published an alpha just a few days ago. <https://www.synereo.com/>
+U2KEHR5V0 says -=*[1475887800.000697]-=*::: <@U2015TGLE>: see: browser wars
+==========
+U25JPMENL says -=*[1475896987.000698]-=*::: <@U08BDV693>: This report is a classic. It focuses on what is today and not what could be. In addition, it does not focus on how the technology can improve people's lives but rather how it could solve plumbing problems. It is indicative of a lack of real knowledge of medical use case problems that could be solved with the technilogy in the future. You must conceptually cross the chasm.  I saw these types of reports when I started one first digital payment companies back in the late nineties when I competed with PayPal and sold to Digital River.  I suggest a top down approach in healthcare rather than bottoms ups.  I wish you and your firm all the best.  Cyrus. 
+==========

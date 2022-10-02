@@ -1,0 +1,73 @@
+==========
+U2UBGJGTF says -=*[1477490042.001126]-=*::: Hi everyone I'm tryning to run minikube on windows 7. Install went wel but when I run  `minikube start` i get the following error:  ``` C:\Users\Benjamin&gt;minikube start Starting local Kubernetes cluster... E1026 15:44:39.053308    3908 start.go:90] Error starting host: Error attempting  to cache minikube iso from url: Error copying temp iso file to destination: ren ame C:\Users\Benjamin\.minikube\cache\iso\.tmp-minikube-0.7.iso453521319 C:\User s\Benjamin\.minikube\cache\iso\minikube-0.7.iso: The process cannot access the f ile because it is being used by another process.. Retrying. E1026 15:44:39.055308    3908 start.go:96] Error starting host:  Error attemptin g to cache minikube iso from url: Error copying temp iso file to destination: re name C:\Users\Benjamin\.minikube\cache\iso\.tmp-minikube-0.7.iso453521319 C:\Use rs\Benjamin\.minikube\cache\iso\minikube-0.7.iso: The process cannot access the file because it is being used by another process.  ``` Any idea on what is going wrong?
+==========
+U2UH01HS5 says -=*[1477498771.001130]-=*::: would anyone happen to have any pointers on how to run cloud storage json API code in minikube, for a local dev env?
+U2UH01HS5 says -=*[1477498875.001131]-=*::: Should I be able to use the AppEngine local development server together with it somehow, or is there something more targeted for the container engine / kubernetes for this, that I've missed in my googling?
+U1TUWPL1M says -=*[1477498989.001132]-=*::: <@U2UH01HS5> I'm not too sure on that but im sure <@U10AE1F99> knows - he worked on app engine and started minikube
+U2UH01HS5 says -=*[1477499016.001133]-=*::: Ok, thanks <@U1TUWPL1M>
+==========
+U1TUWPL1M says -=*[1477499082.001134]-=*::: <@U2UBGJGTF> I just installed windows yesterday on my personal workstation and got the same thing.  this is the issue for it <https://github.com/kubernetes/minikube/issues/747>
+==========
+U2UH01HS5 says -=*[1477499089.001136]-=*::: Just for some context: my goal is just to get files persisted in a cluster-friendly way, the persistent-disks allowing for writes only on 1 node. Apparently fuse + buckets would be one way to do this in the actual cluster, but stackoverflow had some worrying comments about problems with the fuse mounts
+==========
+U2UBGJGTF says -=*[1477499973.001138]-=*::: <@U1TUWPL1M> thanks reverting to minikube v0.11 worked like a charm
+U0A30SM33 says -=*[1477646126.001140]-=*::: <@U1TUWPL1M> <@U2UBGJGTF> i've just prodded to get a 0.12.1 release out with the fix - sorry for the trouble
+U1TUWPL1M says -=*[1477672847.001142]-=*::: <@U1TUWPL1M> <@U2UBGJGTF> v0.12.1 should be up now
+U0ACRBLSV says -=*[1477675399.001145]-=*::: Minikube host pv are kept in /tmp/hostpath_pv
+U0ACRBLSV says -=*[1477675433.001146]-=*::: I gather that gets whacked everytime  minikube is restarted. Only stuff in /data survives, right?
+U1TUWPL1M says -=*[1477675451.001147]-=*::: yeah
+U1TUWPL1M says -=*[1477675459.001148]-=*::: i think /var/lib/localkube sticks around too
+U0ACRBLSV says -=*[1477675478.001149]-=*::: Bug or feature :wink:
+U0ACRBLSV says -=*[1477675496.001150]-=*::: I am wondering if it should be moved to /data/hostpath_pv
+U1TUWPL1M says -=*[1477675528.001151]-=*::: can't you specify where they live in your yaml?
+U0ACRBLSV says -=*[1477675549.001152]-=*::: Dont think so. I am using the hostpath auto pvc provisioner
+U0ACRBLSV says -=*[1477675559.001153]-=*::: I dont want to hard code paths in my yaml
+U1TUWPL1M says -=*[1477675566.001154]-=*::: gotcha
+U0ACRBLSV says -=*[1477675579.001155]-=*::: If I move to GKE, it should just work
+U1TUWPL1M says -=*[1477675580.001156]-=*::: i wonder what sticks it in /tmp then
+U1TUWPL1M says -=*[1477675599.001157]-=*::: maybe theres a flag we can pass?
+U0ACRBLSV says -=*[1477675611.001158]-=*::: is that a minikube thing, or the way that the hostpath provisioner works?
+U1TUWPL1M says -=*[1477675622.001159]-=*::: im not sure
+U1TUWPL1M says -=*[1477675639.001160]-=*::: i don't think we're doing anything specifically to stick it in tmp
+U0ACRBLSV says -=*[1477676028.001161]-=*::: Yea - it looks like that is in the kube hostpath code
+U0ACRBLSV says -=*[1477676030.001162]-=*::: <https://github.com/kubernetes/kubernetes/blob/4e393fadf3df60bc15696e9d965f635fefb2a6e9/pkg/volume/host_path/host_path.go>
+U0ACRBLSV says -=*[1477676065.001164]-=*::: For developement only  - so to be expected
+U1TUWPL1M says -=*[1477676074.001165]-=*::: yeah
+U1TUWPL1M says -=*[1477676087.001166]-=*::: i dont see why that shouldnt be configurable
+U1TUWPL1M says -=*[1477676091.001167]-=*::: especially since its for local dev
+==========
+U0C355S3F says -=*[1477680125.001169]-=*::: hey silly question for you
+U0C355S3F says -=*[1477680142.001170]-=*::: in my kube-system namespace I see kube-dns and kubernetes-dashboard
+U0C355S3F says -=*[1477680174.001171]-=*::: in my default namespace, and this is the part that I dont understand, I see the following service
+U0C355S3F says -=*[1477680175.001172]-=*::: `default       svc/kubernetes             10.0.0.1     &lt;none&gt;        443/TCP         26m`
+U0C355S3F says -=*[1477680177.001173]-=*::: what is it?
+U0C355S3F says -=*[1477680204.001174]-=*::: ```$ kubectl describe svc kubernetes Name:   kubernetes Namespace:  default Labels:   component=apiserver    provider=kubernetes Selector:  &lt;none&gt; Type:   ClusterIP IP:   10.0.0.1 Port:   https 443/TCP Endpoints:  10.0.2.15:8443 Session Affinity: ClientIP No events.```
+U0C355S3F says -=*[1477680222.001175]-=*::: (thank you in advance)
+U1TUWPL1M says -=*[1477688888.001178]-=*::: <@U0C355S3F> I think the apiserver should be running in the kube-system namespace
+U1TUWPL1M says -=*[1477688896.001179]-=*::: i see no reason why it should be in default
+U1TUWPL1M says -=*[1477689384.001180]-=*::: <@U0C355S3F> it just normally runs in the default namespace, heres an upstream issue suggesting running it in `kube-system`
+U1TUWPL1M says -=*[1477689385.001181]-=*::: <https://github.com/kubernetes/kubernetes/issues/20625>
+U0C355S3F says -=*[1477689404.001183]-=*::: oh cool
+==========
+U1CD08D18 says -=*[1477950922.001190]-=*::: wow, minikube is the bomb,  helping me accelerate my development (with client-go)  appreciate it !! :dancing-penguin: ( on archlinux, was up and running in &lt;5 min)
+U1TUWPL1M says -=*[1477950941.001191]-=*::: woo another arch linux fan
+==========
+U2C2N8PEV says -=*[1477952383.001193]-=*::: Anyone know how to pass ABAC's authorization policy file properly to minikube?
+U2C2N8PEV says -=*[1477952977.001194]-=*::: nevermind I guess you have to specify fully qualified path to where theyd be available inside the local minikube environment.
+U1TUWPL1M says -=*[1477953009.001195]-=*::: <@U2C2N8PEV> you can drop it into the minikube VM and then do a `minikube start` to restart k8s
+U1TUWPL1M says -=*[1477953031.001196]-=*::: what driver are you using?  some support host path file mounting
+U2C2N8PEV says -=*[1477953034.001197]-=*::: so Im using xhyve so this worked
+U2C2N8PEV says -=*[1477953073.001198]-=*::: minikube start --vm-driver=xhyve --cpus=2 --memory=4096 --extra-config=apiserver.AuthorizationMode=ABAC e.xtra-config=apiserver.AuthorizationPolicyFile=/Users/.../policy.json
+U1TUWPL1M says -=*[1477953085.001199]-=*::: awesome
+U2C2N8PEV says -=*[1477953087.001200]-=*::: assuming the  is replaced with the path from your home directory
+U1TUWPL1M says -=*[1477953112.001201]-=*::: glad you got it working
+U2DGVTWC8 says -=*[1477992382.001203]-=*::: windows
+==========
+U2FFR8MA4 says -=*[1477993904.001207]-=*::: Hi! I've buile an dockerimage that is on the minikubes local registry/daemon. Now when I try to create a deployment using that image it gets an error when pulling the image.  shouldn't I just use --image=the_image_name?
+==========
+U0L246WAE says -=*[1477993953.001208]-=*::: are there any good resources online for setting up dev environments with minikube? or developing in docker containers in general?
+==========
+U14UWF1C4 says -=*[1477996401.001209]-=*::: I am currently using the `minikube` version `0.12.2` on `windows 7` and I am behind a corporate firewall. Here is the error I have when I use the `dashboard` command: ``` $ minikube dashboard E1031 15:54:48.867957    9228 notify.go:54] Error getting json from minikube version url: Error getting minikube version url via http: Get <https://storage.googleapis.com/minikube/releases.json>: dial tcp 173.194.175.128:443: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond. Opening kubernetes dashboard in default browser... ```  Is it a desired behavior for that command to do an external call in order to spawn the dashboard in the browser? If no, should I enter an issue?
+U1TUWPL1M says -=*[1478017407.001210]-=*::: <@U14UWF1C4> you should turn update notifications off with `minikube config set WantUpdateNotification false`
+U1TUWPL1M says -=*[1478017427.001211]-=*::: we should change that error message to reflect that
+==========

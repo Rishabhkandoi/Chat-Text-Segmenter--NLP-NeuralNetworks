@@ -1,0 +1,61 @@
+U0B30SGK1 says -=*[1467141070.000102]-=*::: btw looks like the openshift folks are looking at this as well. Might be worth keeping an eye on: <https://github.com/openshift/origin/issues/9487>
+U1M3XTTDW says -=*[1467142704.000105]-=*::: anyone have some suggestions on where to look to resolve issues getting started with minikube?  after running `minikube start` and trying to hit the URL, i just get "Unauthorized"
+U1M3XTTDW says -=*[1467142724.000106]-=*::: basically this quickstart is not turning out to be quick: <https://github.com/kubernetes/minikube/blob/master/README.md>
+U1M3XTTDW says -=*[1467142825.000108]-=*::: ....and i think i just figured it out. i wasn't giving it enough time to start up, it seems like
+U1M3XTTDW says -=*[1467142849.000109]-=*::: for anyone else reading this, running `curl http://$(minikube ip):8000` right away will fail. give it a few minutes
+U1FGYMJ6B says -=*[1467145912.000111]-=*::: Thanks <@U1M3XTTDW> for the advice.  I have added a PR to the Quickstart README instructions regarding this: <https://github.com/kubernetes/minikube/pull/240>
+U10AE1F99 says -=*[1467146543.000114]-=*::: Ah yeah <@U1M3XTTDW>, it can take a little while to pull that container before it starts running
+U1M3XTTDW says -=*[1467147428.000115]-=*::: appreciate the help , both of you. i ended up doing a start/stop/start/stop a bunch of times before i realized you can do `kubectl get pods --all-namespaces` to see container status (and the hello-minikube was at `ContainerCreating`)... i just waited for ContainerCreating -&gt; Running and everything was all good :slightly_smiling_face:
+U10AE1F99 says -=*[1467147606.000116]-=*::: cool, that image is around 135MB, i think we should try to find a smaller image for the hello world
+U10AE1F99 says -=*[1467147617.000117]-=*::: not sure where the source comes from, but it shouldn't need to be that large either, it just echos headers
+U0YQ81WLT says -=*[1467591427.000123]-=*::: According to the minikube documentation, as of version 0.2.0, it uses the _iptables_ proxy mode. &gt; Minikube now uses the iptables based proxy mode. <https://github.com/kubernetes/minikube/blob/master/CHANGELOG.md#version-020---632016>  I can't figure out how to confirm that the _iptables_ rules are in fact in effect. Should these only be visible within a Docker container running within one of the pods? I don't see a _kube-proxy_ process running anywhere.
+U0YQ81WLT says -=*[1467591973.000125]-=*::: Also, according to the documentation, stopping the minikube cluster should preserve its state for the next time it starts. However, I find that when I use the dashboard to start a Replication Controller and Service, confirm that they're functional, and then run _minikube stop_, the next time I run _minikube start_ the RC and Service are gone.
+U1NGT9LPQ says -=*[1467618241.000128]-=*::: Hey everyone! trying to evaluate k8s with minikube, but having trouble getting off the ground. minikube is unable to find virtualbox though it is installed. Any pointers? Output: <https://gist.github.com/anonymous/b80f6c19dd7c5761c3f375bc80350e72>
+U0NEL7T4G says -=*[1467627099.000130]-=*::: Hi there!
+U0NEL7T4G says -=*[1467627156.000131]-=*::: Im having troubles with minikube and VBox because of the lack of support of the latter one for hard links. I was wondering, is possible to have minikube access directories on the host machine through NFS mounts?
+U0NEL7T4G says -=*[1467627199.000132]-=*::: This functionality was added to boot2dockers VM <https://github.com/boot2docker/boot2docker/issues/64> and I have used a similar functionality through vagrant with VMs
+U0NEL7T4G says -=*[1467627275.000134]-=*::: but it probably requires changes to the minikube VM plus some arguments on `minikube start`. Should I open an issue for this on github? Unfortunately a software that we need to work with for development purposes uses hard links for some operations.
+U0NEL7T4G says -=*[1467627283.000135]-=*::: Thanks!
+U0NEL7T4G says -=*[1467630363.000137]-=*::: Ok, I see that minikube VM uses boot2docker, and that it already includes nfs setup. So I will write an issue for a feature request, so that you can expose an option like `minikube start shared-folder-through-nfs` that replaces the use of shared folders for the host's user home folder.
+U179VE6FR says -=*[1467813267.000144]-=*::: Under minikube, having trouble specifying self signed root ca certs for a docker registry
+U179VE6FR says -=*[1467813307.000145]-=*::: Keep getting `x509 : certificate signed by unknown authority`
+U179VE6FR says -=*[1467813330.000146]-=*::: But the site cert and signing ca cert are in the .minikube/certs directory
+U179VE6FR says -=*[1467813357.000147]-=*::: Am I missing a step after running `eval $(minikube docker-env)`?
+U10AE1F99 says -=*[1467823118.000148]-=*::: hey <@U0NEL7T4G>, thanks for posting that issue on github
+U10AE1F99 says -=*[1467823129.000149]-=*::: <@U179VE6FR>: what version of minikube are you using?
+U179VE6FR says -=*[1467823150.000150]-=*::: 0.4.0
+U10AE1F99 says -=*[1467823158.000151]-=*::: if the VM gets stopped for any reason, it might come up with a different IP which makes the certs invalid
+U10AE1F99 says -=*[1467823175.000152]-=*::: in 0.4 and above you can just re-run "minikube start" to regenerate the certs to match the new IP
+U179VE6FR says -=*[1467823214.000154]-=*::: A restart, even after delete, didn't change anything
+U10AE1F99 says -=*[1467823308.000155]-=*::: ah, just re-read your first post
+U179VE6FR says -=*[1467823312.000156]-=*::: To clarify, I am trying to do `docker login myregistry.local:5000`, and having trouble with the certs. On a "normal" docker install, I'd stick the registry and caroot cert inside .docker/certs.d and it'd work
+U10AE1F99 says -=*[1467823319.000157]-=*::: right
+U10AE1F99 says -=*[1467823328.000158]-=*::: sorry, i thought you were talking about connecting to the docker daemon
+U179VE6FR says -=*[1467823343.000159]-=*::: nw :stuck_out_tongue: Does connect and startup fine
+U179VE6FR says -=*[1467823379.000160]-=*::: Is there any way to diagnose/log where docker is trying to read the certs from?
+U179VE6FR says -=*[1467823409.000161]-=*::: I've stuck them in nearly anything that looks like it contains certificates
+U10AE1F99 says -=*[1467823432.000162]-=*::: checking now, when you said you put them in ".docker", did you mean inside the VM or outside?
+U179VE6FR says -=*[1467823473.000163]-=*::: No, on my machine
+U179VE6FR says -=*[1467823499.000164]-=*::: Haven't been able to send files to the machine actually, virtualbox doesn't seem to be playing nice with the shared folders
+U10AE1F99 says -=*[1467823608.000165]-=*::: i think you'll have to stick the certs in the VM
+U179VE6FR says -=*[1467823625.000166]-=*::: Right, would you happen to know where?
+U179VE6FR says -=*[1467823642.000167]-=*::: Somewhere like /var/lib/boot2docker/certs?
+U10AE1F99 says -=*[1467823655.000168]-=*::: yeah, i think that's right
+U179VE6FR says -=*[1467823682.000169]-=*::: We haven't figured out how to send files, and vi does not like pasting XD
+U179VE6FR says -=*[1467823696.000170]-=*::: I'm sure we'll get something going, but it's a real shame about those shared folders
+U179VE6FR says -=*[1467823778.000171]-=*::: apart from that, minikube is a real lifesaver, would have made dev proces much faster to test our go containers
+U10AE1F99 says -=*[1467823781.000172]-=*::: what type of system are you on?
+U179VE6FR says -=*[1467823784.000173]-=*::: ubuntu
+U10AE1F99 says -=*[1467823980.000174]-=*::: you can do something like this to transfer a file
+U10AE1F99 says -=*[1467824000.000175]-=*::: cat $fileoutsidevm | minikube ssh "cat &gt; $fileinsidevm"
+U10AE1F99 says -=*[1467824007.000176]-=*::: but yeah, we should make that easier
+U179VE6FR says -=*[1467824188.000177]-=*::: Oh gosh, minikube ssh
+U179VE6FR says -=*[1467824193.000178]-=*::: Did not spot that before
+U0AKLD04R says -=*[1467833276.000180]-=*::: Anyone get heapster / grafana working?
+U0AKLD04R says -=*[1467833290.000181]-=*::: When I hit the url I just get Unauthorized back.
+U0E17UFEY says -=*[1467834920.000183]-=*::: would it be useful in the readme for minikube to state the minimum kubectl needed to work with it?
+U0E17UFEY says -=*[1467835154.000184]-=*::: because as a dork, I had an old version of kubectl laying around (0.12, dont laugh) and it was angry with me :slightly_smiling_face:
+U10AE1F99 says -=*[1467837347.000185]-=*::: good idea
+U10AE1F99 says -=*[1467837377.000186]-=*::: opened <https://github.com/kubernetes/minikube/issues/279>
+U0AKLD04R says -=*[1467858546.000188]-=*::: ok so with some messing around got it all working. The default heapster stuff assumes tls on the cluster.
+U0AKLD04R says -=*[1467858572.000189]-=*::: .also, theres no kubernetes service on kube-solo? For the internal access to the api?

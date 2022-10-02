@@ -1,0 +1,197 @@
+U0JA6HHEE says -=*[1478038669.001246]-=*::: Are there any known workarounds for the DNS issues in minikube v0.12.2? <@U1TUWPL1M>
+U0JA6HHEE says -=*[1478038744.001247]-=*::: None of my pods can resolve domain names. Their /etc/resolv.conf all point to a clusterIP 10.0.0.10. This can't be reached tho. Is this maybe a kube-proxy issue?
+U0JA6HHEE says -=*[1478038784.001248]-=*::: is there a way to reconfigure the kubelet DNS address to the pod IP directly as a workaround?
+U1TUWPL1M says -=*[1478039193.001249]-=*::: <@U0JA6HHEE> im having trouble reproducing the issue, maybe you can help
+U1TUWPL1M says -=*[1478039207.001250]-=*::: im able to reach <http://google.com|google.com> through a busybox pod
+U1TUWPL1M says -=*[1478039220.001251]-=*::: with etc/resolv pointing to 10.0.0.10
+U0JA6HHEE says -=*[1478039228.001252]-=*::: well, I can't ping 10.0.0.10
+U0JA6HHEE says -=*[1478039252.001253]-=*::: my kube-dns pod runs on 10.0.2.15 and I can reach that fine
+U1TUWPL1M says -=*[1478039318.001254]-=*::: which driver are you using?  just to check
+U0JA6HHEE says -=*[1478039325.001255]-=*::: virtualbox now
+U0JA6HHEE says -=*[1478039764.001256]-=*::: <@U1TUWPL1M> hmm, so I connected to my vm and can see the correct iptables rules for 10.0.0.10 -&gt; 10.0.2.15. Though, even from the vm itself I can't connect to 10.0.0.10
+U1TUWPL1M says -=*[1478040148.001257]-=*::: <@U0JA6HHEE> can you curl google from the vm itself?
+U0JA6HHEE says -=*[1478040203.001258]-=*::: I just completely destroyed my minikube image (which was from pre v0.12.2) and rebuild it from scratch. one sec
+U0JA6HHEE says -=*[1478040281.001259]-=*::: I can. its /etc/resolv.conf points at 10.0.2.3 though
+U0JA6HHEE says -=*[1478040313.001260]-=*::: <@U1TUWPL1M> DNS resolution works now
+U0JA6HHEE says -=*[1478040320.001261]-=*::: also from inside a pod
+U1TUWPL1M says -=*[1478040374.001262]-=*::: hmm so you just nuked the entire thing and restarted?  what minikube version were you running before?
+U0JA6HHEE says -=*[1478040395.001263]-=*::: I'm trying to find out right now
+U0JA6HHEE says -=*[1478040426.001264]-=*::: v0.12.0
+U0JA6HHEE says -=*[1478040485.001265]-=*::: so getting v0.12.0, initializing the vm, updating to v0.12.2 should help to reproduce the issue
+U1TUWPL1M says -=*[1478040500.001266]-=*::: ah thats probably the issue
+U1TUWPL1M says -=*[1478040517.001267]-=*::: we swapped DNS implementations between 0.12.0 and 0.12.1
+U1TUWPL1M says -=*[1478040519.001268]-=*::: so if you don
+U1TUWPL1M says -=*[1478040548.001270]-=*::: so if you run 0.12.1 without recreating the VM, no DNS will be running
+U0JA6HHEE says -=*[1478040559.001271]-=*::: kube-dns was running though. I had rebooted my laptop in between. rebuilding the vm helped in the end
+U1TUWPL1M says -=*[1478040570.001272]-=*::: hm
+U0JA6HHEE says -=*[1478040621.001273]-=*::: I guess it was still the same vm, but it was stopped and when I updated minikube and ran `minikube start` today it did all the setup
+U0JA6HHEE says -=*[1478040639.001274]-=*::: just 10.0.0.10 didn't resolve
+U0B9MPWSE says -=*[1478043474.001275]-=*::: <@U1TUWPL1M> Do you know if deployments support hostpath volumes?  Not sure if it's a minikube or kube issue (but I am running on minikube), but configuring a deployment-managed pod with a hostpath mount results in what looks like an emptydir mount.  A pod configured with the same hostpath volume works fine.
+U1TUWPL1M says -=*[1478043547.001276]-=*::: <@U0B9MPWSE> i think they should work as long as they aren't relying on a dynamic pv provisioner
+U1TUWPL1M says -=*[1478043556.001277]-=*::: i dont think theres a dynamic hostpath provisioner yet
+U1TUWPL1M says -=*[1478043580.001278]-=*::: check out this issue <https://github.com/kubernetes/minikube/issues/422>
+U0B9MPWSE says -=*[1478043581.001280]-=*::: No, just simple hostpath.  I've resorted to mounting the host /tmp path into a pod.
+U1TUWPL1M says -=*[1478043608.001281]-=*::: woops sorry wrong issue
+U0B9MPWSE says -=*[1478043627.001282]-=*::: mounting /tmp in a pod shows the contents of the host's /tmp
+U0B9MPWSE says -=*[1478043641.001283]-=*::: sorry, that's not clear
+U0B9MPWSE says -=*[1478043662.001284]-=*::: I'm creating a hostpath volume for /tmp on the host, mounting as /host-tmp in the pod.
+U0B9MPWSE says -=*[1478043668.001285]-=*::: Works fine for a standalone pod
+U0B9MPWSE says -=*[1478043689.001286]-=*::: I try the same thing with a deployment-managed pod, and /host-tmp ends up empty and not linked to host's /tmp
+U0B9MPWSE says -=*[1478043910.001287]-=*::: I've run into similar issues in openshift related to security, since standalone pods are created by me but deployment-managed pods are created by the system.
+U0B9MPWSE says -=*[1478043923.001288]-=*::: I'm not sure if that's the case with kube though.
+U1TUWPL1M says -=*[1478043929.001289]-=*::: hmm i dont immediately see any reasons why it would be a problem
+U1TUWPL1M says -=*[1478043939.001290]-=*::: anything useful in the logs?
+U0B9MPWSE says -=*[1478043958.001291]-=*::: not that I could tell.  I guess I'll look harder.
+U0B9MPWSE says -=*[1478043984.001292]-=*::: I was wondering whether it simply wasn't supported.
+U1TUWPL1M says -=*[1478044001.001293]-=*::: it should be
+U0B9MPWSE says -=*[1478044078.001294]-=*::: I'll work on getting the yaml to repro, maybe there's something specific to me
+U1TUWPL1M says -=*[1478044099.001295]-=*::: yeah post it here or on github when you get a chance
+U0B9MPWSE says -=*[1478044106.001296]-=*::: will do.  thanks!
+U0B9MPWSE says -=*[1478047642.001297]-=*::: <@U1TUWPL1M> *sigh*  kube was ignoring hostpath and defaulting to empty dir.  hostPath works as expected
+U0B9MPWSE says -=*[1478047683.001298]-=*::: I can accept the problem is pebkac, but the ux around yaml sucks.  :disappointed:
+U14UWF1C4 says -=*[1478087056.001300]-=*::: <@U1TUWPL1M> Sorry for the delay, finally the command `minikube config set WantUpdateNotification false` fixed my problem, but `minikube` needed to be stopped. I can now access the `dashboard` without problems. Thank you! :+1:
+U0B9MPWSE says -=*[1478111722.001301]-=*::: How is minikube configuring kubectl?  I'm seemingly unable to set `KUBECONFIG` or provide `--kubeconfig` to access a different cluster.
+U1TUWPL1M says -=*[1478112029.001302]-=*::: you should just be able to switch the context with `kubectl config use-context`
+U1TUWPL1M says -=*[1478112068.001303]-=*::: <@U0B9MPWSE> <https://github.com/kubernetes/minikube/pull/731/files>
+U0B9MPWSE says -=*[1478112145.001305]-=*::: I'm confused
+U0B9MPWSE says -=*[1478112155.001306]-=*::: is KUBECONFIG/--kubeconfig no longer supported
+U0B9MPWSE says -=*[1478112168.001307]-=*::: ?
+U1TUWPL1M says -=*[1478112178.001308]-=*::: for minikube?
+U1TUWPL1M says -=*[1478112183.001309]-=*::: looks like you can use the env var
+U0B9MPWSE says -=*[1478112466.001310]-=*::: I'm confused by how kubectl is picking up config.   Sometimes KUBECONFIG is working for me, sometimes it is not.   I must be doing something unexpected but I'm not sure what that could be.
+U0B9MPWSE says -=*[1478112538.001311]-=*::: oh, you're right, it's related to the context
+U1TUWPL1M says -=*[1478112560.001312]-=*::: minikube automatically sets the context to minikube when you run it
+U1TUWPL1M says -=*[1478112582.001313]-=*::: you have to switch it back when youre done manually
+U0B9MPWSE says -=*[1478112598.001314]-=*::: I don't understand contexts...
+U1TUWPL1M says -=*[1478112610.001315]-=*::: i think we talked about automatically switching it back - but it could get pretty complicated so we just added that env var
+U0B9MPWSE says -=*[1478112650.001316]-=*::: For openshift dev I use dind clusters, and it looks like minikube is rewriting the admin.kubeconfig for my current dind cluster to use minikube
+U0B9MPWSE says -=*[1478112660.001317]-=*::: That's very unexpected
+U0B9MPWSE says -=*[1478112683.001318]-=*::: I was assuming minikube was only touching ~/.kube
+U0B9MPWSE says -=*[1478112722.001319]-=*::: I guess to avoid this problem I should ensure KUBECONFIG doesn't point to a config I don't want rewritten.
+U1TUWPL1M says -=*[1478112789.001320]-=*::: i dont think anything should be overwritten
+U1TUWPL1M says -=*[1478112795.001321]-=*::: you should be able to switch contexts
+U0B9MPWSE says -=*[1478112796.001322]-=*::: it doesn't overwrite
+U0B9MPWSE says -=*[1478112818.001323]-=*::: Normally I use an rc file to set the KUBECONFIG to target a dind cluster
+U0B9MPWSE says -=*[1478112885.001324]-=*::: Which allows me to  trivially target multiple ephemeral clusters without having to worry about their configuration
+U0B9MPWSE says -=*[1478112889.001325]-=*::: just point KUBECONFIG to a location
+U0B9MPWSE says -=*[1478112935.001326]-=*::: But if KUBECONFIG is set to one of these ephemeral configs when `minikube start` runs, the config is set to use minikube and I have to worry about switching contexts.
+U1TUWPL1M says -=*[1478112966.001327]-=*::: gotcha
+U0B9MPWSE says -=*[1478112985.001328]-=*::: I guess it's as much an issue with how kubectl supports both KUBECONFIG files and context within them, I find it a bit confusing.
+U1TUWPL1M says -=*[1478113057.001329]-=*::: yeah i find it confusing also
+U1TUWPL1M says -=*[1478113063.001330]-=*::: theres not a lot of great documentation on it
+U0B9MPWSE says -=*[1478120180.001331]-=*::: <@U1TUWPL1M> In case you're interested, I've been working on getting multinode kube clusters running on minikube: <https://github.com/marun/nkube>
+U1FGYMJ6B says -=*[1478120208.001333]-=*::: Nice!
+U1TUWPL1M says -=*[1478120208.001334]-=*::: oh very cool
+U0F3UH8E6 says -=*[1478173018.001339]-=*::: Hey everyone. We have a bunch of bash scripts around minikube, and now it's having issues cuz of the shell detection when someone runs them on Fish.
+U0F3UH8E6 says -=*[1478173038.001340]-=*::: I can't see any GitHub issues that are related.
+U1TUWPL1M says -=*[1478191417.001341]-=*::: <@U0F3UH8E6> where are we doing shell detection?
+U1FGYMJ6B says -=*[1478191551.001342]-=*::: The docker-env command uses shell detection although I'm not sure if it is related to this issue.  It also has a --shell flag though so it can be forced to output whatever shell is desired (see minikube docker-env --help)
+U0F3UH8E6 says -=*[1478244106.001346]-=*::: Yeah, so we are running scrips with bash and doing `docker-env` stuff in the scripts, so we can `docker build`, etc.
+U0F3UH8E6 says -=*[1478244122.001347]-=*::: Then minikube uses the libmachine shell detection stuff which gets the `SHELL` env var.
+U0F3UH8E6 says -=*[1478244156.001348]-=*::: I guess we could just set `--shell bash` in all the bash scripts, it just seems like the detection should pick it up, but I guess it's a docker-machine/libmachine issue, and not a minikube one.
+U0ALE41D3 says -=*[1478326783.001355]-=*::: anyone here use deis on minikube?
+U0ALE41D3 says -=*[1478326823.001356]-=*::: I'm having a problem with `deis register` I can't figure out the endpoint I'm supposed to use
+U0ALE41D3 says -=*[1478326833.001357]-=*::: referencing the docs here <https://deis.com/docs/workflow/quickstart/deploy-an-app/>
+U1FVD3JSG says -=*[1478354984.001359]-=*::: <@U0ALE41D3> you can use the ip given by the `minikube ip` and register using `deis register <http://deis>.&lt;minikube ip&gt;.<http://nip.io|nip.io>`
+U0L246WAE says -=*[1478504954.001365]-=*::: how do i set up minikube to auth for gcr?
+U2YH4RU05 says -=*[1478534037.001370]-=*::: anyone have ECR working with Minikube?
+U1FGYMJ6B says -=*[1478538795.001371]-=*::: There is a related issue with using ECR w/ Minikube and some solutions for getting it working here: <https://github.com/kubernetes/minikube/issues/366>
+U2YH4RU05 says -=*[1478545473.001374]-=*::: <@U1FGYMJ6B> Yeah I am working on getting <@U0A3SN4DA> example up and running, facing some issues with the kubernetes library though
+U0A3SN4DA says -=*[1478545550.001375]-=*::: Let me know if you need any help or have questions <@U2YH4RU05>, happy to jump in.
+U2YH4RU05 says -=*[1478545599.001376]-=*::: <@U0A3SN4DA> oh awesome, yeah I am hacking on your codebase right now, but it looks like it is using an older version of <http://k8s.io/pkg/client/unversioned|k8s.io/pkg/client/unversioned>
+U0A3SN4DA says -=*[1478545642.001377]-=*::: ahh it probably is, I wrote that before the kubelet supported ECR
+U0A3SN4DA says -=*[1478545652.001378]-=*::: I can upgrade to use the client, just might not happen today
+U2YH4RU05 says -=*[1478545677.001379]-=*::: That would be awesome, I am building some automation to make a deployable install of minikube for use with our ecr's
+U0A3SN4DA says -=*[1478545690.001380]-=*::: What version of k8s are you targeting?
+U2YH4RU05 says -=*[1478545693.001381]-=*::: 1.4.5
+U0A3SN4DA says -=*[1478545720.001382]-=*::: Sweet, I'll make sure to test it out on that
+U2YGXSD9B says -=*[1478552839.001385]-=*::: Am I crazy to even try running OpenShift Origin inside minikube?
+U1TUWPL1M says -=*[1478552853.001386]-=*::: <@U2YGXSD9B> yes haha
+U1TUWPL1M says -=*[1478552856.001387]-=*::: you should look at minishift
+U1TUWPL1M says -=*[1478552866.001388]-=*::: <https://github.com/MiniShift/minishift>
+U1TUWPL1M says -=*[1478552875.001390]-=*::: its a fork of minikube for openshift
+U2YGXSD9B says -=*[1478552897.001391]-=*::: that's fancy
+U1TUWPL1M says -=*[1478552928.001392]-=*::: yup, i dont think it diverges too much from minikube but it has some fancy openshift-specific things i believe
+U2YGXSD9B says -=*[1478552961.001393]-=*::: yea... i'm not quite sure which direction I want to go so I was going to tinker with both
+U2YGXSD9B says -=*[1478552973.001394]-=*::: Thank you, <@U1TUWPL1M>
+U1FGYMJ6B says -=*[1478623817.001400]-=*::: Has anyone gotten heapster running in minikube?  I am running into some issues: <https://github.com/kubernetes/minikube/issues/743#issuecomment-259035140>
+U0FHJL19C says -=*[1478696701.001403]-=*::: yes I had it working at some point <@U1FGYMJ6B>
+U0FHJL19C says -=*[1478696737.001405]-=*::: but I deployed heapster myself it wasnt shipped with minikube as far as i remember
+U0JFJ4KHS says -=*[1479911044.001298]-=*::: :slightly_smiling_face:
+U0JFJ4KHS says -=*[1479911064.001299]-=*::: <@U0ALRFJH0> `--privileged` doesn't take any effect on Windows Containers
+U0JFJ4KHS says -=*[1479911110.001300]-=*::: I have tried adding NAT mappings from within container and it fails, with/without privileged flag, but works from the host
+U0PT5KRHR says -=*[1479911136.001301]-=*::: if I download the K8s tarball, will it have the hack scripts?
+U0PT5KRHR says -=*[1479911143.001302]-=*::: I want to avoid building K8s on linux
+U0JFJ4KHS says -=*[1479911160.001303]-=*::: It think it should
+U0PT5KRHR says -=*[1479911569.001304]-=*::: hmm, doesn't look like it
+U0PT5KRHR says -=*[1479911586.001305]-=*::: gonna use kismatic to setup my linux control plane
+U0JFJ4KHS says -=*[1479911600.001306]-=*::: ok
+U0PT5KRHR says -=*[1479911621.001307]-=*::: adding too many variables to the mix :stuck_out_tongue:
+U0PT5KRHR says -=*[1479911624.001308]-=*::: I might fail miserably
+U0JFJ4KHS says -=*[1479911666.001309]-=*::: :grin:
+U0ALRFJH0 says -=*[1479913119.001310]-=*::: <@U0PT5KRHR> you can still download the source tar.gz and just use the scripts from there.
+U0ALRFJH0 says -=*[1479913136.001311]-=*::: <@U0JFJ4KHS> which container image were you running?
+U0JFJ4KHS says -=*[1479913287.001312]-=*::: windowsservercore
+U0ALRFJH0 says -=*[1479913523.001313]-=*::: ah
+U0ALRFJH0 says -=*[1479913798.001314]-=*::: <@U0JFJ4KHS> i confirm `*-NetNat` is not available in `nanoserver`. i tried to find a way to install a package that would deliver it, but Microsofts documentation is really sparse.
+U0JFJ4KHS says -=*[1479913904.001315]-=*::: so if we go this route infra container will have to be based off `windowsservercore`
+U0ALRFJH0 says -=*[1479914827.001316]-=*::: well, i have a couple questions that Microsoft people may help with: 1) how can we have `*-NetNat` cmdlets or anything similar on `nanoserver` (is it even installable)? 2) how can we have privileged containers?
+U0ALRFJH0 says -=*[1479914861.001317]-=*::: if 2 is not possible, we wont be able to do any magic.
+U0PT5KRHR says -=*[1479914940.001318]-=*::: :cry:
+U0JFJ4KHS says -=*[1479915036.001319]-=*::: As far as I remember from one of the calls with them 2 is not possible, but will confirm again
+U0PT5KRHR says -=*[1479915118.001320]-=*::: <@U0JFJ4KHS> did you install gcc on windows?
+U0JFJ4KHS says -=*[1479915138.001321]-=*::: no, I didn't
+U0PT5KRHR says -=*[1479915153.001322]-=*::: build is failing with "gcc" not found :slightly_smiling_face:
+U0JFJ4KHS says -=*[1479915176.001323]-=*::: how are you building? can you just try go build cmd/kubelet/kubelet.go
+U0PT5KRHR says -=*[1479915179.001324]-=*::: (on windows)
+U0ALRFJH0 says -=*[1479915201.001326]-=*::: <@U0PT5KRHR> the scripts are meant to run on Linux.
+U0PT5KRHR says -=*[1479915212.001327]-=*::: I am running `go build cmd\kubelet`
+U0ALRFJH0 says -=*[1479915227.001328]-=*::: it complains about gcc?
+U0PT5KRHR says -=*[1479915439.001329]-=*::: ``` C:\code\src\<http://k8s.io|k8s.io>\kubernetes&gt;go build .\cmd\kubelet # <http://k8s.io/kubernetes/pkg/kubelet/eviction|k8s.io/kubernetes/pkg/kubelet/eviction> exec: "gcc": executable file not found in %PATH% ```
+U0ALRFJH0 says -=*[1479915658.001330]-=*::: ah you will need to fix that. thats stupid.
+U0ALRFJH0 says -=*[1479915677.001331]-=*::: i mean, let me check the code for a sec
+U0ALRFJH0 says -=*[1479915759.001332]-=*::: <https://github.com/kubernetes/kubernetes/blob/master/pkg/kubelet/eviction/threshold_notifier.go#L22>
+U0ALRFJH0 says -=*[1479915831.001335]-=*::: this is cgo stuff that wont compile on Windows
+U0ALRFJH0 says -=*[1479915868.001336]-=*::: this should have a `build cgo,linux`
+U0ALRFJH0 says -=*[1479915912.001337]-=*::: red alert <@U0PPMUTGR> ^ if this isnt fixed by 1.5, we wont be able to compile the kubelet
+U0PT5KRHR says -=*[1479915940.001338]-=*::: can we compile it on linux?
+U0JFJ4KHS says -=*[1479915984.001339]-=*::: is this something that got added recently
+U0ALRFJH0 says -=*[1479916155.001340]-=*::: <https://github.com/kubernetes/kubernetes/issues/37383>
+U0ALRFJH0 says -=*[1479916185.001343]-=*::: <@U0PT5KRHR> you can compile it in Linux.
+U0PT5KRHR says -=*[1479916207.001344]-=*::: ah ok - then it's not the end of the world :slightly_smiling_face:
+U0ALRFJH0 says -=*[1479916213.001345]-=*::: it actually is
+U0ALRFJH0 says -=*[1479916221.001346]-=*::: ok, close to :slightly_smiling_face:
+U0PT5KRHR says -=*[1479916224.001347]-=*::: haha
+U0ALRFJH0 says -=*[1479916232.001348]-=*::: Kubernetes doesnt build on Windows but it should.
+U0PPMUTGR says -=*[1479916388.001349]-=*::: yes you have to base this off core for now. <https://kubernetes.slack.com/archives/sig-windows/p1479913904001315>
+U0ALRFJH0 says -=*[1479916422.001351]-=*::: <@U0PPMUTGR> if we dont have privileged mode, which i naively assumed we could, im not sure well be able to do our magic.
+U0PPMUTGR says -=*[1479916493.001352]-=*::: <@U0ALRFJH0> i added privileged mode to our list of things to ask msft. can you explain why this is needed?
+U0PPMUTGR says -=*[1479916513.001353]-=*::: <@U0JFJ4KHS>  cna you update the documentation PR to make it crystal clear that building the code has to be done on Linux?
+U0ALRFJH0 says -=*[1479916588.001354]-=*::: <@U0PPMUTGR> how else can you make changes to the host NAT rules?
+U0ALRFJH0 says -=*[1479916660.001355]-=*::: i synced with <@U0JFJ4KHS> yesterday and he showed me that the internal interface on pause container is actually a NAT interface in the host.
+U0ALRFJH0 says -=*[1479916678.001356]-=*::: <@U0PT5KRHR> i was right ``` $ KUBE_BUILD_PLATFORMS=windows/amd64 make WHAT=cmd/kubelet +++ [1123 15:56:09] Generating bindata:     /home/pires/go/src/k8s.io/kubernetes/test/e2e/framework/gobindata_util.go +++ [1123 15:56:11] Building the toolchain targets:     <http://k8s.io/kubernetes/hack/cmd/teststale|k8s.io/kubernetes/hack/cmd/teststale> +++ [1123 15:56:11] Building go targets for windows/amd64:     cmd/libs/go2idl/conversion-gen +++ [1123 15:56:46] Generating bindata:     /home/pires/go/src/k8s.io/kubernetes/test/e2e/framework/gobindata_util.go +++ [1123 15:56:46] Building the toolchain targets:     <http://k8s.io/kubernetes/hack/cmd/teststale|k8s.io/kubernetes/hack/cmd/teststale> +++ [1123 15:56:46] Building go targets for windows/amd64:     cmd/libs/go2idl/openapi-gen +++ [1123 15:57:01] Generating bindata:     /home/pires/go/src/k8s.io/kubernetes/test/e2e/framework/gobindata_util.go +++ [1123 15:57:02] Building the toolchain targets:     <http://k8s.io/kubernetes/hack/cmd/teststale|k8s.io/kubernetes/hack/cmd/teststale> +++ [1123 15:57:02] Building go targets for windows/amd64:     cmd/kubelet # <http://k8s.io/kubernetes/pkg/kubelet/eviction|k8s.io/kubernetes/pkg/kubelet/eviction> pkg/kubelet/eviction/eviction_manager.go:169: undefined: NewMemCGThresholdNotifier Makefile:79: recipe for target 'all' failed make: *** [all] Error 1 ```
+U0PT5KRHR says -=*[1479916723.001357]-=*::: so we can't build Kubelet *for* windows at the moment?
+U0ALRFJH0 says -=*[1479916730.001358]-=*::: correct.
+U0PT5KRHR says -=*[1479916733.001359]-=*::: crap
+U0ALRFJH0 says -=*[1479916752.001360]-=*::: at least, with current master. we should be able to do it with a commit before the one i linked in the issue.
+U0ALRFJH0 says -=*[1479917132.001361]-=*::: this is what i want to avoid with a test-infra for Windows.
+U0JFJ4KHS says -=*[1479917135.001362]-=*::: <@U0ALRFJH0> <@U0PPMUTGR> do we update the documentation or wait for the action being taken on the issue
+U0ALRFJH0 says -=*[1479917150.001363]-=*::: <@U0JFJ4KHS> its labeled as a release blocker
+U0ALRFJH0 says -=*[1479917194.001364]-=*::: we can _fix_ it by doing what we did before with linux specific things, extract an interface and implement a stub for Windows
+U0PT5KRHR says -=*[1479917448.001366]-=*::: looks like there's a PR open to fix it?
+U0PT5KRHR says -=*[1479917450.001367]-=*::: <https://github.com/kubernetes/kubernetes/pull/37384/files>
+U0JFJ4KHS says -=*[1479917465.001369]-=*::: yes, just saw that
+U0PT5KRHR says -=*[1479917478.001370]-=*::: <https://github.com/kubernetes/kubernetes/issues/37340#issuecomment-262435234>
+U0PT5KRHR says -=*[1479917487.001372]-=*::: seems like K8s is being built for windows?
+U0PT5KRHR says -=*[1479917504.001373]-=*::: <https://k8s-gubernator.appspot.com/build/kubernetes-jenkins/logs/kubernetes-cross-build/1774/>
+U0PT5KRHR says -=*[1479917514.001374]-=*::: ``` +++ [1122 20:15:46] windows/amd64: go build started # <http://k8s.io/kubernetes/pkg/kubelet/eviction|k8s.io/kubernetes/pkg/kubelet/eviction> pkg/kubelet/eviction/eviction_manager.go:169: undefined: NewMemCGThresholdNotifier Makefile:79: recipe for target 'all' failed make[1]: *** [all] Error 1 Makefile:264: recipe for target 'cross' failed make: *** [cross] Error 1 Makefile:248: recipe for target 'release' failed make: *** [release] Error 1 ```
+U0JFJ4KHS says -=*[1479917623.001375]-=*::: <@U0ALRFJH0>, do you think there are any side-effects of adding the NAT rules on Container host, instead of within infra container?
+U0JFJ4KHS says -=*[1479918066.001376]-=*::: One thing that I have noticed is, I can create `*-NetNAT` rules on the Container Host and can see them inside the containers
+U0ALRFJH0 says -=*[1479918384.001377]-=*::: ok <@U0PPMUTGR> <@U0PT5KRHR> someone had already noticed this <https://github.com/kubernetes/kubernetes/pull/37384>
+U0ALRFJH0 says -=*[1479918439.001379]-=*::: <@U0JFJ4KHS> how do you think we can dynamically manage the NAT rules on the host?
+U0ALRFJH0 says -=*[1479918480.001380]-=*::: we could do it with the kubelet but we wanted to mitigate any changes to core components.
+U0JFJ4KHS says -=*[1479918504.001381]-=*::: right, kubelet is the only option I see as of now..
+U0JFJ4KHS says -=*[1479918526.001382]-=*::: and we don't want to go that route
+U0PT5KRHR says -=*[1479918528.001383]-=*::: we could run another process, but that would probably suck
+U0PT5KRHR says -=*[1479918555.001384]-=*::: How are you guys standing up the linux control plane for testing?
+U0JFJ4KHS says -=*[1479918567.001385]-=*::: Let's discuss it on the call with Microsoft and see what they say
